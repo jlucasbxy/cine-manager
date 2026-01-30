@@ -1,4 +1,4 @@
 {
-    "name": "@repo/validation",
-    "main": "index.ts"
+  "name": "@repo/validation",
+  "main": "index.ts"
 }
