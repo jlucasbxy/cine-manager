@@ -1,5 +1,6 @@
 {
   "name": "repo",
+  "packageManager": "npm@11.7.0",
   "type": "module",
   "workspaces": [
     "apps/*",
@@ -7,5 +8,8 @@
   ],
   "dependencies": {
     "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "turbo": "^2.8.1"
   }
 }
