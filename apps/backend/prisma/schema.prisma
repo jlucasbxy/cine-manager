@@ -12,3 +12,77 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+model User {
+  id               String    @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  name             String
+  email            String    @unique
+  password         String
+  resetToken       String?
+  resetTokenExpiry DateTime?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  movies Movie[]
+}
+
+model Language {
+  id   String @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  code String @unique // ISO 639-1 code (e.g., "en", "pt")
+  name String
+  movies Movie[]
+}
+
+model Genre {
+  id     String  @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  name   String  @unique
+  movies Movie[]
+}
+
+enum AgeRating {
+  L
+  TEN
+  TWELVE
+  FOURTEEN
+  SIXTEEN
+  EIGHTEEN
+}
+
+enum MovieStatus {
+  RELEASED
+  POST_PRODUCTION
+  IN_PRODUCTION
+  PLANNED
+  CANCELED
+  RUMORED
+}
+
+model Movie {
+  id            String   @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  title         String
+  originalTitle String
+  tagline       String
+  synopsis      String
+  genres        Genre[]
+  releaseDate   DateTime
+  runtime       Int
+  status        MovieStatus
+  ageRating     AgeRating
+  languageId    String   @db.Uuid
+  language      Language @relation(fields: [languageId], references: [id])
+  budget        Float
+  revenue       Float
+  posterUrl     String
+  backdropUrl   String
+  trailerUrl    String
+  votes         Int      @default(0)
+  score         Float    @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([releaseDate])
+  @@index([runtime])
+}
