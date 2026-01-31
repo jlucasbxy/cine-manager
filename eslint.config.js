@@ -19,12 +19,18 @@ export default defineConfig([
       ecmaVersion: 2020,
       globals: globals.browser,
     },
+    rules: {
+      semi: ["error", "always"],
+    },
   },
   {
     files: ["apps/backend/**/*.ts"],
     extends: [js.configs.recommended, tseslint.configs.recommended],
     languageOptions: {
       globals: globals.node,
+    },
+    rules: {
+      semi: ["error", "always"],
     },
   },
   {
