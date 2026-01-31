@@ -64,7 +64,7 @@ model Movie {
   tagline       String
   synopsis      String
   genres        Genre[]
-  releaseDate   DateTime
+  releaseDate   DateTime    @db.Timestamptz
   runtime       Int
   status        MovieStatus
   ageRating     AgeRating
