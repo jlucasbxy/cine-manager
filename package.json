@@ -2,6 +2,12 @@
   "name": "repo",
   "packageManager": "npm@11.7.0",
   "type": "module",
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "test": "turbo run test",
+    "lint": "turbo run lint"
+  },
   "workspaces": [
     "apps/*",
     "packages/*"
