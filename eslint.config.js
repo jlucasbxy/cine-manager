@@ -54,5 +54,9 @@ export default defineConfig([
   {
     files: ["packages/**/*.ts"],
     extends: [js.configs.recommended, tseslint.configs.recommended],
+    rules: {
+      ...sharedRules,
+      "no-restricted-imports": "off"
+    },
   },
 ]);
