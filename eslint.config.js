@@ -5,6 +5,28 @@ import reactRefresh from "eslint-plugin-react-refresh";
 import tseslint from "typescript-eslint";
 import { defineConfig, globalIgnores } from "eslint/config";
 
+const sharedRules = {
+  semi: ["error", "always"],
+  "@typescript-eslint/no-unused-vars": [
+    "warn",
+    {
+      argsIgnorePattern: "^_",
+      varsIgnorePattern: "^_"
+    }
+  ],
+  "quotes": ["error", "double", { "avoidEscape": false }],
+  "no-empty": "off",
+  "comma-dangle": ["error", "never"],
+  "no-restricted-imports": [
+    "error",
+    {
+      patterns: ["../*", "./*"]
+    }
+  ],
+  "arrow-parens": ["error", "always"],
+  "no-console": "error"
+};
+
 export default defineConfig([
   globalIgnores(["**/dist", "**/node_modules"]),
   {
@@ -19,27 +41,7 @@ export default defineConfig([
       ecmaVersion: 2020,
       globals: globals.browser,
     },
-    rules: {
-      semi: ["error", "always"],
-      "@typescript-eslint/no-unused-vars": [
-        "warn",
-        {
-          argsIgnorePattern: "^_",
-          varsIgnorePattern: "^_"
-        }
-      ],
-      "quotes": ["error", "double", { "avoidEscape": false }],
-      "no-empty": "off",
-      "comma-dangle": ["error", "never"],
-      "no-restricted-imports": [
-        "error",
-        {
-          patterns: ["../*", "./*"]
-        }
-      ],
-      "arrow-parens": ["error", "always"],
-      "no-console": "error"
-    },
+    rules: sharedRules,
   },
   {
     files: ["apps/backend/**/*.ts"],
@@ -47,27 +49,7 @@ export default defineConfig([
     languageOptions: {
       globals: globals.node,
     },
-    rules: {
-      semi: ["error", "always"],
-      "@typescript-eslint/no-unused-vars": [
-        "warn",
-        {
-          argsIgnorePattern: "^_",
-          varsIgnorePattern: "^_"
-        }
-      ],
-      "quotes": ["error", "double", { "avoidEscape": false }],
-      "no-empty": "off",
-      "comma-dangle": ["error", "never"],
-      "no-restricted-imports": [
-        "error",
-        {
-          patterns: ["../*", "./*"]
-        }
-      ],
-      "arrow-parens": ["error", "always"],
-      "no-console": "error"
-    },
+    rules: sharedRules,
   },
   {
     files: ["packages/**/*.ts"],
