@@ -1,4 +1,4 @@
 {
   "name": "@repo/dtos",
-  "main": "index.ts"
+  "main": "src/index.ts"
 }

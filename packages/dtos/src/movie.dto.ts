@@ -1,5 +1,5 @@
 import z from "zod";
-import { AgeRating, MovieStatus } from "./enums";
+import { AgeRating, MovieStatus } from "@/enums";
 
 const ageRatingValues = Object.values(AgeRating) as [string, ...string[]];
 const movieStatusValues = Object.values(MovieStatus) as [string, ...string[]];
