@@ -21,6 +21,24 @@ export default defineConfig([
     },
     rules: {
       semi: ["error", "always"],
+      "@typescript-eslint/no-unused-vars": [
+        "warn",
+        {
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_"
+        }
+      ],
+      "quotes": ["error", "double", { "avoidEscape": false }],
+      "no-empty": "off",
+      "comma-dangle": ["error", "never"],
+      "no-restricted-imports": [
+        "error",
+        {
+          patterns: ["../*", "./*"]
+        }
+      ],
+      "arrow-parens": ["error", "always"],
+      "no-console": "error"
     },
   },
   {
@@ -31,6 +49,24 @@ export default defineConfig([
     },
     rules: {
       semi: ["error", "always"],
+      "@typescript-eslint/no-unused-vars": [
+        "warn",
+        {
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_"
+        }
+      ],
+      "quotes": ["error", "double", { "avoidEscape": false }],
+      "no-empty": "off",
+      "comma-dangle": ["error", "never"],
+      "no-restricted-imports": [
+        "error",
+        {
+          patterns: ["../*", "./*"]
+        }
+      ],
+      "arrow-parens": ["error", "always"],
+      "no-console": "error"
     },
   },
   {
