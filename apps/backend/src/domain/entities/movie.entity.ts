@@ -1,5 +1,5 @@
-import { AgeRating } from "./enums/age-rating.enum";
-import { MovieStatus } from "./enums/movie-status.enum";
+import { AgeRating } from "../enums/age-rating.enum";
+import { MovieStatus } from "../enums/movie-status.enum";
 
 export class Movie {
   id: string;
