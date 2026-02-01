@@ -1,0 +1,17 @@
+export enum AgeRating {
+  L = "L",
+  TEN = "TEN",
+  TWELVE = "TWELVE",
+  FOURTEEN = "FOURTEEN",
+  SIXTEEN = "SIXTEEN",
+  EIGHTEEN = "EIGHTEEN",
+}
+
+export enum MovieStatus {
+  RELEASED = "RELEASED",
+  POST_PRODUCTION = "POST_PRODUCTION",
+  IN_PRODUCTION = "IN_PRODUCTION",
+  PLANNED = "PLANNED",
+  CANCELED = "CANCELED",
+  RUMORED = "RUMORED",
+}
