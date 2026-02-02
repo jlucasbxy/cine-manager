@@ -4,7 +4,6 @@
   "tasks": {
     "build": {},
     "dev": {},
-    "lint": {},
-    "test": {},
+    "test": {}
   }
 }
