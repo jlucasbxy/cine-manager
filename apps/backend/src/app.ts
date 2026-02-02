@@ -1,7 +1,6 @@
 import Fastify from "fastify";
 import cors from "@fastify/cors";
 import fastifyEnv from "@fastify/env";
-import { healthRoutes } from "./routes/health";
 
 const envSchema = {
   type: "object",
@@ -34,7 +33,6 @@ export async function buildApp() {
 
   await app.register(fastifyEnv, { schema: envSchema, dotenv: true });
   await app.register(cors);
-  await app.register(healthRoutes);
 
   return app;
 }
