@@ -1,4 +1,6 @@
-export type { CreateUserDTO, UpdateUserDTO } from "./user.dto";
-export type { CreateMovieDTO, UpdateMovieDTO } from "./movie.dto";
+export type { CreateUserDTO } from "./create-user.dto";
+export type { UpdateUserDTO } from "./update-user.dto";
+export type { CreateMovieDTO } from "./create-movie.dto";
+export type { UpdateMovieDTO } from "./update-movie.dto";
 export { AgeRating, MovieStatus } from "@repo/validators";
 export { ErrorCode } from "./error-code.enum";
