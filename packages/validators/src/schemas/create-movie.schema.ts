@@ -27,6 +27,6 @@ export class CreateMovieValidator implements Validator<CreateMovieDTO> {
   });
 
   parse(data: Record<string, unknown>) {
-    return this.createMovieSchema.safeParse(data);
+    return this.createMovieSchema.parse(data);
   }
 }

@@ -10,6 +10,6 @@ export class UpdateUserValidator implements Validator<UpdateUserDTO> {
   });
 
   parse(data: Record<string, unknown>) {
-    return this.updateUserSchema.safeParse(data);
+    return this.updateUserSchema.parse(data);
   }
 }

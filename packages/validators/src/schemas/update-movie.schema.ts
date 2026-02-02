@@ -26,6 +26,6 @@ export class UpdateMovieValidator implements Validator<UpdateMovieDTO> {
   });
 
   parse(data: Record<string, unknown>) {
-    return this.updateMovieSchema.safeParse(data);
+    return this.updateMovieSchema.parse(data);
   }
 }

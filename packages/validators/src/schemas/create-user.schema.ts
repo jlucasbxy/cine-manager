@@ -10,6 +10,6 @@ export class CreateUserValidator implements Validator<CreateUserDTO> {
   });
 
   parse(data: Record<string, unknown>) {
-    return this.createUserSchema.safeParse(data);
+    return this.createUserSchema.parse(data);
   }
 }
