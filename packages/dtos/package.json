@@ -1,7 +1,4 @@
 {
   "name": "@repo/dtos",
-  "main": "src/index.ts",
-  "dependencies": {
-    "@repo/validators": "*"
-  }
+  "main": "src/index.ts"
 }
