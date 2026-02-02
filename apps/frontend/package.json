@@ -11,7 +11,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@repo/validation": "*",
+    "@repo/validators": "*",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
   },

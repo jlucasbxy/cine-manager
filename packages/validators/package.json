@@ -1,0 +1,4 @@
+{
+  "name": "@repo/validators",
+  "main": "src/index.ts"
+}
