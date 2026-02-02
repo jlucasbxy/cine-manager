@@ -6,7 +6,7 @@ export class Email {
   private readonly value: string;
   constructor(value: string) {
     const r = z.email().safeParse(value);
-    if (r.success) {
+    if (!r.success) {
       throw new InvalidEmailError();
     }
     this.value = value;
