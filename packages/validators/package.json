@@ -1,6 +1,9 @@
 {
   "name": "@repo/validators",
   "main": "src/index.ts",
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
   "dependencies": {
     "@repo/dtos": "*"
   }

@@ -1,4 +1,7 @@
 {
   "name": "@repo/dtos",
-  "main": "src/index.ts"
+  "main": "src/index.ts",
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  }
 }
