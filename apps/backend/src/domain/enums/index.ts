@@ -1,2 +1,2 @@
-export { AgeRating } from "./age-rating.enum";
-export { MovieStatus } from "./movie-status.enum";
+export { AgeRating } from "@/domain/enums/age-rating.enum";
+export { MovieStatus } from "@/domain/enums/movie-status.enum";
