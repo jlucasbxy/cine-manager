@@ -1,2 +1,2 @@
-export { createUserSchema, updateUserSchema } from "./user.schema";
-export { createMovieSchema, updateMovieSchema } from "./movie.schema";
+export { CreateUserValidator, UpdateUserValidator } from "./user.schema";
+export { CreateMovieValidator, UpdateMovieValidator } from "./movie.schema";

@@ -1,5 +1,11 @@
-import type { z } from "zod";
-import type { createUserSchema, updateUserSchema } from "@repo/validators";
+export interface CreateUserDTO {
+  name: string;
+  email: string;
+  password: string;
+}
 
-export type CreateUserDTO = z.infer<typeof createUserSchema>;
-export type UpdateUserDTO = z.infer<typeof updateUserSchema>;
+export interface UpdateUserDTO {
+  name?: string;
+  email?: string;
+  password?: string;
+}

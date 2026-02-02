@@ -1,5 +1,36 @@
-import type { z } from "zod";
-import type { createMovieSchema, updateMovieSchema } from "@repo/validators";
+export interface CreateMovieDTO {
+  title: string;
+  originalTitle: string;
+  tagline: string;
+  synopsis: string;
+  releaseDate: Date;
+  runtime: number;
+  status: string;
+  ageRating: string;
+  languageId: string;
+  budget: number;
+  revenue: number;
+  posterUrl: string;
+  backdropUrl: string;
+  trailerUrl: string;
+  userId: string;
+  genres?: string[];
+}
 
-export type CreateMovieDTO = z.infer<typeof createMovieSchema>;
-export type UpdateMovieDTO = z.infer<typeof updateMovieSchema>;
+export interface UpdateMovieDTO {
+  title?: string;
+  originalTitle?: string;
+  tagline?: string;
+  synopsis?: string;
+  releaseDate?: Date;
+  runtime?: number;
+  status?: string;
+  ageRating?: string;
+  languageId?: string;
+  budget?: number;
+  revenue?: number;
+  posterUrl?: string;
+  backdropUrl?: string;
+  trailerUrl?: string;
+  genres?: string[];
+}
