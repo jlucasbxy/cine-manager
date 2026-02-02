@@ -20,7 +20,7 @@ const createMovieSchema = z.object({
   backdropUrl: z.url(),
   trailerUrl: z.url(),
   userId: z.string().min(1),
-  genres: z.array(z.uuidv7()).optional(),
+  genres: z.array(z.uuidv7()).optional()
 });
 
 const updateMovieSchema = z.object({
@@ -38,7 +38,7 @@ const updateMovieSchema = z.object({
   posterUrl: z.url().optional(),
   backdropUrl: z.url().optional(),
   trailerUrl: z.url().optional(),
-  genres: z.array(z.uuidv7()).optional(),
+  genres: z.array(z.uuidv7()).optional()
 });
 
 export class CreateMovieDTO {

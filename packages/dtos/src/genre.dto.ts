@@ -1,11 +1,11 @@
 import z from "zod";
 
 const createGenreSchema = z.object({
-  name: z.string().min(1),
+  name: z.string().min(1)
 });
 
 const updateGenreSchema = z.object({
-  name: z.string().min(1).optional(),
+  name: z.string().min(1).optional()
 });
 
 export class CreateGenreDTO {

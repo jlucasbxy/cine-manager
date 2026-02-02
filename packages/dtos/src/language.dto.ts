@@ -2,12 +2,12 @@ import z from "zod";
 
 const createLanguageSchema = z.object({
   code: z.string().length(2),
-  name: z.string().min(1),
+  name: z.string().min(1)
 });
 
 const updateLanguageSchema = z.object({
   code: z.string().length(2).optional(),
-  name: z.string().min(1).optional(),
+  name: z.string().min(1).optional()
 });
 
 export class CreateLanguageDTO {

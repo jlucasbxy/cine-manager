@@ -9,13 +9,13 @@ const envSchema = {
   properties: {
     PORT: {
       type: "number",
-      default: 3000,
+      default: 3000
     },
     HOST: {
       type: "string",
-      default: "0.0.0.0",
-    },
-  },
+      default: "0.0.0.0"
+    }
+  }
 } as const;
 
 declare module "fastify" {
@@ -29,7 +29,7 @@ declare module "fastify" {
 
 export async function buildApp() {
   const app = Fastify({
-    logger: true,
+    logger: true
   });
 
   await app.register(fastifyEnv, { schema: envSchema, dotenv: true });

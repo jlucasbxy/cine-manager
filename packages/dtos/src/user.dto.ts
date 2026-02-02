@@ -3,13 +3,13 @@ import z from "zod";
 const createUserSchema = z.object({
   name: z.string().min(1),
   email: z.email(),
-  password: z.string().min(8),
+  password: z.string().min(8)
 });
 
 const updateUserSchema = z.object({
   name: z.string().min(1).optional(),
   email: z.email().optional(),
-  password: z.string().min(8).optional(),
+  password: z.string().min(8).optional()
 });
 
 export class CreateUserDTO {
