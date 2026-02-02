@@ -31,7 +31,7 @@ export async function buildApp() {
     logger: true
   });
 
-  await app.register(fastifyEnv, { schema: envSchema, dotenv: true });
+  await app.register(fastifyEnv, { schema: envSchema, dotenv: { quiet: true } });
   await app.register(cors);
 
   return app;
