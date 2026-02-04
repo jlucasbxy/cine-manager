@@ -1,5 +1,7 @@
 import { AgeRating } from "@/domain/enums/age-rating.enum";
 import { MovieStatus } from "@/domain/enums/movie-status.enum";
+import { NonNegativeInt } from "@/domain/value-objects/non-negative-int.value-object";
+import { NonNegativeNumber } from "@/domain/value-objects/non-negative-number.value-object";
 import { Url } from "@/domain/value-objects/url.value-object";
 import { Uuid } from "@/domain/value-objects/uuid.value-object";
 
@@ -9,12 +11,12 @@ interface CreateMovieProps {
   tagline: string;
   synopsis: string;
   releaseDate: Date;
-  runtime: number;
+  runtime: NonNegativeInt;
   status: MovieStatus;
   ageRating: AgeRating;
   languageId: Uuid;
-  budget: number;
-  revenue: number;
+  budget: NonNegativeNumber;
+  revenue: NonNegativeNumber;
   posterUrl: Url;
   backdropUrl: Url;
   trailerUrl: Url;
@@ -23,8 +25,8 @@ interface CreateMovieProps {
 
 interface ReconstituteMovieProps extends CreateMovieProps {
   id: Uuid;
-  votes: number;
-  score: number;
+  votes: NonNegativeInt;
+  score: NonNegativeNumber;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -36,17 +38,17 @@ export class Movie {
   readonly tagline: string;
   readonly synopsis: string;
   readonly releaseDate: Date;
-  readonly runtime: number;
+  readonly runtime: NonNegativeInt;
   readonly status: MovieStatus;
   readonly ageRating: AgeRating;
   readonly languageId: Uuid;
-  readonly budget: number;
-  readonly revenue: number;
+  readonly budget: NonNegativeNumber;
+  readonly revenue: NonNegativeNumber;
   readonly posterUrl: Url;
   readonly backdropUrl: Url;
   readonly trailerUrl: Url;
-  readonly votes: number;
-  readonly score: number;
+  readonly votes: NonNegativeInt;
+  readonly score: NonNegativeNumber;
   readonly createdAt: Date;
   readonly updatedAt: Date;
   readonly userId: Uuid;
@@ -58,17 +60,17 @@ export class Movie {
     tagline: string;
     synopsis: string;
     releaseDate: Date;
-    runtime: number;
+    runtime: NonNegativeInt;
     status: MovieStatus;
     ageRating: AgeRating;
     languageId: Uuid;
-    budget: number;
-    revenue: number;
+    budget: NonNegativeNumber;
+    revenue: NonNegativeNumber;
     posterUrl: Url;
     backdropUrl: Url;
     trailerUrl: Url;
-    votes: number;
-    score: number;
+    votes: NonNegativeInt;
+    score: NonNegativeNumber;
     createdAt: Date;
     updatedAt: Date;
     userId: Uuid;
@@ -113,8 +115,8 @@ export class Movie {
       posterUrl: props.posterUrl,
       backdropUrl: props.backdropUrl,
       trailerUrl: props.trailerUrl,
-      votes: 0,
-      score: 0,
+      votes: NonNegativeInt.create(0),
+      score: NonNegativeNumber.create(0),
       createdAt: now,
       updatedAt: now,
       userId: props.userId

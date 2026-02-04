@@ -13,12 +13,12 @@ export class PrismaMovieRepository implements MovieRepository {
         tagline: data.tagline,
         synopsis: data.synopsis,
         releaseDate: data.releaseDate,
-        runtime: data.runtime,
+        runtime: data.runtime.toNumber(),
         status: data.status,
         ageRating: data.ageRating,
         languageId: data.languageId.toString(),
-        budget: data.budget,
-        revenue: data.revenue,
+        budget: data.budget.toNumber(),
+        revenue: data.revenue.toNumber(),
         posterUrl: data.posterUrl.toString(),
         backdropUrl: data.backdropUrl.toString(),
         trailerUrl: data.trailerUrl.toString(),
@@ -56,17 +56,17 @@ export class PrismaMovieRepository implements MovieRepository {
     if (data.tagline !== undefined) prismaData.tagline = data.tagline;
     if (data.synopsis !== undefined) prismaData.synopsis = data.synopsis;
     if (data.releaseDate !== undefined) prismaData.releaseDate = data.releaseDate;
-    if (data.runtime !== undefined) prismaData.runtime = data.runtime;
+    if (data.runtime !== undefined) prismaData.runtime = data.runtime.toNumber();
     if (data.status !== undefined) prismaData.status = data.status;
     if (data.ageRating !== undefined) prismaData.ageRating = data.ageRating;
     if (data.languageId !== undefined) prismaData.languageId = data.languageId.toString();
-    if (data.budget !== undefined) prismaData.budget = data.budget;
-    if (data.revenue !== undefined) prismaData.revenue = data.revenue;
+    if (data.budget !== undefined) prismaData.budget = data.budget.toNumber();
+    if (data.revenue !== undefined) prismaData.revenue = data.revenue.toNumber();
     if (data.posterUrl !== undefined) prismaData.posterUrl = data.posterUrl.toString();
     if (data.backdropUrl !== undefined) prismaData.backdropUrl = data.backdropUrl.toString();
     if (data.trailerUrl !== undefined) prismaData.trailerUrl = data.trailerUrl.toString();
-    if (data.votes !== undefined) prismaData.votes = data.votes;
-    if (data.score !== undefined) prismaData.score = data.score;
+    if (data.votes !== undefined) prismaData.votes = data.votes.toNumber();
+    if (data.score !== undefined) prismaData.score = data.score.toNumber();
     if (data.userId !== undefined) prismaData.userId = data.userId.toString();
 
     const raw = await prisma.movie.update({
