@@ -1,3 +1,4 @@
+import { uuidv7 } from "uuidv7";
 import z from "zod";
 import { InvalidUuidError } from "@/domain/errors/invalid-uuid.error";
 
@@ -22,7 +23,7 @@ export class Uuid {
   }
 
   static generate(): Uuid {
-    return new Uuid(crypto.randomUUID());
+    return new Uuid(uuidv7());
   }
 
   public toString(): string {
