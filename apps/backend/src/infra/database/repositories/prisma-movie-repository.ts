@@ -14,8 +14,8 @@ export class PrismaMovieRepository implements MovieRepository {
         synopsis: data.synopsis,
         releaseDate: data.releaseDate,
         runtime: data.runtime.toNumber(),
-        status: data.status,
-        ageRating: data.ageRating,
+        status: data.status.getValue(),
+        ageRating: data.ageRating.getValue(),
         languageId: data.languageId.toString(),
         budget: data.budget.toNumber(),
         revenue: data.revenue.toNumber(),
@@ -57,8 +57,8 @@ export class PrismaMovieRepository implements MovieRepository {
     if (data.synopsis !== undefined) prismaData.synopsis = data.synopsis;
     if (data.releaseDate !== undefined) prismaData.releaseDate = data.releaseDate;
     if (data.runtime !== undefined) prismaData.runtime = data.runtime.toNumber();
-    if (data.status !== undefined) prismaData.status = data.status;
-    if (data.ageRating !== undefined) prismaData.ageRating = data.ageRating;
+    if (data.status !== undefined) prismaData.status = data.status.getValue();
+    if (data.ageRating !== undefined) prismaData.ageRating = data.ageRating.getValue();
     if (data.languageId !== undefined) prismaData.languageId = data.languageId.toString();
     if (data.budget !== undefined) prismaData.budget = data.budget.toNumber();
     if (data.revenue !== undefined) prismaData.revenue = data.revenue.toNumber();

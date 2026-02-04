@@ -1,6 +1,6 @@
 import { Movie } from "@/domain/entities";
-import { AgeRating } from "@/domain/enums/age-rating.enum";
-import { MovieStatus } from "@/domain/enums/movie-status.enum";
+import { AgeRating } from "@/domain/value-objects/age-rating.value-object";
+import { MovieStatus } from "@/domain/value-objects/movie-status.value-object";
 import { NonNegativeInt } from "@/domain/value-objects/non-negative-int.value-object";
 import { NonNegativeNumber } from "@/domain/value-objects/non-negative-number.value-object";
 import { Url } from "@/domain/value-objects/url.value-object";
@@ -29,8 +29,8 @@ export class UpdateMovie {
       ...(input.synopsis !== undefined && { synopsis: input.synopsis }),
       ...(input.releaseDate !== undefined && { releaseDate: input.releaseDate }),
       ...(input.runtime !== undefined && { runtime: NonNegativeInt.create(input.runtime) }),
-      ...(input.status !== undefined && { status: input.status as MovieStatus }),
-      ...(input.ageRating !== undefined && { ageRating: input.ageRating as AgeRating }),
+      ...(input.status !== undefined && { status: MovieStatus.create(input.status) }),
+      ...(input.ageRating !== undefined && { ageRating: AgeRating.create(input.ageRating) }),
       ...(input.languageId !== undefined && { languageId: Uuid.create(input.languageId) }),
       ...(input.budget !== undefined && { budget: NonNegativeNumber.create(input.budget) }),
       ...(input.revenue !== undefined && { revenue: NonNegativeNumber.create(input.revenue) }),

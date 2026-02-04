@@ -1,5 +1,5 @@
-import { AgeRating } from "@/domain/enums/age-rating.enum";
-import { MovieStatus } from "@/domain/enums/movie-status.enum";
+import { AgeRating } from "@/domain/value-objects/age-rating.value-object";
+import { MovieStatus } from "@/domain/value-objects/movie-status.value-object";
 import { NonNegativeInt } from "@/domain/value-objects/non-negative-int.value-object";
 import { NonNegativeNumber } from "@/domain/value-objects/non-negative-number.value-object";
 import { Url } from "@/domain/value-objects/url.value-object";
@@ -23,12 +23,27 @@ interface CreateMovieProps {
   userId: Uuid;
 }
 
-interface ReconstituteMovieProps extends CreateMovieProps {
+interface ReconstituteMovieProps {
   id: Uuid;
+  title: string;
+  originalTitle: string;
+  tagline: string;
+  synopsis: string;
+  releaseDate: Date;
+  runtime: NonNegativeInt;
+  status: MovieStatus;
+  ageRating: AgeRating;
+  languageId: Uuid;
+  budget: NonNegativeNumber;
+  revenue: NonNegativeNumber;
+  posterUrl: Url;
+  backdropUrl: Url;
+  trailerUrl: Url;
   votes: NonNegativeInt;
   score: NonNegativeNumber;
   createdAt: Date;
   updatedAt: Date;
+  userId: Uuid;
 }
 
 export class Movie {

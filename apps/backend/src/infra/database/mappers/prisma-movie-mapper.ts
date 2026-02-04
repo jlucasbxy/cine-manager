@@ -1,7 +1,9 @@
 import type { MovieModel } from "@/infra/database/prisma/generated/prisma/models/Movie";
 import { Movie } from "@/domain/entities";
-import { AgeRating } from "@/domain/enums/age-rating.enum";
-import { MovieStatus } from "@/domain/enums/movie-status.enum";
+import { AgeRating as AgeRatingEnum } from "@/domain/enums/age-rating.enum";
+import { MovieStatus as MovieStatusEnum } from "@/domain/enums/movie-status.enum";
+import { AgeRating } from "@/domain/value-objects/age-rating.value-object";
+import { MovieStatus } from "@/domain/value-objects/movie-status.value-object";
 import { NonNegativeInt } from "@/domain/value-objects/non-negative-int.value-object";
 import { NonNegativeNumber } from "@/domain/value-objects/non-negative-number.value-object";
 import { Url } from "@/domain/value-objects/url.value-object";
@@ -17,8 +19,8 @@ export class PrismaMovieMapper {
       synopsis: raw.synopsis,
       releaseDate: raw.releaseDate,
       runtime: NonNegativeInt.reconstitute(raw.runtime),
-      status: raw.status as MovieStatus,
-      ageRating: raw.ageRating as AgeRating,
+      status: MovieStatus.reconstitute(raw.status as MovieStatusEnum),
+      ageRating: AgeRating.reconstitute(raw.ageRating as AgeRatingEnum),
       languageId: Uuid.reconstitute(raw.languageId),
       budget: NonNegativeNumber.reconstitute(raw.budget),
       revenue: NonNegativeNumber.reconstitute(raw.revenue),
