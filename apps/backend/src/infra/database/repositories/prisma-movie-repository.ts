@@ -1,6 +1,7 @@
-import { MovieFilters, MovieRepository, UpdateMovieData } from "@/application/interfaces/repositories/movie-repository";
+import { MovieRepository, UpdateMovieData } from "@/application/interfaces/repositories/movie-repository";
 import { Movie } from "@/domain/entities";
 import { Uuid } from "@/domain/value-objects/uuid.value-object";
+import { MovieQuery } from "@/domain/value-objects/movie-query.value-object";
 import { prisma } from "@/infra/database/prisma";
 import { PrismaMovieMapper } from "@/infra/database/mappers/prisma-movie-mapper";
 
@@ -41,13 +42,13 @@ export class PrismaMovieRepository implements MovieRepository {
     return PrismaMovieMapper.toDomain(raw);
   }
 
-  async findAll(filters: MovieFilters): Promise<Movie[]> {
+  async findAll(query: MovieQuery): Promise<Movie[]> {
     const rawList = await prisma.movie.findMany({
       where: {
-        runtime: { lte: filters.runtime },
+        runtime: { lte: query.runtime.toNumber() },
         releaseDate: {
-          gte: filters.releaseDateStart,
-          lte: filters.releaseDateEnd
+          gte: query.releaseDateStart,
+          lte: query.releaseDateEnd
         }
       }
     });

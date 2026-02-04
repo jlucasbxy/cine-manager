@@ -1,5 +1,6 @@
 import { Movie } from "@/domain/entities";
 import { MovieRepository } from "@/application/interfaces/repositories/movie-repository";
+import { MovieQuery } from "@/domain/value-objects/movie-query.value-object";
 import { QueryMoviesDTO } from "@repo/dtos";
 
 export class ListMovies {
@@ -8,10 +9,7 @@ export class ListMovies {
   ) { }
 
   async execute(input: QueryMoviesDTO): Promise<Movie[]> {
-    return this.movieRepository.findAll({
-      runtime: input.runtime,
-      releaseDateStart: new Date(input.releaseDateStart),
-      releaseDateEnd: new Date(input.releaseDateEnd)
-    });
+    const query = MovieQuery.create(input);
+    return this.movieRepository.findAll(query);
   }
 }
