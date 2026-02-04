@@ -1,4 +1,4 @@
-import type { UserModel } from "../prisma/generated/prisma/models/User";
+import type { UserModel } from "@/infra/database/prisma/generated/prisma/models/User";
 import { User } from "@/domain/entities";
 
 export class PrismaUserMapper {
