@@ -3,20 +3,15 @@ import { Password } from "@/domain/value-objects/password.value-object";
 import { EmailAlreadyInUseError } from "@/domain/errors/email-already-in-use.error";
 import { UserRepository } from "@/application/interfaces/repositories/user-repository";
 import { HashProvider } from "@/application/interfaces/providers/hash-provider";
-
-interface CreateUserInput {
-  name: string;
-  email: string;
-  password: string;
-}
+import { CreateUserDTO } from "@repo/dtos";
 
 export class CreateUser {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly hashProvider: HashProvider
-  ) {}
+  ) { }
 
-  async execute(input: CreateUserInput): Promise<User> {
+  async execute(input: CreateUserDTO): Promise<User> {
     const user = User.create(input);
 
     const existingUser = await this.userRepository.findByEmail(user.email);
