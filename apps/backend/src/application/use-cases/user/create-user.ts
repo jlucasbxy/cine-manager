@@ -1,5 +1,4 @@
 import { User } from "@/domain/entities";
-import { Password } from "@/domain/value-objects/password.value-object";
 import { EmailAlreadyInUseError } from "@/domain/errors/email-already-in-use.error";
 import { UserRepository } from "@/application/interfaces/repositories/user-repository";
 import { HashProvider } from "@/application/interfaces/providers/hash-provider";
@@ -21,10 +20,15 @@ export class CreateUser {
 
     const hashedPassword = await this.hashProvider.hash(user.password.toString());
 
-    return this.userRepository.create({
-      name: user.name,
-      email: user.email,
-      password: Password.fromHash(hashedPassword)
-    });
+    return this.userRepository.create(
+      User.reconstitute({
+        id: user.id.toString(),
+        name: user.name,
+        email: user.email.toString(),
+        password: hashedPassword,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt
+      })
+    );
   }
 }

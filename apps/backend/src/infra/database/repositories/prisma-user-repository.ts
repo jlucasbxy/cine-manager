@@ -1,4 +1,4 @@
-import { CreateUserData, UpdateUserData, UserRepository } from "@/application/interfaces/repositories/user-repository";
+import { UpdateUserData, UserRepository } from "@/application/interfaces/repositories/user-repository";
 import { User } from "@/domain/entities";
 import { Email } from "@/domain/value-objects/email.value-object";
 import { Uuid } from "@/domain/value-objects/uuid.value-object";
@@ -6,12 +6,13 @@ import { prisma } from "@/infra/database/prisma";
 import { PrismaUserMapper } from "@/infra/database/mappers/prisma-user-mapper";
 
 export class PrismaUserRepository implements UserRepository {
-  async create(data: CreateUserData): Promise<User> {
+  async create(user: User): Promise<User> {
     const raw = await prisma.user.create({
       data: {
-        name: data.name,
-        email: data.email.toString(),
-        password: data.password.toString()
+        id: user.id.toString(),
+        name: user.name,
+        email: user.email.toString(),
+        password: user.password.toString()
       }
     });
     return PrismaUserMapper.toDomain(raw);
