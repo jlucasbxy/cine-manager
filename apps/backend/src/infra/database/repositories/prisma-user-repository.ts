@@ -1,13 +1,12 @@
-import { UserRepository } from "@/application/interfaces/repositories/user-repository";
+import { CreateUserData, UpdateUserData, UserRepository } from "@/application/interfaces/repositories/user-repository";
 import { User } from "@/domain/entities";
 import { Email } from "@/domain/value-objects/email.value-object";
-import { Password } from "@/domain/value-objects/password.value-object";
 import { Uuid } from "@/domain/value-objects/uuid.value-object";
 import { prisma } from "@/infra/database/prisma";
 import { PrismaUserMapper } from "@/infra/database/mappers/prisma-user-mapper";
 
 export class PrismaUserRepository implements UserRepository {
-  async create(data: { name: string; email: Email; password: Password }): Promise<User> {
+  async create(data: CreateUserData): Promise<User> {
     const raw = await prisma.user.create({
       data: {
         name: data.name,
@@ -26,7 +25,7 @@ export class PrismaUserRepository implements UserRepository {
     return PrismaUserMapper.toDomain(raw);
   }
 
-  async update(id: Uuid, data: Partial<Omit<User, "id" | "createdAt" | "updatedAt">>): Promise<User> {
+  async update(id: Uuid, data: UpdateUserData): Promise<User> {
     const prismaData: Record<string, unknown> = {};
     if (data.name !== undefined) prismaData.name = data.name;
     if (data.email !== undefined) prismaData.email = data.email.toString();
