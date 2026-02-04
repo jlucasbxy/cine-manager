@@ -20,27 +20,12 @@ interface CreateMovieProps {
   userId: Uuid;
 }
 
-interface ReconstituteMovieProps {
+interface ReconstituteMovieProps extends CreateMovieProps {
   id: string;
-  title: string;
-  originalTitle: string;
-  tagline: string;
-  synopsis: string;
-  releaseDate: Date;
-  runtime: number;
-  status: MovieStatus;
-  ageRating: AgeRating;
-  languageId: Uuid;
-  budget: number;
-  revenue: number;
-  posterUrl: string;
-  backdropUrl: string;
-  trailerUrl: string;
   votes: number;
   score: number;
   createdAt: Date;
   updatedAt: Date;
-  userId: Uuid;
 }
 
 export class Movie {
