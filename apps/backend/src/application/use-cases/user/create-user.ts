@@ -13,7 +13,7 @@ interface CreateUserInput {
 export class CreateUser {
   constructor(
     private readonly userRepository: UserRepository,
-    private readonly hashProvider: HashProvider,
+    private readonly hashProvider: HashProvider
   ) {}
 
   async execute(input: CreateUserInput): Promise<User> {
@@ -29,7 +29,7 @@ export class CreateUser {
     return this.userRepository.create({
       name: user.name,
       email: user.email,
-      password: Password.fromHash(hashedPassword),
+      password: Password.fromHash(hashedPassword)
     });
   }
 }
