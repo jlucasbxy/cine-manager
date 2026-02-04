@@ -18,12 +18,12 @@ interface ReconstituteUserProps {
 }
 
 export class User {
-  id: Uuid;
-  name: string;
-  email: Email;
-  password: Password;
-  createdAt: Date;
-  updatedAt: Date;
+  readonly id: Uuid;
+  readonly name: string;
+  readonly email: Email;
+  readonly password: Password;
+  readonly createdAt: Date;
+  readonly updatedAt: Date;
 
   private constructor(data: {
     id: Uuid;

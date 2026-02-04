@@ -30,26 +30,26 @@ interface ReconstituteMovieProps extends CreateMovieProps {
 }
 
 export class Movie {
-  id: Uuid;
-  title: string;
-  originalTitle: string;
-  tagline: string;
-  synopsis: string;
-  releaseDate: Date;
-  runtime: number;
-  status: MovieStatus;
-  ageRating: AgeRating;
-  languageId: Uuid;
-  budget: number;
-  revenue: number;
-  posterUrl: Url;
-  backdropUrl: Url;
-  trailerUrl: Url;
-  votes: number;
-  score: number;
-  createdAt: Date;
-  updatedAt: Date;
-  userId: Uuid;
+  readonly id: Uuid;
+  readonly title: string;
+  readonly originalTitle: string;
+  readonly tagline: string;
+  readonly synopsis: string;
+  readonly releaseDate: Date;
+  readonly runtime: number;
+  readonly status: MovieStatus;
+  readonly ageRating: AgeRating;
+  readonly languageId: Uuid;
+  readonly budget: number;
+  readonly revenue: number;
+  readonly posterUrl: Url;
+  readonly backdropUrl: Url;
+  readonly trailerUrl: Url;
+  readonly votes: number;
+  readonly score: number;
+  readonly createdAt: Date;
+  readonly updatedAt: Date;
+  readonly userId: Uuid;
 
   private constructor(data: {
     id: Uuid;
