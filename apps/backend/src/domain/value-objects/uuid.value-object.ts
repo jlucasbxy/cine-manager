@@ -12,6 +12,10 @@ export class Uuid {
     this.value = value;
   }
 
+  static generate(): Uuid {
+    return new Uuid(crypto.randomUUID());
+  }
+
   public toString(): string {
     return this.value;
   }
