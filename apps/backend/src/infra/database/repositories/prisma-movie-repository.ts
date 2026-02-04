@@ -1,28 +1,33 @@
-import { CreateMovieData, MovieFilters, MovieRepository, UpdateMovieData } from "@/application/interfaces/repositories/movie-repository";
+import { MovieFilters, MovieRepository, UpdateMovieData } from "@/application/interfaces/repositories/movie-repository";
 import { Movie } from "@/domain/entities";
 import { Uuid } from "@/domain/value-objects/uuid.value-object";
 import { prisma } from "@/infra/database/prisma";
 import { PrismaMovieMapper } from "@/infra/database/mappers/prisma-movie-mapper";
 
 export class PrismaMovieRepository implements MovieRepository {
-  async create(data: CreateMovieData): Promise<Movie> {
+  async create(movie: Movie): Promise<Movie> {
     const raw = await prisma.movie.create({
       data: {
-        title: data.title,
-        originalTitle: data.originalTitle,
-        tagline: data.tagline,
-        synopsis: data.synopsis,
-        releaseDate: data.releaseDate,
-        runtime: data.runtime.toNumber(),
-        status: data.status.getValue(),
-        ageRating: data.ageRating.getValue(),
-        languageId: data.languageId.toString(),
-        budget: data.budget.toNumber(),
-        revenue: data.revenue.toNumber(),
-        posterUrl: data.posterUrl.toString(),
-        backdropUrl: data.backdropUrl.toString(),
-        trailerUrl: data.trailerUrl.toString(),
-        userId: data.userId.toString()
+        id: movie.id.toString(),
+        title: movie.title,
+        originalTitle: movie.originalTitle,
+        tagline: movie.tagline,
+        synopsis: movie.synopsis,
+        releaseDate: movie.releaseDate,
+        runtime: movie.runtime.toNumber(),
+        status: movie.status.getValue(),
+        ageRating: movie.ageRating.getValue(),
+        languageId: movie.languageId.toString(),
+        budget: movie.budget.toNumber(),
+        revenue: movie.revenue.toNumber(),
+        posterUrl: movie.posterUrl.toString(),
+        backdropUrl: movie.backdropUrl.toString(),
+        trailerUrl: movie.trailerUrl.toString(),
+        votes: movie.votes.toNumber(),
+        score: movie.score.toNumber(),
+        userId: movie.userId.toString(),
+        createdAt: movie.createdAt,
+        updatedAt: movie.updatedAt
       }
     });
     return PrismaMovieMapper.toDomain(raw);
