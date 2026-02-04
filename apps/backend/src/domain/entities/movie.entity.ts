@@ -11,13 +11,13 @@ interface CreateMovieProps {
   runtime: number;
   status: MovieStatus;
   ageRating: AgeRating;
-  languageId: string;
+  languageId: Uuid;
   budget: number;
   revenue: number;
   posterUrl: string;
   backdropUrl: string;
   trailerUrl: string;
-  userId: string;
+  userId: Uuid;
 }
 
 interface ReconstituteMovieProps {
@@ -30,7 +30,7 @@ interface ReconstituteMovieProps {
   runtime: number;
   status: MovieStatus;
   ageRating: AgeRating;
-  languageId: string;
+  languageId: Uuid;
   budget: number;
   revenue: number;
   posterUrl: string;
@@ -40,7 +40,7 @@ interface ReconstituteMovieProps {
   score: number;
   createdAt: Date;
   updatedAt: Date;
-  userId: string;
+  userId: Uuid;
 }
 
 export class Movie {
@@ -121,7 +121,7 @@ export class Movie {
       runtime: props.runtime,
       status: props.status,
       ageRating: props.ageRating,
-      languageId: Uuid.create(props.languageId),
+      languageId: props.languageId,
       budget: props.budget,
       revenue: props.revenue,
       posterUrl: props.posterUrl,
@@ -131,7 +131,7 @@ export class Movie {
       score: 0,
       createdAt: now,
       updatedAt: now,
-      userId: Uuid.create(props.userId)
+      userId: props.userId
     });
   }
 
@@ -146,7 +146,7 @@ export class Movie {
       runtime: props.runtime,
       status: props.status,
       ageRating: props.ageRating,
-      languageId: Uuid.reconstitute(props.languageId),
+      languageId: props.languageId,
       budget: props.budget,
       revenue: props.revenue,
       posterUrl: props.posterUrl,
@@ -156,7 +156,7 @@ export class Movie {
       score: props.score,
       createdAt: props.createdAt,
       updatedAt: props.updatedAt,
-      userId: Uuid.reconstitute(props.userId)
+      userId: props.userId
     });
   }
 }
