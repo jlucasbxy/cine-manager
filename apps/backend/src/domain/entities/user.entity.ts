@@ -4,15 +4,15 @@ import { Uuid } from "@/domain/value-objects/uuid.value-object";
 
 interface CreateUserProps {
   name: string;
-  email: string;
-  password: string;
+  email: Email;
+  password: Password;
 }
 
 interface ReconstituteUserProps {
   id: string;
   name: string;
-  email: string;
-  password: string;
+  email: Email;
+  password: Password;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -46,8 +46,8 @@ export class User {
     return new User({
       id: Uuid.generate(),
       name: props.name,
-      email: Email.create(props.email),
-      password: Password.create(props.password),
+      email: props.email,
+      password: props.password,
       createdAt: now,
       updatedAt: now
     });
@@ -57,8 +57,8 @@ export class User {
     return new User({
       id: Uuid.reconstitute(props.id),
       name: props.name,
-      email: Email.reconstitute(props.email),
-      password: Password.fromHash(props.password),
+      email: props.email,
+      password: props.password,
       createdAt: props.createdAt,
       updatedAt: props.updatedAt
     });
