@@ -1,4 +1,4 @@
-import { UpdateUserData, UserRepository } from "@/application/interfaces/repositories/user-repository";
+import { UserRepository } from "@/application/interfaces/repositories/user-repository";
 import { User } from "@/domain/entities";
 import { Email } from "@/domain/value-objects/email.value-object";
 import { Uuid } from "@/domain/value-objects/uuid.value-object";
@@ -23,19 +23,6 @@ export class PrismaUserRepository implements UserRepository {
       where: { email: email.toString() }
     });
     if (!raw) return null;
-    return PrismaUserMapper.toDomain(raw);
-  }
-
-  async update(id: Uuid, data: UpdateUserData): Promise<User> {
-    const prismaData: Record<string, unknown> = {};
-    if (data.name !== undefined) prismaData.name = data.name;
-    if (data.email !== undefined) prismaData.email = data.email.toString();
-    if (data.password !== undefined) prismaData.password = data.password.toString();
-
-    const raw = await prisma.user.update({
-      where: { id: id.toString() },
-      data: prismaData
-    });
     return PrismaUserMapper.toDomain(raw);
   }
 
