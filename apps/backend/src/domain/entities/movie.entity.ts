@@ -131,7 +131,7 @@ export class Movie {
       score: 0,
       createdAt: now,
       updatedAt: now,
-      userId: Uuid.create(props.userId),
+      userId: Uuid.create(props.userId)
     });
   }
 
@@ -156,7 +156,7 @@ export class Movie {
       score: props.score,
       createdAt: props.createdAt,
       updatedAt: props.updatedAt,
-      userId: Uuid.reconstitute(props.userId),
+      userId: Uuid.reconstitute(props.userId)
     });
   }
 }

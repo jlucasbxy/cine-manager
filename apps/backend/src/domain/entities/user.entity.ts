@@ -49,7 +49,7 @@ export class User {
       email: Email.create(props.email),
       password: Password.create(props.password),
       createdAt: now,
-      updatedAt: now,
+      updatedAt: now
     });
   }
 
@@ -60,7 +60,7 @@ export class User {
       email: Email.reconstitute(props.email),
       password: Password.fromHash(props.password),
       createdAt: props.createdAt,
-      updatedAt: props.updatedAt,
+      updatedAt: props.updatedAt
     });
   }
 }
