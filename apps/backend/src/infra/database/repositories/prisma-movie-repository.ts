@@ -19,9 +19,9 @@ export class PrismaMovieRepository implements MovieRepository {
         languageId: data.languageId.toString(),
         budget: data.budget,
         revenue: data.revenue,
-        posterUrl: data.posterUrl,
-        backdropUrl: data.backdropUrl,
-        trailerUrl: data.trailerUrl,
+        posterUrl: data.posterUrl.toString(),
+        backdropUrl: data.backdropUrl.toString(),
+        trailerUrl: data.trailerUrl.toString(),
         userId: data.userId.toString()
       }
     });
@@ -62,9 +62,9 @@ export class PrismaMovieRepository implements MovieRepository {
     if (data.languageId !== undefined) prismaData.languageId = data.languageId.toString();
     if (data.budget !== undefined) prismaData.budget = data.budget;
     if (data.revenue !== undefined) prismaData.revenue = data.revenue;
-    if (data.posterUrl !== undefined) prismaData.posterUrl = data.posterUrl;
-    if (data.backdropUrl !== undefined) prismaData.backdropUrl = data.backdropUrl;
-    if (data.trailerUrl !== undefined) prismaData.trailerUrl = data.trailerUrl;
+    if (data.posterUrl !== undefined) prismaData.posterUrl = data.posterUrl.toString();
+    if (data.backdropUrl !== undefined) prismaData.backdropUrl = data.backdropUrl.toString();
+    if (data.trailerUrl !== undefined) prismaData.trailerUrl = data.trailerUrl.toString();
     if (data.votes !== undefined) prismaData.votes = data.votes;
     if (data.score !== undefined) prismaData.score = data.score;
     if (data.userId !== undefined) prismaData.userId = data.userId.toString();

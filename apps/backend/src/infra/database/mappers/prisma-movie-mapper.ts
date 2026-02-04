@@ -2,6 +2,7 @@ import type { MovieModel } from "../prisma/generated/prisma/models/Movie";
 import { Movie } from "@/domain/entities";
 import { AgeRating } from "@/domain/enums/age-rating.enum";
 import { MovieStatus } from "@/domain/enums/movie-status.enum";
+import { Url } from "@/domain/value-objects/url.value-object";
 import { Uuid } from "@/domain/value-objects/uuid.value-object";
 
 export class PrismaMovieMapper {
@@ -19,9 +20,9 @@ export class PrismaMovieMapper {
       languageId: Uuid.reconstitute(raw.languageId),
       budget: raw.budget,
       revenue: raw.revenue,
-      posterUrl: raw.posterUrl,
-      backdropUrl: raw.backdropUrl,
-      trailerUrl: raw.trailerUrl,
+      posterUrl: Url.reconstitute(raw.posterUrl),
+      backdropUrl: Url.reconstitute(raw.backdropUrl),
+      trailerUrl: Url.reconstitute(raw.trailerUrl),
       votes: raw.votes,
       score: raw.score,
       createdAt: raw.createdAt,

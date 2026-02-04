@@ -1,5 +1,6 @@
 import { AgeRating } from "@/domain/enums/age-rating.enum";
 import { MovieStatus } from "@/domain/enums/movie-status.enum";
+import { Url } from "@/domain/value-objects/url.value-object";
 import { Uuid } from "@/domain/value-objects/uuid.value-object";
 
 interface CreateMovieProps {
@@ -14,9 +15,9 @@ interface CreateMovieProps {
   languageId: Uuid;
   budget: number;
   revenue: number;
-  posterUrl: string;
-  backdropUrl: string;
-  trailerUrl: string;
+  posterUrl: Url;
+  backdropUrl: Url;
+  trailerUrl: Url;
   userId: Uuid;
 }
 
@@ -41,9 +42,9 @@ export class Movie {
   languageId: Uuid;
   budget: number;
   revenue: number;
-  posterUrl: string;
-  backdropUrl: string;
-  trailerUrl: string;
+  posterUrl: Url;
+  backdropUrl: Url;
+  trailerUrl: Url;
   votes: number;
   score: number;
   createdAt: Date;
@@ -63,9 +64,9 @@ export class Movie {
     languageId: Uuid;
     budget: number;
     revenue: number;
-    posterUrl: string;
-    backdropUrl: string;
-    trailerUrl: string;
+    posterUrl: Url;
+    backdropUrl: Url;
+    trailerUrl: Url;
     votes: number;
     score: number;
     createdAt: Date;
