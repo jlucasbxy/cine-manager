@@ -1,38 +1,38 @@
 import z from "zod";
 import { InvalidAgeRatingError } from "@/domain/errors/invalid-age-rating.error";
 
-export enum AgeRatingEnum {
-  L = "L",
-  TEN = "TEN",
-  TWELVE = "TWELVE",
-  FOURTEEN = "FOURTEEN",
-  SIXTEEN = "SIXTEEN",
-  EIGHTEEN = "EIGHTEEN",
-}
+const ageRatingValues = [
+  "L",
+  "TEN",
+  "TWELVE",
+  "FOURTEEN",
+  "SIXTEEN",
+  "EIGHTEEN"
+] as const;
 
-export type AgeRatingValues = `${AgeRatingEnum}`;
+type AgeRatingValues = (typeof ageRatingValues)[number];
 
 export class AgeRating {
-  private readonly value: AgeRatingEnum;
+  private readonly value: AgeRatingValues;
 
-  private constructor(value: AgeRatingEnum) {
+  private constructor(value: AgeRatingValues) {
     this.value = value;
   }
 
   static create(value: string): AgeRating {
-    const r = z.nativeEnum(AgeRatingEnum).safeParse(value);
+    const r = z.enum(ageRatingValues).safeParse(value);
     if (!r.success) {
       throw new InvalidAgeRatingError();
     }
-    return new AgeRating(value as AgeRatingEnum);
+    return new AgeRating(r.data);
   }
 
-  static reconstitute(value: AgeRatingEnum): AgeRating {
+  static reconstitute(value: AgeRatingValues): AgeRating {
     return new AgeRating(value);
   }
 
   public getValue(): AgeRatingValues {
-    return this.value as AgeRatingValues;
+    return this.value;
   }
 
   public toString(): string {
