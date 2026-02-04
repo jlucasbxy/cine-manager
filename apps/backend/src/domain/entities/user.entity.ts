@@ -9,7 +9,7 @@ interface CreateUserProps {
 }
 
 interface ReconstituteUserProps {
-  id: string;
+  id: Uuid;
   name: string;
   email: Email;
   password: Password;
@@ -55,7 +55,7 @@ export class User {
 
   static reconstitute(props: ReconstituteUserProps): User {
     return new User({
-      id: Uuid.reconstitute(props.id),
+      id: props.id,
       name: props.name,
       email: props.email,
       password: props.password,

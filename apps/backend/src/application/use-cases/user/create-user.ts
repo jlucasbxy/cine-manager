@@ -28,7 +28,7 @@ export class CreateUser {
 
     return this.userRepository.create(
       User.reconstitute({
-        id: user.id.toString(),
+        id: user.id,
         name: user.name,
         email: user.email,
         password: hashedPassword,
