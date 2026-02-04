@@ -22,7 +22,7 @@ interface CreateMovieProps {
 }
 
 interface ReconstituteMovieProps extends CreateMovieProps {
-  id: string;
+  id: Uuid;
   votes: number;
   score: number;
   createdAt: Date;
@@ -123,7 +123,7 @@ export class Movie {
 
   static reconstitute(props: ReconstituteMovieProps): Movie {
     return new Movie({
-      id: Uuid.reconstitute(props.id),
+      id: props.id,
       title: props.title,
       originalTitle: props.originalTitle,
       tagline: props.tagline,
