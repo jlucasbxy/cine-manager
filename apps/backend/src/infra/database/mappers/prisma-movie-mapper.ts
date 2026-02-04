@@ -2,12 +2,11 @@ import type { MovieModel } from "../prisma/generated/prisma/models/Movie";
 import { Movie } from "@/domain/entities";
 import { AgeRating } from "@/domain/enums/age-rating.enum";
 import { MovieStatus } from "@/domain/enums/movie-status.enum";
-import { Uuid } from "@/domain/value-objects/uuid.value-object";
 
 export class PrismaMovieMapper {
   static toDomain(raw: MovieModel): Movie {
-    return new Movie({
-      id: new Uuid(raw.id),
+    return Movie.reconstitute({
+      id: raw.id,
       title: raw.title,
       originalTitle: raw.originalTitle,
       tagline: raw.tagline,
@@ -16,7 +15,7 @@ export class PrismaMovieMapper {
       runtime: raw.runtime,
       status: raw.status as MovieStatus,
       ageRating: raw.ageRating as AgeRating,
-      languageId: new Uuid(raw.languageId),
+      languageId: raw.languageId,
       budget: raw.budget,
       revenue: raw.revenue,
       posterUrl: raw.posterUrl,
@@ -26,7 +25,7 @@ export class PrismaMovieMapper {
       score: raw.score,
       createdAt: raw.createdAt,
       updatedAt: raw.updatedAt,
-      userId: new Uuid(raw.userId)
+      userId: raw.userId
     });
   }
 }

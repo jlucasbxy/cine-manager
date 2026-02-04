@@ -46,7 +46,7 @@ export class User {
     return new User({
       id: Uuid.generate(),
       name: props.name,
-      email: new Email(props.email),
+      email: Email.create(props.email),
       password: Password.create(props.password),
       createdAt: now,
       updatedAt: now,
@@ -55,9 +55,9 @@ export class User {
 
   static reconstitute(props: ReconstituteUserProps): User {
     return new User({
-      id: new Uuid(props.id),
+      id: Uuid.reconstitute(props.id),
       name: props.name,
-      email: new Email(props.email),
+      email: Email.reconstitute(props.email),
       password: Password.fromHash(props.password),
       createdAt: props.createdAt,
       updatedAt: props.updatedAt,
