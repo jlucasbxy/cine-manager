@@ -1,8 +1,9 @@
 import { AgeRating } from "@/domain/enums/age-rating.enum";
 import { MovieStatus } from "@/domain/enums/movie-status.enum";
+import { Uuid } from "@/domain/value-objects/uuid.value-object";
 
 export class Movie {
-  id: string;
+  id: Uuid;
   title: string;
   originalTitle: string;
   tagline: string;
@@ -11,7 +12,7 @@ export class Movie {
   runtime: number;
   status: MovieStatus;
   ageRating: AgeRating;
-  languageId: string;
+  languageId: Uuid;
   budget: number;
   revenue: number;
   posterUrl: string;
@@ -21,10 +22,10 @@ export class Movie {
   score: number;
   createdAt: Date;
   updatedAt: Date;
-  userId: string;
+  userId: Uuid;
 
   constructor(data: {
-    id: string;
+    id: Uuid;
     title: string;
     originalTitle: string;
     tagline: string;
@@ -33,7 +34,7 @@ export class Movie {
     runtime: number;
     status: MovieStatus;
     ageRating: AgeRating;
-    languageId: string;
+    languageId: Uuid;
     budget: number;
     revenue: number;
     posterUrl: string;
@@ -43,7 +44,7 @@ export class Movie {
     score?: number;
     createdAt: Date;
     updatedAt: Date;
-    userId: string;
+    userId: Uuid;
   }) {
     this.id = data.id;
     this.title = data.title;
