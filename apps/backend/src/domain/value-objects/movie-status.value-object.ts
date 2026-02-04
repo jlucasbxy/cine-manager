@@ -1,6 +1,16 @@
 import z from "zod";
-import { MovieStatus as MovieStatusEnum } from "@/domain/enums/movie-status.enum";
 import { InvalidMovieStatusError } from "@/domain/errors/invalid-movie-status.error";
+
+export enum MovieStatusEnum {
+  RELEASED = "RELEASED",
+  POST_PRODUCTION = "POST_PRODUCTION",
+  IN_PRODUCTION = "IN_PRODUCTION",
+  PLANNED = "PLANNED",
+  CANCELED = "CANCELED",
+  RUMORED = "RUMORED",
+}
+
+export type MovieStatusValues = `${MovieStatusEnum}`;
 
 export class MovieStatus {
   private readonly value: MovieStatusEnum;
@@ -21,8 +31,8 @@ export class MovieStatus {
     return new MovieStatus(value);
   }
 
-  public getValue(): MovieStatusEnum {
-    return this.value;
+  public getValue(): MovieStatusValues {
+    return this.value as MovieStatusValues;
   }
 
   public toString(): string {

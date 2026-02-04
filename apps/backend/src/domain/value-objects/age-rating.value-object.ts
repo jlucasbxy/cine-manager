@@ -1,6 +1,16 @@
 import z from "zod";
-import { AgeRating as AgeRatingEnum } from "@/domain/enums/age-rating.enum";
 import { InvalidAgeRatingError } from "@/domain/errors/invalid-age-rating.error";
+
+export enum AgeRatingEnum {
+  L = "L",
+  TEN = "TEN",
+  TWELVE = "TWELVE",
+  FOURTEEN = "FOURTEEN",
+  SIXTEEN = "SIXTEEN",
+  EIGHTEEN = "EIGHTEEN",
+}
+
+export type AgeRatingValues = `${AgeRatingEnum}`;
 
 export class AgeRating {
   private readonly value: AgeRatingEnum;
@@ -21,8 +31,8 @@ export class AgeRating {
     return new AgeRating(value);
   }
 
-  public getValue(): AgeRatingEnum {
-    return this.value;
+  public getValue(): AgeRatingValues {
+    return this.value as AgeRatingValues;
   }
 
   public toString(): string {

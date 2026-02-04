@@ -1,9 +1,7 @@
 import type { MovieModel } from "@/infra/database/prisma/generated/prisma/models/Movie";
 import { Movie } from "@/domain/entities";
-import { AgeRating as AgeRatingEnum } from "@/domain/enums/age-rating.enum";
-import { MovieStatus as MovieStatusEnum } from "@/domain/enums/movie-status.enum";
-import { AgeRating } from "@/domain/value-objects/age-rating.value-object";
-import { MovieStatus } from "@/domain/value-objects/movie-status.value-object";
+import { AgeRating, AgeRatingEnum } from "@/domain/value-objects/age-rating.value-object";
+import { MovieStatus, MovieStatusEnum } from "@/domain/value-objects/movie-status.value-object";
 import { NonNegativeInt } from "@/domain/value-objects/non-negative-int.value-object";
 import { NonNegativeNumber } from "@/domain/value-objects/non-negative-number.value-object";
 import { Url } from "@/domain/value-objects/url.value-object";
