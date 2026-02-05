@@ -11,7 +11,7 @@ type MovieQueryProps = {
 const movieQuerySchema = z.object({
   runtime: z.int().nonnegative(),
   releaseDateStart: z.coerce.date(),
-  releaseDateEnd: z.coerce.date(),
+  releaseDateEnd: z.coerce.date()
 }).refine(
   (data) => data.releaseDateStart <= data.releaseDateEnd,
   { message: "releaseDateStart must be before or equal to releaseDateEnd" }

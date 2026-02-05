@@ -18,5 +18,5 @@ export const movieSchema = z.object({
   revenue: z.number().nonnegative(),
   posterUrl: z.url(),
   backdropUrl: z.url(),
-  trailerUrl: z.url(),
+  trailerUrl: z.url()
 });

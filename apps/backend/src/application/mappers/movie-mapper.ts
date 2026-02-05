@@ -23,7 +23,7 @@ export class MovieMapper {
       score: movie.score.toNumber(),
       createdAt: movie.createdAt.toISOString(),
       updatedAt: movie.updatedAt.toISOString(),
-      userId: movie.userId.toString(),
+      userId: movie.userId.toString()
     };
   }
 }
