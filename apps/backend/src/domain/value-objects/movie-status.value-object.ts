@@ -1,21 +1,13 @@
 import z from "zod";
 import { InvalidMovieStatusError } from "@/domain/errors";
+import { MovieStatusEnum } from "@/domain/enums/movie-status.enum";
 
-const movieStatusValues = [
-  "RELEASED",
-  "POST_PRODUCTION",
-  "IN_PRODUCTION",
-  "PLANNED",
-  "CANCELED",
-  "RUMORED"
-] as const;
-
-type MovieStatusValues = (typeof movieStatusValues)[number];
+const movieStatusValues = Object.values(MovieStatusEnum) as [MovieStatusEnum, ...MovieStatusEnum[]];
 
 export class MovieStatus {
-  private readonly value: MovieStatusValues;
+  private readonly value: MovieStatusEnum;
 
-  private constructor(value: MovieStatusValues) {
+  private constructor(value: MovieStatusEnum) {
     this.value = value;
   }
 
@@ -24,15 +16,15 @@ export class MovieStatus {
     if (!r.success) {
       throw new InvalidMovieStatusError();
     }
-    return new MovieStatus(value as MovieStatusValues);
+    return new MovieStatus(value as MovieStatusEnum);
   }
 
-  static reconstitute(value: MovieStatusValues): MovieStatus {
-    return new MovieStatus(value);
+  static reconstitute(value: string): MovieStatus {
+    return new MovieStatus(value as MovieStatusEnum);
   }
 
-  public getValue(): MovieStatusValues {
-    return this.value as MovieStatusValues;
+  public getValue(): MovieStatusEnum {
+    return this.value;
   }
 
   public toString(): string {
