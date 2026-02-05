@@ -2,7 +2,6 @@ import crypto from "node:crypto";
 
 export class Token {
   private static readonly TOKEN_BYTES = 32;
-  private static readonly TOKEN_HEX_LENGTH = Token.TOKEN_BYTES * 2;
 
   private readonly value: string;
 
