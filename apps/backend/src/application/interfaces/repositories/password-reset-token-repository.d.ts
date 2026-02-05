@@ -1,24 +1,10 @@
+import { PasswordResetToken } from "@/domain/entities";
 import { Uuid } from "@/domain/value-objects";
 
-export type PasswordResetTokenData = {
-  id: Uuid;
-  token: string;
-  userId: Uuid;
-  expiresAt: Date;
-  usedAt: Date | null;
-  createdAt: Date;
-};
-
-export type CreatePasswordResetTokenData = {
-  token: string;
-  userId: Uuid;
-  expiresAt: Date;
-};
-
 export interface PasswordResetTokenRepository {
-  create(data: CreatePasswordResetTokenData): Promise<PasswordResetTokenData>;
-  findByToken(token: string): Promise<PasswordResetTokenData | null>;
-  markAsUsed(token: string): Promise<void>;
+  create(token: PasswordResetToken): Promise<PasswordResetToken>;
+  findByToken(token: string): Promise<PasswordResetToken | null>;
+  markAsUsed(token: PasswordResetToken): Promise<void>;
   deleteExpired(): Promise<void>;
   deleteByUserId(userId: Uuid): Promise<void>;
 }

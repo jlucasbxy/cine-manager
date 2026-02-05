@@ -19,6 +19,7 @@ import type {
   PasswordResetTokenRepository,
 } from "@/application/interfaces/repositories";
 import type { HashProvider, TokenProvider } from "@/application/interfaces/providers";
+import { RefreshToken, PasswordResetToken } from "@/domain/entities";
 import { Email, Password } from "@/domain/value-objects";
 import {
   InvalidCredentialsError,
@@ -69,72 +70,78 @@ export class AuthServiceImpl implements AuthService {
       this.config.accessTokenExpiresIn
     );
 
-    const refreshToken = this.generateSecureToken();
+    const refreshTokenValue = this.generateSecureToken();
     const refreshTokenExpiresAt = new Date(
       Date.now() + ms(this.config.refreshTokenExpiresIn)
     );
 
-    await this.refreshTokenRepository.create({
-      token: refreshToken,
+    const refreshToken = RefreshToken.create({
+      token: refreshTokenValue,
       userId: user.id,
       expiresAt: refreshTokenExpiresAt,
     });
 
+    await this.refreshTokenRepository.create(refreshToken);
+
     return {
       accessToken,
-      refreshToken,
+      refreshToken: refreshTokenValue,
       expiresIn: ms(this.config.accessTokenExpiresIn) / 1000,
     };
   }
 
   async logout(input: LogoutInput): Promise<void> {
-    const tokenData = await this.refreshTokenRepository.findByToken(input.refreshToken);
-    if (tokenData) {
-      await this.refreshTokenRepository.revokeByToken(input.refreshToken);
+    const token = await this.refreshTokenRepository.findByToken(input.refreshToken);
+    if (token) {
+      const revokedToken = token.revoke();
+      await this.refreshTokenRepository.revoke(revokedToken);
     }
   }
 
   async refreshTokens(input: RefreshTokenInput): Promise<RefreshTokenOutput> {
-    const tokenData = await this.refreshTokenRepository.findByToken(input.refreshToken);
+    const token = await this.refreshTokenRepository.findByToken(input.refreshToken);
 
-    if (!tokenData) {
+    if (!token) {
       throw new TokenInvalidError();
     }
 
-    if (tokenData.revokedAt) {
+    if (token.isRevoked()) {
       throw new TokenRevokedError();
     }
 
-    if (tokenData.expiresAt < new Date()) {
+    if (token.isExpired()) {
       throw new TokenExpiredError();
     }
 
-    const user = await this.userRepository.findById(tokenData.userId);
+    const user = await this.userRepository.findById(token.userId);
     if (!user) {
       throw new UserNotFoundError();
     }
 
-    await this.refreshTokenRepository.revokeByToken(input.refreshToken);
+    const revokedToken = token.revoke();
+    await this.refreshTokenRepository.revoke(revokedToken);
 
     const accessToken = await this.tokenProvider.generate(
       { userId: user.id.toString() },
       this.config.accessTokenExpiresIn
     );
 
-    const newRefreshToken = this.generateSecureToken();
+    const newRefreshTokenValue = this.generateSecureToken();
     const refreshTokenExpiresAt = new Date(
       Date.now() + ms(this.config.refreshTokenExpiresIn)
     );
 
-    await this.refreshTokenRepository.create({
-      token: newRefreshToken,
+    const newRefreshToken = RefreshToken.create({
+      token: newRefreshTokenValue,
       userId: user.id,
       expiresAt: refreshTokenExpiresAt,
     });
 
+    await this.refreshTokenRepository.create(newRefreshToken);
+
     return {
       accessToken,
-      refreshToken: newRefreshToken,
+      refreshToken: newRefreshTokenValue,
       expiresIn: ms(this.config.accessTokenExpiresIn) / 1000,
     };
   }
@@ -149,40 +156,42 @@ export class AuthServiceImpl implements AuthService {
 
     await this.passwordResetTokenRepository.deleteByUserId(user.id);
 
-    const resetToken = this.generateSecureToken();
+    const resetTokenValue = this.generateSecureToken();
     const expiresAt = new Date(
       Date.now() + ms(this.config.passwordResetTokenExpiresIn)
     );
 
-    await this.passwordResetTokenRepository.create({
-      token: resetToken,
+    const resetToken = PasswordResetToken.create({
+      token: resetTokenValue,
       userId: user.id,
       expiresAt,
     });
 
+    await this.passwordResetTokenRepository.create(resetToken);
+
     await this.emailService.send({
       to: user.email.toString(),
       subject: "Password Reset Request",
-      body: `Your password reset token is: ${resetToken}`,
+      body: `Your password reset token is: ${resetTokenValue}`,
     });
   }
 
   async resetPassword(input: ResetPasswordInput): Promise<void> {
-    const tokenData = await this.passwordResetTokenRepository.findByToken(input.token);
+    const token = await this.passwordResetTokenRepository.findByToken(input.token);
 
-    if (!tokenData) {
+    if (!token) {
       throw new ResetTokenInvalidError();
     }
 
-    if (tokenData.usedAt) {
+    if (token.isUsed()) {
       throw new ResetTokenInvalidError();
     }
 
-    if (tokenData.expiresAt < new Date()) {
+    if (token.isExpired()) {
       throw new ResetTokenExpiredError();
     }
 
-    const user = await this.userRepository.findById(tokenData.userId);
+    const user = await this.userRepository.findById(token.userId);
     if (!user) {
       throw new UserNotFoundError();
     }
@@ -191,7 +200,10 @@ export class AuthServiceImpl implements AuthService {
     const hashedPassword = await this.hashProvider.hash(password.toString());
 
     await this.userRepository.updatePassword(user.id, Password.fromHash(hashedPassword));
-    await this.passwordResetTokenRepository.markAsUsed(input.token);
+
+    const usedToken = token.markAsUsed();
+    await this.passwordResetTokenRepository.markAsUsed(usedToken);
+
     await this.refreshTokenRepository.revokeAllByUserId(user.id);
   }
 

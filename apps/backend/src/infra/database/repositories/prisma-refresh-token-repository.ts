@@ -1,49 +1,49 @@
-import type {
-  RefreshTokenRepository,
-  RefreshTokenData,
-  CreateRefreshTokenData,
-} from "@/application/interfaces/repositories";
+import type { RefreshTokenRepository } from "@/application/interfaces/repositories";
+import { RefreshToken } from "@/domain/entities";
 import { Uuid } from "@/domain/value-objects";
 import { prisma } from "@/infra/database/prisma";
 
 export class PrismaRefreshTokenRepository implements RefreshTokenRepository {
-  async create(data: CreateRefreshTokenData): Promise<RefreshTokenData> {
+  async create(token: RefreshToken): Promise<RefreshToken> {
     const raw = await prisma.refreshToken.create({
       data: {
-        token: data.token,
-        userId: data.userId.toString(),
-        expiresAt: data.expiresAt,
+        id: token.id.toString(),
+        token: token.token,
+        userId: token.userId.toString(),
+        expiresAt: token.expiresAt,
+        revokedAt: token.revokedAt,
+        createdAt: token.createdAt,
       },
     });
-    return {
+    return RefreshToken.reconstitute({
       id: Uuid.reconstitute(raw.id),
       token: raw.token,
       userId: Uuid.reconstitute(raw.userId),
       expiresAt: raw.expiresAt,
       revokedAt: raw.revokedAt,
       createdAt: raw.createdAt,
-    };
+    });
   }
 
-  async findByToken(token: string): Promise<RefreshTokenData | null> {
+  async findByToken(token: string): Promise<RefreshToken | null> {
     const raw = await prisma.refreshToken.findUnique({
       where: { token },
     });
     if (!raw) return null;
-    return {
+    return RefreshToken.reconstitute({
       id: Uuid.reconstitute(raw.id),
       token: raw.token,
       userId: Uuid.reconstitute(raw.userId),
       expiresAt: raw.expiresAt,
       revokedAt: raw.revokedAt,
       createdAt: raw.createdAt,
-    };
+    });
   }
 
-  async revokeByToken(token: string): Promise<void> {
+  async revoke(token: RefreshToken): Promise<void> {
     await prisma.refreshToken.update({
-      where: { token },
-      data: { revokedAt: new Date() },
+      where: { id: token.id.toString() },
+      data: { revokedAt: token.revokedAt },
     });
   }
 
