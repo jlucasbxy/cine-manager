@@ -1,5 +1,5 @@
 import z from "zod";
-import type { Validator } from "../interfaces/validator";
+import type { Validator } from "./validator";
 import type { CreateUserDTO } from "@repo/dtos";
 
 export class CreateUserValidator implements Validator<CreateUserDTO> {

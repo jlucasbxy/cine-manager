@@ -1,6 +1,6 @@
 import z from "zod";
-import { AgeRating, MovieStatus } from "../enums";
-import type { Validator } from "../interfaces/validator";
+import { AgeRating, MovieStatus } from "./enums";
+import type { Validator } from "./validator";
 import type { CreateMovieDTO } from "@repo/dtos";
 
 const ageRatingValues = Object.values(AgeRating) as [string, ...string[]];
