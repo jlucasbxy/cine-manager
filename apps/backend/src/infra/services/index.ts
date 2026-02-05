@@ -1,1 +1,1 @@
-export { AuthServiceImpl, type AuthServiceConfig } from "@/infra/services/auth-service.impl";
+export { AuthServiceImpl } from "@/infra/services/auth-service.impl";

@@ -1,217 +1,55 @@
-import ms, { type StringValue } from "ms";
+import type { AuthService } from "@/application/interfaces/services";
 import type {
-  AuthService,
-  LoginInput,
-  LoginOutput,
-  LogoutInput,
-  RefreshTokenInput,
-  RefreshTokenOutput,
-  RequestPasswordResetInput,
-  ResetPasswordInput,
-  ValidateTokenInput,
-  ValidateTokenOutput,
-  EmailService
-} from "@/application/interfaces/services";
+  Login,
+  Logout,
+  RefreshTokens,
+  RequestPasswordReset,
+  ResetPassword,
+  ValidateToken
+} from "@/application/use-cases/auth";
 import type {
-  UserRepository,
-  RefreshTokenRepository,
-  PasswordResetTokenRepository
-} from "@/application/interfaces/repositories";
-import type { HashProvider, TokenProvider } from "@/application/interfaces/providers";
-import { RefreshToken, PasswordResetToken } from "@/domain/entities";
-import { Email, Password } from "@/domain/value-objects";
-import {
-  InvalidCredentialsError,
-  TokenExpiredError,
-  TokenInvalidError,
-  TokenRevokedError,
-  UserNotFoundError,
-  ResetTokenExpiredError,
-  ResetTokenInvalidError
-} from "@/domain/errors";
-
-export type AuthServiceConfig = {
-  accessTokenExpiresIn: StringValue;
-  refreshTokenExpiresIn: StringValue;
-  passwordResetTokenExpiresIn: StringValue;
-};
+  LoginDTO,
+  LoginResultDTO,
+  LogoutDTO,
+  RefreshTokensDTO,
+  RefreshTokensResultDTO,
+  RequestPasswordResetDTO,
+  ResetPasswordDTO,
+  ValidateTokenDTO,
+  ValidateTokenResultDTO
+} from "@repo/dtos";
 
 export class AuthServiceImpl implements AuthService {
   constructor(
-    private readonly userRepository: UserRepository,
-    private readonly refreshTokenRepository: RefreshTokenRepository,
-    private readonly passwordResetTokenRepository: PasswordResetTokenRepository,
-    private readonly hashProvider: HashProvider,
-    private readonly tokenProvider: TokenProvider,
-    private readonly emailService: EmailService,
-    private readonly config: AuthServiceConfig
+    private readonly loginUseCase: Login,
+    private readonly logoutUseCase: Logout,
+    private readonly refreshTokensUseCase: RefreshTokens,
+    private readonly requestPasswordResetUseCase: RequestPasswordReset,
+    private readonly resetPasswordUseCase: ResetPassword,
+    private readonly validateTokenUseCase: ValidateToken
   ) {}
 
-  async login(input: LoginInput): Promise<LoginOutput> {
-    const email = Email.create(input.email);
-    const user = await this.userRepository.findByEmail(email);
-
-    if (!user) {
-      throw new InvalidCredentialsError();
-    }
-
-    const isPasswordValid = await this.hashProvider.compare({
-      plaintext: input.password,
-      hash: user.password.toString()
-    });
-
-    if (!isPasswordValid) {
-      throw new InvalidCredentialsError();
-    }
-
-    const accessToken = await this.tokenProvider.generate(
-      { userId: user.id.toString() },
-      this.config.accessTokenExpiresIn
-    );
-
-    const refreshTokenExpiresAt = new Date(
-      Date.now() + ms(this.config.refreshTokenExpiresIn)
-    );
-
-    const refreshToken = RefreshToken.create({
-      userId: user.id,
-      expiresAt: refreshTokenExpiresAt
-    });
-
-    await this.refreshTokenRepository.create(refreshToken);
-
-    return {
-      accessToken,
-      refreshToken: refreshToken.token.toString(),
-      expiresIn: ms(this.config.accessTokenExpiresIn) / 1000
-    };
+  async login(input: LoginDTO): Promise<LoginResultDTO> {
+    return this.loginUseCase.execute(input);
   }
 
-  async logout(input: LogoutInput): Promise<void> {
-    const token = await this.refreshTokenRepository.findByToken(input.refreshToken);
-    if (token) {
-      const revokedToken = token.revoke();
-      await this.refreshTokenRepository.revoke(revokedToken);
-    }
+  async logout(input: LogoutDTO): Promise<void> {
+    return this.logoutUseCase.execute(input);
   }
 
-  async refreshTokens(input: RefreshTokenInput): Promise<RefreshTokenOutput> {
-    const token = await this.refreshTokenRepository.findByToken(input.refreshToken);
-
-    if (!token) {
-      throw new TokenInvalidError();
-    }
-
-    if (token.isRevoked()) {
-      throw new TokenRevokedError();
-    }
-
-    if (token.isExpired()) {
-      throw new TokenExpiredError();
-    }
-
-    const user = await this.userRepository.findById(token.userId);
-    if (!user) {
-      throw new UserNotFoundError();
-    }
-
-    const revokedToken = token.revoke();
-    await this.refreshTokenRepository.revoke(revokedToken);
-
-    const accessToken = await this.tokenProvider.generate(
-      { userId: user.id.toString() },
-      this.config.accessTokenExpiresIn
-    );
-
-    const refreshTokenExpiresAt = new Date(
-      Date.now() + ms(this.config.refreshTokenExpiresIn)
-    );
-
-    const newRefreshToken = RefreshToken.create({
-      userId: user.id,
-      expiresAt: refreshTokenExpiresAt
-    });
-
-    await this.refreshTokenRepository.create(newRefreshToken);
-
-    return {
-      accessToken,
-      refreshToken: newRefreshToken.token.toString(),
-      expiresIn: ms(this.config.accessTokenExpiresIn) / 1000
-    };
+  async refreshTokens(input: RefreshTokensDTO): Promise<RefreshTokensResultDTO> {
+    return this.refreshTokensUseCase.execute(input);
   }
 
-  async requestPasswordReset(input: RequestPasswordResetInput): Promise<void> {
-    const email = Email.create(input.email);
-    const user = await this.userRepository.findByEmail(email);
-
-    if (!user) {
-      return;
-    }
-
-    await this.passwordResetTokenRepository.deleteByUserId(user.id);
-
-    const expiresAt = new Date(
-      Date.now() + ms(this.config.passwordResetTokenExpiresIn)
-    );
-
-    const resetToken = PasswordResetToken.create({
-      userId: user.id,
-      expiresAt
-    });
-
-    await this.passwordResetTokenRepository.create(resetToken);
-
-    await this.emailService.send({
-      to: user.email.toString(),
-      subject: "Password Reset Request",
-      body: `Your password reset token is: ${resetToken.token.toString()}`
-    });
+  async requestPasswordReset(input: RequestPasswordResetDTO): Promise<void> {
+    return this.requestPasswordResetUseCase.execute(input);
   }
 
-  async resetPassword(input: ResetPasswordInput): Promise<void> {
-    const token = await this.passwordResetTokenRepository.findByToken(input.token);
-
-    if (!token) {
-      throw new ResetTokenInvalidError();
-    }
-
-    if (token.isUsed()) {
-      throw new ResetTokenInvalidError();
-    }
-
-    if (token.isExpired()) {
-      throw new ResetTokenExpiredError();
-    }
-
-    const user = await this.userRepository.findById(token.userId);
-    if (!user) {
-      throw new UserNotFoundError();
-    }
-
-    const password = Password.create(input.newPassword);
-    const hashedPassword = await this.hashProvider.hash(password.toString());
-
-    await this.userRepository.updatePassword(user.id, Password.fromHash(hashedPassword));
-
-    const usedToken = token.markAsUsed();
-    await this.passwordResetTokenRepository.markAsUsed(usedToken);
-
-    await this.refreshTokenRepository.revokeAllByUserId(user.id);
+  async resetPassword(input: ResetPasswordDTO): Promise<void> {
+    return this.resetPasswordUseCase.execute(input);
   }
 
-  async validateToken(input: ValidateTokenInput): Promise<ValidateTokenOutput> {
-    try {
-      const payload = await this.tokenProvider.verify(input.token);
-      return {
-        userId: payload.userId,
-        valid: true
-      };
-    } catch {
-      return {
-        userId: "",
-        valid: false
-      };
-    }
+  async validateToken(input: ValidateTokenDTO): Promise<ValidateTokenResultDTO> {
+    return this.validateTokenUseCase.execute(input);
   }
 }
