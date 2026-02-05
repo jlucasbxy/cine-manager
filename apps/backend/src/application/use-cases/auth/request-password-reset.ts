@@ -1,6 +1,6 @@
 import ms, { type StringValue } from "ms";
+import type { EmailProvider } from "@/application/interfaces/providers";
 import type { UserRepository, PasswordResetTokenRepository } from "@/application/interfaces/repositories";
-import type { EmailService } from "@/application/interfaces/services";
 import { PasswordResetToken } from "@/domain/entities";
 import { Email } from "@/domain/value-objects";
 import type { RequestPasswordResetDTO } from "@repo/dtos";
@@ -13,7 +13,7 @@ export class RequestPasswordReset {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly passwordResetTokenRepository: PasswordResetTokenRepository,
-    private readonly emailService: EmailService,
+    private readonly emailProvider: EmailProvider,
     private readonly config: RequestPasswordResetConfig
   ) {}
 
@@ -38,7 +38,7 @@ export class RequestPasswordReset {
 
     await this.passwordResetTokenRepository.create(resetToken);
 
-    await this.emailService.send({
+    await this.emailProvider.send({
       to: user.email.toString(),
       subject: "Password Reset Request",
       body: `Your password reset token is: ${resetToken.token.toString()}`

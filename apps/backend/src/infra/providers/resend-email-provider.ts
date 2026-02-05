@@ -1,8 +1,8 @@
 import { Resend } from "resend";
-import type { EmailService, SendEmailData } from "@/application/interfaces/services";
+import type { EmailProvider, SendEmailData } from "@/application/interfaces/providers";
 import { env } from "@/infra/config/env";
 
-export class ResendEmailProvider implements EmailService {
+export class ResendEmailProvider implements EmailProvider {
   private readonly resend: Resend;
 
   constructor() {

@@ -1,2 +1,3 @@
+export type { EmailProvider, SendEmailData } from "@/application/interfaces/providers/email-provider";
 export type { HashProvider } from "@/application/interfaces/providers/hash-provider";
 export type { TokenProvider } from "@/application/interfaces/providers/token-provider";

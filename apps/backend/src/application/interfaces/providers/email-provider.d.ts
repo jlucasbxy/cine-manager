@@ -4,6 +4,6 @@ export type SendEmailData = {
   body: string;
 };
 
-export interface EmailService {
+export interface EmailProvider {
   send(data: SendEmailData): Promise<void>;
 }
