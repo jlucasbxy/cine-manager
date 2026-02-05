@@ -1,5 +1,5 @@
 import z from "zod";
-import { InvalidAgeRatingError } from "@/domain/errors/invalid-age-rating.error";
+import { InvalidAgeRatingError } from "@/domain/errors";
 
 const ageRatingValues = [
   "L",

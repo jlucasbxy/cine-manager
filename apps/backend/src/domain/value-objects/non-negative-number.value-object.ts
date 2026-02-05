@@ -1,5 +1,5 @@
 import z from "zod";
-import { InvalidNonNegativeNumberError } from "@/domain/errors/invalid-non-negative-number.error";
+import { InvalidNonNegativeNumberError } from "@/domain/errors";
 
 export class NonNegativeNumber {
 

@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt";
-import type { HashProvider } from "@/application/interfaces/providers/hash-provider";
+import type { HashProvider } from "@/application/interfaces/providers";
 
 export class BcryptHashProvider implements HashProvider {
   private readonly saltRounds = 10;

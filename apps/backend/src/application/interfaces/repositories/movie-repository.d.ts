@@ -1,6 +1,5 @@
 import { Movie } from "@/domain/entities";
-import { Uuid } from "@/domain/value-objects/uuid.value-object";
-import { MovieQuery } from "@/domain/value-objects/movie-query.value-object";
+import { Uuid, MovieQuery } from "@/domain/value-objects";
 
 export type UpdateMovieData = Partial<Omit<Movie, "id" | "createdAt" | "updatedAt">>;
 

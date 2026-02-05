@@ -1,6 +1,4 @@
-import { Email } from "@/domain/value-objects/email.value-object";
-import { Password } from "@/domain/value-objects/password.value-object";
-import { Uuid } from "@/domain/value-objects/uuid.value-object";
+import { Email, Password, Uuid } from "@/domain/value-objects";
 
 interface CreateUserProps {
   name: string;

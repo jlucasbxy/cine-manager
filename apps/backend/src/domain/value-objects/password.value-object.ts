@@ -1,4 +1,4 @@
-import { InvalidPasswordError } from "@/domain/errors/invalid-password.error";
+import { InvalidPasswordError } from "@/domain/errors";
 
 export class Password {
   private readonly value: string;

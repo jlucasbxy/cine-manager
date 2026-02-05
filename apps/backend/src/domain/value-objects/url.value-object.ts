@@ -1,5 +1,5 @@
 import z from "zod";
-import { InvalidUrlError } from "@/domain/errors/invalid-url.error";
+import { InvalidUrlError } from "@/domain/errors";
 
 export class Url {
 

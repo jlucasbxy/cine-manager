@@ -1,9 +1,8 @@
-import { UserRepository } from "@/application/interfaces/repositories/user-repository";
+import type { UserRepository } from "@/application/interfaces/repositories";
 import { User } from "@/domain/entities";
-import { Email } from "@/domain/value-objects/email.value-object";
-import { Uuid } from "@/domain/value-objects/uuid.value-object";
+import { Email, Uuid } from "@/domain/value-objects";
 import { prisma } from "@/infra/database/prisma";
-import { PrismaUserMapper } from "@/infra/database/mappers/prisma-user-mapper";
+import { PrismaUserMapper } from "@/infra/database/mappers";
 
 export class PrismaUserRepository implements UserRepository {
   async create(user: User): Promise<User> {

@@ -1,9 +1,8 @@
-import { MovieRepository, UpdateMovieData } from "@/application/interfaces/repositories/movie-repository";
+import type { MovieRepository, UpdateMovieData } from "@/application/interfaces/repositories";
 import { Movie } from "@/domain/entities";
-import { Uuid } from "@/domain/value-objects/uuid.value-object";
-import { MovieQuery } from "@/domain/value-objects/movie-query.value-object";
+import { Uuid, MovieQuery } from "@/domain/value-objects";
 import { prisma } from "@/infra/database/prisma";
-import { PrismaMovieMapper } from "@/infra/database/mappers/prisma-movie-mapper";
+import { PrismaMovieMapper } from "@/infra/database/mappers";
 
 export class PrismaMovieRepository implements MovieRepository {
   async create(movie: Movie): Promise<Movie> {

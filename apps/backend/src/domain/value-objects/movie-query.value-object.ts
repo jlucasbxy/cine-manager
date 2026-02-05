@@ -1,6 +1,6 @@
 import z from "zod";
 import { NonNegativeInt } from "@/domain/value-objects/non-negative-int.value-object";
-import { InvalidMovieQueryError } from "@/domain/errors/invalid-movie-query.error";
+import { InvalidMovieQueryError } from "@/domain/errors";
 
 type MovieQueryProps = {
   runtime: number;

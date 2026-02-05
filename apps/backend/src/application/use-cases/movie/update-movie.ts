@@ -1,12 +1,7 @@
 import { Movie } from "@/domain/entities";
-import { AgeRating } from "@/domain/value-objects/age-rating.value-object";
-import { MovieStatus } from "@/domain/value-objects/movie-status.value-object";
-import { NonNegativeInt } from "@/domain/value-objects/non-negative-int.value-object";
-import { NonNegativeNumber } from "@/domain/value-objects/non-negative-number.value-object";
-import { Url } from "@/domain/value-objects/url.value-object";
-import { Uuid } from "@/domain/value-objects/uuid.value-object";
-import { MovieNotFoundError } from "@/domain/errors/movie-not-found.error";
-import { MovieRepository } from "@/application/interfaces/repositories/movie-repository";
+import { AgeRating, MovieStatus, NonNegativeInt, NonNegativeNumber, Url, Uuid } from "@/domain/value-objects";
+import { MovieNotFoundError } from "@/domain/errors";
+import type { MovieRepository } from "@/application/interfaces/repositories";
 import { UpdateMovieDTO } from "@repo/dtos";
 
 export class UpdateMovie {

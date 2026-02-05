@@ -1,5 +1,5 @@
 import z from "zod";
-import { InvalidMovieStatusError } from "@/domain/errors/invalid-movie-status.error";
+import { InvalidMovieStatusError } from "@/domain/errors";
 
 const movieStatusValues = [
   "RELEASED",

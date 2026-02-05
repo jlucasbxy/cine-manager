@@ -1,6 +1,6 @@
-import { Uuid } from "@/domain/value-objects/uuid.value-object";
-import { MovieNotFoundError } from "@/domain/errors/movie-not-found.error";
-import { MovieRepository } from "@/application/interfaces/repositories/movie-repository";
+import { Uuid } from "@/domain/value-objects";
+import { MovieNotFoundError } from "@/domain/errors";
+import type { MovieRepository } from "@/application/interfaces/repositories";
 
 export class DeleteMovie {
   constructor(

@@ -1,6 +1,6 @@
 import { uuidv7 } from "uuidv7";
 import z from "zod";
-import { InvalidUuidError } from "@/domain/errors/invalid-uuid.error";
+import { InvalidUuidError } from "@/domain/errors";
 
 export class Uuid {
 

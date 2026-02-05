@@ -1,6 +1,6 @@
 import { Movie } from "@/domain/entities";
-import { MovieRepository } from "@/application/interfaces/repositories/movie-repository";
-import { MovieQuery } from "@/domain/value-objects/movie-query.value-object";
+import { MovieQuery } from "@/domain/value-objects";
+import type { MovieRepository } from "@/application/interfaces/repositories";
 import { QueryMoviesDTO } from "@repo/dtos";
 
 export class ListMovies {

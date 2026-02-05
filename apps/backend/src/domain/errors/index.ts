@@ -1,0 +1,12 @@
+export { DomainError } from "@/domain/errors/domain.error";
+export { InvalidEmailError } from "@/domain/errors/invalid-email.error";
+export { InvalidPasswordError } from "@/domain/errors/invalid-password.error";
+export { InvalidUuidError } from "@/domain/errors/invalid-uuid.error";
+export { InvalidUrlError } from "@/domain/errors/invalid-url.error";
+export { InvalidNonNegativeIntError } from "@/domain/errors/invalid-non-negative-int.error";
+export { InvalidNonNegativeNumberError } from "@/domain/errors/invalid-non-negative-number.error";
+export { EmailAlreadyInUseError } from "@/domain/errors/email-already-in-use.error";
+export { MovieNotFoundError } from "@/domain/errors/movie-not-found.error";
+export { InvalidMovieStatusError } from "@/domain/errors/invalid-movie-status.error";
+export { InvalidAgeRatingError } from "@/domain/errors/invalid-age-rating.error";
+export { InvalidMovieQueryError } from "@/domain/errors/invalid-movie-query.error";

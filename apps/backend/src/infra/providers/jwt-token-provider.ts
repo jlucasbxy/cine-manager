@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import type { StringValue } from "ms";
-import type { TokenProvider } from "@/application/interfaces/providers/token-provider";
+import type { TokenProvider } from "@/application/interfaces/providers";
 
 export class JwtTokenProvider implements TokenProvider {
   constructor(private readonly secret: string) { }

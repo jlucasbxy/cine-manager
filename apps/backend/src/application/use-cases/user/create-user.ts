@@ -1,9 +1,8 @@
 import { User } from "@/domain/entities";
-import { Email } from "@/domain/value-objects/email.value-object";
-import { Password } from "@/domain/value-objects/password.value-object";
-import { EmailAlreadyInUseError } from "@/domain/errors/email-already-in-use.error";
-import { UserRepository } from "@/application/interfaces/repositories/user-repository";
-import { HashProvider } from "@/application/interfaces/providers/hash-provider";
+import { Email, Password } from "@/domain/value-objects";
+import { EmailAlreadyInUseError } from "@/domain/errors";
+import type { UserRepository } from "@/application/interfaces/repositories";
+import type { HashProvider } from "@/application/interfaces/providers";
 import { CreateUserDTO } from "@repo/dtos";
 
 export class CreateUser {

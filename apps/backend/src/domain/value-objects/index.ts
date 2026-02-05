@@ -1,0 +1,9 @@
+export { Password } from "@/domain/value-objects/password.value-object";
+export { Email } from "@/domain/value-objects/email.value-object";
+export { Url } from "@/domain/value-objects/url.value-object";
+export { NonNegativeInt } from "@/domain/value-objects/non-negative-int.value-object";
+export { NonNegativeNumber } from "@/domain/value-objects/non-negative-number.value-object";
+export { MovieStatus } from "@/domain/value-objects/movie-status.value-object";
+export { AgeRating } from "@/domain/value-objects/age-rating.value-object";
+export { Uuid } from "@/domain/value-objects/uuid.value-object";
+export { MovieQuery } from "@/domain/value-objects/movie-query.value-object";

@@ -1,5 +1,5 @@
 import z from "zod";
-import { InvalidEmailError } from "@/domain/errors/invalid-email.error";
+import { InvalidEmailError } from "@/domain/errors";
 
 export class Email {
 
