@@ -2,6 +2,7 @@ import type { PasswordResetTokenRepository } from "@/application/interfaces/repo
 import { PasswordResetToken } from "@/domain/entities";
 import { Uuid } from "@/domain/value-objects";
 import { prisma } from "@/infra/database/prisma";
+import { PrismaPasswordResetTokenMapper } from "@/infra/database/mappers";
 
 export class PrismaPasswordResetTokenRepository implements PasswordResetTokenRepository {
   async create(token: PasswordResetToken): Promise<PasswordResetToken> {
@@ -15,14 +16,7 @@ export class PrismaPasswordResetTokenRepository implements PasswordResetTokenRep
         createdAt: token.createdAt
       }
     });
-    return PasswordResetToken.reconstitute({
-      id: Uuid.reconstitute(raw.id),
-      token: raw.token,
-      userId: Uuid.reconstitute(raw.userId),
-      expiresAt: raw.expiresAt,
-      usedAt: raw.usedAt,
-      createdAt: raw.createdAt
-    });
+    return PrismaPasswordResetTokenMapper.toDomain(raw);
   }
 
   async findByToken(token: string): Promise<PasswordResetToken | null> {
@@ -30,14 +24,7 @@ export class PrismaPasswordResetTokenRepository implements PasswordResetTokenRep
       where: { token }
     });
     if (!raw) return null;
-    return PasswordResetToken.reconstitute({
-      id: Uuid.reconstitute(raw.id),
-      token: raw.token,
-      userId: Uuid.reconstitute(raw.userId),
-      expiresAt: raw.expiresAt,
-      usedAt: raw.usedAt,
-      createdAt: raw.createdAt
-    });
+    return PrismaPasswordResetTokenMapper.toDomain(raw);
   }
 
   async markAsUsed(token: PasswordResetToken): Promise<void> {

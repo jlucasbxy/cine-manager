@@ -2,6 +2,7 @@ import type { RefreshTokenRepository } from "@/application/interfaces/repositori
 import { RefreshToken } from "@/domain/entities";
 import { Uuid } from "@/domain/value-objects";
 import { prisma } from "@/infra/database/prisma";
+import { PrismaRefreshTokenMapper } from "@/infra/database/mappers";
 
 export class PrismaRefreshTokenRepository implements RefreshTokenRepository {
   async create(token: RefreshToken): Promise<RefreshToken> {
@@ -15,14 +16,7 @@ export class PrismaRefreshTokenRepository implements RefreshTokenRepository {
         createdAt: token.createdAt
       }
     });
-    return RefreshToken.reconstitute({
-      id: Uuid.reconstitute(raw.id),
-      token: raw.token,
-      userId: Uuid.reconstitute(raw.userId),
-      expiresAt: raw.expiresAt,
-      revokedAt: raw.revokedAt,
-      createdAt: raw.createdAt
-    });
+    return PrismaRefreshTokenMapper.toDomain(raw);
   }
 
   async findByToken(token: string): Promise<RefreshToken | null> {
@@ -30,14 +24,7 @@ export class PrismaRefreshTokenRepository implements RefreshTokenRepository {
       where: { token }
     });
     if (!raw) return null;
-    return RefreshToken.reconstitute({
-      id: Uuid.reconstitute(raw.id),
-      token: raw.token,
-      userId: Uuid.reconstitute(raw.userId),
-      expiresAt: raw.expiresAt,
-      revokedAt: raw.revokedAt,
-      createdAt: raw.createdAt
-    });
+    return PrismaRefreshTokenMapper.toDomain(raw);
   }
 
   async revoke(token: RefreshToken): Promise<void> {
