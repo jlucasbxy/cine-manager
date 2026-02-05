@@ -9,7 +9,7 @@ export class PrismaRefreshTokenRepository implements RefreshTokenRepository {
     const raw = await prisma.refreshToken.create({
       data: {
         id: token.id.toString(),
-        token: token.token,
+        token: token.token.toString(),
         userId: token.userId.toString(),
         expiresAt: token.expiresAt,
         revokedAt: token.revokedAt,

@@ -7,3 +7,4 @@ export { MovieStatus } from "@/domain/value-objects/movie-status.value-object";
 export { AgeRating } from "@/domain/value-objects/age-rating.value-object";
 export { Uuid } from "@/domain/value-objects/uuid.value-object";
 export { MovieQuery } from "@/domain/value-objects/movie-query.value-object";
+export { Token } from "@/domain/value-objects/token.value-object";

@@ -1,14 +1,13 @@
-import { Uuid } from "@/domain/value-objects";
+import { Token, Uuid } from "@/domain/value-objects";
 
 interface CreateRefreshTokenProps {
-  token: string;
   userId: Uuid;
   expiresAt: Date;
 }
 
 interface ReconstituteRefreshTokenProps {
   id: Uuid;
-  token: string;
+  token: Token;
   userId: Uuid;
   expiresAt: Date;
   revokedAt: Date | null;
@@ -17,7 +16,7 @@ interface ReconstituteRefreshTokenProps {
 
 export class RefreshToken {
   readonly id: Uuid;
-  readonly token: string;
+  readonly token: Token;
   readonly userId: Uuid;
   readonly expiresAt: Date;
   readonly revokedAt: Date | null;
@@ -25,7 +24,7 @@ export class RefreshToken {
 
   private constructor(data: {
     id: Uuid;
-    token: string;
+    token: Token;
     userId: Uuid;
     expiresAt: Date;
     revokedAt: Date | null;
@@ -42,7 +41,7 @@ export class RefreshToken {
   static create(props: CreateRefreshTokenProps): RefreshToken {
     return new RefreshToken({
       id: Uuid.generate(),
-      token: props.token,
+      token: Token.generate(),
       userId: props.userId,
       expiresAt: props.expiresAt,
       revokedAt: null,

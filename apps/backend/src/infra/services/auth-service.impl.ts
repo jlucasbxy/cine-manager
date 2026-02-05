@@ -1,4 +1,3 @@
-import crypto from "node:crypto";
 import ms, { type StringValue } from "ms";
 import type {
   AuthService,
@@ -70,13 +69,11 @@ export class AuthServiceImpl implements AuthService {
       this.config.accessTokenExpiresIn
     );
 
-    const refreshTokenValue = this.generateSecureToken();
     const refreshTokenExpiresAt = new Date(
       Date.now() + ms(this.config.refreshTokenExpiresIn)
     );
 
     const refreshToken = RefreshToken.create({
-      token: refreshTokenValue,
       userId: user.id,
       expiresAt: refreshTokenExpiresAt
     });
@@ -85,7 +82,7 @@ export class AuthServiceImpl implements AuthService {
 
     return {
       accessToken,
-      refreshToken: refreshTokenValue,
+      refreshToken: refreshToken.token.toString(),
       expiresIn: ms(this.config.accessTokenExpiresIn) / 1000
     };
   }
@@ -126,13 +123,11 @@ export class AuthServiceImpl implements AuthService {
       this.config.accessTokenExpiresIn
     );
 
-    const newRefreshTokenValue = this.generateSecureToken();
     const refreshTokenExpiresAt = new Date(
       Date.now() + ms(this.config.refreshTokenExpiresIn)
     );
 
     const newRefreshToken = RefreshToken.create({
-      token: newRefreshTokenValue,
       userId: user.id,
       expiresAt: refreshTokenExpiresAt
     });
@@ -141,7 +136,7 @@ export class AuthServiceImpl implements AuthService {
 
     return {
       accessToken,
-      refreshToken: newRefreshTokenValue,
+      refreshToken: newRefreshToken.token.toString(),
       expiresIn: ms(this.config.accessTokenExpiresIn) / 1000
     };
   }
@@ -156,13 +151,11 @@ export class AuthServiceImpl implements AuthService {
 
     await this.passwordResetTokenRepository.deleteByUserId(user.id);
 
-    const resetTokenValue = this.generateSecureToken();
     const expiresAt = new Date(
       Date.now() + ms(this.config.passwordResetTokenExpiresIn)
     );
 
     const resetToken = PasswordResetToken.create({
-      token: resetTokenValue,
       userId: user.id,
       expiresAt
     });
@@ -172,7 +165,7 @@ export class AuthServiceImpl implements AuthService {
     await this.emailService.send({
       to: user.email.toString(),
       subject: "Password Reset Request",
-      body: `Your password reset token is: ${resetTokenValue}`
+      body: `Your password reset token is: ${resetToken.token.toString()}`
     });
   }
 
@@ -220,9 +213,5 @@ export class AuthServiceImpl implements AuthService {
         valid: false
       };
     }
-  }
-
-  private generateSecureToken(): string {
-    return crypto.randomBytes(32).toString("hex");
   }
 }

@@ -1,14 +1,13 @@
-import { Uuid } from "@/domain/value-objects";
+import { Token, Uuid } from "@/domain/value-objects";
 
 interface CreatePasswordResetTokenProps {
-  token: string;
   userId: Uuid;
   expiresAt: Date;
 }
 
 interface ReconstitutePasswordResetTokenProps {
   id: Uuid;
-  token: string;
+  token: Token;
   userId: Uuid;
   expiresAt: Date;
   usedAt: Date | null;
@@ -17,7 +16,7 @@ interface ReconstitutePasswordResetTokenProps {
 
 export class PasswordResetToken {
   readonly id: Uuid;
-  readonly token: string;
+  readonly token: Token;
   readonly userId: Uuid;
   readonly expiresAt: Date;
   readonly usedAt: Date | null;
@@ -25,7 +24,7 @@ export class PasswordResetToken {
 
   private constructor(data: {
     id: Uuid;
-    token: string;
+    token: Token;
     userId: Uuid;
     expiresAt: Date;
     usedAt: Date | null;
@@ -42,7 +41,7 @@ export class PasswordResetToken {
   static create(props: CreatePasswordResetTokenProps): PasswordResetToken {
     return new PasswordResetToken({
       id: Uuid.generate(),
-      token: props.token,
+      token: Token.generate(),
       userId: props.userId,
       expiresAt: props.expiresAt,
       usedAt: null,

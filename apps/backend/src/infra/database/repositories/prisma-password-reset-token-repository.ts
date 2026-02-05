@@ -9,7 +9,7 @@ export class PrismaPasswordResetTokenRepository implements PasswordResetTokenRep
     const raw = await prisma.passwordResetToken.create({
       data: {
         id: token.id.toString(),
-        token: token.token,
+        token: token.token.toString(),
         userId: token.userId.toString(),
         expiresAt: token.expiresAt,
         usedAt: token.usedAt,
