@@ -1,6 +1,6 @@
 import type { UserRepository } from "@/application/interfaces/repositories";
 import { User } from "@/domain/entities";
-import { Email, Uuid } from "@/domain/value-objects";
+import { Email, Password, Uuid } from "@/domain/value-objects";
 import { prisma } from "@/infra/database/prisma";
 import { PrismaUserMapper } from "@/infra/database/mappers";
 
@@ -17,12 +17,27 @@ export class PrismaUserRepository implements UserRepository {
     return PrismaUserMapper.toDomain(raw);
   }
 
+  async findById(id: Uuid): Promise<User | null> {
+    const raw = await prisma.user.findUnique({
+      where: { id: id.toString() }
+    });
+    if (!raw) return null;
+    return PrismaUserMapper.toDomain(raw);
+  }
+
   async findByEmail(email: Email): Promise<User | null> {
     const raw = await prisma.user.findUnique({
       where: { email: email.toString() }
     });
     if (!raw) return null;
     return PrismaUserMapper.toDomain(raw);
+  }
+
+  async updatePassword(id: Uuid, password: Password): Promise<void> {
+    await prisma.user.update({
+      where: { id: id.toString() },
+      data: { password: password.toString() }
+    });
   }
 
   async delete(id: Uuid): Promise<void> {
