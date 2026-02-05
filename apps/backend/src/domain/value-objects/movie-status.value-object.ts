@@ -19,8 +19,8 @@ export class MovieStatus {
     return new MovieStatus(value as MovieStatusEnum);
   }
 
-  static reconstitute(value: string): MovieStatus {
-    return new MovieStatus(value as MovieStatusEnum);
+  static reconstitute(value: MovieStatusEnum): MovieStatus {
+    return new MovieStatus(value);
   }
 
   public getValue(): MovieStatusEnum {

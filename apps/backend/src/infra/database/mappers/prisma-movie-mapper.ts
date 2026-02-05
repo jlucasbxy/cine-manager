@@ -1,6 +1,8 @@
 import type { MovieModel } from "@/infra/database/prisma/generated/prisma/models/Movie";
 import { Movie } from "@/domain/entities";
 import { AgeRating, MovieStatus, NonNegativeInt, NonNegativeNumber, Url, Uuid } from "@/domain/value-objects";
+import { MovieStatusEnum } from "@/domain/enums/movie-status.enum";
+import { AgeRatingEnum } from "@/domain/enums/age-rating.enum";
 
 export class PrismaMovieMapper {
   static toDomain(raw: MovieModel): Movie {
@@ -12,8 +14,8 @@ export class PrismaMovieMapper {
       synopsis: raw.synopsis,
       releaseDate: raw.releaseDate,
       runtime: NonNegativeInt.reconstitute(raw.runtime),
-      status: MovieStatus.reconstitute(raw.status),
-      ageRating: AgeRating.reconstitute(raw.ageRating),
+      status: MovieStatus.reconstitute(raw.status as MovieStatusEnum),
+      ageRating: AgeRating.reconstitute(raw.ageRating as AgeRatingEnum),
       languageId: Uuid.reconstitute(raw.languageId),
       budget: NonNegativeNumber.reconstitute(raw.budget),
       revenue: NonNegativeNumber.reconstitute(raw.revenue),

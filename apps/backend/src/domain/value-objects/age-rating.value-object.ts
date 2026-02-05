@@ -19,8 +19,8 @@ export class AgeRating {
     return new AgeRating(value as AgeRatingEnum);
   }
 
-  static reconstitute(value: string): AgeRating {
-    return new AgeRating(value as AgeRatingEnum);
+  static reconstitute(value: AgeRatingEnum): AgeRating {
+    return new AgeRating(value);
   }
 
   public getValue(): AgeRatingEnum {
