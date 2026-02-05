@@ -9,7 +9,7 @@ export class MovieMapper {
       originalTitle: movie.originalTitle,
       tagline: movie.tagline,
       synopsis: movie.synopsis,
-      releaseDate: movie.releaseDate,
+      releaseDate: movie.releaseDate.toISOString(),
       runtime: movie.runtime.toNumber(),
       status: movie.status.toString(),
       ageRating: movie.ageRating.toString(),
@@ -21,8 +21,8 @@ export class MovieMapper {
       trailerUrl: movie.trailerUrl.toString(),
       votes: movie.votes.toNumber(),
       score: movie.score.toNumber(),
-      createdAt: movie.createdAt,
-      updatedAt: movie.updatedAt,
+      createdAt: movie.createdAt.toISOString(),
+      updatedAt: movie.updatedAt.toISOString(),
       userId: movie.userId.toString(),
     };
   }

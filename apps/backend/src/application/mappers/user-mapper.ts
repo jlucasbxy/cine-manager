@@ -7,8 +7,8 @@ export class UserMapper {
       id: user.id.toString(),
       name: user.name,
       email: user.email.toString(),
-      createdAt: user.createdAt,
-      updatedAt: user.updatedAt,
+      createdAt: user.createdAt.toISOString(),
+      updatedAt: user.updatedAt.toISOString()
     };
   }
 }

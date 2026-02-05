@@ -4,7 +4,7 @@ export interface MovieDTO {
   originalTitle: string;
   tagline: string;
   synopsis: string;
-  releaseDate: Date;
+  releaseDate: string;
   runtime: number;
   status: string;
   ageRating: string;
@@ -16,7 +16,7 @@ export interface MovieDTO {
   trailerUrl: string;
   votes: number;
   score: number;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
   userId: string;
 }
