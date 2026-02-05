@@ -11,12 +11,12 @@ import type {
   ResetPasswordInput,
   ValidateTokenInput,
   ValidateTokenOutput,
-  EmailService,
+  EmailService
 } from "@/application/interfaces/services";
 import type {
   UserRepository,
   RefreshTokenRepository,
-  PasswordResetTokenRepository,
+  PasswordResetTokenRepository
 } from "@/application/interfaces/repositories";
 import type { HashProvider, TokenProvider } from "@/application/interfaces/providers";
 import { RefreshToken, PasswordResetToken } from "@/domain/entities";
@@ -28,7 +28,7 @@ import {
   TokenRevokedError,
   UserNotFoundError,
   ResetTokenExpiredError,
-  ResetTokenInvalidError,
+  ResetTokenInvalidError
 } from "@/domain/errors";
 
 export type AuthServiceConfig = {
@@ -58,7 +58,7 @@ export class AuthServiceImpl implements AuthService {
 
     const isPasswordValid = await this.hashProvider.compare({
       plaintext: input.password,
-      hash: user.password.toString(),
+      hash: user.password.toString()
     });
 
     if (!isPasswordValid) {
@@ -78,7 +78,7 @@ export class AuthServiceImpl implements AuthService {
     const refreshToken = RefreshToken.create({
       token: refreshTokenValue,
       userId: user.id,
-      expiresAt: refreshTokenExpiresAt,
+      expiresAt: refreshTokenExpiresAt
     });
 
     await this.refreshTokenRepository.create(refreshToken);
@@ -86,7 +86,7 @@ export class AuthServiceImpl implements AuthService {
     return {
       accessToken,
       refreshToken: refreshTokenValue,
-      expiresIn: ms(this.config.accessTokenExpiresIn) / 1000,
+      expiresIn: ms(this.config.accessTokenExpiresIn) / 1000
     };
   }
 
@@ -134,7 +134,7 @@ export class AuthServiceImpl implements AuthService {
     const newRefreshToken = RefreshToken.create({
       token: newRefreshTokenValue,
       userId: user.id,
-      expiresAt: refreshTokenExpiresAt,
+      expiresAt: refreshTokenExpiresAt
     });
 
     await this.refreshTokenRepository.create(newRefreshToken);
@@ -142,7 +142,7 @@ export class AuthServiceImpl implements AuthService {
     return {
       accessToken,
       refreshToken: newRefreshTokenValue,
-      expiresIn: ms(this.config.accessTokenExpiresIn) / 1000,
+      expiresIn: ms(this.config.accessTokenExpiresIn) / 1000
     };
   }
 
@@ -164,7 +164,7 @@ export class AuthServiceImpl implements AuthService {
     const resetToken = PasswordResetToken.create({
       token: resetTokenValue,
       userId: user.id,
-      expiresAt,
+      expiresAt
     });
 
     await this.passwordResetTokenRepository.create(resetToken);
@@ -172,7 +172,7 @@ export class AuthServiceImpl implements AuthService {
     await this.emailService.send({
       to: user.email.toString(),
       subject: "Password Reset Request",
-      body: `Your password reset token is: ${resetTokenValue}`,
+      body: `Your password reset token is: ${resetTokenValue}`
     });
   }
 
@@ -212,12 +212,12 @@ export class AuthServiceImpl implements AuthService {
       const payload = await this.tokenProvider.verify(input.token);
       return {
         userId: payload.userId,
-        valid: true,
+        valid: true
       };
     } catch {
       return {
         userId: "",
-        valid: false,
+        valid: false
       };
     }
   }

@@ -12,8 +12,8 @@ export class PrismaPasswordResetTokenRepository implements PasswordResetTokenRep
         userId: token.userId.toString(),
         expiresAt: token.expiresAt,
         usedAt: token.usedAt,
-        createdAt: token.createdAt,
-      },
+        createdAt: token.createdAt
+      }
     });
     return PasswordResetToken.reconstitute({
       id: Uuid.reconstitute(raw.id),
@@ -21,13 +21,13 @@ export class PrismaPasswordResetTokenRepository implements PasswordResetTokenRep
       userId: Uuid.reconstitute(raw.userId),
       expiresAt: raw.expiresAt,
       usedAt: raw.usedAt,
-      createdAt: raw.createdAt,
+      createdAt: raw.createdAt
     });
   }
 
   async findByToken(token: string): Promise<PasswordResetToken | null> {
     const raw = await prisma.passwordResetToken.findUnique({
-      where: { token },
+      where: { token }
     });
     if (!raw) return null;
     return PasswordResetToken.reconstitute({
@@ -36,28 +36,28 @@ export class PrismaPasswordResetTokenRepository implements PasswordResetTokenRep
       userId: Uuid.reconstitute(raw.userId),
       expiresAt: raw.expiresAt,
       usedAt: raw.usedAt,
-      createdAt: raw.createdAt,
+      createdAt: raw.createdAt
     });
   }
 
   async markAsUsed(token: PasswordResetToken): Promise<void> {
     await prisma.passwordResetToken.update({
       where: { id: token.id.toString() },
-      data: { usedAt: token.usedAt },
+      data: { usedAt: token.usedAt }
     });
   }
 
   async deleteExpired(): Promise<void> {
     await prisma.passwordResetToken.deleteMany({
       where: {
-        expiresAt: { lt: new Date() },
-      },
+        expiresAt: { lt: new Date() }
+      }
     });
   }
 
   async deleteByUserId(userId: Uuid): Promise<void> {
     await prisma.passwordResetToken.deleteMany({
-      where: { userId: userId.toString() },
+      where: { userId: userId.toString() }
     });
   }
 }

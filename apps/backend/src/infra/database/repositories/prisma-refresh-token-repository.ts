@@ -12,8 +12,8 @@ export class PrismaRefreshTokenRepository implements RefreshTokenRepository {
         userId: token.userId.toString(),
         expiresAt: token.expiresAt,
         revokedAt: token.revokedAt,
-        createdAt: token.createdAt,
-      },
+        createdAt: token.createdAt
+      }
     });
     return RefreshToken.reconstitute({
       id: Uuid.reconstitute(raw.id),
@@ -21,13 +21,13 @@ export class PrismaRefreshTokenRepository implements RefreshTokenRepository {
       userId: Uuid.reconstitute(raw.userId),
       expiresAt: raw.expiresAt,
       revokedAt: raw.revokedAt,
-      createdAt: raw.createdAt,
+      createdAt: raw.createdAt
     });
   }
 
   async findByToken(token: string): Promise<RefreshToken | null> {
     const raw = await prisma.refreshToken.findUnique({
-      where: { token },
+      where: { token }
     });
     if (!raw) return null;
     return RefreshToken.reconstitute({
@@ -36,14 +36,14 @@ export class PrismaRefreshTokenRepository implements RefreshTokenRepository {
       userId: Uuid.reconstitute(raw.userId),
       expiresAt: raw.expiresAt,
       revokedAt: raw.revokedAt,
-      createdAt: raw.createdAt,
+      createdAt: raw.createdAt
     });
   }
 
   async revoke(token: RefreshToken): Promise<void> {
     await prisma.refreshToken.update({
       where: { id: token.id.toString() },
-      data: { revokedAt: token.revokedAt },
+      data: { revokedAt: token.revokedAt }
     });
   }
 
@@ -51,17 +51,17 @@ export class PrismaRefreshTokenRepository implements RefreshTokenRepository {
     await prisma.refreshToken.updateMany({
       where: {
         userId: userId.toString(),
-        revokedAt: null,
+        revokedAt: null
       },
-      data: { revokedAt: new Date() },
+      data: { revokedAt: new Date() }
     });
   }
 
   async deleteExpired(): Promise<void> {
     await prisma.refreshToken.deleteMany({
       where: {
-        expiresAt: { lt: new Date() },
-      },
+        expiresAt: { lt: new Date() }
+      }
     });
   }
 }

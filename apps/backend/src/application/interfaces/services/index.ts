@@ -9,5 +9,5 @@ export type {
   RequestPasswordResetInput,
   ResetPasswordInput,
   ValidateTokenInput,
-  ValidateTokenOutput,
+  ValidateTokenOutput
 } from "@/application/interfaces/services/auth-service";
