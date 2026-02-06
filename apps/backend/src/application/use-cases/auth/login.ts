@@ -6,7 +6,7 @@ import { Email } from "@/domain/value-objects";
 import { InvalidCredentialsError } from "@/domain/errors";
 import type { LoginDTO, LoginResultDTO } from "@repo/dtos";
 
-export type LoginConfig = {
+type LoginConfig = {
   accessTokenExpiresIn: StringValue;
   refreshTokenExpiresIn: StringValue;
 };
@@ -18,7 +18,7 @@ export class Login {
     private readonly hashProvider: HashProvider,
     private readonly tokenProvider: TokenProvider,
     private readonly config: LoginConfig
-  ) {}
+  ) { }
 
   async execute(input: LoginDTO): Promise<LoginResultDTO> {
     const email = Email.create(input.email);
