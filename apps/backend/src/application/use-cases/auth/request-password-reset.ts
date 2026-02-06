@@ -1,7 +1,8 @@
 import ms, { type StringValue } from "ms";
-import type { UserRepository, PasswordResetTokenRepository } from "@/application/interfaces/repositories";
-import type { NotificationService } from "@/application/interfaces/services";
-import { PasswordResetToken } from "@/domain/entities";
+import type { UserRepository } from "@/application/interfaces/repositories";
+import type { TransactionManager } from "@/application/interfaces/providers";
+import { PasswordResetToken, NotificationOutbox } from "@/domain/entities";
+import { NotificationTypeEnum } from "@/domain/enums";
 import { Email } from "@/domain/value-objects";
 import type { RequestPasswordResetDTO } from "@repo/dtos";
 
@@ -12,8 +13,7 @@ export type RequestPasswordResetConfig = {
 export class RequestPasswordReset {
   constructor(
     private readonly userRepository: UserRepository,
-    private readonly passwordResetTokenRepository: PasswordResetTokenRepository,
-    private readonly notificationService: NotificationService,
+    private readonly transactionManager: TransactionManager,
     private readonly config: RequestPasswordResetConfig
   ) {}
 
@@ -25,8 +25,6 @@ export class RequestPasswordReset {
       return;
     }
 
-    await this.passwordResetTokenRepository.deleteByUserId(user.id);
-
     const expiresAt = new Date(
       Date.now() + ms(this.config.passwordResetTokenExpiresIn)
     );
@@ -36,11 +34,18 @@ export class RequestPasswordReset {
       expiresAt
     });
 
-    await this.passwordResetTokenRepository.create(resetToken);
+    const outboxEntry = NotificationOutbox.create({
+      type: NotificationTypeEnum.PASSWORD_RESET_EMAIL,
+      payload: {
+        to: user.email.toString(),
+        token: resetToken.token.toString()
+      }
+    });
 
-    await this.notificationService.sendPasswordResetEmail({
-      to: user.email.toString(),
-      token: resetToken.token.toString()
+    await this.transactionManager.execute(async (repos) => {
+      await repos.passwordResetTokenRepository.deleteByUserId(user.id);
+      await repos.passwordResetTokenRepository.create(resetToken);
+      await repos.notificationOutboxRepository.create(outboxEntry);
     });
   }
 }
