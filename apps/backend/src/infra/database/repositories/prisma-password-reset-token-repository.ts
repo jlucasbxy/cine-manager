@@ -3,10 +3,17 @@ import { PasswordResetToken } from "@/domain/entities";
 import { Uuid } from "@/domain/value-objects";
 import { prisma } from "@/infra/database/prisma";
 import { PrismaPasswordResetTokenMapper } from "@/infra/database/mappers";
+import type { TransactionClient } from "@/infra/database/prisma/generated/prisma/internal/prismaNamespace";
 
 export class PrismaPasswordResetTokenRepository implements PasswordResetTokenRepository {
+  private readonly db: typeof prisma | TransactionClient;
+
+  constructor(client?: TransactionClient) {
+    this.db = client ?? prisma;
+  }
+
   async create(token: PasswordResetToken): Promise<PasswordResetToken> {
-    const raw = await prisma.passwordResetToken.create({
+    const raw = await this.db.passwordResetToken.create({
       data: {
         id: token.id.toString(),
         token: token.token.toString(),
@@ -20,7 +27,7 @@ export class PrismaPasswordResetTokenRepository implements PasswordResetTokenRep
   }
 
   async findByToken(token: string): Promise<PasswordResetToken | null> {
-    const raw = await prisma.passwordResetToken.findUnique({
+    const raw = await this.db.passwordResetToken.findUnique({
       where: { token }
     });
     if (!raw) return null;
@@ -28,14 +35,14 @@ export class PrismaPasswordResetTokenRepository implements PasswordResetTokenRep
   }
 
   async markAsUsed(token: PasswordResetToken): Promise<void> {
-    await prisma.passwordResetToken.update({
+    await this.db.passwordResetToken.update({
       where: { id: token.id.toString() },
       data: { usedAt: token.usedAt }
     });
   }
 
   async deleteExpired(): Promise<void> {
-    await prisma.passwordResetToken.deleteMany({
+    await this.db.passwordResetToken.deleteMany({
       where: {
         expiresAt: { lt: new Date() }
       }
@@ -43,7 +50,7 @@ export class PrismaPasswordResetTokenRepository implements PasswordResetTokenRep
   }
 
   async deleteByUserId(userId: Uuid): Promise<void> {
-    await prisma.passwordResetToken.deleteMany({
+    await this.db.passwordResetToken.deleteMany({
       where: { userId: userId.toString() }
     });
   }
