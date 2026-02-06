@@ -3,10 +3,17 @@ import { Movie } from "@/domain/entities";
 import { Uuid, MovieQuery } from "@/domain/value-objects";
 import { prisma } from "@/infra/database/prisma";
 import { PrismaMovieMapper } from "@/infra/database/mappers";
+import type { TransactionClient } from "@/infra/database/prisma/generated/prisma/internal/prismaNamespace";
 
 export class PrismaMovieRepository implements MovieRepository {
+  private readonly db: typeof prisma | TransactionClient;
+
+  constructor(client?: TransactionClient) {
+    this.db = client ?? prisma;
+  }
+
   async create(movie: Movie): Promise<Movie> {
-    const raw = await prisma.movie.create({
+    const raw = await this.db.movie.create({
       data: {
         id: movie.id.toString(),
         title: movie.title,
@@ -34,7 +41,7 @@ export class PrismaMovieRepository implements MovieRepository {
   }
 
   async findById(id: Uuid): Promise<Movie | null> {
-    const raw = await prisma.movie.findUnique({
+    const raw = await this.db.movie.findUnique({
       where: { id: id.toString() }
     });
     if (!raw) return null;
@@ -42,7 +49,7 @@ export class PrismaMovieRepository implements MovieRepository {
   }
 
   async findAll(query: MovieQuery): Promise<Movie[]> {
-    const rawList = await prisma.movie.findMany({
+    const rawList = await this.db.movie.findMany({
       where: {
         runtime: { lte: query.runtime.toNumber() },
         releaseDate: {
@@ -74,7 +81,7 @@ export class PrismaMovieRepository implements MovieRepository {
     if (data.score !== undefined) prismaData.score = data.score.toNumber();
     if (data.userId !== undefined) prismaData.userId = data.userId.toString();
 
-    const raw = await prisma.movie.update({
+    const raw = await this.db.movie.update({
       where: { id: id.toString() },
       data: prismaData
     });
@@ -82,7 +89,7 @@ export class PrismaMovieRepository implements MovieRepository {
   }
 
   async delete(id: Uuid): Promise<void> {
-    await prisma.movie.delete({
+    await this.db.movie.delete({
       where: { id: id.toString() }
     });
   }

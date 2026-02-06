@@ -3,10 +3,17 @@ import { RefreshToken } from "@/domain/entities";
 import { Uuid } from "@/domain/value-objects";
 import { prisma } from "@/infra/database/prisma";
 import { PrismaRefreshTokenMapper } from "@/infra/database/mappers";
+import type { TransactionClient } from "@/infra/database/prisma/generated/prisma/internal/prismaNamespace";
 
 export class PrismaRefreshTokenRepository implements RefreshTokenRepository {
+  private readonly db: typeof prisma | TransactionClient;
+
+  constructor(client?: TransactionClient) {
+    this.db = client ?? prisma;
+  }
+
   async create(token: RefreshToken): Promise<RefreshToken> {
-    const raw = await prisma.refreshToken.create({
+    const raw = await this.db.refreshToken.create({
       data: {
         id: token.id.toString(),
         token: token.token.toString(),
@@ -20,7 +27,7 @@ export class PrismaRefreshTokenRepository implements RefreshTokenRepository {
   }
 
   async findByToken(token: string): Promise<RefreshToken | null> {
-    const raw = await prisma.refreshToken.findUnique({
+    const raw = await this.db.refreshToken.findUnique({
       where: { token }
     });
     if (!raw) return null;
@@ -28,14 +35,14 @@ export class PrismaRefreshTokenRepository implements RefreshTokenRepository {
   }
 
   async revoke(token: RefreshToken): Promise<void> {
-    await prisma.refreshToken.update({
+    await this.db.refreshToken.update({
       where: { id: token.id.toString() },
       data: { revokedAt: token.revokedAt }
     });
   }
 
   async revokeAllByUserId(userId: Uuid): Promise<void> {
-    await prisma.refreshToken.updateMany({
+    await this.db.refreshToken.updateMany({
       where: {
         userId: userId.toString(),
         revokedAt: null
@@ -45,7 +52,7 @@ export class PrismaRefreshTokenRepository implements RefreshTokenRepository {
   }
 
   async deleteExpired(): Promise<void> {
-    await prisma.refreshToken.deleteMany({
+    await this.db.refreshToken.deleteMany({
       where: {
         expiresAt: { lt: new Date() }
       }
