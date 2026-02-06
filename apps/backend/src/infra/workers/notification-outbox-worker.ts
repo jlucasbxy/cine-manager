@@ -17,6 +17,7 @@ export class NotificationOutboxWorker {
       try {
         await this.processOutbox.execute();
       } catch (err) {
+        // eslint-disable-next-line no-console
         console.error("[NotificationOutboxWorker] Error processing outbox:", err);
       }
     }, this.config.pollIntervalMs);

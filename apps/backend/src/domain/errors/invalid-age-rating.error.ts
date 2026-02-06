@@ -1,5 +1,5 @@
 import { ErrorCode } from "@repo/dtos";
-import { DomainError } from "./domain.error";
+import { DomainError } from "@/domain/errors/domain.error";
 
 export class InvalidAgeRatingError extends DomainError {
   constructor() {
