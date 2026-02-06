@@ -72,4 +72,43 @@ export class NotificationOutbox {
       processedAt: props.processedAt
     });
   }
+
+  markAsProcessed(): NotificationOutbox {
+    return new NotificationOutbox({
+      id: this.id,
+      type: this.type,
+      payload: this.payload,
+      status: NotificationStatusEnum.PROCESSED,
+      retryCount: this.retryCount,
+      error: this.error,
+      createdAt: this.createdAt,
+      processedAt: new Date()
+    });
+  }
+
+  markAsFailed(error: string): NotificationOutbox {
+    return new NotificationOutbox({
+      id: this.id,
+      type: this.type,
+      payload: this.payload,
+      status: NotificationStatusEnum.FAILED,
+      retryCount: this.retryCount + 1,
+      error,
+      createdAt: this.createdAt,
+      processedAt: this.processedAt
+    });
+  }
+
+  recordFailure(error: string): NotificationOutbox {
+    return new NotificationOutbox({
+      id: this.id,
+      type: this.type,
+      payload: this.payload,
+      status: NotificationStatusEnum.PENDING,
+      retryCount: this.retryCount + 1,
+      error,
+      createdAt: this.createdAt,
+      processedAt: this.processedAt
+    });
+  }
 }
