@@ -4,6 +4,12 @@ CREATE TYPE "AgeRating" AS ENUM ('L', 'TEN', 'TWELVE', 'FOURTEEN', 'SIXTEEN', 'E
 -- CreateEnum
 CREATE TYPE "MovieStatus" AS ENUM ('RELEASED', 'POST_PRODUCTION', 'IN_PRODUCTION', 'PLANNED', 'CANCELED', 'RUMORED');
 
+-- CreateEnum
+CREATE TYPE "NotificationType" AS ENUM ('PASSWORD_RESET_EMAIL');
+
+-- CreateEnum
+CREATE TYPE "NotificationStatus" AS ENUM ('PENDING', 'PROCESSED', 'FAILED');
+
 -- CreateTable
 CREATE TABLE "User" (
     "id" UUID NOT NULL DEFAULT uuidv7(),
@@ -55,6 +61,20 @@ CREATE TABLE "Genre" (
     "name" TEXT NOT NULL,
 
     CONSTRAINT "Genre_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "NotificationOutbox" (
+    "id" UUID NOT NULL DEFAULT uuidv7(),
+    "type" "NotificationType" NOT NULL,
+    "payload" JSONB NOT NULL,
+    "status" "NotificationStatus" NOT NULL DEFAULT 'PENDING',
+    "retryCount" INTEGER NOT NULL DEFAULT 0,
+    "error" TEXT,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "processedAt" TIMESTAMPTZ,
+
+    CONSTRAINT "NotificationOutbox_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -117,6 +137,9 @@ CREATE UNIQUE INDEX "Language_code_key" ON "Language"("code");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Genre_name_key" ON "Genre"("name");
+
+-- CreateIndex
+CREATE INDEX "NotificationOutbox_status_createdAt_idx" ON "NotificationOutbox"("status", "createdAt");
 
 -- CreateIndex
 CREATE INDEX "Movie_userId_idx" ON "Movie"("userId");
