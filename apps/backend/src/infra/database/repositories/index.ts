@@ -2,3 +2,4 @@ export { PrismaMovieRepository } from "@/infra/database/repositories/prisma-movi
 export { PrismaUserRepository } from "@/infra/database/repositories/prisma-user-repository";
 export { PrismaRefreshTokenRepository } from "@/infra/database/repositories/prisma-refresh-token-repository";
 export { PrismaPasswordResetTokenRepository } from "@/infra/database/repositories/prisma-password-reset-token-repository";
+export { PrismaNotificationOutboxRepository } from "@/infra/database/repositories/prisma-notification-outbox-repository";
