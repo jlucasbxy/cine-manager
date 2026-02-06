@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { env } from "@/infra/config/env";
+import { notificationOutboxWorkerConfig } from "@/infra/config/worker-env";
 import { PrismaNotificationOutboxRepository } from "@/infra/database/repositories";
 import { ResendEmailProvider } from "@/infra/providers";
 import { NotificationServiceImpl } from "@/infra/services";
@@ -12,12 +12,12 @@ const notificationService = new NotificationServiceImpl(sendPasswordResetEmail);
 
 const outboxRepository = new PrismaNotificationOutboxRepository();
 const processOutbox = new ProcessNotificationOutbox(outboxRepository, notificationService, {
-  batchSize: env.OUTBOX_BATCH_SIZE,
-  maxRetries: env.OUTBOX_MAX_RETRIES
+  batchSize: notificationOutboxWorkerConfig.batchSize,
+  maxRetries: notificationOutboxWorkerConfig.maxRetries
 });
 
 const worker = new NotificationOutboxWorker(processOutbox, {
-  pollIntervalMs: env.OUTBOX_POLL_INTERVAL_MS
+  pollIntervalMs: notificationOutboxWorkerConfig.pollIntervalMs
 });
 
 function shutdown() {
