@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { env } from "@/infra/config/env";
 import { PrismaNotificationOutboxRepository } from "@/infra/database/repositories";
 import { ResendEmailProvider } from "@/infra/providers";
