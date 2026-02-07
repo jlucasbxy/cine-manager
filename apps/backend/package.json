@@ -3,10 +3,10 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "tsx watch src/server.ts",
+    "dev": "tsx watch src/main/server.ts",
     "dev:worker": "tsx watch src/worker.ts",
     "build": "tsc",
-    "start": "node dist/server.js",
+    "start": "node dist/main/server.js",
     "start:worker": "node dist/worker.js",
     "typecheck": "tsc --noEmit"
   },
