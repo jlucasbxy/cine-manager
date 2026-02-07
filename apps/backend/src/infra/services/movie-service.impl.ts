@@ -1,4 +1,3 @@
-import type { Movie } from "@/domain/entities";
 import type { MovieService } from "@/application/interfaces/services";
 import type {
   CreateMovie,
@@ -7,7 +6,7 @@ import type {
   GetMovie,
   ListMovies
 } from "@/application/use-cases/movie";
-import type { CreateMovieDTO, UpdateMovieDTO, QueryMoviesDTO } from "@repo/dtos";
+import type { CreateMovieDTO, UpdateMovieDTO, QueryMoviesDTO, MovieDTO } from "@repo/dtos";
 
 export class MovieServiceImpl implements MovieService {
   constructor(
@@ -18,11 +17,11 @@ export class MovieServiceImpl implements MovieService {
     private readonly listMoviesUseCase: ListMovies
   ) {}
 
-  async createMovie(input: CreateMovieDTO): Promise<Movie> {
+  async createMovie(input: CreateMovieDTO): Promise<MovieDTO> {
     return this.createMovieUseCase.execute(input);
   }
 
-  async updateMovie(id: string, input: UpdateMovieDTO): Promise<Movie> {
+  async updateMovie(id: string, input: UpdateMovieDTO): Promise<MovieDTO> {
     return this.updateMovieUseCase.execute(id, input);
   }
 
@@ -30,11 +29,11 @@ export class MovieServiceImpl implements MovieService {
     return this.deleteMovieUseCase.execute(id);
   }
 
-  async getMovie(id: string): Promise<Movie> {
+  async getMovie(id: string): Promise<MovieDTO> {
     return this.getMovieUseCase.execute({ id });
   }
 
-  async listMovies(query: QueryMoviesDTO): Promise<Movie[]> {
+  async listMovies(query: QueryMoviesDTO): Promise<MovieDTO[]> {
     return this.listMoviesUseCase.execute(query);
   }
 }

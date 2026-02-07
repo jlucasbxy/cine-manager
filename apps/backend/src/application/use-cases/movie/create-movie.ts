@@ -1,14 +1,15 @@
 import { Movie } from "@/domain/entities";
 import { AgeRating, MovieStatus, NonNegativeInt, NonNegativeNumber, Url, Uuid } from "@/domain/value-objects";
 import type { MovieRepository } from "@/application/interfaces/repositories";
-import { CreateMovieDTO } from "@repo/dtos";
+import { MovieMapper } from "@/application/mappers";
+import type { CreateMovieDTO, MovieDTO } from "@repo/dtos";
 
 export class CreateMovie {
   constructor(
     private readonly movieRepository: MovieRepository
   ) { }
 
-  async execute(input: CreateMovieDTO): Promise<Movie> {
+  async execute(input: CreateMovieDTO): Promise<MovieDTO> {
     const movie = Movie.create({
       title: input.title,
       originalTitle: input.originalTitle,
@@ -27,6 +28,7 @@ export class CreateMovie {
       userId: Uuid.create(input.userId)
     });
 
-    return this.movieRepository.create(movie);
+    const created = await this.movieRepository.create(movie);
+    return MovieMapper.toDTO(created);
   }
 }

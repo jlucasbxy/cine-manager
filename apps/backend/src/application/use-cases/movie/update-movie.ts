@@ -1,15 +1,15 @@
-import { Movie } from "@/domain/entities";
 import { AgeRating, MovieStatus, NonNegativeInt, NonNegativeNumber, Url, Uuid } from "@/domain/value-objects";
 import { MovieNotFoundError } from "@/domain/errors";
 import type { MovieRepository } from "@/application/interfaces/repositories";
-import { UpdateMovieDTO } from "@repo/dtos";
+import { MovieMapper } from "@/application/mappers";
+import type { UpdateMovieDTO, MovieDTO } from "@repo/dtos";
 
 export class UpdateMovie {
   constructor(
     private readonly movieRepository: MovieRepository
   ) { }
 
-  async execute(uuid: string, input: UpdateMovieDTO): Promise<Movie> {
+  async execute(uuid: string, input: UpdateMovieDTO): Promise<MovieDTO> {
     const id = Uuid.create(uuid);
 
     const existingMovie = await this.movieRepository.findById(id);
@@ -34,6 +34,7 @@ export class UpdateMovie {
       ...(input.trailerUrl !== undefined && { trailerUrl: Url.create(input.trailerUrl) })
     };
 
-    return this.movieRepository.update(id, data);
+    const updated = await this.movieRepository.update(id, data);
+    return MovieMapper.toDTO(updated);
   }
 }

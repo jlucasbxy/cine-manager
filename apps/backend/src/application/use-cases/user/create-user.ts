@@ -3,7 +3,8 @@ import { Email, Password } from "@/domain/value-objects";
 import { EmailAlreadyInUseError } from "@/domain/errors";
 import type { UserRepository } from "@/application/interfaces/repositories";
 import type { HashProvider } from "@/application/interfaces/providers";
-import { CreateUserDTO } from "@repo/dtos";
+import { UserMapper } from "@/application/mappers";
+import type { CreateUserDTO, UserDTO } from "@repo/dtos";
 
 export class CreateUser {
   constructor(
@@ -11,7 +12,7 @@ export class CreateUser {
     private readonly hashProvider: HashProvider
   ) { }
 
-  async execute(input: CreateUserDTO): Promise<User> {
+  async execute(input: CreateUserDTO): Promise<UserDTO> {
     const email = Email.create(input.email);
     const password = Password.create(input.password);
     const user = User.create({ name: input.name, email, password });
@@ -25,7 +26,7 @@ export class CreateUser {
       await this.hashProvider.hash(password.toString())
     );
 
-    return this.userRepository.create(
+    const created = await this.userRepository.create(
       User.reconstitute({
         id: user.id,
         name: user.name,
@@ -35,5 +36,7 @@ export class CreateUser {
         updatedAt: user.updatedAt
       })
     );
+
+    return UserMapper.toDTO(created);
   }
 }

@@ -1,7 +1,6 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
 import type { MovieService } from "@/application/interfaces/services";
 import type { CreateMovieDTO, UpdateMovieDTO } from "@repo/dtos";
-import { MovieMapper } from "@/application/mappers";
 
 export class MovieController {
   constructor(
@@ -14,7 +13,7 @@ export class MovieController {
     const body = request.body as Record<string, unknown>;
     const data = this.createMovieValidator.parse({ ...body, userId: request.userId });
     const movie = await this.movieService.createMovie(data);
-    return reply.status(201).send(MovieMapper.toDTO(movie));
+    return reply.status(201).send(movie);
   }
 
   async updateMovie(request: FastifyRequest, reply: FastifyReply) {
@@ -23,7 +22,7 @@ export class MovieController {
       request.body as Record<string, unknown>
     );
     const movie = await this.movieService.updateMovie(id, data);
-    return reply.status(200).send(MovieMapper.toDTO(movie));
+    return reply.status(200).send(movie);
   }
 
   async deleteMovie(request: FastifyRequest, reply: FastifyReply) {
@@ -35,7 +34,7 @@ export class MovieController {
   async getMovie(request: FastifyRequest, reply: FastifyReply) {
     const { id } = request.params as { id: string };
     const movie = await this.movieService.getMovie(id);
-    return reply.status(200).send(MovieMapper.toDTO(movie));
+    return reply.status(200).send(movie);
   }
 
   async listMovies(request: FastifyRequest, reply: FastifyReply) {
@@ -46,6 +45,6 @@ export class MovieController {
       releaseDateEnd: query.releaseDateEnd,
     };
     const movies = await this.movieService.listMovies(coercedQuery);
-    return reply.status(200).send(movies.map(MovieMapper.toDTO));
+    return reply.status(200).send(movies);
   }
 }

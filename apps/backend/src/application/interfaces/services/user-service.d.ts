@@ -1,6 +1,5 @@
-import type { User } from "@/domain/entities";
-import type { CreateUserDTO } from "@repo/dtos";
+import type { CreateUserDTO, UserDTO } from "@repo/dtos";
 
 export interface UserService {
-  createUser(input: CreateUserDTO): Promise<User>;
+  createUser(input: CreateUserDTO): Promise<UserDTO>;
 }

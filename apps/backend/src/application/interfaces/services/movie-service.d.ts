@@ -1,10 +1,9 @@
-import type { Movie } from "@/domain/entities";
-import type { CreateMovieDTO, UpdateMovieDTO, QueryMoviesDTO } from "@repo/dtos";
+import type { CreateMovieDTO, UpdateMovieDTO, QueryMoviesDTO, MovieDTO } from "@repo/dtos";
 
 export interface MovieService {
-  createMovie(input: CreateMovieDTO): Promise<Movie>;
-  updateMovie(id: string, input: UpdateMovieDTO): Promise<Movie>;
+  createMovie(input: CreateMovieDTO): Promise<MovieDTO>;
+  updateMovie(id: string, input: UpdateMovieDTO): Promise<MovieDTO>;
   deleteMovie(id: string): Promise<void>;
-  getMovie(id: string): Promise<Movie>;
-  listMovies(query: QueryMoviesDTO): Promise<Movie[]>;
+  getMovie(id: string): Promise<MovieDTO>;
+  listMovies(query: QueryMoviesDTO): Promise<MovieDTO[]>;
 }

@@ -1,7 +1,6 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
 import type { UserService } from "@/application/interfaces/services";
 import type { CreateUserDTO } from "@repo/dtos";
-import { UserMapper } from "@/application/mappers";
 
 export class UserController {
   constructor(
@@ -14,6 +13,6 @@ export class UserController {
       request.body as Record<string, unknown>
     );
     const user = await this.userService.createUser(data);
-    return reply.status(201).send(UserMapper.toDTO(user));
+    return reply.status(201).send(user);
   }
 }

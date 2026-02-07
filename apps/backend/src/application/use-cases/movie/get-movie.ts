@@ -1,7 +1,8 @@
-import { Movie } from "@/domain/entities";
 import { Uuid } from "@/domain/value-objects";
 import { MovieNotFoundError } from "@/domain/errors";
 import type { MovieRepository } from "@/application/interfaces/repositories";
+import { MovieMapper } from "@/application/mappers";
+import type { MovieDTO } from "@repo/dtos";
 
 interface GetMovieInput {
   id: string;
@@ -12,12 +13,12 @@ export class GetMovie {
     private readonly movieRepository: MovieRepository
   ) {}
 
-  async execute(input: GetMovieInput): Promise<Movie> {
+  async execute(input: GetMovieInput): Promise<MovieDTO> {
     const movie = await this.movieRepository.findById(Uuid.create(input.id));
     if (!movie) {
       throw new MovieNotFoundError();
     }
 
-    return movie;
+    return MovieMapper.toDTO(movie);
   }
 }
