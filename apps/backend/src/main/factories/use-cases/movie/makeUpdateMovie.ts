@@ -1,8 +1,8 @@
 import { UpdateMovie } from "@/application/use-cases/movie";
-import { PrismaMovieRepository } from "@/infra/database/repositories";
+import { makeMovieRepository } from "@/main/factories/repositories";
 
 export function makeUpdateMovie(): UpdateMovie {
   return new UpdateMovie(
-    new PrismaMovieRepository()
+    makeMovieRepository()
   );
 }

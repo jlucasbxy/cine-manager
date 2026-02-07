@@ -1,8 +1,8 @@
 import { DeleteMovie } from "@/application/use-cases/movie";
-import { PrismaMovieRepository } from "@/infra/database/repositories";
+import { makeMovieRepository } from "@/main/factories/repositories";
 
 export function makeDeleteMovie(): DeleteMovie {
   return new DeleteMovie(
-    new PrismaMovieRepository()
+    makeMovieRepository()
   );
 }
