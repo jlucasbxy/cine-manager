@@ -41,7 +41,7 @@ export class MovieController {
   }
 
   async listMovies(request: FastifyRequest, reply: FastifyReply) {
-    const query = this.queryMoviesValidator.parse(request.query as Record<string, unknown>);
+    const query = this.queryMoviesValidator.parse(request.query);
     const movies = await this.movieService.listMovies(query);
     return reply.status(200).send(movies);
   }
