@@ -12,13 +12,15 @@ const STATUS_MAP: Record<ErrorCode, number> = {
   [ErrorCode.INVALID_MOVIE_QUERY]: 400,
   [ErrorCode.RESET_TOKEN_EXPIRED]: 400,
   [ErrorCode.RESET_TOKEN_INVALID]: 400,
+  [ErrorCode.VALIDATION_ERROR]: 400,
   [ErrorCode.INVALID_CREDENTIALS]: 401,
   [ErrorCode.TOKEN_EXPIRED]: 401,
   [ErrorCode.TOKEN_INVALID]: 401,
   [ErrorCode.TOKEN_REVOKED]: 401,
   [ErrorCode.MOVIE_NOT_FOUND]: 404,
   [ErrorCode.USER_NOT_FOUND]: 404,
-  [ErrorCode.EMAIL_ALREADY_IN_USE]: 409
+  [ErrorCode.EMAIL_ALREADY_IN_USE]: 409,
+  [ErrorCode.INTERNAL_SERVER_ERROR]: 500
 };
 
 const STATUS_TEXT: Record<number, string> = {
@@ -34,10 +36,15 @@ export class ErrorPresenter {
     return STATUS_MAP[code];
   }
 
-  static toResponse(statusCode: number, message: string) {
+  static toResponse(
+    statusCode: number,
+    code: ErrorCode,
+    message: string | string[]
+  ) {
     return {
       statusCode,
       error: STATUS_TEXT[statusCode] ?? "Error",
+      code,
       message
     };
   }
