@@ -20,10 +20,7 @@ export class MovieController {
 
   async updateMovie(request: FastifyRequest, reply: FastifyReply) {
     const id = this.idValidator.parse(request.params);
-    const data = this.updateMovieValidator.parse({
-      ...request.body as Record<string, unknown>,
-      id
-    });
+    const data = this.updateMovieValidator.parse(request.body);
     const movie = await this.movieService.updateMovie(id, data);
     return reply.status(200).send(movie);
   }
