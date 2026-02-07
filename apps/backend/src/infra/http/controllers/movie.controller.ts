@@ -19,23 +19,23 @@ export class MovieController {
   }
 
   async updateMovie(request: FastifyRequest, reply: FastifyReply) {
-    const { id } = this.idValidator.parse(request.params);
+    const id = this.idValidator.parse(request.params);
     const data = this.updateMovieValidator.parse({
       ...request.body as Record<string, unknown>,
-      id: id
+      id
     });
     const movie = await this.movieService.updateMovie(id, data);
     return reply.status(200).send(movie);
   }
 
   async deleteMovie(request: FastifyRequest, reply: FastifyReply) {
-    const { id } = this.idValidator.parse(request.params);
+    const id = this.idValidator.parse(request.params);
     await this.movieService.deleteMovie(id);
     return reply.status(204).send();
   }
 
   async getMovie(request: FastifyRequest, reply: FastifyReply) {
-    const { id } = this.idValidator.parse(request.params);
+    const id = this.idValidator.parse(request.params);
     const movie = await this.movieService.getMovie(id);
     return reply.status(200).send(movie);
   }
