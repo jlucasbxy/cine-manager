@@ -23,14 +23,6 @@ const STATUS_MAP: Record<ErrorCode, number> = {
   [ErrorCode.INTERNAL_SERVER_ERROR]: 500
 };
 
-const STATUS_TEXT: Record<number, string> = {
-  400: "Bad Request",
-  401: "Unauthorized",
-  404: "Not Found",
-  409: "Conflict",
-  500: "Internal Server Error"
-};
-
 export class ErrorPresenter {
   static httpStatusFor(code: ErrorCode): number {
     return STATUS_MAP[code];
@@ -43,7 +35,6 @@ export class ErrorPresenter {
   ) {
     return {
       statusCode,
-      error: STATUS_TEXT[statusCode] ?? "Error",
       code,
       message
     };
