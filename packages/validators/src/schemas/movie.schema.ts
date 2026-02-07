@@ -1,5 +1,6 @@
 import z from "zod";
 import { AgeRating, MovieStatus } from "../enums";
+import { idZodSchema } from "./id.schema";
 
 const ageRatingValues = Object.values(AgeRating) as [string, ...string[]];
 const movieStatusValues = Object.values(MovieStatus) as [string, ...string[]];
@@ -13,7 +14,7 @@ export const movieSchema = z.object({
   runtime: z.number().int().positive(),
   status: z.enum(movieStatusValues),
   ageRating: z.enum(ageRatingValues),
-  languageId: z.uuidv7(),
+  languageId: idZodSchema,
   budget: z.number().nonnegative(),
   revenue: z.number().nonnegative(),
   posterUrl: z.url(),

@@ -1,9 +1,10 @@
 import z from "zod";
 import type { Validator } from "./validator";
+import { idZodSchema } from "./schemas/id.schema";
 
 export class IdValidator implements Validator<string> {
   private readonly idSchema = z.object({
-    id: z.uuidv7()
+    id: idZodSchema
   });
 
   parse(data: unknown) {

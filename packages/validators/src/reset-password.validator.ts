@@ -1,11 +1,12 @@
 import z from "zod";
 import type { Validator } from "./validator";
 import type { ResetPasswordDTO } from "@repo/dtos";
+import { passwordZodSchema } from "./schemas/password.schema";
 
 export class ResetPasswordValidator implements Validator<ResetPasswordDTO> {
   private readonly resetPasswordSchema = z.object({
     token: z.string().min(1),
-    newPassword: z.string().min(8)
+    newPassword: passwordZodSchema
   });
 
   parse(data: unknown) {
