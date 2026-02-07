@@ -1,14 +1,14 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
 import type { MovieService } from "@/application/interfaces/services";
-import type { CreateMovieDTO, UpdateMovieDTO, QueryMoviesDTO } from "@repo/dtos";
+import type { CreateMovieValidator, UpdateMovieValidator, IdValidator, QueryMoviesValidator } from "@repo/validators";
 
 export class MovieController {
   constructor(
     private readonly movieService: MovieService,
-    private readonly createMovieValidator: { parse(data: Record<string, unknown>): CreateMovieDTO },
-    private readonly updateMovieValidator: { parse(data: Record<string, unknown>): UpdateMovieDTO },
-    private readonly idValidator: { parse(data: string): { id: string } },
-    private readonly queryMoviesValidator: { parse(data: Record<string, unknown>): QueryMoviesDTO }
+    private readonly createMovieValidator: CreateMovieValidator,
+    private readonly updateMovieValidator: UpdateMovieValidator,
+    private readonly idValidator: IdValidator,
+    private readonly queryMoviesValidator: QueryMoviesValidator
   ) { }
 
   async createMovie(request: FastifyRequest, reply: FastifyReply) {
