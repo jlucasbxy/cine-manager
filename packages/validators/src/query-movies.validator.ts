@@ -2,7 +2,7 @@ import z from "zod";
 import type { Validator } from "./validator";
 import type { QueryMoviesDTO } from "@repo/dtos";
 
-export class QueryMoviesValidator implements Validator<QueryMoviesDTO, unknown> {
+export class QueryMoviesValidator implements Validator<QueryMoviesDTO> {
   private readonly queryMoviesSchema = z.object({
     runtime: z.coerce.number().int().positive(),
     releaseDateStart: z.string().min(1),

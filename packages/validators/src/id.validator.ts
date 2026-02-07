@@ -1,7 +1,7 @@
 import z from "zod";
 import type { Validator } from "./validator";
 
-export class IdValidator implements Validator<string, unknown> {
+export class IdValidator implements Validator<string> {
   private readonly idSchema = z.object({
     id: z.uuidv7()
   });
