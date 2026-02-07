@@ -1,13 +1,14 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
 import type { MovieService } from "@/application/interfaces/services";
-import type { CreateMovieDTO, UpdateMovieDTO } from "@repo/dtos";
+import type { CreateMovieDTO, UpdateMovieDTO, QueryMoviesDTO } from "@repo/dtos";
 
 export class MovieController {
   constructor(
     private readonly movieService: MovieService,
     private readonly createMovieValidator: { parse(data: Record<string, unknown>): CreateMovieDTO },
     private readonly updateMovieValidator: { parse(data: Record<string, unknown>): UpdateMovieDTO },
-    private readonly idValidator: { parse(data: string): { id: string } }
+    private readonly idValidator: { parse(data: string): { id: string } },
+    private readonly queryMoviesValidator: { parse(data: Record<string, unknown>): QueryMoviesDTO }
   ) { }
 
   async createMovie(request: FastifyRequest, reply: FastifyReply) {
@@ -40,13 +41,8 @@ export class MovieController {
   }
 
   async listMovies(request: FastifyRequest, reply: FastifyReply) {
-    const query = request.query as Record<string, string>;
-    const coercedQuery = {
-      runtime: Number(query.runtime),
-      releaseDateStart: query.releaseDateStart,
-      releaseDateEnd: query.releaseDateEnd
-    };
-    const movies = await this.movieService.listMovies(coercedQuery);
+    const query = this.queryMoviesValidator.parse(request.query as Record<string, unknown>);
+    const movies = await this.movieService.listMovies(query);
     return reply.status(200).send(movies);
   }
 }
