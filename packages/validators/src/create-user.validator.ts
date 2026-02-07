@@ -9,7 +9,7 @@ export class CreateUserValidator implements Validator<CreateUserDTO> {
     password: z.string().min(8)
   });
 
-  parse(data: Record<string, unknown>) {
+  parse(data: unknown) {
     return this.createUserSchema.parse(data);
   }
 }

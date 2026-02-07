@@ -9,7 +9,7 @@ export class CreateMovieValidator implements Validator<CreateMovieDTO> {
     genres: z.array(z.uuidv7()).optional()
   });
 
-  parse(data: Record<string, unknown>) {
+  parse(data: unknown) {
     return this.createMovieSchema.parse(data);
   }
 }

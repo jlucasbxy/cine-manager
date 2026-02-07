@@ -12,8 +12,7 @@ export class MovieController {
   ) { }
 
   async createMovie(request: FastifyRequest, reply: FastifyReply) {
-    const body = request.body as Record<string, unknown>;
-    const data = this.createMovieValidator.parse({ ...body, userId: request.userId });
+    const data = this.createMovieValidator.parse({ ...(request.body as Record<string, unknown>), userId: request.userId });
     const movie = await this.movieService.createMovie(data);
     return reply.status(201).send(movie);
   }
