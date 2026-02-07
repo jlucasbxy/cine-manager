@@ -18,7 +18,7 @@ const STATUS_MAP: Record<ErrorCode, number> = {
   [ErrorCode.TOKEN_REVOKED]: 401,
   [ErrorCode.MOVIE_NOT_FOUND]: 404,
   [ErrorCode.USER_NOT_FOUND]: 404,
-  [ErrorCode.EMAIL_ALREADY_IN_USE]: 409,
+  [ErrorCode.EMAIL_ALREADY_IN_USE]: 409
 };
 
 const STATUS_TEXT: Record<number, string> = {
@@ -26,7 +26,7 @@ const STATUS_TEXT: Record<number, string> = {
   401: "Unauthorized",
   404: "Not Found",
   409: "Conflict",
-  500: "Internal Server Error",
+  500: "Internal Server Error"
 };
 
 export class ErrorPresenter {
@@ -38,7 +38,7 @@ export class ErrorPresenter {
     return {
       statusCode,
       error: STATUS_TEXT[statusCode] ?? "Error",
-      message,
+      message
     };
   }
 }

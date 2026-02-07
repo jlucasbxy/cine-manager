@@ -19,7 +19,7 @@ export class AuthMiddleware {
       return reply.status(401).send({
         statusCode: 401,
         error: "Unauthorized",
-        message: "Missing or malformed authorization header",
+        message: "Missing or malformed authorization header"
       });
     }
 
