@@ -28,13 +28,8 @@ export class ErrorPresenter {
     return STATUS_MAP[code];
   }
 
-  static toResponse(
-    statusCode: number,
-    code: ErrorCode,
-    message: string | string[]
-  ) {
+  static toResponse(code: ErrorCode, message: string | string[]) {
     return {
-      statusCode,
       code,
       message
     };

@@ -11,17 +11,17 @@ export function errorHandler(
 ) {
   if (error instanceof DomainError) {
     const statusCode = ErrorPresenter.httpStatusFor(error.code);
-    const body = ErrorPresenter.toResponse(statusCode, error.code, error.message);
+    const body = ErrorPresenter.toResponse(error.code, error.message);
     return reply.status(statusCode).send(body);
   }
 
   if (error instanceof ZodError) {
     const messages = error.issues.map((issue) => issue.message);
-    const body = ErrorPresenter.toResponse(400, ErrorCode.VALIDATION_ERROR, messages);
+    const body = ErrorPresenter.toResponse(ErrorCode.VALIDATION_ERROR, messages);
     return reply.status(400).send(body);
   }
 
   request.log.error(error);
-  const body = ErrorPresenter.toResponse(500, ErrorCode.INTERNAL_SERVER_ERROR, "Internal Server Error");
+  const body = ErrorPresenter.toResponse(ErrorCode.INTERNAL_SERVER_ERROR, "Internal Server Error");
   return reply.status(500).send(body);
 }
