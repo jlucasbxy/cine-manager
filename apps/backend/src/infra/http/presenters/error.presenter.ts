@@ -34,7 +34,7 @@ export class ErrorPresenter {
     return STATUS_MAP[code];
   }
 
-  static toResponse(statusCode: number, code: string, message: string) {
+  static toResponse(statusCode: number, message: string) {
     return {
       statusCode,
       error: STATUS_TEXT[statusCode] ?? "Error",

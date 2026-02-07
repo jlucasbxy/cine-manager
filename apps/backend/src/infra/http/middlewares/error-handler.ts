@@ -10,17 +10,17 @@ export function errorHandler(
 ) {
   if (error instanceof DomainError) {
     const statusCode = ErrorPresenter.httpStatusFor(error.code);
-    const body = ErrorPresenter.toResponse(statusCode, error.code, error.message);
+    const body = ErrorPresenter.toResponse(statusCode, error.message);
     return reply.status(statusCode).send(body);
   }
 
   if (error instanceof ZodError) {
     const message = error.issues[0]?.message ?? "Validation error";
-    const body = ErrorPresenter.toResponse(400, "VALIDATION_ERROR", message);
+    const body = ErrorPresenter.toResponse(400, message);
     return reply.status(400).send(body);
   }
 
   request.log.error(error);
-  const body = ErrorPresenter.toResponse(500, "INTERNAL_SERVER_ERROR", "Internal Server Error");
+  const body = ErrorPresenter.toResponse(500, "Internal Server Error");
   return reply.status(500).send(body);
 }
