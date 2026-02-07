@@ -9,7 +9,7 @@ export class CreateMovie {
     private readonly movieRepository: MovieRepository
   ) { }
 
-  async execute(input: CreateMovieDTO): Promise<MovieDTO> {
+  async execute(userId: string, input: CreateMovieDTO): Promise<MovieDTO> {
     const movie = Movie.create({
       title: input.title,
       originalTitle: input.originalTitle,
@@ -25,7 +25,7 @@ export class CreateMovie {
       posterUrl: Url.create(input.posterUrl),
       backdropUrl: Url.create(input.backdropUrl),
       trailerUrl: Url.create(input.trailerUrl),
-      userId: Uuid.create(input.userId)
+      userId: Uuid.create(userId)
     });
 
     const created = await this.movieRepository.create(movie);

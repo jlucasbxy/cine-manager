@@ -15,10 +15,10 @@ export class MovieServiceImpl implements MovieService {
     private readonly deleteMovieUseCase: DeleteMovie,
     private readonly getMovieUseCase: GetMovie,
     private readonly listMoviesUseCase: ListMovies
-  ) {}
+  ) { }
 
-  async createMovie(input: CreateMovieDTO): Promise<MovieDTO> {
-    return this.createMovieUseCase.execute(input);
+  async createMovie(userId: string, input: CreateMovieDTO): Promise<MovieDTO> {
+    return this.createMovieUseCase.execute(userId, input);
   }
 
   async updateMovie(id: string, input: UpdateMovieDTO): Promise<MovieDTO> {

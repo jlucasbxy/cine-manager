@@ -13,6 +13,5 @@ export interface CreateMovieDTO {
   posterUrl: string;
   backdropUrl: string;
   trailerUrl: string;
-  userId: string;
   genres?: string[];
 }

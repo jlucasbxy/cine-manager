@@ -5,7 +5,6 @@ import type { CreateMovieDTO } from "@repo/dtos";
 
 export class CreateMovieValidator implements Validator<CreateMovieDTO> {
   private readonly createMovieSchema = movieSchema.extend({
-    userId: z.string().min(1),
     genres: z.array(z.uuidv7()).optional()
   });
 
