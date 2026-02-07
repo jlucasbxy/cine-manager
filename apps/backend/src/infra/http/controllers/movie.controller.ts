@@ -6,8 +6,9 @@ export class MovieController {
   constructor(
     private readonly movieService: MovieService,
     private readonly createMovieValidator: { parse(data: Record<string, unknown>): CreateMovieDTO },
-    private readonly updateMovieValidator: { parse(data: Record<string, unknown>): UpdateMovieDTO }
-  ) {}
+    private readonly updateMovieValidator: { parse(data: Record<string, unknown>): UpdateMovieDTO },
+    private readonly idValidator: { parse(data: string): { id: string } }
+  ) { }
 
   async createMovie(request: FastifyRequest, reply: FastifyReply) {
     const body = request.body as Record<string, unknown>;
@@ -18,21 +19,22 @@ export class MovieController {
 
   async updateMovie(request: FastifyRequest, reply: FastifyReply) {
     const { id } = request.params as { id: string };
-    const data = this.updateMovieValidator.parse(
-      request.body as Record<string, unknown>
-    );
+    const data = this.updateMovieValidator.parse({
+      ...request.body as Record<string, unknown>,
+      id: id
+    });
     const movie = await this.movieService.updateMovie(id, data);
     return reply.status(200).send(movie);
   }
 
   async deleteMovie(request: FastifyRequest, reply: FastifyReply) {
-    const { id } = request.params as { id: string };
+    const { id } = this.idValidator.parse((request.params as { id: string }).id);
     await this.movieService.deleteMovie(id);
     return reply.status(204).send();
   }
 
   async getMovie(request: FastifyRequest, reply: FastifyReply) {
-    const { id } = request.params as { id: string };
+    const { id } = this.idValidator.parse((request.params as { id: string }).id);
     const movie = await this.movieService.getMovie(id);
     return reply.status(200).send(movie);
   }
@@ -42,7 +44,7 @@ export class MovieController {
     const coercedQuery = {
       runtime: Number(query.runtime),
       releaseDateStart: query.releaseDateStart,
-      releaseDateEnd: query.releaseDateEnd,
+      releaseDateEnd: query.releaseDateEnd
     };
     const movies = await this.movieService.listMovies(coercedQuery);
     return reply.status(200).send(movies);
