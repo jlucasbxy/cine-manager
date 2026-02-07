@@ -2,19 +2,17 @@ import type { FastifyReply, FastifyRequest } from "fastify";
 import type { AuthService } from "@/application/interfaces/services";
 import type {
   LoginValidator,
-  LogoutValidator,
-  RefreshTokensValidator,
-  RequestPasswordResetValidator,
-  ResetPasswordValidator
+  ResetPasswordValidator,
+  EmailValidator,
+  RefreshTokenValidator
 } from "@repo/validators";
 
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
     private readonly loginValidator: LoginValidator,
-    private readonly logoutValidator: LogoutValidator,
-    private readonly refreshTokensValidator: RefreshTokensValidator,
-    private readonly requestPasswordResetValidator: RequestPasswordResetValidator,
+    private readonly emailValidator: EmailValidator,
+    private readonly refreshTokenValidator: RefreshTokenValidator,
     private readonly resetPasswordValidator: ResetPasswordValidator
   ) {}
 
@@ -25,19 +23,19 @@ export class AuthController {
   }
 
   async logout(request: FastifyRequest, reply: FastifyReply) {
-    const data = this.logoutValidator.parse(request.body);
+    const data = this.refreshTokenValidator.parse(request.body);
     await this.authService.logout(data);
     return reply.status(204).send();
   }
 
   async refreshTokens(request: FastifyRequest, reply: FastifyReply) {
-    const data = this.refreshTokensValidator.parse(request.body);
+    const data = this.refreshTokenValidator.parse(request.body);
     const result = await this.authService.refreshTokens(data);
     return reply.status(200).send(result);
   }
 
   async requestPasswordReset(request: FastifyRequest, reply: FastifyReply) {
-    const data = this.requestPasswordResetValidator.parse(request.body);
+    const data = this.emailValidator.parse(request.body);
     await this.authService.requestPasswordReset(data);
     return reply.status(204).send();
   }
