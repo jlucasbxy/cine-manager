@@ -3,7 +3,12 @@
   "ui": "tui",
   "tasks": {
     "build": {},
-    "dev": {},
+    "dev": {
+      "persistent": true
+    },
+    "dev:worker": {
+      "persistent": true
+    },
     "test": {},
     "typecheck": {}
   }
