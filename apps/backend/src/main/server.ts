@@ -1,7 +1,7 @@
 import { env } from "@/infra/config/env";
 import { buildApp } from "@/main/app";
 
-async function start() {
+export async function start() {
   const app = await buildApp();
 
   try {
@@ -12,4 +12,3 @@ async function start() {
   }
 }
 
-start();
