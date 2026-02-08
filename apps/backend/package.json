@@ -3,11 +3,11 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "tsx watch src/main.ts server",
-    "dev:worker": "tsx watch src/main.ts worker",
+    "dev": "tsx watch src/main/index.ts server",
+    "dev:worker": "tsx watch src/main/index.ts worker",
     "build": "tsc",
-    "start": "node dist/main.js server",
-    "start:worker": "node dist/main.js worker",
+    "start": "node dist/main/index.js server",
+    "start:worker": "node dist/main/index.js worker",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
