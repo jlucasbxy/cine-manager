@@ -1,14 +1,17 @@
-export {};
+export { };
+
+const commands: Record<string, () => Promise<void>> = {
+  server: async () => { const { start } = await import("@/main/server"); await start(); },
+  worker: async () => { const { startWorker } = await import("@/main/worker"); startWorker(); }
+};
 
 const mode = process.argv[2];
+const run = commands[mode];
 
-if (mode === "server") {
-  const { start } = await import("@/main/server");
-  await start();
-} else if (mode === "worker") {
-  const { startWorker } = await import("@/worker");
-  startWorker();
+if (run) {
+  await run();
 } else {
-  console.error(`Usage: ${process.argv[1]} <server|worker>`);
+  const available = Object.keys(commands).join("|");
+  console.error(`Usage: ${process.argv[1]} <${available}>`);
   process.exit(1);
 }
