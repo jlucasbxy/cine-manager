@@ -127,7 +127,7 @@ model Movie {
   score         Float       @default(0)
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
-  userId        String
+  userId        String      @db.Uuid
   user          User        @relation(fields: [userId], references: [id])
 
   @@index([userId])
