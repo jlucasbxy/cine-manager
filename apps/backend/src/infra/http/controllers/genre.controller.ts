@@ -1,5 +1,6 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
 import type { GenreService } from "@/application/interfaces/services";
+import { sendWithEtag } from "@/infra/http/utils/etag";
 
 export class GenreController {
   constructor(
@@ -8,9 +9,6 @@ export class GenreController {
 
   async listGenres(request: FastifyRequest, reply: FastifyReply) {
     const genres = await this.genreService.listGenres();
-    return reply
-      .header("Cache-Control", "private, max-age=86400")
-      .status(200)
-      .send(genres);
+    return sendWithEtag(request, reply, genres);
   }
 }

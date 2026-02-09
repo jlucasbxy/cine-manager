@@ -1,5 +1,6 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
 import type { LanguageService } from "@/application/interfaces/services";
+import { sendWithEtag } from "@/infra/http/utils/etag";
 
 export class LanguageController {
   constructor(
@@ -8,9 +9,6 @@ export class LanguageController {
 
   async listLanguages(request: FastifyRequest, reply: FastifyReply) {
     const languages = await this.languageService.listLanguages();
-    return reply
-      .header("Cache-Control", "private, max-age=86400")
-      .status(200)
-      .send(languages);
+    return sendWithEtag(request, reply, languages);
   }
 }
