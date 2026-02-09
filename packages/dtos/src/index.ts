@@ -10,5 +10,7 @@ export type { RefreshTokensDTO, RefreshTokensResultDTO } from "./refresh-tokens.
 export type { RequestPasswordResetDTO } from "./request-password-reset.dto";
 export type { ResetPasswordDTO } from "./reset-password.dto";
 export type { ValidateTokenDTO, ValidateTokenResultDTO } from "./validate-token.dto";
+export type { LanguageDTO } from "./language.dto";
+export type { GenreDTO } from "./genre.dto";
 export { AgeRating, MovieStatus } from "@repo/validators";
 export { ErrorCode } from "./error-code.enum";
