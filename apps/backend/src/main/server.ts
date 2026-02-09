@@ -1,5 +1,6 @@
 import Fastify from "fastify";
 import cors from "@fastify/cors";
+import cookie from "@fastify/cookie";
 import { env } from "@/infra/config/env";
 import { errorHandler } from "@/infra/http/middlewares";
 import { authRoutes, movieRoutes, userRoutes } from "@/infra/http/routes";
@@ -12,6 +13,7 @@ export async function start() {
   });
 
   await app.register(cors);
+  await app.register(cookie);
 
   app.setErrorHandler(errorHandler);
 
