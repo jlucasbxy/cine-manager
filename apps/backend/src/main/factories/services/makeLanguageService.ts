@@ -1,4 +1,4 @@
-import { LanguageServiceImpl } from "@/infra/services";
+import { LanguageServiceImpl } from "@/infrastructure/services";
 import { makeListLanguages } from "@/main/factories/use-cases/language";
 
 export function makeLanguageService(): LanguageServiceImpl {

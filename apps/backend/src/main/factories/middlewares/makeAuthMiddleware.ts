@@ -1,6 +1,6 @@
-import { AuthMiddleware } from "@/infra/http/middlewares";
-import { JwtTokenProvider } from "@/infra/providers";
-import { env } from "@/infra/config/env";
+import { AuthMiddleware } from "@/infrastructure/http/middlewares";
+import { JwtTokenProvider } from "@/infrastructure/providers";
+import { env } from "@/infrastructure/config/env";
 
 export function makeAuthMiddleware(): AuthMiddleware {
   return new AuthMiddleware(

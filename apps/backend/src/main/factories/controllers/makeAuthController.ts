@@ -1,4 +1,4 @@
-import { AuthController } from "@/infra/http/controllers";
+import { AuthController } from "@/infrastructure/http/controllers";
 import {
   LoginValidator,
   EmailValidator,

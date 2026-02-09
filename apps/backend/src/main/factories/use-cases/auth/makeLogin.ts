@@ -1,7 +1,7 @@
 import { Login } from "@/application/use-cases/auth";
 import { makeUserRepository, makeRefreshTokenRepository } from "@/main/factories/repositories";
-import { BcryptHashProvider, JwtTokenProvider } from "@/infra/providers";
-import { env } from "@/infra/config/env";
+import { BcryptHashProvider, JwtTokenProvider } from "@/infrastructure/providers";
+import { env } from "@/infrastructure/config/env";
 import type { StringValue } from "ms";
 
 export function makeLogin(): Login {

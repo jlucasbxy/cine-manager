@@ -1,4 +1,4 @@
-import { MovieServiceImpl } from "@/infra/services";
+import { MovieServiceImpl } from "@/infrastructure/services";
 import {
   makeCreateMovie,
   makeUpdateMovie,

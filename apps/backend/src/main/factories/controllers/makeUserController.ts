@@ -1,4 +1,4 @@
-import { UserController } from "@/infra/http/controllers";
+import { UserController } from "@/infrastructure/http/controllers";
 import { CreateUserValidator } from "@repo/validators";
 import { makeUserService } from "@/main/factories/services";
 

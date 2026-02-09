@@ -4,7 +4,7 @@ import {
   makePasswordResetTokenRepository,
   makeRefreshTokenRepository
 } from "@/main/factories/repositories";
-import { BcryptHashProvider } from "@/infra/providers";
+import { BcryptHashProvider } from "@/infrastructure/providers";
 
 export function makeResetPassword(): ResetPassword {
   return new ResetPassword(

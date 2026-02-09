@@ -1,7 +1,7 @@
 import { PrismaPg } from "@prisma/adapter-pg";
  
-import { PrismaClient } from "@/infra/database/prisma/generated/prisma/client";
-import { env } from "@/infra/config/env";
+import { PrismaClient } from "@/infrastructure/database/prisma/generated/prisma/client";
+import { env } from "@/infrastructure/config/env";
 import { singleton } from "@/main/factories/singleton";
 
 export const makePrismaClient = singleton(() =>

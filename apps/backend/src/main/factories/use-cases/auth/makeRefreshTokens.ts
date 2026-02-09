@@ -1,7 +1,7 @@
 import { RefreshTokens } from "@/application/use-cases/auth";
 import { makeUserRepository, makeRefreshTokenRepository } from "@/main/factories/repositories";
-import { JwtTokenProvider } from "@/infra/providers";
-import { env } from "@/infra/config/env";
+import { JwtTokenProvider } from "@/infrastructure/providers";
+import { env } from "@/infrastructure/config/env";
 import type { StringValue } from "ms";
 
 export function makeRefreshTokens(): RefreshTokens {

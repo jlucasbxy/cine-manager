@@ -1,4 +1,4 @@
-import { MovieController } from "@/infra/http/controllers";
+import { MovieController } from "@/infrastructure/http/controllers";
 import {
   CreateMovieValidator,
   UpdateMovieValidator,

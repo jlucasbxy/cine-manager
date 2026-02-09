@@ -1,4 +1,4 @@
-import { AuthServiceImpl } from "@/infra/services";
+import { AuthServiceImpl } from "@/infrastructure/services";
 import {
   makeLogin,
   makeLogout,

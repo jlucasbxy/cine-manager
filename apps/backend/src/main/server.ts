@@ -1,10 +1,10 @@
 import Fastify from "fastify";
 import cors from "@fastify/cors";
 import cookie from "@fastify/cookie";
-import { env } from "@/infra/config/env";
-import { ROUTE_PREFIXES } from "@/infra/config/routes";
-import { errorHandler } from "@/infra/http/middlewares";
-import { authRoutes, genreRoutes, languageRoutes, movieRoutes, userRoutes } from "@/infra/http/routes";
+import { env } from "@/infrastructure/config/env";
+import { ROUTE_PREFIXES } from "@/infrastructure/config/routes";
+import { errorHandler } from "@/infrastructure/http/middlewares";
+import { authRoutes, genreRoutes, languageRoutes, movieRoutes, userRoutes } from "@/infrastructure/http/routes";
 import { makeAuthController, makeGenreController, makeLanguageController, makeMovieController, makeUserController } from "@/main/factories/controllers";
 import { makeAuthMiddleware } from "@/main/factories/middlewares";
 

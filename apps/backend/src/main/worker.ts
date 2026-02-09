@@ -1,11 +1,11 @@
 /* eslint-disable no-console */
-import { notificationOutboxWorkerConfig } from "@/infra/config/worker-env";
+import { notificationOutboxWorkerConfig } from "@/infrastructure/config/worker-env";
 import { makePrismaClient } from "@/main/prisma";
-import { PrismaNotificationOutboxRepository } from "@/infra/database/repositories";
-import { ResendEmailProvider } from "@/infra/providers";
-import { NotificationServiceImpl } from "@/infra/services";
+import { PrismaNotificationOutboxRepository } from "@/infrastructure/database/repositories";
+import { ResendEmailProvider } from "@/infrastructure/providers";
+import { NotificationServiceImpl } from "@/infrastructure/services";
 import { SendPasswordResetEmail, ProcessNotificationOutbox } from "@/application/use-cases/notification";
-import { NotificationOutboxWorker } from "@/infra/workers";
+import { NotificationOutboxWorker } from "@/infrastructure/workers";
 
 export function startWorker() {
   const emailProvider = new ResendEmailProvider();
