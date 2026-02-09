@@ -4,6 +4,7 @@ import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
 import tseslint from "typescript-eslint";
 import { defineConfig, globalIgnores } from "eslint/config";
+import prettierConfig from "eslint-config-prettier";
 
 const sharedRules = {
   semi: ["error", "always"],
@@ -14,7 +15,7 @@ const sharedRules = {
       varsIgnorePattern: "^_"
     }
   ],
-  "quotes": ["error", "double", { "avoidEscape": false }],
+  quotes: ["error", "double", { avoidEscape: false }],
   "no-empty": "off",
   "comma-dangle": ["error", "never"],
   "no-restricted-imports": [
@@ -35,21 +36,21 @@ export default defineConfig([
       js.configs.recommended,
       tseslint.configs.recommended,
       reactHooks.configs.flat.recommended,
-      reactRefresh.configs.vite,
+      reactRefresh.configs.vite
     ],
     languageOptions: {
       ecmaVersion: 2020,
-      globals: globals.browser,
+      globals: globals.browser
     },
-    rules: sharedRules,
+    rules: sharedRules
   },
   {
     files: ["apps/backend/**/*.ts"],
     extends: [js.configs.recommended, tseslint.configs.recommended],
     languageOptions: {
-      globals: globals.node,
+      globals: globals.node
     },
-    rules: sharedRules,
+    rules: sharedRules
   },
   {
     files: ["packages/**/*.ts"],
@@ -57,6 +58,7 @@ export default defineConfig([
     rules: {
       ...sharedRules,
       "no-restricted-imports": "off"
-    },
+    }
   },
+  prettierConfig
 ]);
