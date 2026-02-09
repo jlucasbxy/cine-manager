@@ -11,13 +11,13 @@ export const authRoutes: FastifyPluginAsync<AuthRoutesOptions> = async (fastify,
 
   fastify.post("/login", {
     config: { rateLimit: RATE_LIMITS.login },
-    handler: authController.login.bind(authController),
+    handler: authController.login.bind(authController)
   });
   fastify.post("/logout", authController.logout.bind(authController));
   fastify.post("/refresh", authController.refreshTokens.bind(authController));
   fastify.post("/password-reset/request", {
     config: { rateLimit: RATE_LIMITS.passwordResetRequest },
-    handler: authController.requestPasswordReset.bind(authController),
+    handler: authController.requestPasswordReset.bind(authController)
   });
   fastify.post("/password-reset/reset", authController.resetPassword.bind(authController));
 };

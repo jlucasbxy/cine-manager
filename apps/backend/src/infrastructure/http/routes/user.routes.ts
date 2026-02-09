@@ -11,6 +11,6 @@ export const userRoutes: FastifyPluginAsync<UserRoutesOptions> = async (fastify,
 
   fastify.post("/", {
     config: { rateLimit: RATE_LIMITS.registration },
-    handler: userController.createUser.bind(userController),
+    handler: userController.createUser.bind(userController)
   });
 };

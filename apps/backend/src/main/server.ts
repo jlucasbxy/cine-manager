@@ -25,8 +25,8 @@ export async function start() {
     redis,
     errorResponseBuilder: (_request, context) => ({
       code: ErrorCode.RATE_LIMIT_EXCEEDED,
-      message: `Too many requests. Please try again in ${context.after}.`,
-    }),
+      message: `Too many requests. Please try again in ${context.after}.`
+    })
   });
 
   app.setErrorHandler(errorHandler);
