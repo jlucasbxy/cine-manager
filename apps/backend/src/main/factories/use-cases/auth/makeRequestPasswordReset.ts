@@ -1,7 +1,7 @@
 import { RequestPasswordReset } from "@/application/use-cases/auth";
 import { makeUserRepository } from "@/main/factories/repositories";
 import { PrismaTransactionManager } from "@/infrastructure/providers";
-import { makePrismaClient } from "@/main/prisma";
+import { makePrismaClient } from "@/main/factories/prisma";
 import { env } from "@/infrastructure/config/env";
 import type { StringValue } from "ms";
 
