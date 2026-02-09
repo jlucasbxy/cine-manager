@@ -31,7 +31,8 @@ export class UpdateMovie {
       ...(input.revenue !== undefined && { revenue: NonNegativeNumber.create(input.revenue) }),
       ...(input.posterUrl !== undefined && { posterUrl: Url.create(input.posterUrl) }),
       ...(input.backdropUrl !== undefined && { backdropUrl: Url.create(input.backdropUrl) }),
-      ...(input.trailerUrl !== undefined && { trailerUrl: Url.create(input.trailerUrl) })
+      ...(input.trailerUrl !== undefined && { trailerUrl: Url.create(input.trailerUrl) }),
+      updatedAt: new Date()
     };
 
     const updated = await this.movieRepository.update(id, data);

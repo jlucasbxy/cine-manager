@@ -79,6 +79,7 @@ export class PrismaMovieRepository implements MovieRepository {
     if (data.votes !== undefined) prismaData.votes = data.votes.toNumber();
     if (data.score !== undefined) prismaData.score = data.score.toNumber();
     if (data.userId !== undefined) prismaData.userId = data.userId.toString();
+    if (data.updatedAt !== undefined) prismaData.updatedAt = data.updatedAt;
 
     const raw = await this.db.movie.update({
       where: { id: id.toString() },
