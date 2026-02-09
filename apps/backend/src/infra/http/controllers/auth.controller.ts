@@ -5,9 +5,9 @@ import type {
   ResetPasswordValidator,
   EmailValidator
 } from "@repo/validators";
+import { ROUTE_PREFIXES } from "@/infra/config/routes";
 
 const REFRESH_TOKEN_COOKIE = "refreshToken";
-const REFRESH_TOKEN_PATH = "/auth";
 
 export class AuthController {
   constructor(
@@ -71,7 +71,7 @@ export class AuthController {
       httpOnly: true,
       secure: true,
       sameSite: "strict",
-      path: REFRESH_TOKEN_PATH
+      path: ROUTE_PREFIXES.auth
     });
   }
 
@@ -80,7 +80,7 @@ export class AuthController {
       httpOnly: true,
       secure: true,
       sameSite: "strict",
-      path: REFRESH_TOKEN_PATH
+      path: ROUTE_PREFIXES.auth
     });
   }
 }
