@@ -4,13 +4,13 @@ import {
   makePasswordResetTokenRepository,
   makeRefreshTokenRepository
 } from "@/main/factories/repositories";
-import { BcryptHashProvider } from "@/infrastructure/providers";
+import { makeHashProvider } from "@/main/factories/providers";
 
 export function makeResetPassword(): ResetPassword {
   return new ResetPassword(
     makeUserRepository(),
     makePasswordResetTokenRepository(),
     makeRefreshTokenRepository(),
-    new BcryptHashProvider()
+    makeHashProvider()
   );
 }
