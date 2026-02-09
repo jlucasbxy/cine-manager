@@ -1,5 +1,6 @@
 import type { FastifyPluginAsync } from "fastify";
 import type { UserController } from "@/infrastructure/http/controllers";
+import { RATE_LIMITS } from "@/infrastructure/config/rate-limit";
 
 interface UserRoutesOptions {
   userController: UserController;
@@ -8,5 +9,8 @@ interface UserRoutesOptions {
 export const userRoutes: FastifyPluginAsync<UserRoutesOptions> = async (fastify, opts) => {
   const { userController } = opts;
 
-  fastify.post("/", userController.createUser.bind(userController));
+  fastify.post("/", {
+    config: { rateLimit: RATE_LIMITS.registration },
+    handler: userController.createUser.bind(userController),
+  });
 };

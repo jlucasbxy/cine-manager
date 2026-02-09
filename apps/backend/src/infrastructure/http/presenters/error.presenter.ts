@@ -20,6 +20,7 @@ const STATUS_MAP: Record<ErrorCode, number> = {
   [ErrorCode.MOVIE_NOT_FOUND]: 404,
   [ErrorCode.USER_NOT_FOUND]: 404,
   [ErrorCode.EMAIL_ALREADY_IN_USE]: 409,
+  [ErrorCode.RATE_LIMIT_EXCEEDED]: 429,
   [ErrorCode.INTERNAL_SERVER_ERROR]: 500
 };
 

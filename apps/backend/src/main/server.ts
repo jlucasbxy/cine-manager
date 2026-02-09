@@ -1,8 +1,10 @@
 import Fastify from "fastify";
 import cors from "@fastify/cors";
 import cookie from "@fastify/cookie";
+import rateLimit from "@fastify/rate-limit";
 import { env } from "@/infrastructure/config/env";
 import { ROUTE_PREFIXES } from "@/infrastructure/config/routes";
+import { ErrorCode } from "@repo/dtos";
 import { errorHandler } from "@/infrastructure/http/middlewares";
 import { authRoutes, genreRoutes, languageRoutes, movieRoutes, userRoutes } from "@/infrastructure/http/routes";
 import { makeAuthController, makeGenreController, makeLanguageController, makeMovieController, makeUserController } from "@/main/factories/controllers";
@@ -15,6 +17,13 @@ export async function start() {
 
   await app.register(cors);
   await app.register(cookie);
+  await app.register(rateLimit, {
+    global: false,
+    errorResponseBuilder: (_request, context) => ({
+      code: ErrorCode.RATE_LIMIT_EXCEEDED,
+      message: `Too many requests. Please try again in ${context.after}.`,
+    }),
+  });
 
   app.setErrorHandler(errorHandler);
 
