@@ -7,7 +7,7 @@ import type {
 } from "@repo/validators";
 
 const REFRESH_TOKEN_COOKIE = "refreshToken";
-const REFRESH_TOKEN_PATH = "/auth/refresh";
+const REFRESH_TOKEN_PATH = "/auth";
 
 export class AuthController {
   constructor(
