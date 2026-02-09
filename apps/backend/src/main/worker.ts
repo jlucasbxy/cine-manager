@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import { notificationOutboxWorkerConfig } from "@/infra/config/worker-env";
-import { prisma } from "@/infra/database/prisma";
+import { makePrismaClient } from "@/main/prisma";
 import { PrismaNotificationOutboxRepository } from "@/infra/database/repositories";
 import { ResendEmailProvider } from "@/infra/providers";
 import { NotificationServiceImpl } from "@/infra/services";
@@ -12,7 +12,7 @@ export function startWorker() {
   const sendPasswordResetEmail = new SendPasswordResetEmail(emailProvider);
   const notificationService = new NotificationServiceImpl(sendPasswordResetEmail);
 
-  const outboxRepository = new PrismaNotificationOutboxRepository(prisma);
+  const outboxRepository = new PrismaNotificationOutboxRepository(makePrismaClient());
   const processOutbox = new ProcessNotificationOutbox(outboxRepository, notificationService, {
     batchSize: notificationOutboxWorkerConfig.batchSize,
     maxRetries: notificationOutboxWorkerConfig.maxRetries

@@ -1,5 +1,5 @@
-import { prisma } from "@/infra/database/prisma";
+import { makePrismaClient } from "@/main/prisma";
 import { PrismaRefreshTokenRepository } from "@/infra/database/repositories";
 import { singleton } from "@/main/factories/singleton";
 
-export const makeRefreshTokenRepository = singleton(() => new PrismaRefreshTokenRepository(prisma));
+export const makeRefreshTokenRepository = singleton(() => new PrismaRefreshTokenRepository(makePrismaClient()));
