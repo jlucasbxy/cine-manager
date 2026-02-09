@@ -8,6 +8,9 @@ export class GenreController {
 
   async listGenres(request: FastifyRequest, reply: FastifyReply) {
     const genres = await this.genreService.listGenres();
-    return reply.status(200).send(genres);
+    return reply
+      .header("Cache-Control", "private, max-age=86400")
+      .status(200)
+      .send(genres);
   }
 }

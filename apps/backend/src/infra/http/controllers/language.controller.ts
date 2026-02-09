@@ -8,6 +8,9 @@ export class LanguageController {
 
   async listLanguages(request: FastifyRequest, reply: FastifyReply) {
     const languages = await this.languageService.listLanguages();
-    return reply.status(200).send(languages);
+    return reply
+      .header("Cache-Control", "private, max-age=86400")
+      .status(200)
+      .send(languages);
   }
 }
