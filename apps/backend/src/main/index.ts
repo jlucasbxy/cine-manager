@@ -1,8 +1,14 @@
-export { };
+export {};
 
 const commands: Record<string, () => Promise<void>> = {
-  server: async () => { const { start } = await import("@/main/server"); await start(); },
-  worker: async () => { const { startWorker } = await import("@/main/worker"); startWorker(); }
+  server: async () => {
+    const { start } = await import("@/main/server");
+    await start();
+  },
+  worker: async () => {
+    const { startWorker } = await import("@/main/worker");
+    startWorker();
+  }
 };
 
 const mode = process.argv[2];

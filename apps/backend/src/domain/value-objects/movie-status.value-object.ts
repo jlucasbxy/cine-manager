@@ -2,7 +2,10 @@ import z from "zod";
 import { InvalidMovieStatusError } from "@/domain/errors";
 import { MovieStatusEnum } from "@/domain/enums/movie-status.enum";
 
-const movieStatusValues = Object.values(MovieStatusEnum) as [MovieStatusEnum, ...MovieStatusEnum[]];
+const movieStatusValues = Object.values(MovieStatusEnum) as [
+  MovieStatusEnum,
+  ...MovieStatusEnum[]
+];
 
 export class MovieStatus {
   private readonly value: MovieStatusEnum;

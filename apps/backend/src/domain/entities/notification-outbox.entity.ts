@@ -60,7 +60,9 @@ export class NotificationOutbox {
     });
   }
 
-  static reconstitute(props: ReconstituteNotificationOutboxProps): NotificationOutbox {
+  static reconstitute(
+    props: ReconstituteNotificationOutboxProps
+  ): NotificationOutbox {
     return new NotificationOutbox({
       id: props.id,
       type: props.type,

@@ -3,9 +3,7 @@ import { MovieNotFoundError } from "@/domain/errors";
 import type { MovieRepository } from "@/application/interfaces/repositories";
 
 export class DeleteMovie {
-  constructor(
-    private readonly movieRepository: MovieRepository
-  ) { }
+  constructor(private readonly movieRepository: MovieRepository) {}
 
   async execute(uuid: string): Promise<void> {
     const id = Uuid.create(uuid);

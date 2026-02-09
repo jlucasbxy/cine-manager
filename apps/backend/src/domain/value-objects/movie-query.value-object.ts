@@ -8,22 +8,26 @@ type MovieQueryProps = {
   releaseDateEnd: string;
 };
 
-const movieQuerySchema = z.object({
-  runtime: z.int().nonnegative(),
-  releaseDateStart: z.coerce.date(),
-  releaseDateEnd: z.coerce.date()
-}).refine(
-  (data) => data.releaseDateStart <= data.releaseDateEnd,
-  { message: "releaseDateStart must be before or equal to releaseDateEnd" }
-);
+const movieQuerySchema = z
+  .object({
+    runtime: z.int().nonnegative(),
+    releaseDateStart: z.coerce.date(),
+    releaseDateEnd: z.coerce.date()
+  })
+  .refine((data) => data.releaseDateStart <= data.releaseDateEnd, {
+    message: "releaseDateStart must be before or equal to releaseDateEnd"
+  });
 
 export class MovieQuery {
-
   readonly runtime: NonNegativeInt;
   readonly releaseDateStart: Date;
   readonly releaseDateEnd: Date;
 
-  private constructor(runtime: NonNegativeInt, releaseDateStart: Date, releaseDateEnd: Date) {
+  private constructor(
+    runtime: NonNegativeInt,
+    releaseDateStart: Date,
+    releaseDateEnd: Date
+  ) {
     this.runtime = runtime;
     this.releaseDateStart = releaseDateStart;
     this.releaseDateEnd = releaseDateEnd;

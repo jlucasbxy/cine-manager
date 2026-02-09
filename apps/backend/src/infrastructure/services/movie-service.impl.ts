@@ -6,7 +6,12 @@ import type {
   GetMovie,
   ListMovies
 } from "@/application/use-cases/movie";
-import type { CreateMovieDTO, UpdateMovieDTO, QueryMoviesDTO, MovieDTO } from "@repo/dtos";
+import type {
+  CreateMovieDTO,
+  UpdateMovieDTO,
+  QueryMoviesDTO,
+  MovieDTO
+} from "@repo/dtos";
 
 export class MovieServiceImpl implements MovieService {
   constructor(
@@ -15,7 +20,7 @@ export class MovieServiceImpl implements MovieService {
     private readonly deleteMovieUseCase: DeleteMovie,
     private readonly getMovieUseCase: GetMovie,
     private readonly listMoviesUseCase: ListMovies
-  ) { }
+  ) {}
 
   async createMovie(userId: string, input: CreateMovieDTO): Promise<MovieDTO> {
     return this.createMovieUseCase.execute(userId, input);

@@ -6,10 +6,16 @@ export type { UserDTO } from "./user.dto";
 export type { MovieDTO } from "./movie.dto";
 export type { LoginDTO, LoginResultDTO } from "./login.dto";
 export type { LogoutDTO } from "./logout.dto";
-export type { RefreshTokensDTO, RefreshTokensResultDTO } from "./refresh-tokens.dto";
+export type {
+  RefreshTokensDTO,
+  RefreshTokensResultDTO
+} from "./refresh-tokens.dto";
 export type { RequestPasswordResetDTO } from "./request-password-reset.dto";
 export type { ResetPasswordDTO } from "./reset-password.dto";
-export type { ValidateTokenDTO, ValidateTokenResultDTO } from "./validate-token.dto";
+export type {
+  ValidateTokenDTO,
+  ValidateTokenResultDTO
+} from "./validate-token.dto";
 export type { LanguageDTO } from "./language.dto";
 export type { GenreDTO } from "./genre.dto";
 export { AgeRating, MovieStatus } from "@repo/validators";

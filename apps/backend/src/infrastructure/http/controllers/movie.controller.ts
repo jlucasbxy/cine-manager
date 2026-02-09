@@ -1,6 +1,11 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
 import type { MovieService } from "@/application/interfaces/services";
-import type { CreateMovieValidator, UpdateMovieValidator, IdValidator, QueryMoviesValidator } from "@repo/validators";
+import type {
+  CreateMovieValidator,
+  UpdateMovieValidator,
+  IdValidator,
+  QueryMoviesValidator
+} from "@repo/validators";
 
 export class MovieController {
   constructor(
@@ -9,7 +14,7 @@ export class MovieController {
     private readonly updateMovieValidator: UpdateMovieValidator,
     private readonly idValidator: IdValidator,
     private readonly queryMoviesValidator: QueryMoviesValidator
-  ) { }
+  ) {}
 
   async createMovie(request: FastifyRequest, reply: FastifyReply) {
     const data = this.createMovieValidator.parse(request.body);

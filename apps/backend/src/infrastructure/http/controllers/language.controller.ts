@@ -3,9 +3,7 @@ import type { LanguageService } from "@/application/interfaces/services";
 import { sendWithEtag } from "@/infrastructure/http/utils/etag";
 
 export class LanguageController {
-  constructor(
-    private readonly languageService: LanguageService
-  ) {}
+  constructor(private readonly languageService: LanguageService) {}
 
   async listLanguages(request: FastifyRequest, reply: FastifyReply) {
     const languages = await this.languageService.listLanguages();

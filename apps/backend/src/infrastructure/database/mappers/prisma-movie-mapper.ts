@@ -1,6 +1,13 @@
 import type { MovieModel } from "@/infrastructure/database/prisma/generated/prisma/models/Movie";
 import { Movie } from "@/domain/entities";
-import { AgeRating, MovieStatus, NonNegativeInt, NonNegativeNumber, Url, Uuid } from "@/domain/value-objects";
+import {
+  AgeRating,
+  MovieStatus,
+  NonNegativeInt,
+  NonNegativeNumber,
+  Url,
+  Uuid
+} from "@/domain/value-objects";
 import { MovieStatusEnum } from "@/domain/enums/movie-status.enum";
 import { AgeRatingEnum } from "@/domain/enums/age-rating.enum";
 

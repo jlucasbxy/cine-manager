@@ -2,7 +2,6 @@ import z from "zod";
 import { InvalidEmailError } from "@/domain/errors";
 
 export class Email {
-
   private readonly value: string;
 
   private constructor(value: string) {

@@ -4,5 +4,5 @@ export enum AgeRatingEnum {
   TWELVE = "TWELVE",
   FOURTEEN = "FOURTEEN",
   SIXTEEN = "SIXTEEN",
-  EIGHTEEN = "EIGHTEEN",
+  EIGHTEEN = "EIGHTEEN"
 }

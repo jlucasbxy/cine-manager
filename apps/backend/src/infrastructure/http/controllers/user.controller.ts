@@ -6,7 +6,7 @@ export class UserController {
   constructor(
     private readonly userService: UserService,
     private readonly createUserValidator: CreateUserValidator
-  ) { }
+  ) {}
 
   async createUser(request: FastifyRequest, reply: FastifyReply) {
     const data = this.createUserValidator.parse(request.body);

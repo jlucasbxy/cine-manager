@@ -2,9 +2,7 @@ import type { TokenProvider } from "@/application/interfaces/providers";
 import type { ValidateTokenDTO, ValidateTokenResultDTO } from "@repo/dtos";
 
 export class ValidateToken {
-  constructor(
-    private readonly tokenProvider: TokenProvider
-  ) {}
+  constructor(private readonly tokenProvider: TokenProvider) {}
 
   async execute(input: ValidateTokenDTO): Promise<ValidateTokenResultDTO> {
     try {

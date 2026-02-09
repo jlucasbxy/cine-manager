@@ -1,6 +1,12 @@
 import ms, { type StringValue } from "ms";
-import type { UserRepository, RefreshTokenRepository } from "@/application/interfaces/repositories";
-import type { HashProvider, TokenProvider } from "@/application/interfaces/providers";
+import type {
+  UserRepository,
+  RefreshTokenRepository
+} from "@/application/interfaces/repositories";
+import type {
+  HashProvider,
+  TokenProvider
+} from "@/application/interfaces/providers";
 import { RefreshToken } from "@/domain/entities";
 import { Email } from "@/domain/value-objects";
 import { InvalidCredentialsError } from "@/domain/errors";
@@ -18,7 +24,7 @@ export class Login {
     private readonly hashProvider: HashProvider,
     private readonly tokenProvider: TokenProvider,
     private readonly config: LoginConfig
-  ) { }
+  ) {}
 
   async execute(input: LoginDTO): Promise<LoginResultDTO> {
     const email = Email.create(input.email);

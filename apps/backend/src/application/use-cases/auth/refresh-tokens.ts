@@ -1,5 +1,8 @@
 import ms, { type StringValue } from "ms";
-import type { UserRepository, RefreshTokenRepository } from "@/application/interfaces/repositories";
+import type {
+  UserRepository,
+  RefreshTokenRepository
+} from "@/application/interfaces/repositories";
 import type { TokenProvider } from "@/application/interfaces/providers";
 import { RefreshToken } from "@/domain/entities";
 import {
@@ -24,7 +27,9 @@ export class RefreshTokens {
   ) {}
 
   async execute(input: RefreshTokensDTO): Promise<RefreshTokensResultDTO> {
-    const token = await this.refreshTokenRepository.findByToken(input.refreshToken);
+    const token = await this.refreshTokenRepository.findByToken(
+      input.refreshToken
+    );
 
     if (!token) {
       throw new TokenInvalidError();

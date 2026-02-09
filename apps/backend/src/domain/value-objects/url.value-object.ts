@@ -2,7 +2,6 @@ import z from "zod";
 import { InvalidUrlError } from "@/domain/errors";
 
 export class Url {
-
   private readonly value: string;
 
   private constructor(value: string) {

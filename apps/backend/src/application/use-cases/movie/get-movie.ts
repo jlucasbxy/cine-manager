@@ -9,9 +9,7 @@ interface GetMovieInput {
 }
 
 export class GetMovie {
-  constructor(
-    private readonly movieRepository: MovieRepository
-  ) {}
+  constructor(private readonly movieRepository: MovieRepository) {}
 
   async execute(input: GetMovieInput): Promise<MovieDTO> {
     const movie = await this.movieRepository.findById(Uuid.create(input.id));

@@ -1,4 +1,8 @@
-import type { UserRepository, PasswordResetTokenRepository, RefreshTokenRepository } from "@/application/interfaces/repositories";
+import type {
+  UserRepository,
+  PasswordResetTokenRepository,
+  RefreshTokenRepository
+} from "@/application/interfaces/repositories";
 import type { HashProvider } from "@/application/interfaces/providers";
 import { Password } from "@/domain/value-objects";
 import {
@@ -17,7 +21,9 @@ export class ResetPassword {
   ) {}
 
   async execute(input: ResetPasswordDTO): Promise<void> {
-    const token = await this.passwordResetTokenRepository.findByToken(input.token);
+    const token = await this.passwordResetTokenRepository.findByToken(
+      input.token
+    );
 
     if (!token) {
       throw new ResetTokenInvalidError();
@@ -39,7 +45,10 @@ export class ResetPassword {
     const password = Password.create(input.newPassword);
     const hashedPassword = await this.hashProvider.hash(password.toString());
 
-    await this.userRepository.updatePassword(user.id, Password.fromHash(hashedPassword));
+    await this.userRepository.updatePassword(
+      user.id,
+      Password.fromHash(hashedPassword)
+    );
 
     const usedToken = token.markAsUsed();
     await this.passwordResetTokenRepository.markAsUsed(usedToken);

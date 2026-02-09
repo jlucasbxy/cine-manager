@@ -1,5 +1,8 @@
 import { RefreshTokens } from "@/application/use-cases/auth";
-import { makeUserRepository, makeRefreshTokenRepository } from "@/main/factories/repositories";
+import {
+  makeUserRepository,
+  makeRefreshTokenRepository
+} from "@/main/factories/repositories";
 import { JwtTokenProvider } from "@/infrastructure/providers";
 import { env } from "@/infrastructure/config/env";
 import type { StringValue } from "ms";

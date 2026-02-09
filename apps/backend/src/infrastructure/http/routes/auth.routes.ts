@@ -6,7 +6,10 @@ interface AuthRoutesOptions {
   authController: AuthController;
 }
 
-export const authRoutes: FastifyPluginAsync<AuthRoutesOptions> = async (fastify, opts) => {
+export const authRoutes: FastifyPluginAsync<AuthRoutesOptions> = async (
+  fastify,
+  opts
+) => {
   const { authController } = opts;
 
   fastify.post("/login", {
@@ -19,5 +22,8 @@ export const authRoutes: FastifyPluginAsync<AuthRoutesOptions> = async (fastify,
     config: { rateLimit: RATE_LIMITS.passwordResetRequest },
     handler: authController.requestPasswordReset.bind(authController)
   });
-  fastify.post("/password-reset/reset", authController.resetPassword.bind(authController));
+  fastify.post(
+    "/password-reset/reset",
+    authController.resetPassword.bind(authController)
+  );
 };

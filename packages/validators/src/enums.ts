@@ -4,7 +4,7 @@ export enum AgeRating {
   TWELVE = "TWELVE",
   FOURTEEN = "FOURTEEN",
   SIXTEEN = "SIXTEEN",
-  EIGHTEEN = "EIGHTEEN",
+  EIGHTEEN = "EIGHTEEN"
 }
 
 export enum MovieStatus {
@@ -13,5 +13,5 @@ export enum MovieStatus {
   IN_PRODUCTION = "IN_PRODUCTION",
   PLANNED = "PLANNED",
   CANCELED = "CANCELED",
-  RUMORED = "RUMORED",
+  RUMORED = "RUMORED"
 }

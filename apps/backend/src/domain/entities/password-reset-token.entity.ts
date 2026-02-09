@@ -49,7 +49,9 @@ export class PasswordResetToken {
     });
   }
 
-  static reconstitute(props: ReconstitutePasswordResetTokenProps): PasswordResetToken {
+  static reconstitute(
+    props: ReconstitutePasswordResetTokenProps
+  ): PasswordResetToken {
     return new PasswordResetToken({
       id: props.id,
       token: props.token,

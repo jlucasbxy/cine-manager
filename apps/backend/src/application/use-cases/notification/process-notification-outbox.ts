@@ -16,7 +16,9 @@ export class ProcessNotificationOutbox {
   ) {}
 
   async execute(): Promise<void> {
-    const entries = await this.repository.findPendingBatch(this.config.batchSize);
+    const entries = await this.repository.findPendingBatch(
+      this.config.batchSize
+    );
 
     for (const entry of entries) {
       await this.processEntry(entry);

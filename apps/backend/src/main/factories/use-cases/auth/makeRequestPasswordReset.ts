@@ -10,7 +10,8 @@ export function makeRequestPasswordReset(): RequestPasswordReset {
     makeUserRepository(),
     new PrismaTransactionManager(makePrismaClient()),
     {
-      passwordResetTokenExpiresIn: env.PASSWORD_RESET_TOKEN_EXPIRES_IN as StringValue
+      passwordResetTokenExpiresIn:
+        env.PASSWORD_RESET_TOKEN_EXPIRES_IN as StringValue
     }
   );
 }

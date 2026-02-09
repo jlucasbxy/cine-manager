@@ -10,7 +10,7 @@ export class CreateUser {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly hashProvider: HashProvider
-  ) { }
+  ) {}
 
   async execute(input: CreateUserDTO): Promise<UserDTO> {
     const email = Email.create(input.email);

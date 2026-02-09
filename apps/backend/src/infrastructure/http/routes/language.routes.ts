@@ -7,7 +7,10 @@ interface LanguageRoutesOptions {
   authMiddleware: AuthMiddleware;
 }
 
-export const languageRoutes: FastifyPluginAsync<LanguageRoutesOptions> = async (fastify, opts) => {
+export const languageRoutes: FastifyPluginAsync<LanguageRoutesOptions> = async (
+  fastify,
+  opts
+) => {
   const { languageController, authMiddleware } = opts;
 
   fastify.addHook("preHandler", authMiddleware.preHandler);

@@ -7,7 +7,10 @@ interface GenreRoutesOptions {
   authMiddleware: AuthMiddleware;
 }
 
-export const genreRoutes: FastifyPluginAsync<GenreRoutesOptions> = async (fastify, opts) => {
+export const genreRoutes: FastifyPluginAsync<GenreRoutesOptions> = async (
+  fastify,
+  opts
+) => {
   const { genreController, authMiddleware } = opts;
 
   fastify.addHook("preHandler", authMiddleware.preHandler);

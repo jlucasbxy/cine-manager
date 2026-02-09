@@ -1,13 +1,18 @@
 import { Movie } from "@/domain/entities";
-import { AgeRating, MovieStatus, NonNegativeInt, NonNegativeNumber, Url, Uuid } from "@/domain/value-objects";
+import {
+  AgeRating,
+  MovieStatus,
+  NonNegativeInt,
+  NonNegativeNumber,
+  Url,
+  Uuid
+} from "@/domain/value-objects";
 import type { MovieRepository } from "@/application/interfaces/repositories";
 import { MovieMapper } from "@/application/mappers";
 import type { CreateMovieDTO, MovieDTO } from "@repo/dtos";
 
 export class CreateMovie {
-  constructor(
-    private readonly movieRepository: MovieRepository
-  ) { }
+  constructor(private readonly movieRepository: MovieRepository) {}
 
   async execute(userId: string, input: CreateMovieDTO): Promise<MovieDTO> {
     const movie = Movie.create({

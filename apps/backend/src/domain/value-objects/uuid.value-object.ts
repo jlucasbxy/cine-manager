@@ -3,7 +3,6 @@ import z from "zod";
 import { InvalidUuidError } from "@/domain/errors";
 
 export class Uuid {
-
   private readonly value: string;
 
   private constructor(value: string) {

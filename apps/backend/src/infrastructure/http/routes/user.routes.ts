@@ -6,7 +6,10 @@ interface UserRoutesOptions {
   userController: UserController;
 }
 
-export const userRoutes: FastifyPluginAsync<UserRoutesOptions> = async (fastify, opts) => {
+export const userRoutes: FastifyPluginAsync<UserRoutesOptions> = async (
+  fastify,
+  opts
+) => {
   const { userController } = opts;
 
   fastify.post("/", {

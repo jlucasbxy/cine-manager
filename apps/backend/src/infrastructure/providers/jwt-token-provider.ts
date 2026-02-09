@@ -3,9 +3,12 @@ import type { StringValue } from "ms";
 import type { TokenProvider } from "@/application/interfaces/providers";
 
 export class JwtTokenProvider implements TokenProvider {
-  constructor(private readonly secret: string) { }
+  constructor(private readonly secret: string) {}
 
-  async generate(payload: { userId: string }, expiresIn: StringValue): Promise<string> {
+  async generate(
+    payload: { userId: string },
+    expiresIn: StringValue
+  ): Promise<string> {
     return jwt.sign(payload, this.secret, { expiresIn });
   }
 

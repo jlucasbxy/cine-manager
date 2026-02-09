@@ -1,4 +1,11 @@
-import { AgeRating, MovieStatus, NonNegativeInt, NonNegativeNumber, Url, Uuid } from "@/domain/value-objects";
+import {
+  AgeRating,
+  MovieStatus,
+  NonNegativeInt,
+  NonNegativeNumber,
+  Url,
+  Uuid
+} from "@/domain/value-objects";
 
 interface CreateMovieProps {
   title: string;

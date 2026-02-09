@@ -2,7 +2,10 @@ import z from "zod";
 import { InvalidAgeRatingError } from "@/domain/errors";
 import { AgeRatingEnum } from "@/domain/enums/age-rating.enum";
 
-const ageRatingValues = Object.values(AgeRatingEnum) as [AgeRatingEnum, ...AgeRatingEnum[]];
+const ageRatingValues = Object.values(AgeRatingEnum) as [
+  AgeRatingEnum,
+  ...AgeRatingEnum[]
+];
 
 export class AgeRating {
   private readonly value: AgeRatingEnum;

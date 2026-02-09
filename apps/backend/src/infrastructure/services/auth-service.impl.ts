@@ -37,7 +37,9 @@ export class AuthServiceImpl implements AuthService {
     return this.logoutUseCase.execute(input);
   }
 
-  async refreshTokens(input: RefreshTokensDTO): Promise<RefreshTokensResultDTO> {
+  async refreshTokens(
+    input: RefreshTokensDTO
+  ): Promise<RefreshTokensResultDTO> {
     return this.refreshTokensUseCase.execute(input);
   }
 
@@ -49,7 +51,9 @@ export class AuthServiceImpl implements AuthService {
     return this.resetPasswordUseCase.execute(input);
   }
 
-  async validateToken(input: ValidateTokenDTO): Promise<ValidateTokenResultDTO> {
+  async validateToken(
+    input: ValidateTokenDTO
+  ): Promise<ValidateTokenResultDTO> {
     return this.validateTokenUseCase.execute(input);
   }
 }

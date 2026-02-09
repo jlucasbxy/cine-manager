@@ -3,8 +3,5 @@ import { makeUserRepository } from "@/main/factories/repositories";
 import { BcryptHashProvider } from "@/infrastructure/providers";
 
 export function makeCreateUser(): CreateUser {
-  return new CreateUser(
-    makeUserRepository(),
-    new BcryptHashProvider()
-  );
+  return new CreateUser(makeUserRepository(), new BcryptHashProvider());
 }

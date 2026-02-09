@@ -15,7 +15,7 @@ export class AuthController {
     private readonly loginValidator: LoginValidator,
     private readonly emailValidator: EmailValidator,
     private readonly resetPasswordValidator: ResetPasswordValidator
-  ) { }
+  ) {}
 
   async login(request: FastifyRequest, reply: FastifyReply) {
     const data = this.loginValidator.parse(request.body);

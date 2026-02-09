@@ -7,7 +7,9 @@ export class Logout {
   ) {}
 
   async execute(input: LogoutDTO): Promise<void> {
-    const token = await this.refreshTokenRepository.findByToken(input.refreshToken);
+    const token = await this.refreshTokenRepository.findByToken(
+      input.refreshToken
+    );
     if (token) {
       const revokedToken = token.revoke();
       await this.refreshTokenRepository.revoke(revokedToken);

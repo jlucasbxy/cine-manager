@@ -8,7 +8,13 @@ export class BcryptHashProvider implements HashProvider {
     return bcrypt.hash(plaintext, this.saltRounds);
   }
 
-  async compare({ plaintext, hash }: { plaintext: string; hash: string }): Promise<boolean> {
+  async compare({
+    plaintext,
+    hash
+  }: {
+    plaintext: string;
+    hash: string;
+  }): Promise<boolean> {
     return bcrypt.compare(plaintext, hash);
   }
 }

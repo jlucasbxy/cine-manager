@@ -4,9 +4,7 @@ import { MovieMapper } from "@/application/mappers";
 import type { QueryMoviesDTO, MovieDTO } from "@repo/dtos";
 
 export class ListMovies {
-  constructor(
-    private readonly movieRepository: MovieRepository
-  ) { }
+  constructor(private readonly movieRepository: MovieRepository) {}
 
   async execute(input: QueryMoviesDTO): Promise<MovieDTO[]> {
     const query = MovieQuery.create(input);

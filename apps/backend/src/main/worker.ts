@@ -4,19 +4,30 @@ import { makePrismaClient } from "@/main/factories/prisma";
 import { PrismaNotificationOutboxRepository } from "@/infrastructure/database/repositories";
 import { ResendEmailProvider } from "@/infrastructure/providers";
 import { NotificationServiceImpl } from "@/infrastructure/services";
-import { SendPasswordResetEmail, ProcessNotificationOutbox } from "@/application/use-cases/notification";
+import {
+  SendPasswordResetEmail,
+  ProcessNotificationOutbox
+} from "@/application/use-cases/notification";
 import { NotificationOutboxWorker } from "@/infrastructure/workers";
 
 export function startWorker() {
   const emailProvider = new ResendEmailProvider();
   const sendPasswordResetEmail = new SendPasswordResetEmail(emailProvider);
-  const notificationService = new NotificationServiceImpl(sendPasswordResetEmail);
+  const notificationService = new NotificationServiceImpl(
+    sendPasswordResetEmail
+  );
 
-  const outboxRepository = new PrismaNotificationOutboxRepository(makePrismaClient());
-  const processOutbox = new ProcessNotificationOutbox(outboxRepository, notificationService, {
-    batchSize: notificationOutboxWorkerConfig.batchSize,
-    maxRetries: notificationOutboxWorkerConfig.maxRetries
-  });
+  const outboxRepository = new PrismaNotificationOutboxRepository(
+    makePrismaClient()
+  );
+  const processOutbox = new ProcessNotificationOutbox(
+    outboxRepository,
+    notificationService,
+    {
+      batchSize: notificationOutboxWorkerConfig.batchSize,
+      maxRetries: notificationOutboxWorkerConfig.maxRetries
+    }
+  );
 
   const worker = new NotificationOutboxWorker(processOutbox, {
     pollIntervalMs: notificationOutboxWorkerConfig.pollIntervalMs

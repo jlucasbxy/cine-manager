@@ -2,7 +2,6 @@ import z from "zod";
 import { InvalidNonNegativeIntError } from "@/domain/errors";
 
 export class NonNegativeInt {
-
   private readonly value: number;
 
   private constructor(value: number) {

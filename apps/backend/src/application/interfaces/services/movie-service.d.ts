@@ -1,4 +1,9 @@
-import type { CreateMovieDTO, UpdateMovieDTO, QueryMoviesDTO, MovieDTO } from "@repo/dtos";
+import type {
+  CreateMovieDTO,
+  UpdateMovieDTO,
+  QueryMoviesDTO,
+  MovieDTO
+} from "@repo/dtos";
 
 export interface MovieService {
   createMovie(userId: string, input: CreateMovieDTO): Promise<MovieDTO>;

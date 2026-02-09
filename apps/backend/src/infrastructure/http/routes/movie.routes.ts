@@ -7,7 +7,10 @@ interface MovieRoutesOptions {
   authMiddleware: AuthMiddleware;
 }
 
-export const movieRoutes: FastifyPluginAsync<MovieRoutesOptions> = async (fastify, opts) => {
+export const movieRoutes: FastifyPluginAsync<MovieRoutesOptions> = async (
+  fastify,
+  opts
+) => {
   const { movieController, authMiddleware } = opts;
 
   fastify.addHook("preHandler", authMiddleware.preHandler);
