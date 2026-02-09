@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import { notificationOutboxWorkerConfig } from "@/infrastructure/config/worker-env";
-import { makePrismaClient } from "@/main/prisma";
+import { makePrismaClient } from "@/main/factories/prisma";
 import { PrismaNotificationOutboxRepository } from "@/infrastructure/database/repositories";
 import { ResendEmailProvider } from "@/infrastructure/providers";
 import { NotificationServiceImpl } from "@/infrastructure/services";
