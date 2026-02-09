@@ -1,15 +1,14 @@
 import type { MovieRepository, UpdateMovieData } from "@/application/interfaces/repositories";
 import { Movie } from "@/domain/entities";
 import { Uuid, MovieQuery } from "@/domain/value-objects";
-import { prisma } from "@/infra/database/prisma";
+import type { PrismaDatabase } from "@/infra/database/prisma";
 import { PrismaMovieMapper } from "@/infra/database/mappers";
-import type { TransactionClient } from "@/infra/database/prisma/generated/prisma/internal/prismaNamespace";
 
 export class PrismaMovieRepository implements MovieRepository {
-  private readonly db: typeof prisma | TransactionClient;
+  private readonly db: PrismaDatabase;
 
-  constructor(client?: TransactionClient) {
-    this.db = client ?? prisma;
+  constructor(client: PrismaDatabase) {
+    this.db = client;
   }
 
   async create(movie: Movie): Promise<Movie> {

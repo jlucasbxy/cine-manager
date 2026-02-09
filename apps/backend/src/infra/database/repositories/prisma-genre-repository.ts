@@ -1,9 +1,15 @@
 import type { GenreRepository } from "@/application/interfaces/repositories";
 import type { GenreDTO } from "@repo/dtos";
-import { prisma } from "@/infra/database/prisma";
+import type { PrismaDatabase } from "@/infra/database/prisma";
 
 export class PrismaGenreRepository implements GenreRepository {
+  private readonly db: PrismaDatabase;
+
+  constructor(client: PrismaDatabase) {
+    this.db = client;
+  }
+
   async findAll(): Promise<GenreDTO[]> {
-    return prisma.genre.findMany();
+    return this.db.genre.findMany();
   }
 }

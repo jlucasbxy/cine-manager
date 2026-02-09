@@ -1,15 +1,14 @@
 import type { PasswordResetTokenRepository } from "@/application/interfaces/repositories";
 import { PasswordResetToken } from "@/domain/entities";
 import { Uuid } from "@/domain/value-objects";
-import { prisma } from "@/infra/database/prisma";
+import type { PrismaDatabase } from "@/infra/database/prisma";
 import { PrismaPasswordResetTokenMapper } from "@/infra/database/mappers";
-import type { TransactionClient } from "@/infra/database/prisma/generated/prisma/internal/prismaNamespace";
 
 export class PrismaPasswordResetTokenRepository implements PasswordResetTokenRepository {
-  private readonly db: typeof prisma | TransactionClient;
+  private readonly db: PrismaDatabase;
 
-  constructor(client?: TransactionClient) {
-    this.db = client ?? prisma;
+  constructor(client: PrismaDatabase) {
+    this.db = client;
   }
 
   async create(token: PasswordResetToken): Promise<PasswordResetToken> {

@@ -1,4 +1,5 @@
+import { prisma } from "@/infra/database/prisma";
 import { PrismaLanguageRepository } from "@/infra/database/repositories";
 import { singleton } from "@/main/factories/singleton";
 
-export const makeLanguageRepository = singleton(() => new PrismaLanguageRepository());
+export const makeLanguageRepository = singleton(() => new PrismaLanguageRepository(prisma));

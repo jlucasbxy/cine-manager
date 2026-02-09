@@ -1,16 +1,15 @@
 import type { NotificationOutboxRepository } from "@/application/interfaces/repositories";
 import { NotificationOutbox } from "@/domain/entities";
 import { NotificationStatusEnum } from "@/domain/enums";
-import { prisma } from "@/infra/database/prisma";
+import type { PrismaDatabase } from "@/infra/database/prisma";
 import { PrismaNotificationOutboxMapper } from "@/infra/database/mappers";
 import type { InputJsonValue } from "@prisma/client/runtime/client";
-import type { TransactionClient } from "@/infra/database/prisma/generated/prisma/internal/prismaNamespace";
 
 export class PrismaNotificationOutboxRepository implements NotificationOutboxRepository {
-  private readonly db: typeof prisma | TransactionClient;
+  private readonly db: PrismaDatabase;
 
-  constructor(client?: TransactionClient) {
-    this.db = client ?? prisma;
+  constructor(client: PrismaDatabase) {
+    this.db = client;
   }
 
   async create(entry: NotificationOutbox): Promise<void> {

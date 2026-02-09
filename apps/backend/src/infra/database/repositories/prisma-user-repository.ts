@@ -1,15 +1,14 @@
 import type { UserRepository } from "@/application/interfaces/repositories";
 import { User } from "@/domain/entities";
 import { Email, Password, Uuid } from "@/domain/value-objects";
-import { prisma } from "@/infra/database/prisma";
+import type { PrismaDatabase } from "@/infra/database/prisma";
 import { PrismaUserMapper } from "@/infra/database/mappers";
-import type { TransactionClient } from "@/infra/database/prisma/generated/prisma/internal/prismaNamespace";
 
 export class PrismaUserRepository implements UserRepository {
-  private readonly db: typeof prisma | TransactionClient;
+  private readonly db: PrismaDatabase;
 
-  constructor(client?: TransactionClient) {
-    this.db = client ?? prisma;
+  constructor(client: PrismaDatabase) {
+    this.db = client;
   }
 
   async create(user: User): Promise<User> {
