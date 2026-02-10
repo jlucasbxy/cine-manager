@@ -8,19 +8,8 @@ import type { Upload } from "@/domain/entities";
 import { s3Env } from "@/infrastructure/config/s3-env";
 
 export class S3StorageProvider implements StorageProvider {
-  private readonly client: S3Client;
 
-  constructor() {
-    this.client = new S3Client({
-      region: s3Env.S3_REGION,
-      ...(s3Env.S3_ENDPOINT && { endpoint: s3Env.S3_ENDPOINT }),
-      credentials: {
-        accessKeyId: s3Env.S3_ACCESS_KEY_ID,
-        secretAccessKey: s3Env.S3_SECRET_ACCESS_KEY
-      },
-      forcePathStyle: s3Env.S3_FORCE_PATH_STYLE
-    });
-  }
+  constructor(private readonly client: S3Client) { }
 
   async generateUploadUrl(upload: Upload): Promise<GenerateUploadUrlResult> {
     const command = new PutObjectCommand({
