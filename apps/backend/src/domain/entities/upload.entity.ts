@@ -7,15 +7,6 @@ interface CreateUploadProps {
   userId: Uuid;
 }
 
-interface ReconstituteUploadProps {
-  id: Uuid;
-  key: string;
-  fileName: string;
-  contentType: string;
-  userId: Uuid;
-  createdAt: Date;
-}
-
 export class Upload {
   readonly id: Uuid;
   readonly key: string;
@@ -55,14 +46,4 @@ export class Upload {
     });
   }
 
-  static reconstitute(props: ReconstituteUploadProps): Upload {
-    return new Upload({
-      id: props.id,
-      key: props.key,
-      fileName: props.fileName,
-      contentType: props.contentType,
-      userId: props.userId,
-      createdAt: props.createdAt
-    });
-  }
 }
