@@ -1,8 +1,4 @@
-export type GenerateUploadUrlData = {
-  key: string;
-  contentType: string;
-  expiresInSeconds: number;
-};
+import type { Upload } from "@/domain/entities";
 
 export type GenerateUploadUrlResult = {
   uploadUrl: string;
@@ -10,7 +6,5 @@ export type GenerateUploadUrlResult = {
 };
 
 export interface StorageProvider {
-  generateUploadUrl(
-    data: GenerateUploadUrlData
-  ): Promise<GenerateUploadUrlResult>;
+  generateUploadUrl(upload: Upload): Promise<GenerateUploadUrlResult>;
 }
