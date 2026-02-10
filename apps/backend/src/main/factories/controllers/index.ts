@@ -3,3 +3,4 @@ export { makeMovieController } from "@/main/factories/controllers/makeMovieContr
 export { makeUserController } from "@/main/factories/controllers/makeUserController";
 export { makeLanguageController } from "@/main/factories/controllers/makeLanguageController";
 export { makeGenreController } from "@/main/factories/controllers/makeGenreController";
+export { makeUploadController } from "@/main/factories/controllers/makeUploadController";

@@ -7,6 +7,7 @@ export { LoginValidator } from "./login.validator";
 export { ResetPasswordValidator } from "./reset-password.validator";
 export { EmailValidator } from "./email.validator";
 export { RefreshTokenValidator } from "./refresh-token.validator";
+export { GenerateUploadUrlValidator } from "./generate-upload-url.validator";
 export { AgeRating, MovieStatus } from "./enums";
 export { passwordZodSchema } from "./schemas/password.schema";
 export { idZodSchema } from "./schemas/id.schema";

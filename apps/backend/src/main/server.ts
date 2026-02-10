@@ -12,6 +12,7 @@ import {
   genreRoutes,
   languageRoutes,
   movieRoutes,
+  uploadRoutes,
   userRoutes
 } from "@/infrastructure/http/routes";
 import {
@@ -19,6 +20,7 @@ import {
   makeGenreController,
   makeLanguageController,
   makeMovieController,
+  makeUploadController,
   makeUserController
 } from "@/main/factories/controllers";
 import { makeAuthMiddleware } from "@/main/factories/middlewares";
@@ -47,6 +49,7 @@ export async function start() {
   const genreController = makeGenreController();
   const languageController = makeLanguageController();
   const movieController = makeMovieController();
+  const uploadController = makeUploadController();
   const userController = makeUserController();
   const authMiddleware = makeAuthMiddleware();
 
@@ -67,6 +70,11 @@ export async function start() {
   await app.register(movieRoutes, {
     prefix: ROUTE_PREFIXES.movies,
     movieController,
+    authMiddleware
+  });
+  await app.register(uploadRoutes, {
+    prefix: ROUTE_PREFIXES.uploads,
+    uploadController,
     authMiddleware
   });
   await app.register(userRoutes, {

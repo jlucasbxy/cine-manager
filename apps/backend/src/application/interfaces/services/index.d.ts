@@ -7,3 +7,4 @@ export type {
 export type { UserService } from "@/application/interfaces/services/user-service";
 export type { LanguageService } from "@/application/interfaces/services/language-service";
 export type { GenreService } from "@/application/interfaces/services/genre-service";
+export type { UploadService } from "@/application/interfaces/services/upload-service";

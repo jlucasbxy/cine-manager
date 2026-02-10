@@ -8,3 +8,8 @@ export type {
   TransactionManager,
   TransactionRepositories
 } from "@/application/interfaces/providers/transaction-manager";
+export type {
+  StorageProvider,
+  GenerateUploadUrlData,
+  GenerateUploadUrlResult
+} from "@/application/interfaces/providers/storage-provider";

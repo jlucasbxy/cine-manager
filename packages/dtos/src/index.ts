@@ -18,5 +18,9 @@ export type {
 } from "./validate-token.dto";
 export type { LanguageDTO } from "./language.dto";
 export type { GenreDTO } from "./genre.dto";
+export type {
+  GenerateUploadUrlDTO,
+  GenerateUploadUrlResultDTO
+} from "./generate-upload-url.dto";
 export { AgeRating, MovieStatus } from "@repo/validators";
 export { ErrorCode } from "./error-code.enum";

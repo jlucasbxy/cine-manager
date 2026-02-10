@@ -4,3 +4,4 @@ export { NotificationServiceImpl } from "@/infrastructure/services/notification-
 export { UserServiceImpl } from "@/infrastructure/services/user-service.impl";
 export { LanguageServiceImpl } from "@/infrastructure/services/language-service.impl";
 export { GenreServiceImpl } from "@/infrastructure/services/genre-service.impl";
+export { UploadServiceImpl } from "@/infrastructure/services/upload-service.impl";

@@ -3,5 +3,6 @@ export const ROUTE_PREFIXES = {
   genres: "/genres",
   languages: "/languages",
   movies: "/movies",
+  uploads: "/uploads",
   users: "/users"
 } as const;
