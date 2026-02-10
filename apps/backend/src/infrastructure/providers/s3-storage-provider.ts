@@ -5,20 +5,20 @@ import type {
   GenerateUploadUrlData,
   GenerateUploadUrlResult
 } from "@/application/interfaces/providers";
-import { env } from "@/infrastructure/config/env";
+import { s3Env } from "@/infrastructure/config/s3-env";
 
 export class S3StorageProvider implements StorageProvider {
   private readonly client: S3Client;
 
   constructor() {
     this.client = new S3Client({
-      region: env.S3_REGION,
-      ...(env.S3_ENDPOINT && { endpoint: env.S3_ENDPOINT }),
+      region: s3Env.S3_REGION,
+      ...(s3Env.S3_ENDPOINT && { endpoint: s3Env.S3_ENDPOINT }),
       credentials: {
-        accessKeyId: env.S3_ACCESS_KEY_ID,
-        secretAccessKey: env.S3_SECRET_ACCESS_KEY
+        accessKeyId: s3Env.S3_ACCESS_KEY_ID,
+        secretAccessKey: s3Env.S3_SECRET_ACCESS_KEY
       },
-      forcePathStyle: env.S3_FORCE_PATH_STYLE
+      forcePathStyle: s3Env.S3_FORCE_PATH_STYLE
     });
   }
 
@@ -26,7 +26,7 @@ export class S3StorageProvider implements StorageProvider {
     data: GenerateUploadUrlData
   ): Promise<GenerateUploadUrlResult> {
     const command = new PutObjectCommand({
-      Bucket: env.S3_BUCKET,
+      Bucket: s3Env.S3_BUCKET,
       Key: data.key,
       ContentType: data.contentType
     });
@@ -35,9 +35,9 @@ export class S3StorageProvider implements StorageProvider {
       expiresIn: data.expiresInSeconds
     });
 
-    const fileUrl = env.S3_FORCE_PATH_STYLE
-      ? `${env.S3_ENDPOINT}/${env.S3_BUCKET}/${data.key}`
-      : `https://${env.S3_BUCKET}.s3.${env.S3_REGION}.amazonaws.com/${data.key}`;
+    const fileUrl = s3Env.S3_FORCE_PATH_STYLE
+      ? `${s3Env.S3_ENDPOINT}/${s3Env.S3_BUCKET}/${data.key}`
+      : `https://${s3Env.S3_BUCKET}.s3.${s3Env.S3_REGION}.amazonaws.com/${data.key}`;
 
     return { uploadUrl, fileUrl };
   }

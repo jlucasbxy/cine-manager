@@ -1,10 +1,10 @@
 import { GenerateUploadUrl } from "@/application/use-cases/upload";
 import { makeStorageProvider } from "@/main/factories/providers";
-import { env } from "@/infrastructure/config/env";
+import { s3Env } from "@/infrastructure/config/s3-env";
 
 export function makeGenerateUploadUrl(): GenerateUploadUrl {
   return new GenerateUploadUrl(
     makeStorageProvider(),
-    env.UPLOAD_URL_EXPIRES_IN
+    s3Env.UPLOAD_URL_EXPIRES_IN
   );
 }
