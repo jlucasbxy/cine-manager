@@ -1,6 +1,7 @@
 import { GenreServiceImpl } from "@/infrastructure/services";
 import { makeListGenres } from "@/main/factories/use-cases/genre";
+import { singleton } from "@/main/factories/singleton";
 
-export function makeGenreService(): GenreServiceImpl {
-  return new GenreServiceImpl(makeListGenres());
-}
+export const makeGenreService = singleton(
+  () => new GenreServiceImpl(makeListGenres())
+);

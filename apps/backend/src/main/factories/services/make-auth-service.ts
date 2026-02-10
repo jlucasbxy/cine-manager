@@ -7,14 +7,16 @@ import {
   makeResetPassword,
   makeValidateToken
 } from "@/main/factories/use-cases/auth";
+import { singleton } from "@/main/factories/singleton";
 
-export function makeAuthService(): AuthServiceImpl {
-  return new AuthServiceImpl(
-    makeLogin(),
-    makeLogout(),
-    makeRefreshTokens(),
-    makeRequestPasswordReset(),
-    makeResetPassword(),
-    makeValidateToken()
-  );
-}
+export const makeAuthService = singleton(
+  () =>
+    new AuthServiceImpl(
+      makeLogin(),
+      makeLogout(),
+      makeRefreshTokens(),
+      makeRequestPasswordReset(),
+      makeResetPassword(),
+      makeValidateToken()
+    )
+);

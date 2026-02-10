@@ -6,13 +6,15 @@ import {
   makeGetMovie,
   makeListMovies
 } from "@/main/factories/use-cases/movie";
+import { singleton } from "@/main/factories/singleton";
 
-export function makeMovieService(): MovieServiceImpl {
-  return new MovieServiceImpl(
-    makeCreateMovie(),
-    makeUpdateMovie(),
-    makeDeleteMovie(),
-    makeGetMovie(),
-    makeListMovies()
-  );
-}
+export const makeMovieService = singleton(
+  () =>
+    new MovieServiceImpl(
+      makeCreateMovie(),
+      makeUpdateMovie(),
+      makeDeleteMovie(),
+      makeGetMovie(),
+      makeListMovies()
+    )
+);
