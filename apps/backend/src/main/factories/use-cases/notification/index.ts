@@ -1,2 +1,2 @@
-export { makeSendPasswordResetEmail } from "@/main/factories/use-cases/notification/makeSendPasswordResetEmail";
-export { makeProcessNotificationOutbox } from "@/main/factories/use-cases/notification/makeProcessNotificationOutbox";
+export { makeSendPasswordResetEmail } from "@/main/factories/use-cases/notification/make-send-password-reset-email";
+export { makeProcessNotificationOutbox } from "@/main/factories/use-cases/notification/make-process-notification-outbox";

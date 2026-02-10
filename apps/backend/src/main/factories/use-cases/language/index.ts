@@ -1,1 +1,1 @@
-export { makeListLanguages } from "@/main/factories/use-cases/language/makeListLanguages";
+export { makeListLanguages } from "@/main/factories/use-cases/language/make-list-languages";
