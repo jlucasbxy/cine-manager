@@ -9,6 +9,7 @@ export { EmailAlreadyInUseError } from "@/domain/errors/email-already-in-use.err
 export { MovieNotFoundError } from "@/domain/errors/movie-not-found.error";
 export { InvalidMovieStatusError } from "@/domain/errors/invalid-movie-status.error";
 export { InvalidAgeRatingError } from "@/domain/errors/invalid-age-rating.error";
+export { InvalidContentTypeError } from "@/domain/errors/invalid-content-type.error";
 export { InvalidMovieQueryError } from "@/domain/errors/invalid-movie-query.error";
 export { InvalidCredentialsError } from "@/domain/errors/invalid-credentials.error";
 export { TokenExpiredError } from "@/domain/errors/token-expired.error";

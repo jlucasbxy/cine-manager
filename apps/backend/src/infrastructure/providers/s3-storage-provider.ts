@@ -15,7 +15,7 @@ export class S3StorageProvider implements StorageProvider {
     const command = new PutObjectCommand({
       Bucket: s3Env.S3_BUCKET,
       Key: upload.key,
-      ContentType: upload.contentType
+      ContentType: upload.contentType.toString()
     });
 
     const uploadUrl = await getSignedUrl(this.client, command, {

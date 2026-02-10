@@ -1,5 +1,6 @@
 export { Password } from "@/domain/value-objects/password.value-object";
 export { Email } from "@/domain/value-objects/email.value-object";
+export { ContentType } from "@/domain/value-objects/content-type.value-object";
 export { Url } from "@/domain/value-objects/url.value-object";
 export { NonNegativeInt } from "@/domain/value-objects/non-negative-int.value-object";
 export { NonNegativeNumber } from "@/domain/value-objects/non-negative-number.value-object";

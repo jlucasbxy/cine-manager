@@ -1,5 +1,5 @@
 import path from "node:path";
-import { Uuid } from "@/domain/value-objects";
+import { ContentType, Uuid } from "@/domain/value-objects";
 
 interface CreateUploadProps {
   fileName: string;
@@ -9,11 +9,11 @@ interface CreateUploadProps {
 
 export class Upload {
   readonly key: string;
-  readonly contentType: string;
+  readonly contentType: ContentType;
 
   private constructor(data: {
     key: string;
-    contentType: string;
+    contentType: ContentType;
   }) {
     this.key = data.key;
     this.contentType = data.contentType;
@@ -26,7 +26,7 @@ export class Upload {
 
     return new Upload({
       key,
-      contentType: props.contentType,
+      contentType: ContentType.create(props.contentType),
     });
   }
 }

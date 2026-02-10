@@ -9,6 +9,7 @@ const STATUS_MAP: Record<ErrorCode, number> = {
   [ErrorCode.INVALID_NON_NEGATIVE_NUMBER]: 400,
   [ErrorCode.INVALID_AGE_RATING]: 400,
   [ErrorCode.INVALID_MOVIE_STATUS]: 400,
+  [ErrorCode.INVALID_CONTENT_TYPE]: 400,
   [ErrorCode.INVALID_MOVIE_QUERY]: 400,
   [ErrorCode.RESET_TOKEN_EXPIRED]: 400,
   [ErrorCode.RESET_TOKEN_INVALID]: 400,
