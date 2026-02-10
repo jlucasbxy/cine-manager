@@ -3,7 +3,7 @@ import type {
   GenerateUploadUrlDTO,
   GenerateUploadUrlResultDTO
 } from "@repo/dtos";
-import { Upload } from "@/domain/entities";
+import { ImageUpload } from "@/domain/entities";
 import { Uuid } from "@/domain/value-objects";
 
 export class GenerateUploadUrl {
@@ -13,7 +13,7 @@ export class GenerateUploadUrl {
     userId: string,
     input: GenerateUploadUrlDTO
   ): Promise<GenerateUploadUrlResultDTO> {
-    const upload = Upload.create({
+    const upload = ImageUpload.create({
       fileName: input.fileName,
       contentType: input.contentType,
       userId: Uuid.create(userId)

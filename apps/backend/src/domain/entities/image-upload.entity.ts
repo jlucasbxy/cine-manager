@@ -1,32 +1,32 @@
 import path from "node:path";
-import { ContentType, Uuid } from "@/domain/value-objects";
+import { ImageMimeType, Uuid } from "@/domain/value-objects";
 
-interface CreateUploadProps {
+interface CreateImageUploadProps {
   fileName: string;
   contentType: string;
   userId: Uuid;
 }
 
-export class Upload {
+export class ImageUpload {
   readonly key: string;
-  readonly contentType: ContentType;
+  readonly contentType: ImageMimeType;
 
   private constructor(data: {
     key: string;
-    contentType: ContentType;
+    contentType: ImageMimeType;
   }) {
     this.key = data.key;
     this.contentType = data.contentType;
   }
 
-  static create(props: CreateUploadProps): Upload {
+  static create(props: CreateImageUploadProps): ImageUpload {
     const id = Uuid.generate();
     const ext = path.extname(props.fileName);
     const key = `uploads/${props.userId.toString()}/${id.toString()}${ext}`;
 
-    return new Upload({
+    return new ImageUpload({
       key,
-      contentType: ContentType.create(props.contentType),
+      contentType: ImageMimeType.create(props.contentType),
     });
   }
 }
