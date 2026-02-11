@@ -18,8 +18,7 @@ export class GenerateUploadUrl {
       userId: Uuid.create(userId)
     });
 
-    const imageUpload =
-      await this.storageProvider.generateUploadUrl(uploadKey);
+    const imageUpload = await this.storageProvider.generateUploadUrl(uploadKey);
 
     return ImageUploadMapper.toDTO(imageUpload);
   }
