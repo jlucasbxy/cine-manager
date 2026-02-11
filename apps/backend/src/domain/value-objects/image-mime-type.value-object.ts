@@ -1,6 +1,14 @@
+import path from "node:path";
 import z from "zod";
 import { InvalidImageMimeTypeError } from "@/domain/errors";
 import { ImageMimeTypeEnum } from "@/domain/enums/image-mime-type.enum";
+
+const extensionToMimeType: Record<string, ImageMimeTypeEnum> = {
+  ".jpg": ImageMimeTypeEnum.JPEG,
+  ".jpeg": ImageMimeTypeEnum.JPEG,
+  ".png": ImageMimeTypeEnum.PNG,
+  ".webp": ImageMimeTypeEnum.WEBP,
+};
 
 const imageMimeTypeValues = Object.values(ImageMimeTypeEnum) as [
   ImageMimeTypeEnum,
@@ -20,6 +28,15 @@ export class ImageMimeType {
       throw new InvalidImageMimeTypeError();
     }
     return new ImageMimeType(value as ImageMimeTypeEnum);
+  }
+
+  static fromFilename(filename: string): ImageMimeType {
+    const ext = path.extname(filename).toLowerCase();
+    const mimeType = extensionToMimeType[ext];
+    if (!mimeType) {
+      throw new InvalidImageMimeTypeError();
+    }
+    return new ImageMimeType(mimeType);
   }
 
   public getValue(): ImageMimeTypeEnum {
