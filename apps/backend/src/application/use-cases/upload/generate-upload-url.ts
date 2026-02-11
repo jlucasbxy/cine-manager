@@ -3,6 +3,7 @@ import type {
   GenerateUploadUrlDTO,
   GenerateUploadUrlResultDTO
 } from "@repo/dtos";
+import { ImageUploadMapper } from "@/application/mappers";
 import { ImageMimeType, UploadKey, Uuid } from "@/domain/value-objects";
 
 export class GenerateUploadUrl {
@@ -20,10 +21,6 @@ export class GenerateUploadUrl {
     const imageUpload =
       await this.storageProvider.generateUploadUrl(uploadKey);
 
-    return {
-      uploadUrl: imageUpload.uploadUrl,
-      fileUrl: imageUpload.fileUrl,
-      key: imageUpload.key.toString()
-    };
+    return ImageUploadMapper.toDTO(imageUpload);
   }
 }

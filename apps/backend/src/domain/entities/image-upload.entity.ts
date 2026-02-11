@@ -1,22 +1,22 @@
-import { ImageMimeType, UploadKey } from "@/domain/value-objects";
+import { ImageMimeType, UploadKey, Url } from "@/domain/value-objects";
 
 interface CreateImageUploadProps {
   uploadKey: UploadKey;
-  uploadUrl: string;
-  fileUrl: string;
+  uploadUrl: Url;
+  fileUrl: Url;
 }
 
 export class ImageUpload {
   readonly key: UploadKey;
   readonly contentType: ImageMimeType;
-  readonly uploadUrl: string;
-  readonly fileUrl: string;
+  readonly uploadUrl: Url;
+  readonly fileUrl: Url;
 
   private constructor(data: {
     key: UploadKey;
     contentType: ImageMimeType;
-    uploadUrl: string;
-    fileUrl: string;
+    uploadUrl: Url;
+    fileUrl: Url;
   }) {
     this.key = data.key;
     this.contentType = data.contentType;

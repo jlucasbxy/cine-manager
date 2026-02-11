@@ -2,7 +2,7 @@ import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import type { StorageProvider } from "@/application/interfaces/providers";
 import { s3Env } from "@/infrastructure/config/s3-env";
-import { UploadKey } from "@/domain/value-objects";
+import { UploadKey, Url } from "@/domain/value-objects";
 import { ImageUpload } from "@/domain/entities";
 
 export class S3StorageProvider implements StorageProvider {
@@ -23,6 +23,10 @@ export class S3StorageProvider implements StorageProvider {
       ? `${s3Env.S3_ENDPOINT}/${s3Env.S3_BUCKET}/${uploadKey.toString()}`
       : `https://${s3Env.S3_BUCKET}.s3.${s3Env.S3_REGION}.amazonaws.com/${uploadKey.toString()}`;
 
-    return ImageUpload.create({ uploadKey, uploadUrl, fileUrl });
+    return ImageUpload.create({
+      uploadKey,
+      uploadUrl: Url.create(uploadUrl),
+      fileUrl: Url.create(fileUrl)
+    });
   }
 }
