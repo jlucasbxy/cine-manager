@@ -6,7 +6,7 @@ import type {
 import { ImageMimeType, UploadKey, Uuid } from "@/domain/value-objects";
 
 export class GenerateUploadUrl {
-  constructor(private readonly storageProvider: StorageProvider) { }
+  constructor(private readonly storageProvider: StorageProvider) {}
 
   async execute(
     userId: string,

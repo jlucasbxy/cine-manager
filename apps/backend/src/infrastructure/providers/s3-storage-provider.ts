@@ -8,7 +8,7 @@ import { s3Env } from "@/infrastructure/config/s3-env";
 import { UploadKey } from "@/domain/value-objects";
 
 export class S3StorageProvider implements StorageProvider {
-  constructor(private readonly client: S3Client) { }
+  constructor(private readonly client: S3Client) {}
 
   async generateUploadUrl(
     uploadKey: UploadKey

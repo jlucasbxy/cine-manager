@@ -7,7 +7,7 @@ const extensionToMimeType: Record<string, ImageMimeTypeEnum> = {
   ".jpg": ImageMimeTypeEnum.JPEG,
   ".jpeg": ImageMimeTypeEnum.JPEG,
   ".png": ImageMimeTypeEnum.PNG,
-  ".webp": ImageMimeTypeEnum.WEBP,
+  ".webp": ImageMimeTypeEnum.WEBP
 };
 
 const imageMimeTypeValues = Object.values(ImageMimeTypeEnum) as [
