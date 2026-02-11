@@ -8,10 +8,11 @@ import type { ImageUpload } from "@/domain/entities";
 import { s3Env } from "@/infrastructure/config/s3-env";
 
 export class S3StorageProvider implements StorageProvider {
+  constructor(private readonly client: S3Client) {}
 
-  constructor(private readonly client: S3Client) { }
-
-  async generateUploadUrl(upload: ImageUpload): Promise<GenerateUploadUrlResult> {
+  async generateUploadUrl(
+    upload: ImageUpload
+  ): Promise<GenerateUploadUrlResult> {
     const command = new PutObjectCommand({
       Bucket: s3Env.S3_BUCKET,
       Key: upload.key,

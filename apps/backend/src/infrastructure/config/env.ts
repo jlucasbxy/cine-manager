@@ -11,7 +11,7 @@ const envSchema = z.object({
   PASSWORD_RESET_TOKEN_EXPIRES_IN: z.string().default("1h"),
   RESEND_API_KEY: z.string(),
   EMAIL_FROM: z.string(),
-  REDIS_URL: z.string().default("redis://localhost:6379"),
+  REDIS_URL: z.string().default("redis://localhost:6379")
 });
 
 export const env = envSchema.parse(process.env);

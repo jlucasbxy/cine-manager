@@ -11,10 +11,7 @@ export class ImageUpload {
   readonly key: string;
   readonly contentType: ImageMimeType;
 
-  private constructor(data: {
-    key: string;
-    contentType: ImageMimeType;
-  }) {
+  private constructor(data: { key: string; contentType: ImageMimeType }) {
     this.key = data.key;
     this.contentType = data.contentType;
   }
@@ -26,7 +23,7 @@ export class ImageUpload {
 
     return new ImageUpload({
       key,
-      contentType: ImageMimeType.create(props.contentType),
+      contentType: ImageMimeType.create(props.contentType)
     });
   }
 }

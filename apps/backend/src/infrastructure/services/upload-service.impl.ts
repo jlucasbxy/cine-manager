@@ -6,9 +6,7 @@ import type {
 } from "@repo/dtos";
 
 export class UploadServiceImpl implements UploadService {
-  constructor(
-    private readonly generateUploadUrlUseCase: GenerateUploadUrl
-  ) {}
+  constructor(private readonly generateUploadUrlUseCase: GenerateUploadUrl) {}
 
   async generateUploadUrl(
     userId: string,
