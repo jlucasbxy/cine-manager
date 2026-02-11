@@ -1,4 +1,4 @@
-import type { ImageUpload } from "@/domain/entities";
+import { UploadKey } from "@/domain/value-objects";
 
 export type GenerateUploadUrlResult = {
   uploadUrl: string;
@@ -6,5 +6,5 @@ export type GenerateUploadUrlResult = {
 };
 
 export interface StorageProvider {
-  generateUploadUrl(upload: ImageUpload): Promise<GenerateUploadUrlResult>;
+  generateUploadUrl(uploadKey: UploadKey): Promise<GenerateUploadUrlResult>;
 }

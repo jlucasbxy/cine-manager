@@ -1,17 +1,22 @@
 import { Uuid, ImageMimeType } from "@/domain/value-objects";
 
+interface UploadKeyCreateParams {
+  userId: Uuid,
+  mimeType: ImageMimeType
+}
+
 export class UploadKey {
 
   private constructor(private readonly key: string, private mimeType: ImageMimeType) { }
 
-  static create(userId: Uuid, mimeType: ImageMimeType): UploadKey {
+  static create(props: UploadKeyCreateParams): UploadKey {
     const id = Uuid.generate();
-    const key = `uploads/${userId.toString()}/${id.toString()}${mimeType.toString()}`;
-    return new UploadKey(key, mimeType);
+    const key = `uploads/${props.userId.toString()}/${id.toString()}${props.mimeType.toString()}`;
+    return new UploadKey(key, props.mimeType);
   }
 
-  static reconstitute(userId: Uuid, mimeType: ImageMimeType): UploadKey {
-    return this.create(userId, mimeType);
+  static reconstitute(props: UploadKeyCreateParams): UploadKey {
+    return this.create(props);
   }
 
   public getMimeType(): ImageMimeType {

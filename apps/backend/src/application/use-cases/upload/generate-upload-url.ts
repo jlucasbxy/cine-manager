@@ -3,25 +3,23 @@ import type {
   GenerateUploadUrlDTO,
   GenerateUploadUrlResultDTO
 } from "@repo/dtos";
-import { ImageUpload } from "@/domain/entities";
-import { Uuid } from "@/domain/value-objects";
+import { ImageMimeType, UploadKey, Uuid } from "@/domain/value-objects";
 
 export class GenerateUploadUrl {
-  constructor(private readonly storageProvider: StorageProvider) {}
+  constructor(private readonly storageProvider: StorageProvider) { }
 
   async execute(
     userId: string,
     input: GenerateUploadUrlDTO
   ): Promise<GenerateUploadUrlResultDTO> {
-    const upload = ImageUpload.create({
-      fileName: input.fileName,
-      contentType: input.contentType,
+    const uploadKey = UploadKey.create({
+      mimeType: ImageMimeType.create(input.contentType),
       userId: Uuid.create(userId)
     });
 
     const { uploadUrl, fileUrl } =
-      await this.storageProvider.generateUploadUrl(upload);
+      await this.storageProvider.generateUploadUrl(uploadKey);
 
-    return { uploadUrl, fileUrl, key: upload.key };
+    return { uploadUrl, fileUrl, key: uploadKey.toString() };
   }
 }
