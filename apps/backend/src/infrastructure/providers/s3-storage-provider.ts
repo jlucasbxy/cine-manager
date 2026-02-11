@@ -1,18 +1,14 @@
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-import type {
-  StorageProvider,
-  GenerateUploadUrlResult
-} from "@/application/interfaces/providers";
+import type { StorageProvider } from "@/application/interfaces/providers";
 import { s3Env } from "@/infrastructure/config/s3-env";
 import { UploadKey } from "@/domain/value-objects";
+import { ImageUpload } from "@/domain/entities";
 
 export class S3StorageProvider implements StorageProvider {
   constructor(private readonly client: S3Client) {}
 
-  async generateUploadUrl(
-    uploadKey: UploadKey
-  ): Promise<GenerateUploadUrlResult> {
+  async generateUploadUrl(uploadKey: UploadKey): Promise<ImageUpload> {
     const command = new PutObjectCommand({
       Bucket: s3Env.S3_BUCKET,
       Key: uploadKey.toString(),
@@ -27,6 +23,6 @@ export class S3StorageProvider implements StorageProvider {
       ? `${s3Env.S3_ENDPOINT}/${s3Env.S3_BUCKET}/${uploadKey.toString()}`
       : `https://${s3Env.S3_BUCKET}.s3.${s3Env.S3_REGION}.amazonaws.com/${uploadKey.toString()}`;
 
-    return { uploadUrl, fileUrl };
+    return ImageUpload.create({ uploadKey, uploadUrl, fileUrl });
   }
 }

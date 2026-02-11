@@ -17,9 +17,13 @@ export class GenerateUploadUrl {
       userId: Uuid.create(userId)
     });
 
-    const { uploadUrl, fileUrl } =
+    const imageUpload =
       await this.storageProvider.generateUploadUrl(uploadKey);
 
-    return { uploadUrl, fileUrl, key: uploadKey.toString() };
+    return {
+      uploadUrl: imageUpload.uploadUrl,
+      fileUrl: imageUpload.fileUrl,
+      key: imageUpload.key.toString()
+    };
   }
 }

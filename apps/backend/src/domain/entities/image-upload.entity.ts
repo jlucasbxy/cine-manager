@@ -1,29 +1,35 @@
-import path from "node:path";
-import { ImageMimeType, Uuid } from "@/domain/value-objects";
+import { ImageMimeType, UploadKey } from "@/domain/value-objects";
 
 interface CreateImageUploadProps {
-  fileName: string;
-  contentType: string;
-  userId: Uuid;
+  uploadKey: UploadKey;
+  uploadUrl: string;
+  fileUrl: string;
 }
 
 export class ImageUpload {
-  readonly key: string;
+  readonly key: UploadKey;
   readonly contentType: ImageMimeType;
+  readonly uploadUrl: string;
+  readonly fileUrl: string;
 
-  private constructor(data: { key: string; contentType: ImageMimeType }) {
+  private constructor(data: {
+    key: UploadKey;
+    contentType: ImageMimeType;
+    uploadUrl: string;
+    fileUrl: string;
+  }) {
     this.key = data.key;
     this.contentType = data.contentType;
+    this.uploadUrl = data.uploadUrl;
+    this.fileUrl = data.fileUrl;
   }
 
   static create(props: CreateImageUploadProps): ImageUpload {
-    const id = Uuid.generate();
-    const ext = path.extname(props.fileName);
-    const key = `uploads/${props.userId.toString()}/${id.toString()}${ext}`;
-
     return new ImageUpload({
-      key,
-      contentType: ImageMimeType.create(props.contentType)
+      key: props.uploadKey,
+      contentType: props.uploadKey.getMimeType(),
+      uploadUrl: props.uploadUrl,
+      fileUrl: props.fileUrl
     });
   }
 }
