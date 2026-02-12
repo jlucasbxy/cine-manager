@@ -17,11 +17,6 @@ export class UpdateMovie {
   async execute(uuid: string, input: UpdateMovieDTO): Promise<MovieDTO> {
     const id = Uuid.create(uuid);
 
-    const existingMovie = await this.movieRepository.findById(id);
-    if (!existingMovie) {
-      throw new MovieNotFoundError();
-    }
-
     const data = {
       ...(input.title !== undefined && { title: input.title }),
       ...(input.originalTitle !== undefined && {
@@ -63,6 +58,9 @@ export class UpdateMovie {
     };
 
     const updated = await this.movieRepository.update(id, data);
+    if (!updated) {
+      throw new MovieNotFoundError();
+    }
     return MovieMapper.toDTO(updated);
   }
 }

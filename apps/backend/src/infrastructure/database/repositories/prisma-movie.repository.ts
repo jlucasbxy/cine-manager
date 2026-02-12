@@ -63,7 +63,7 @@ export class PrismaMovieRepository implements MovieRepository {
     return rawList.map(PrismaMovieMapper.toDomain);
   }
 
-  async update(id: Uuid, data: UpdateMovieData): Promise<Movie> {
+  async update(id: Uuid, data: UpdateMovieData): Promise<Movie | null> {
     const prismaData: Record<string, unknown> = {
       updatedAt: new Date()
     };
@@ -93,11 +93,22 @@ export class PrismaMovieRepository implements MovieRepository {
     if (data.votes !== undefined) prismaData.votes = data.votes.toNumber();
     if (data.score !== undefined) prismaData.score = data.score.toNumber();
 
-    const raw = await this.db.movie.update({
-      where: { id: id.toString() },
-      data: prismaData
-    });
-    return PrismaMovieMapper.toDomain(raw);
+    try {
+      const raw = await this.db.movie.update({
+        where: { id: id.toString() },
+        data: prismaData
+      });
+      return PrismaMovieMapper.toDomain(raw);
+    } catch (error: unknown) {
+      if (
+        error instanceof Error &&
+        "code" in error &&
+        (error as { code: string }).code === "P2025"
+      ) {
+        return null;
+      }
+      throw error;
+    }
   }
 
   async delete(id: Uuid): Promise<void> {
