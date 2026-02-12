@@ -5,11 +5,11 @@ import type { LogoutDTO } from "@repo/dtos";
 export class Logout {
   constructor(
     private readonly refreshTokenRepository: RefreshTokenRepository
-  ) {}
+  ) { }
 
   async execute(input: LogoutDTO): Promise<void> {
     await this.refreshTokenRepository.revokeByToken(
-      Token.reconstitute(input.refreshToken)
+      Token.create(input.refreshToken)
     );
   }
 }
