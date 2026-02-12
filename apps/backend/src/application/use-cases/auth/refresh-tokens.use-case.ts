@@ -1,6 +1,5 @@
 import ms, { type StringValue } from "ms";
 import type {
-  UserRepository,
   RefreshTokenRepository
 } from "@/application/interfaces/repositories";
 import type {
@@ -12,7 +11,6 @@ import {
   TokenExpiredError,
   TokenInvalidError,
   TokenRevokedError,
-  UserNotFoundError
 } from "@/domain/errors";
 import type { RefreshTokensDTO, RefreshTokensResultDTO } from "@repo/dtos";
 
@@ -23,12 +21,11 @@ export type RefreshTokensConfig = {
 
 export class RefreshTokens {
   constructor(
-    private readonly userRepository: UserRepository,
     private readonly refreshTokenRepository: RefreshTokenRepository,
     private readonly tokenProvider: TokenProvider,
     private readonly transactionManager: TransactionManager,
     private readonly config: RefreshTokensConfig
-  ) {}
+  ) { }
 
   async execute(input: RefreshTokensDTO): Promise<RefreshTokensResultDTO> {
     const token = await this.refreshTokenRepository.findByToken(
@@ -47,20 +44,15 @@ export class RefreshTokens {
       throw new TokenExpiredError();
     }
 
-    const user = await this.userRepository.findById(token.userId);
-    if (!user) {
-      throw new UserNotFoundError();
-    }
-
     const revokedToken = token.revoke();
 
     const accessToken = await this.tokenProvider.generate(
-      { userId: user.id.toString() },
+      { userId: token.userId.toString() },
       this.config.accessTokenExpiresIn
     );
 
     const newRefreshToken = RefreshToken.create({
-      userId: user.id,
+      userId: token.userId,
       expiresIn: this.config.refreshTokenExpiresIn
     });
 
