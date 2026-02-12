@@ -1,6 +1,5 @@
 import { ResetPassword } from "@/application/use-cases/auth";
 import {
-  makeUserRepository,
   makePasswordResetTokenRepository
 } from "@/main/factories/repositories";
 import {
@@ -10,7 +9,6 @@ import {
 
 export function makeResetPassword(): ResetPassword {
   return new ResetPassword(
-    makeUserRepository(),
     makePasswordResetTokenRepository(),
     makeHashProvider(),
     makeTransactionManager()

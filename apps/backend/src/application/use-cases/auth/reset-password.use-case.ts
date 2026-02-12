@@ -1,5 +1,4 @@
 import type {
-  UserRepository,
   PasswordResetTokenRepository,
 } from "@/application/interfaces/repositories";
 import type {
@@ -10,13 +9,11 @@ import { Password } from "@/domain/value-objects";
 import {
   ResetTokenExpiredError,
   ResetTokenInvalidError,
-  UserNotFoundError
 } from "@/domain/errors";
 import type { ResetPasswordDTO } from "@repo/dtos";
 
 export class ResetPassword {
   constructor(
-    private readonly userRepository: UserRepository,
     private readonly passwordResetTokenRepository: PasswordResetTokenRepository,
     private readonly hashProvider: HashProvider,
     private readonly transactionManager: TransactionManager
@@ -39,24 +36,19 @@ export class ResetPassword {
       throw new ResetTokenExpiredError();
     }
 
-    const user = await this.userRepository.findById(token.userId);
-    if (!user) {
-      throw new UserNotFoundError();
-    }
-
     const password = Password.create(input.newPassword);
     const hashedPassword = await this.hashProvider.hash(password.toString());
     const usedToken = token.markAsUsed();
 
     await this.transactionManager.execute(async (repos) => {
       await repos.userRepository.updatePassword(
-        user.id,
+        token.userId,
         Password.reconstitute(hashedPassword)
       );
 
       await repos.passwordResetTokenRepository.markAsUsed(usedToken);
 
-      await repos.refreshTokenRepository.revokeAllByUserId(user.id);
+      await repos.refreshTokenRepository.revokeAllByUserId(token.userId);
     });
   }
 }
