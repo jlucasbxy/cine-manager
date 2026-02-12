@@ -8,11 +8,9 @@ export class DeleteMovie {
   async execute(uuid: string): Promise<void> {
     const id = Uuid.create(uuid);
 
-    const existingMovie = await this.movieRepository.findById(id);
-    if (!existingMovie) {
+    const deleted = await this.movieRepository.delete(id);
+    if (!deleted) {
       throw new MovieNotFoundError();
     }
-
-    return this.movieRepository.delete(id);
   }
 }

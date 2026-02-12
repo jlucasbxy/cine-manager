@@ -8,5 +8,5 @@ export interface MovieRepository {
   findById(id: Uuid): Promise<Movie | null>;
   findAll(query: MovieQuery): Promise<Movie[]>;
   update(id: Uuid, data: UpdateMovieData): Promise<Movie | null>;
-  delete(id: Uuid): Promise<void>;
+  delete(id: Uuid): Promise<boolean>;
 }

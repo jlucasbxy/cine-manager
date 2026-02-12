@@ -111,9 +111,21 @@ export class PrismaMovieRepository implements MovieRepository {
     }
   }
 
-  async delete(id: Uuid): Promise<void> {
-    await this.db.movie.delete({
-      where: { id: id.toString() }
-    });
+  async delete(id: Uuid): Promise<boolean> {
+    try {
+      await this.db.movie.delete({
+        where: { id: id.toString() }
+      });
+      return true;
+    } catch (error: unknown) {
+      if (
+        error instanceof Error &&
+        "code" in error &&
+        (error as { code: string }).code === "P2025"
+      ) {
+        return false;
+      }
+      throw error;
+    }
   }
 }
