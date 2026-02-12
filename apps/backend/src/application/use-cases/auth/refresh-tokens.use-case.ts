@@ -3,7 +3,10 @@ import type {
   UserRepository,
   RefreshTokenRepository
 } from "@/application/interfaces/repositories";
-import type { TokenProvider } from "@/application/interfaces/providers";
+import type {
+  TokenProvider,
+  TransactionManager
+} from "@/application/interfaces/providers";
 import { RefreshToken } from "@/domain/entities";
 import {
   TokenExpiredError,
@@ -23,6 +26,7 @@ export class RefreshTokens {
     private readonly userRepository: UserRepository,
     private readonly refreshTokenRepository: RefreshTokenRepository,
     private readonly tokenProvider: TokenProvider,
+    private readonly transactionManager: TransactionManager,
     private readonly config: RefreshTokensConfig
   ) {}
 
@@ -49,7 +53,6 @@ export class RefreshTokens {
     }
 
     const revokedToken = token.revoke();
-    await this.refreshTokenRepository.update(revokedToken);
 
     const accessToken = await this.tokenProvider.generate(
       { userId: user.id.toString() },
@@ -61,7 +64,10 @@ export class RefreshTokens {
       expiresIn: this.config.refreshTokenExpiresIn
     });
 
-    await this.refreshTokenRepository.create(newRefreshToken);
+    await this.transactionManager.execute(async (repos) => {
+      await repos.refreshTokenRepository.update(revokedToken);
+      await repos.refreshTokenRepository.create(newRefreshToken);
+    });
 
     return {
       accessToken,
