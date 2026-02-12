@@ -33,7 +33,7 @@ export class PrismaRefreshTokenRepository implements RefreshTokenRepository {
     return PrismaRefreshTokenMapper.toDomain(raw);
   }
 
-  async revoke(token: RefreshToken): Promise<void> {
+  async update(token: RefreshToken): Promise<void> {
     await this.db.refreshToken.update({
       where: { id: token.id.toString() },
       data: { revokedAt: token.revokedAt }

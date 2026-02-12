@@ -12,7 +12,7 @@ export class Logout {
     );
     if (token) {
       const revokedToken = token.revoke();
-      await this.refreshTokenRepository.revoke(revokedToken);
+      await this.refreshTokenRepository.update(revokedToken);
     }
   }
 }

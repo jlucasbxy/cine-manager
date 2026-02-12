@@ -49,7 +49,7 @@ export class RefreshTokens {
     }
 
     const revokedToken = token.revoke();
-    await this.refreshTokenRepository.revoke(revokedToken);
+    await this.refreshTokenRepository.update(revokedToken);
 
     const accessToken = await this.tokenProvider.generate(
       { userId: user.id.toString() },
