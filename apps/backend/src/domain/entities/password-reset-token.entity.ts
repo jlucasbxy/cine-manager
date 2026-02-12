@@ -1,8 +1,9 @@
 import { Token, Uuid } from "@/domain/value-objects";
+import ms, { type StringValue } from "ms";
 
 interface CreatePasswordResetTokenProps {
   userId: Uuid;
-  expiresAt: Date;
+  expiresIn: StringValue;
 }
 
 interface ReconstitutePasswordResetTokenProps {
@@ -39,13 +40,14 @@ export class PasswordResetToken {
   }
 
   static create(props: CreatePasswordResetTokenProps): PasswordResetToken {
+    const now = new Date();
     return new PasswordResetToken({
       id: Uuid.generate(),
       token: Token.generate(),
       userId: props.userId,
-      expiresAt: props.expiresAt,
+      expiresAt: new Date(now.getTime() + ms(props.expiresIn)),
       usedAt: null,
-      createdAt: new Date()
+      createdAt: now
     });
   }
 

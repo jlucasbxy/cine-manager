@@ -1,4 +1,4 @@
-import ms, { type StringValue } from "ms";
+import { type StringValue } from "ms";
 import type { UserRepository } from "@/application/interfaces/repositories";
 import type { TransactionManager } from "@/application/interfaces/providers";
 import { PasswordResetToken, NotificationOutbox } from "@/domain/entities";
@@ -25,13 +25,9 @@ export class RequestPasswordReset {
       return;
     }
 
-    const expiresAt = new Date(
-      Date.now() + ms(this.config.passwordResetTokenExpiresIn)
-    );
-
     const resetToken = PasswordResetToken.create({
       userId: user.id,
-      expiresAt
+      expiresIn: this.config.passwordResetTokenExpiresIn
     });
 
     const outboxEntry = NotificationOutbox.create({
