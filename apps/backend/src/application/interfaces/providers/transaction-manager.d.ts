@@ -1,9 +1,21 @@
-import type { PasswordResetTokenRepository } from "@/application/interfaces/repositories";
-import type { NotificationOutboxRepository } from "@/application/interfaces/repositories";
+import type {
+  MovieRepository,
+  UserRepository,
+  RefreshTokenRepository,
+  PasswordResetTokenRepository,
+  NotificationOutboxRepository,
+  LanguageRepository,
+  GenreRepository
+} from "@/application/interfaces/repositories";
 
 export interface TransactionRepositories {
+  movieRepository: MovieRepository;
+  userRepository: UserRepository;
+  refreshTokenRepository: RefreshTokenRepository;
   passwordResetTokenRepository: PasswordResetTokenRepository;
   notificationOutboxRepository: NotificationOutboxRepository;
+  languageRepository: LanguageRepository;
+  genreRepository: GenreRepository;
 }
 
 export interface TransactionManager {
