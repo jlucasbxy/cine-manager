@@ -17,11 +17,6 @@ export class CreateUser {
     const password = Password.create(input.password);
     const user = User.create({ name: input.name, email, password });
 
-    const existingUser = await this.userRepository.findByEmail(user.email);
-    if (existingUser) {
-      throw new EmailAlreadyInUseError();
-    }
-
     const hashedPassword = Password.reconstitute(
       await this.hashProvider.hash(password.toString())
     );
@@ -36,6 +31,10 @@ export class CreateUser {
         updatedAt: user.updatedAt
       })
     );
+
+    if (!created) {
+      throw new EmailAlreadyInUseError();
+    }
 
     return UserMapper.toDTO(created);
   }

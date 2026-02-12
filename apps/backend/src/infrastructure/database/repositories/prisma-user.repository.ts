@@ -11,16 +11,28 @@ export class PrismaUserRepository implements UserRepository {
     this.db = client;
   }
 
-  async create(user: User): Promise<User> {
-    const raw = await this.db.user.create({
-      data: {
-        id: user.id.toString(),
-        name: user.name,
-        email: user.email.toString(),
-        password: user.password.toString()
+  async create(user: User): Promise<User | null> {
+    try {
+      const raw = await this.db.user.create({
+        data: {
+          id: user.id.toString(),
+          name: user.name,
+          email: user.email.toString(),
+          password: user.password.toString()
+        }
+      });
+      return PrismaUserMapper.toDomain(raw);
+    } catch (error: unknown) {
+      if (
+        typeof error === "object" &&
+        error !== null &&
+        "code" in error &&
+        error.code === "P2002"
+      ) {
+        return null;
       }
-    });
-    return PrismaUserMapper.toDomain(raw);
+      throw error;
+    }
   }
 
   async findById(id: Uuid): Promise<User | null> {
