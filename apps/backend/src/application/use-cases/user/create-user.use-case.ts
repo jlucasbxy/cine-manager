@@ -10,7 +10,7 @@ export class CreateUser {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly hashProvider: HashProvider
-  ) {}
+  ) { }
 
   async execute(input: CreateUserDTO): Promise<UserDTO> {
     const email = Email.create(input.email);
@@ -22,7 +22,7 @@ export class CreateUser {
       throw new EmailAlreadyInUseError();
     }
 
-    const hashedPassword = Password.fromHash(
+    const hashedPassword = Password.reconstitute(
       await this.hashProvider.hash(password.toString())
     );
 

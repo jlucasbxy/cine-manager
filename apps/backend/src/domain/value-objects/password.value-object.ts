@@ -14,7 +14,7 @@ export class Password {
     return new Password(value);
   }
 
-  static fromHash(hash: string): Password {
+  static reconstitute(hash: string): Password {
     return new Password(hash);
   }
 

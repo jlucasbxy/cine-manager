@@ -18,7 +18,7 @@ export class ResetPassword {
     private readonly passwordResetTokenRepository: PasswordResetTokenRepository,
     private readonly refreshTokenRepository: RefreshTokenRepository,
     private readonly hashProvider: HashProvider
-  ) {}
+  ) { }
 
   async execute(input: ResetPasswordDTO): Promise<void> {
     const token = await this.passwordResetTokenRepository.findByToken(
@@ -47,7 +47,7 @@ export class ResetPassword {
 
     await this.userRepository.updatePassword(
       user.id,
-      Password.fromHash(hashedPassword)
+      Password.reconstitute(hashedPassword)
     );
 
     const usedToken = token.markAsUsed();

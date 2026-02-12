@@ -8,7 +8,7 @@ export class PrismaUserMapper {
       id: Uuid.reconstitute(raw.id),
       name: raw.name,
       email: Email.reconstitute(raw.email),
-      password: Password.fromHash(raw.password),
+      password: Password.reconstitute(raw.password),
       createdAt: raw.createdAt,
       updatedAt: raw.updatedAt
     });
