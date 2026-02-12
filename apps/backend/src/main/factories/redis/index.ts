@@ -1,6 +1,6 @@
 import Redis from "ioredis";
-import { env } from "@/infrastructure/config/env";
-import { singleton } from "@/main/factories/singleton";
+import { env } from "@/infrastructure/config/env.config";
+import { singleton } from "@/main/factories/singleton.util";
 
 export const makeRedisClient = singleton(() => {
   return new Redis(env.REDIS_URL);

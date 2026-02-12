@@ -1,6 +1,6 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
 import type { LanguageService } from "@/application/interfaces/services";
-import { sendWithEtag } from "@/infrastructure/http/utils/etag";
+import { sendWithEtag } from "@/infrastructure/http/utils/etag.util";
 
 export class LanguageController {
   constructor(private readonly languageService: LanguageService) {}

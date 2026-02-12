@@ -1,5 +1,5 @@
-export { CreateMovie } from "@/application/use-cases/movie/create-movie";
-export { UpdateMovie } from "@/application/use-cases/movie/update-movie";
-export { DeleteMovie } from "@/application/use-cases/movie/delete-movie";
-export { GetMovie } from "@/application/use-cases/movie/get-movie";
-export { ListMovies } from "@/application/use-cases/movie/list-movies";
+export { CreateMovie } from "@/application/use-cases/movie/create-movie.use-case";
+export { UpdateMovie } from "@/application/use-cases/movie/update-movie.use-case";
+export { DeleteMovie } from "@/application/use-cases/movie/delete-movie.use-case";
+export { GetMovie } from "@/application/use-cases/movie/get-movie.use-case";
+export { ListMovies } from "@/application/use-cases/movie/list-movies.use-case";

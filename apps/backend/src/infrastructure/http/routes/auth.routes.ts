@@ -1,6 +1,6 @@
 import type { FastifyPluginAsync } from "fastify";
 import type { AuthController } from "@/infrastructure/http/controllers";
-import { RATE_LIMITS } from "@/infrastructure/config/rate-limit";
+import { RATE_LIMITS } from "@/infrastructure/config/rate-limit.config";
 
 interface AuthRoutesOptions {
   authController: AuthController;

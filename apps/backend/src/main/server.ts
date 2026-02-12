@@ -2,9 +2,9 @@ import Fastify from "fastify";
 import cors from "@fastify/cors";
 import cookie from "@fastify/cookie";
 import rateLimit from "@fastify/rate-limit";
-import { env } from "@/infrastructure/config/env";
+import { env } from "@/infrastructure/config/env.config";
 import { makeRedisClient } from "@/main/factories/redis";
-import { ROUTE_PREFIXES } from "@/infrastructure/config/routes";
+import { ROUTE_PREFIXES } from "@/infrastructure/config/routes.config";
 import { ErrorCode } from "@repo/dtos";
 import { errorHandler } from "@/infrastructure/http/middlewares";
 import {

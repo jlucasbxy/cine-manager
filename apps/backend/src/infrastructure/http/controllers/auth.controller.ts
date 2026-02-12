@@ -5,7 +5,7 @@ import type {
   ResetPasswordValidator,
   EmailValidator
 } from "@repo/validators";
-import { ROUTE_PREFIXES } from "@/infrastructure/config/routes";
+import { ROUTE_PREFIXES } from "@/infrastructure/config/routes.config";
 
 const REFRESH_TOKEN_COOKIE = "refreshToken";
 

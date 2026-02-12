@@ -7,7 +7,7 @@ import {
   makeResetPassword,
   makeValidateToken
 } from "@/main/factories/use-cases/auth";
-import { singleton } from "@/main/factories/singleton";
+import { singleton } from "@/main/factories/singleton.util";
 
 export const makeAuthService = singleton(
   () =>

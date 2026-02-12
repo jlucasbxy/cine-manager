@@ -6,7 +6,7 @@ import {
   makeGetMovie,
   makeListMovies
 } from "@/main/factories/use-cases/movie";
-import { singleton } from "@/main/factories/singleton";
+import { singleton } from "@/main/factories/singleton.util";
 
 export const makeMovieService = singleton(
   () =>

@@ -3,7 +3,7 @@ import type {
   EmailProvider,
   SendEmailData
 } from "@/application/interfaces/providers";
-import { env } from "@/infrastructure/config/env";
+import { env } from "@/infrastructure/config/env.config";
 
 export class ResendEmailProvider implements EmailProvider {
   private readonly resend: Resend;

@@ -1,6 +1,6 @@
 import { S3StorageProvider } from "@/infrastructure/providers";
-import { s3Env } from "@/infrastructure/config/s3-env";
-import { singleton } from "@/main/factories/singleton";
+import { s3Env } from "@/infrastructure/config/s3-env.config";
+import { singleton } from "@/main/factories/singleton.util";
 import { makeS3Client } from "@/main/factories/s3";
 
 export const makeStorageProvider = singleton(

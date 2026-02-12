@@ -1,1 +1,1 @@
-export { NotificationOutboxWorker } from "@/infrastructure/workers/notification-outbox-worker";
+export { NotificationOutboxWorker } from "@/infrastructure/workers/notification-outbox.worker";

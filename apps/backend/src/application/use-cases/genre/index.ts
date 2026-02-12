@@ -1,1 +1,1 @@
-export { ListGenres } from "@/application/use-cases/genre/list-genres";
+export { ListGenres } from "@/application/use-cases/genre/list-genres.use-case";

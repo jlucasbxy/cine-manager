@@ -1,1 +1,1 @@
-export { makeListGenres } from "@/main/factories/use-cases/genre/make-list-genres";
+export { makeListGenres } from "@/main/factories/use-cases/genre/make-list-genres.factory";
