@@ -1,7 +1,7 @@
 import { Movie } from "@/domain/entities";
 import { Uuid, MovieQuery } from "@/domain/value-objects";
 
-export type UpdateMovieData = Partial<Omit<Movie, "id" | "createdAt">>;
+export type UpdateMovieData = Partial<Omit<Movie, "id" | "createdAt" | "updatedAt">>;
 
 export interface MovieRepository {
   create(movie: Movie): Promise<Movie>;

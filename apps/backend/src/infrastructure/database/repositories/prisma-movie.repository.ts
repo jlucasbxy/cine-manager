@@ -64,7 +64,9 @@ export class PrismaMovieRepository implements MovieRepository {
   }
 
   async update(id: Uuid, data: UpdateMovieData): Promise<Movie> {
-    const prismaData: Record<string, unknown> = {};
+    const prismaData: Record<string, unknown> = {
+      updatedAt: new Date()
+    };
     if (data.title !== undefined) prismaData.title = data.title;
     if (data.originalTitle !== undefined)
       prismaData.originalTitle = data.originalTitle;
@@ -90,8 +92,6 @@ export class PrismaMovieRepository implements MovieRepository {
       prismaData.trailerUrl = data.trailerUrl.toString();
     if (data.votes !== undefined) prismaData.votes = data.votes.toNumber();
     if (data.score !== undefined) prismaData.score = data.score.toNumber();
-    if (data.userId !== undefined) prismaData.userId = data.userId.toString();
-    if (data.updatedAt !== undefined) prismaData.updatedAt = data.updatedAt;
 
     const raw = await this.db.movie.update({
       where: { id: id.toString() },
