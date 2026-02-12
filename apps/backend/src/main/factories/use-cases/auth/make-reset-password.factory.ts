@@ -1,16 +1,18 @@
 import { ResetPassword } from "@/application/use-cases/auth";
 import {
   makeUserRepository,
-  makePasswordResetTokenRepository,
-  makeRefreshTokenRepository
+  makePasswordResetTokenRepository
 } from "@/main/factories/repositories";
-import { makeHashProvider } from "@/main/factories/providers";
+import {
+  makeHashProvider,
+  makeTransactionManager
+} from "@/main/factories/providers";
 
 export function makeResetPassword(): ResetPassword {
   return new ResetPassword(
     makeUserRepository(),
     makePasswordResetTokenRepository(),
-    makeRefreshTokenRepository(),
-    makeHashProvider()
+    makeHashProvider(),
+    makeTransactionManager()
   );
 }
