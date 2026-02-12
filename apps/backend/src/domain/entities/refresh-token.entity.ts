@@ -1,8 +1,9 @@
 import { Token, Uuid } from "@/domain/value-objects";
+import ms, { type StringValue } from "ms";
 
 interface CreateRefreshTokenProps {
   userId: Uuid;
-  expiresAt: Date;
+  expiresIn: StringValue;
 }
 
 interface ReconstituteRefreshTokenProps {
@@ -39,13 +40,14 @@ export class RefreshToken {
   }
 
   static create(props: CreateRefreshTokenProps): RefreshToken {
+    const now = new Date();
     return new RefreshToken({
       id: Uuid.generate(),
       token: Token.generate(),
       userId: props.userId,
-      expiresAt: props.expiresAt,
+      expiresAt: new Date(now.getTime() + ms(props.expiresIn)),
       revokedAt: null,
-      createdAt: new Date()
+      createdAt: now
     });
   }
 

@@ -48,13 +48,9 @@ export class Login {
       this.config.accessTokenExpiresIn
     );
 
-    const refreshTokenExpiresAt = new Date(
-      Date.now() + ms(this.config.refreshTokenExpiresIn)
-    );
-
     const refreshToken = RefreshToken.create({
       userId: user.id,
-      expiresAt: refreshTokenExpiresAt
+      expiresIn: this.config.refreshTokenExpiresIn
     });
 
     await this.refreshTokenRepository.create(refreshToken);
