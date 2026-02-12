@@ -1,4 +1,5 @@
 import type { RefreshTokenRepository } from "@/application/interfaces/repositories";
+import { Token } from "@/domain/value-objects";
 import type { LogoutDTO } from "@repo/dtos";
 
 export class Logout {
@@ -7,12 +8,8 @@ export class Logout {
   ) {}
 
   async execute(input: LogoutDTO): Promise<void> {
-    const token = await this.refreshTokenRepository.findByToken(
-      input.refreshToken
+    await this.refreshTokenRepository.revokeByToken(
+      Token.reconstitute(input.refreshToken)
     );
-    if (token) {
-      const revokedToken = token.revoke();
-      await this.refreshTokenRepository.update(revokedToken);
-    }
   }
 }
