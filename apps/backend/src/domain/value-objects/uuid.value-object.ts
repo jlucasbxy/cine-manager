@@ -10,7 +10,7 @@ export class Uuid {
   }
 
   static create(value: string): Uuid {
-    const r = z.uuid().safeParse(value);
+    const r = z.uuidv7().safeParse(value);
     if (!r.success) {
       throw new InvalidUuidError();
     }
