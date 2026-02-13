@@ -25,23 +25,6 @@ interface CreateMovieProps {
   userId: Uuid;
 }
 
-interface UpdateMovieProps {
-  title?: string;
-  originalTitle?: string;
-  tagline?: string;
-  synopsis?: string;
-  releaseDate?: Date;
-  runtime?: NonNegativeInt;
-  status?: MovieStatus;
-  ageRating?: AgeRating;
-  languageId?: Uuid;
-  budget?: NonNegativeNumber;
-  revenue?: NonNegativeNumber;
-  posterUrl?: Url;
-  backdropUrl?: Url;
-  trailerUrl?: Url;
-}
-
 interface ReconstituteMovieProps {
   id: Uuid;
   title: string;
@@ -154,31 +137,6 @@ export class Movie {
       createdAt: now,
       updatedAt: now,
       userId: props.userId
-    });
-  }
-
-  update(props: UpdateMovieProps): Movie {
-    return new Movie({
-      id: this.id,
-      title: props.title ?? this.title,
-      originalTitle: props.originalTitle ?? this.originalTitle,
-      tagline: props.tagline ?? this.tagline,
-      synopsis: props.synopsis ?? this.synopsis,
-      releaseDate: props.releaseDate ?? this.releaseDate,
-      runtime: props.runtime ?? this.runtime,
-      status: props.status ?? this.status,
-      ageRating: props.ageRating ?? this.ageRating,
-      languageId: props.languageId ?? this.languageId,
-      budget: props.budget ?? this.budget,
-      revenue: props.revenue ?? this.revenue,
-      posterUrl: props.posterUrl ?? this.posterUrl,
-      backdropUrl: props.backdropUrl ?? this.backdropUrl,
-      trailerUrl: props.trailerUrl ?? this.trailerUrl,
-      votes: this.votes,
-      score: this.score,
-      createdAt: this.createdAt,
-      updatedAt: new Date(),
-      userId: this.userId
     });
   }
 
