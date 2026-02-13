@@ -11,4 +11,14 @@ export class SendPasswordResetEmail {
       body: `Your password reset token is: ${token}`
     });
   }
+
+  async executeBatch(data: SendPasswordResetEmailData[]): Promise<void> {
+    await this.emailProvider.sendBatch(
+      data.map(({ to, token }) => ({
+        to,
+        subject: "Password Reset Request",
+        body: `Your password reset token is: ${token}`
+      }))
+    );
+  }
 }
