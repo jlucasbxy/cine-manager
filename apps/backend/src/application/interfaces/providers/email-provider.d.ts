@@ -6,4 +6,5 @@ export type SendEmailData = {
 
 export interface EmailProvider {
   send(data: SendEmailData): Promise<void>;
+  sendBatch(data: SendEmailData[]): Promise<void>;
 }

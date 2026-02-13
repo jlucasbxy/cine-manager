@@ -20,4 +20,17 @@ export class ResendEmailProvider implements EmailProvider {
       html: body
     });
   }
+
+  async sendBatch(emails: SendEmailData[]): Promise<void> {
+    if (emails.length === 0) return;
+
+    await this.resend.batch.send(
+      emails.map(({ to, subject, body }) => ({
+        from: env.EMAIL_FROM,
+        to,
+        subject,
+        html: body
+      }))
+    );
+  }
 }
