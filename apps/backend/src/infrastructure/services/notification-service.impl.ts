@@ -9,12 +9,6 @@ export class NotificationServiceImpl implements NotificationService {
     private readonly sendPasswordResetEmailUseCase: SendPasswordResetEmail
   ) {}
 
-  async sendPasswordResetEmail(
-    data: SendPasswordResetEmailData
-  ): Promise<void> {
-    return this.sendPasswordResetEmailUseCase.execute(data);
-  }
-
   async sendPasswordResetEmailBatch(
     data: SendPasswordResetEmailData[]
   ): Promise<void> {
