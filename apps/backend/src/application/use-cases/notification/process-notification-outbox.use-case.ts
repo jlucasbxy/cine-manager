@@ -61,23 +61,18 @@ export class ProcessNotificationOutbox {
           throw new Error(`Unknown notification type: ${type}`);
       }
 
-      await Promise.all(
-        entries.map((entry) =>
-          this.repository.update(entry.markAsProcessed())
-        )
+      await this.repository.updateBatch(
+        entries.map((entry) => entry.markAsProcessed())
       );
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : String(err);
 
-      await Promise.all(
-        entries.map((entry) => {
-          const updated =
-            entry.retryCount + 1 >= this.config.maxRetries
-              ? entry.markAsFailed(errorMessage)
-              : entry.recordFailure(errorMessage);
-
-          return this.repository.update(updated);
-        })
+      await this.repository.updateBatch(
+        entries.map((entry) =>
+          entry.retryCount + 1 >= this.config.maxRetries
+            ? entry.markAsFailed(errorMessage)
+            : entry.recordFailure(errorMessage)
+        )
       );
     }
   }
