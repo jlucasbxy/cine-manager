@@ -7,11 +7,11 @@ import type { SendPasswordResetEmail } from "@/application/use-cases/notificatio
 export class NotificationServiceImpl implements NotificationService {
   constructor(
     private readonly sendPasswordResetEmailUseCase: SendPasswordResetEmail
-  ) {}
+  ) { }
 
   async sendPasswordResetEmailBatch(
     data: SendPasswordResetEmailData[]
   ): Promise<void> {
-    return this.sendPasswordResetEmailUseCase.executeBatch(data);
+    return this.sendPasswordResetEmailUseCase.execute(data);
   }
 }
