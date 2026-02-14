@@ -1,19 +1,15 @@
 import { Login } from "@/application/use-cases/auth";
 import {
-  makeUserRepository,
-  makeRefreshTokenRepository
-} from "@/main/factories/repositories";
-import {
   makeHashProvider,
-  makeTokenProvider
+  makeTokenProvider,
+  makeTransactionManager
 } from "@/main/factories/providers";
 import { env } from "@/infrastructure/config/env.config";
 import type { StringValue } from "ms";
 
 export function makeLogin(): Login {
   return new Login(
-    makeUserRepository(),
-    makeRefreshTokenRepository(),
+    makeTransactionManager(),
     makeHashProvider(),
     makeTokenProvider(),
     {
