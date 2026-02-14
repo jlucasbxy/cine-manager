@@ -48,28 +48,4 @@ export class PrismaNotificationOutboxRepository implements NotificationOutboxRep
       }
     });
   }
-
-  async updateBatch(entries: NotificationOutbox[]): Promise<void> {
-    if (entries.length === 0) return;
-
-    if (!("$transaction" in this.db)) {
-      throw new Error(
-        "updateBatch is not supported within a transaction context"
-      );
-    }
-
-    await this.db.$transaction(
-      entries.map((entry) =>
-        this.db.notificationOutbox.update({
-          where: { id: entry.id.toString() },
-          data: {
-            status: entry.status,
-            retryCount: entry.retryCount,
-            error: entry.error,
-            processedAt: entry.processedAt
-          }
-        })
-      )
-    );
-  }
 }
