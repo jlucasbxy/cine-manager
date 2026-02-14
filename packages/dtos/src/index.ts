@@ -2,6 +2,7 @@ export type { CreateUserDTO } from "./create-user.dto";
 export type { CreateMovieDTO } from "./create-movie.dto";
 export type { UpdateMovieDTO } from "./update-movie.dto";
 export type { QueryMoviesDTO, PaginatedResultDTO } from "./query-movies.dto";
+export type { UpdateUserDTO } from "./update-user.dto";
 export type { UserDTO } from "./user.dto";
 export type { MovieDTO } from "./movie.dto";
 export type { LoginDTO, LoginResultDTO } from "./login.dto";

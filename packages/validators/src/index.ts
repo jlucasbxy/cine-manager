@@ -1,4 +1,5 @@
 export { CreateUserValidator } from "./create-user.validator";
+export { UpdateUserValidator } from "./update-user.validator";
 export { CreateMovieValidator } from "./create-movie.validator";
 export { UpdateMovieValidator } from "./update-movie.validator";
 export { IdValidator } from "./id.validator";

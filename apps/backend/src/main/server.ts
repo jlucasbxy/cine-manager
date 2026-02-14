@@ -79,7 +79,8 @@ export async function start() {
   });
   await app.register(userRoutes, {
     prefix: ROUTE_PREFIXES.users,
-    userController
+    userController,
+    authMiddleware
   });
 
   try {
