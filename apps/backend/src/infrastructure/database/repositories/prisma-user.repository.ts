@@ -1,8 +1,9 @@
 import type { UserRepository } from "@/application/interfaces/repositories";
 import { User } from "@/domain/entities";
-import { Email, Password, Uuid } from "@/domain/value-objects";
+import { Email, Uuid } from "@/domain/value-objects";
 import type { PrismaDatabase } from "@/infrastructure/database/prisma";
 import { PrismaUserMapper } from "@/infrastructure/database/mappers";
+import { UpdateUserData } from "@/application/interfaces/repositories/user-repository";
 
 export class PrismaUserRepository implements UserRepository {
   private readonly db: PrismaDatabase;
@@ -51,10 +52,13 @@ export class PrismaUserRepository implements UserRepository {
     return PrismaUserMapper.toDomain(raw);
   }
 
-  async updatePassword(id: Uuid, password: Password): Promise<void> {
+  async updateById(id: Uuid, data: UpdateUserData): Promise<void> {
+    if (!data.password) {
+      return;
+    }
     await this.db.user.update({
       where: { id: id.toString() },
-      data: { password: password.toString() }
+      data: { password: data.password.toString() }
     });
   }
 

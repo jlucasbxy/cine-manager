@@ -5,7 +5,7 @@ import type {
 import { Password } from "@/domain/value-objects";
 import {
   ResetTokenExpiredError,
-  ResetTokenInvalidError,
+  ResetTokenInvalidError
 } from "@/domain/errors";
 import type { ResetPasswordDTO } from "@repo/dtos";
 
@@ -37,17 +37,15 @@ export class ResetPassword {
       const hashedPassword = await this.hashProvider.hash(password.toString());
       const usedToken = token.markAsUsed();
 
-      await repos.userRepository.updatePassword(
-        token.userId,
-        Password.reconstitute(hashedPassword)
-      );
+      await repos.userRepository.updateById(token.userId, {
+        password: Password.reconstitute(hashedPassword)
+      });
 
       await repos.passwordResetTokenRepository.update(usedToken);
 
-      await repos.refreshTokenRepository.updateManyByUserId(
-        token.userId,
-        { revokedAt: new Date() }
-      );
+      await repos.refreshTokenRepository.updateManyByUserId(token.userId, {
+        revokedAt: new Date()
+      });
     });
   }
 }
