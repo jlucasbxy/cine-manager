@@ -1,6 +1,9 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
 import type { UserService } from "@/application/interfaces/services";
-import type { CreateUserValidator, UpdateUserValidator } from "@repo/validators";
+import type {
+  CreateUserValidator,
+  UpdateUserValidator
+} from "@repo/validators";
 
 export class UserController {
   constructor(
