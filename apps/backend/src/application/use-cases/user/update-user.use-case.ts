@@ -32,7 +32,8 @@ export class UpdateUser {
 
       await repos.userRepository.updateById(id, {
         name: input.name,
-        password: hashedPassword
+        password: hashedPassword,
+        updatedAt: new Date()
       });
 
       const updated = await repos.userRepository.findById(id);
