@@ -12,16 +12,19 @@ export class ResendEmailProvider implements EmailProvider {
     this.resend = new Resend(env.RESEND_API_KEY);
   }
 
-  async send({ to, subject, body }: SendEmailData): Promise<void> {
-    await this.resend.emails.send({
-      from: env.EMAIL_FROM,
-      to,
-      subject,
-      html: body
-    });
+  async send({ to, subject, body, idempotencyKey }: SendEmailData): Promise<void> {
+    await this.resend.emails.send(
+      {
+        from: env.EMAIL_FROM,
+        to,
+        subject,
+        html: body
+      },
+      idempotencyKey ? { idempotencyKey } : undefined
+    );
   }
 
-  async sendBatch(emails: SendEmailData[]): Promise<void> {
+  async sendBatch(emails: SendEmailData[], idempotencyKey?: string): Promise<void> {
     if (emails.length === 0) return;
 
     await this.resend.batch.send(
@@ -30,7 +33,8 @@ export class ResendEmailProvider implements EmailProvider {
         to,
         subject,
         html: body
-      }))
+      })),
+      idempotencyKey ? { idempotencyKey } : undefined
     );
   }
 }
