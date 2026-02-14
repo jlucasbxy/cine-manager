@@ -4,11 +4,8 @@ import { env } from "@/infrastructure/config/env.config";
 import type { StringValue } from "ms";
 
 export function makeRequestPasswordReset(): RequestPasswordReset {
-  return new RequestPasswordReset(
-    makeTransactionManager(),
-    {
-      passwordResetTokenExpiresIn:
-        env.PASSWORD_RESET_TOKEN_EXPIRES_IN as StringValue
-    }
-  );
+  return new RequestPasswordReset(makeTransactionManager(), {
+    passwordResetTokenExpiresIn:
+      env.PASSWORD_RESET_TOKEN_EXPIRES_IN as StringValue
+  });
 }

@@ -12,7 +12,12 @@ export class ResendEmailProvider implements EmailProvider {
     this.resend = new Resend(env.RESEND_API_KEY);
   }
 
-  async send({ to, subject, body, idempotencyKey }: SendEmailData): Promise<void> {
+  async send({
+    to,
+    subject,
+    body,
+    idempotencyKey
+  }: SendEmailData): Promise<void> {
     await this.resend.emails.send(
       {
         from: env.EMAIL_FROM,
@@ -23,5 +28,4 @@ export class ResendEmailProvider implements EmailProvider {
       { idempotencyKey }
     );
   }
-
 }

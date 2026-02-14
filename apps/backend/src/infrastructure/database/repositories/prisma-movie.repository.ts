@@ -50,7 +50,9 @@ export class PrismaMovieRepository implements MovieRepository {
     return PrismaMovieMapper.toDomain(raw);
   }
 
-  async findAll(query: MovieQuery): Promise<{ movies: Movie[]; total: number }> {
+  async findAll(
+    query: MovieQuery
+  ): Promise<{ movies: Movie[]; total: number }> {
     const where: Record<string, unknown> = {};
 
     if (query.runtime !== undefined) {

@@ -20,7 +20,7 @@ export class Login {
     private readonly hashProvider: HashProvider,
     private readonly tokenProvider: TokenProvider,
     private readonly config: LoginConfig
-  ) { }
+  ) {}
 
   async execute(input: LoginDTO): Promise<LoginResultDTO> {
     const email = Email.create(input.email);

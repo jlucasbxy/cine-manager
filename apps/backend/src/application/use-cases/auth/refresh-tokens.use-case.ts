@@ -21,7 +21,7 @@ export class RefreshTokens {
     private readonly tokenProvider: TokenProvider,
     private readonly transactionManager: TransactionManager,
     private readonly config: RefreshTokensConfig
-  ) { }
+  ) {}
 
   async execute(input: RefreshTokensDTO): Promise<RefreshTokensResultDTO> {
     return this.transactionManager.execute(async (repos) => {

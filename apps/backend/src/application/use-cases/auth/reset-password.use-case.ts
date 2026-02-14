@@ -13,7 +13,7 @@ export class ResetPassword {
   constructor(
     private readonly hashProvider: HashProvider,
     private readonly transactionManager: TransactionManager
-  ) { }
+  ) {}
 
   async execute(input: ResetPasswordDTO): Promise<void> {
     await this.transactionManager.execute(async (repos) => {
