@@ -43,9 +43,10 @@ export class ProcessNotificationOutbox {
   private async dispatch(entry: NotificationOutbox): Promise<void> {
     switch (entry.type) {
       case NotificationTypeEnum.PASSWORD_RESET_EMAIL:
-        await this.notificationService.sendPasswordResetEmail(
-          entry.payload as { to: string; token: string }
-        );
+        await this.notificationService.sendPasswordResetEmail({
+          ...(entry.payload as { to: string; token: string }),
+          idempotencyKey: entry.id.toString()
+        });
         break;
       default:
         throw new Error(`Unknown notification type: ${entry.type}`);

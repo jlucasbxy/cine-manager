@@ -20,7 +20,7 @@ export class ResendEmailProvider implements EmailProvider {
         subject,
         html: body
       },
-      idempotencyKey ? { idempotencyKey } : undefined
+      { idempotencyKey }
     );
   }
 
