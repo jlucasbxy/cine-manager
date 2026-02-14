@@ -51,13 +51,17 @@ export class PrismaMovieRepository implements MovieRepository {
   }
 
   async findAll(query: MovieQuery): Promise<{ movies: Movie[]; total: number }> {
-    const where = {
-      runtime: { lte: query.runtime.toNumber() },
-      releaseDate: {
-        gte: query.releaseDateStart,
-        lte: query.releaseDateEnd
-      }
-    };
+    const where: Record<string, unknown> = {};
+
+    if (query.runtime !== undefined) {
+      where.runtime = { lte: query.runtime.toNumber() };
+    }
+    if (query.releaseDateStart || query.releaseDateEnd) {
+      const releaseDate: Record<string, Date> = {};
+      if (query.releaseDateStart) releaseDate.gte = query.releaseDateStart;
+      if (query.releaseDateEnd) releaseDate.lte = query.releaseDateEnd;
+      where.releaseDate = releaseDate;
+    }
 
     const [rawList, total] = await Promise.all([
       this.db.movie.findMany({

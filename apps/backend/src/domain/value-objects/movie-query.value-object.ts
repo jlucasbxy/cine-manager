@@ -3,38 +3,44 @@ import { NonNegativeInt } from "@/domain/value-objects/non-negative-int.value-ob
 import { InvalidMovieQueryError } from "@/domain/errors";
 
 type MovieQueryProps = {
-  runtime: number;
-  releaseDateStart: string;
-  releaseDateEnd: string;
+  runtime?: number;
+  releaseDateStart?: string;
+  releaseDateEnd?: string;
   page: number;
   perPage: number;
 };
 
 const movieQuerySchema = z
   .object({
-    runtime: z.int().nonnegative(),
-    releaseDateStart: z.coerce.date(),
-    releaseDateEnd: z.coerce.date(),
+    runtime: z.int().nonnegative().optional(),
+    releaseDateStart: z.coerce.date().optional(),
+    releaseDateEnd: z.coerce.date().optional(),
     page: z.int().nonnegative(),
     perPage: z.int().nonnegative()
   })
-  .refine((data) => data.releaseDateStart <= data.releaseDateEnd, {
-    message: "releaseDateStart must be before or equal to releaseDateEnd"
-  });
+  .refine(
+    (data) => {
+      if (data.releaseDateStart && data.releaseDateEnd) {
+        return data.releaseDateStart <= data.releaseDateEnd;
+      }
+      return true;
+    },
+    { message: "releaseDateStart must be before or equal to releaseDateEnd" }
+  );
 
 export class MovieQuery {
-  readonly runtime: NonNegativeInt;
-  readonly releaseDateStart: Date;
-  readonly releaseDateEnd: Date;
+  readonly runtime?: NonNegativeInt;
+  readonly releaseDateStart?: Date;
+  readonly releaseDateEnd?: Date;
   readonly page: NonNegativeInt;
   readonly perPage: NonNegativeInt;
 
   private constructor(
-    runtime: NonNegativeInt,
-    releaseDateStart: Date,
-    releaseDateEnd: Date,
     page: NonNegativeInt,
-    perPage: NonNegativeInt
+    perPage: NonNegativeInt,
+    runtime?: NonNegativeInt,
+    releaseDateStart?: Date,
+    releaseDateEnd?: Date
   ) {
     this.runtime = runtime;
     this.releaseDateStart = releaseDateStart;
@@ -49,11 +55,13 @@ export class MovieQuery {
       throw new InvalidMovieQueryError(r.error.issues[0].message);
     }
     return new MovieQuery(
-      NonNegativeInt.create(r.data.runtime),
-      r.data.releaseDateStart,
-      r.data.releaseDateEnd,
       NonNegativeInt.create(r.data.page),
-      NonNegativeInt.create(r.data.perPage)
+      NonNegativeInt.create(r.data.perPage),
+      r.data.runtime !== undefined
+        ? NonNegativeInt.create(r.data.runtime)
+        : undefined,
+      r.data.releaseDateStart,
+      r.data.releaseDateEnd
     );
   }
 }
