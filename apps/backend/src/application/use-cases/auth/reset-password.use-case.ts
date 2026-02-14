@@ -44,7 +44,10 @@ export class ResetPassword {
 
       await repos.passwordResetTokenRepository.update(usedToken);
 
-      await repos.refreshTokenRepository.revokeAllByUserId(token.userId);
+      await repos.refreshTokenRepository.updateManyByUserId(
+        token.userId,
+        { revokedAt: new Date() }
+      );
     });
   }
 }

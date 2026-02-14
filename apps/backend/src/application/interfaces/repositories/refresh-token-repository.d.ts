@@ -10,6 +10,6 @@ export interface RefreshTokenRepository {
   findByToken(token: string): Promise<RefreshToken | null>;
   update(token: RefreshToken): Promise<void>;
   updateByToken(token: Token, data: UpdateRefreshTokenData): Promise<void>;
-  revokeAllByUserId(userId: Uuid): Promise<void>;
+  updateManyByUserId(userId: Uuid, data: UpdateRefreshTokenData): Promise<void>;
   deleteExpired(): Promise<void>;
 }
