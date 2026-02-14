@@ -1,8 +1,5 @@
 import { RefreshTokens } from "@/application/use-cases/auth";
 import {
-  makeRefreshTokenRepository
-} from "@/main/factories/repositories";
-import {
   makeTokenProvider,
   makeTransactionManager
 } from "@/main/factories/providers";
@@ -11,7 +8,6 @@ import type { StringValue } from "ms";
 
 export function makeRefreshTokens(): RefreshTokens {
   return new RefreshTokens(
-    makeRefreshTokenRepository(),
     makeTokenProvider(),
     makeTransactionManager(),
     {
