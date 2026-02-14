@@ -50,17 +50,25 @@ export class PrismaMovieRepository implements MovieRepository {
     return PrismaMovieMapper.toDomain(raw);
   }
 
-  async findAll(query: MovieQuery): Promise<Movie[]> {
-    const rawList = await this.db.movie.findMany({
-      where: {
-        runtime: { lte: query.runtime.toNumber() },
-        releaseDate: {
-          gte: query.releaseDateStart,
-          lte: query.releaseDateEnd
-        }
+  async findAll(query: MovieQuery): Promise<{ movies: Movie[]; total: number }> {
+    const where = {
+      runtime: { lte: query.runtime.toNumber() },
+      releaseDate: {
+        gte: query.releaseDateStart,
+        lte: query.releaseDateEnd
       }
-    });
-    return rawList.map(PrismaMovieMapper.toDomain);
+    };
+
+    const [rawList, total] = await Promise.all([
+      this.db.movie.findMany({
+        where,
+        skip: (query.page.toNumber() - 1) * query.perPage.toNumber(),
+        take: query.perPage.toNumber()
+      }),
+      this.db.movie.count({ where })
+    ]);
+
+    return { movies: rawList.map(PrismaMovieMapper.toDomain), total };
   }
 
   async update(id: Uuid, data: UpdateMovieData): Promise<Movie | null> {

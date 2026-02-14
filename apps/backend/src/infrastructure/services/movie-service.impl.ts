@@ -10,7 +10,8 @@ import type {
   CreateMovieDTO,
   UpdateMovieDTO,
   QueryMoviesDTO,
-  MovieDTO
+  MovieDTO,
+  PaginatedResultDTO
 } from "@repo/dtos";
 
 export class MovieServiceImpl implements MovieService {
@@ -38,7 +39,7 @@ export class MovieServiceImpl implements MovieService {
     return this.getMovieUseCase.execute({ id });
   }
 
-  async listMovies(query: QueryMoviesDTO): Promise<MovieDTO[]> {
+  async listMovies(query: QueryMoviesDTO): Promise<PaginatedResultDTO<MovieDTO>> {
     return this.listMoviesUseCase.execute(query);
   }
 }

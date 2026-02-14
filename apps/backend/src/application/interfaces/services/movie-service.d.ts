@@ -2,7 +2,8 @@ import type {
   CreateMovieDTO,
   UpdateMovieDTO,
   QueryMoviesDTO,
-  MovieDTO
+  MovieDTO,
+  PaginatedResultDTO
 } from "@repo/dtos";
 
 export interface MovieService {
@@ -10,5 +11,5 @@ export interface MovieService {
   updateMovie(id: string, input: UpdateMovieDTO): Promise<MovieDTO>;
   deleteMovie(id: string): Promise<void>;
   getMovie(id: string): Promise<MovieDTO>;
-  listMovies(query: QueryMoviesDTO): Promise<MovieDTO[]>;
+  listMovies(query: QueryMoviesDTO): Promise<PaginatedResultDTO<MovieDTO>>;
 }
