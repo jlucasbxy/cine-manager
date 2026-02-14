@@ -4,7 +4,5 @@ export type SendPasswordResetEmailData = {
 };
 
 export interface NotificationService {
-  sendPasswordResetEmailBatch(
-    data: SendPasswordResetEmailData[]
-  ): Promise<void>;
+  sendPasswordResetEmail(data: SendPasswordResetEmailData): Promise<void>;
 }

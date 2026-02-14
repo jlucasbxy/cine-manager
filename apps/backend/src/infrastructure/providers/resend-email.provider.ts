@@ -24,17 +24,4 @@ export class ResendEmailProvider implements EmailProvider {
     );
   }
 
-  async sendBatch(emails: SendEmailData[], idempotencyKey?: string): Promise<void> {
-    if (emails.length === 0) return;
-
-    await this.resend.batch.send(
-      emails.map(({ to, subject, body }) => ({
-        from: env.EMAIL_FROM,
-        to,
-        subject,
-        html: body
-      })),
-      idempotencyKey ? { idempotencyKey } : undefined
-    );
-  }
 }

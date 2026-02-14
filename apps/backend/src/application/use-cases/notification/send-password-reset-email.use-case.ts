@@ -4,13 +4,11 @@ import type { SendPasswordResetEmailData } from "@/application/interfaces/servic
 export class SendPasswordResetEmail {
   constructor(private readonly emailProvider: EmailProvider) { }
 
-  async execute(data: SendPasswordResetEmailData[]): Promise<void> {
-    await this.emailProvider.sendBatch(
-      data.map(({ to, token }) => ({
-        to,
-        subject: "Password Reset Request",
-        body: `Your password reset token is: ${token}`
-      }))
-    );
+  async execute({ to, token }: SendPasswordResetEmailData): Promise<void> {
+    await this.emailProvider.send({
+      to,
+      subject: "Password Reset Request",
+      body: `Your password reset token is: ${token}`
+    });
   }
 }

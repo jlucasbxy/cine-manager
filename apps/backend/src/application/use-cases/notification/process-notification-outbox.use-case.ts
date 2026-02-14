@@ -20,60 +20,35 @@ export class ProcessNotificationOutbox {
       this.config.batchSize
     );
 
-    const grouped = this.groupByType(entries);
-
-    for (const [type, group] of grouped) {
-      await this.dispatchBatch(type, group);
-    }
-  }
-
-  private groupByType(
-    entries: NotificationOutbox[]
-  ): Map<NotificationTypeEnum, NotificationOutbox[]> {
-    const map = new Map<NotificationTypeEnum, NotificationOutbox[]>();
-
     for (const entry of entries) {
-      const group = map.get(entry.type);
-      if (group) {
-        group.push(entry);
-      } else {
-        map.set(entry.type, [entry]);
-      }
+      await this.processEntry(entry);
     }
-
-    return map;
   }
 
-  private async dispatchBatch(
-    type: NotificationTypeEnum,
-    entries: NotificationOutbox[]
-  ): Promise<void> {
+  private async processEntry(entry: NotificationOutbox): Promise<void> {
     try {
-      switch (type) {
-        case NotificationTypeEnum.PASSWORD_RESET_EMAIL:
-          await this.notificationService.sendPasswordResetEmailBatch(
-            entries.map(
-              (e) => e.payload as { to: string; token: string }
-            )
-          );
-          break;
-        default:
-          throw new Error(`Unknown notification type: ${type}`);
-      }
-
-      await this.repository.updateBatch(
-        entries.map((entry) => entry.markAsProcessed())
-      );
+      await this.dispatch(entry);
+      await this.repository.update(entry.markAsProcessed());
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : String(err);
 
-      await this.repository.updateBatch(
-        entries.map((entry) =>
-          entry.retryCount + 1 >= this.config.maxRetries
-            ? entry.markAsFailed(errorMessage)
-            : entry.recordFailure(errorMessage)
-        )
+      await this.repository.update(
+        entry.retryCount + 1 >= this.config.maxRetries
+          ? entry.markAsFailed(errorMessage)
+          : entry.recordFailure(errorMessage)
       );
+    }
+  }
+
+  private async dispatch(entry: NotificationOutbox): Promise<void> {
+    switch (entry.type) {
+      case NotificationTypeEnum.PASSWORD_RESET_EMAIL:
+        await this.notificationService.sendPasswordResetEmail(
+          entry.payload as { to: string; token: string }
+        );
+        break;
+      default:
+        throw new Error(`Unknown notification type: ${entry.type}`);
     }
   }
 }
