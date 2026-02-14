@@ -33,7 +33,7 @@ export class PrismaPasswordResetTokenRepository implements PasswordResetTokenRep
     return PrismaPasswordResetTokenMapper.toDomain(raw);
   }
 
-  async markAsUsed(token: PasswordResetToken): Promise<void> {
+  async update(token: PasswordResetToken): Promise<void> {
     await this.db.passwordResetToken.update({
       where: { id: token.id.toString() },
       data: { usedAt: token.usedAt }

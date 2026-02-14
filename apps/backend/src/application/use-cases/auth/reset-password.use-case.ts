@@ -42,7 +42,7 @@ export class ResetPassword {
         Password.reconstitute(hashedPassword)
       );
 
-      await repos.passwordResetTokenRepository.markAsUsed(usedToken);
+      await repos.passwordResetTokenRepository.update(usedToken);
 
       await repos.refreshTokenRepository.revokeAllByUserId(token.userId);
     });
