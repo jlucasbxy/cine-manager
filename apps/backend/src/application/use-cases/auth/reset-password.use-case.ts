@@ -1,7 +1,4 @@
 import type {
-  PasswordResetTokenRepository,
-} from "@/application/interfaces/repositories";
-import type {
   HashProvider,
   TransactionManager
 } from "@/application/interfaces/providers";
@@ -14,33 +11,32 @@ import type { ResetPasswordDTO } from "@repo/dtos";
 
 export class ResetPassword {
   constructor(
-    private readonly passwordResetTokenRepository: PasswordResetTokenRepository,
     private readonly hashProvider: HashProvider,
     private readonly transactionManager: TransactionManager
   ) { }
 
   async execute(input: ResetPasswordDTO): Promise<void> {
-    const token = await this.passwordResetTokenRepository.findByToken(
-      input.token
-    );
-
-    if (!token) {
-      throw new ResetTokenInvalidError();
-    }
-
-    if (token.isUsed()) {
-      throw new ResetTokenInvalidError();
-    }
-
-    if (token.isExpired()) {
-      throw new ResetTokenExpiredError();
-    }
-
-    const password = Password.create(input.newPassword);
-    const hashedPassword = await this.hashProvider.hash(password.toString());
-    const usedToken = token.markAsUsed();
-
     await this.transactionManager.execute(async (repos) => {
+      const token = await repos.passwordResetTokenRepository.findByToken(
+        input.token
+      );
+
+      if (!token) {
+        throw new ResetTokenInvalidError();
+      }
+
+      if (token.isUsed()) {
+        throw new ResetTokenInvalidError();
+      }
+
+      if (token.isExpired()) {
+        throw new ResetTokenExpiredError();
+      }
+
+      const password = Password.create(input.newPassword);
+      const hashedPassword = await this.hashProvider.hash(password.toString());
+      const usedToken = token.markAsUsed();
+
       await repos.userRepository.updatePassword(
         token.userId,
         Password.reconstitute(hashedPassword)
