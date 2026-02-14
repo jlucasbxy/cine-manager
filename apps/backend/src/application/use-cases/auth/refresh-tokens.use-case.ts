@@ -7,7 +7,7 @@ import { RefreshToken } from "@/domain/entities";
 import {
   TokenExpiredError,
   TokenInvalidError,
-  TokenRevokedError,
+  TokenRevokedError
 } from "@/domain/errors";
 import type { RefreshTokensDTO, RefreshTokensResultDTO } from "@repo/dtos";
 
@@ -41,7 +41,7 @@ export class RefreshTokens {
         throw new TokenExpiredError();
       }
 
-      const revokedToken = token.revoke();
+      const revokedRefreshToken = token.revoke();
 
       const accessToken = await this.tokenProvider.generate(
         { userId: token.userId.toString() },
@@ -53,7 +53,10 @@ export class RefreshTokens {
         expiresIn: this.config.refreshTokenExpiresIn
       });
 
-      await repos.refreshTokenRepository.update(revokedToken);
+      await repos.refreshTokenRepository.updateByToken(
+        token.token,
+        revokedRefreshToken
+      );
       await repos.refreshTokenRepository.create(newRefreshToken);
       await repos.refreshTokenRepository.deleteExpired();
 
