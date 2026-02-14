@@ -55,6 +55,7 @@ export class RefreshTokens {
 
       await repos.refreshTokenRepository.update(revokedToken);
       await repos.refreshTokenRepository.create(newRefreshToken);
+      await repos.refreshTokenRepository.deleteExpired();
 
       return {
         accessToken,
