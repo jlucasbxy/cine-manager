@@ -1,4 +1,4 @@
-import { ImageMimeType, UploadKey, Url } from "@/domain/value-objects";
+import type { ImageMimeType, UploadKey, Url } from "@/domain/value-objects";
 
 interface CreateImageUploadProps {
   uploadKey: UploadKey;

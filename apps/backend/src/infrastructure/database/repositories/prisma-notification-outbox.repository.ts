@@ -1,11 +1,13 @@
 import type { NotificationOutboxRepository } from "@/application/interfaces/repositories";
-import { NotificationOutbox } from "@/domain/entities";
+import type { NotificationOutbox } from "@/domain/entities";
 import { NotificationStatusEnum } from "@/domain/enums";
 import type { PrismaDatabase } from "@/infrastructure/database/prisma";
 import { PrismaNotificationOutboxMapper } from "@/infrastructure/database/mappers";
 import type { InputJsonValue } from "@prisma/client/runtime/client";
 
-export class PrismaNotificationOutboxRepository implements NotificationOutboxRepository {
+export class PrismaNotificationOutboxRepository
+  implements NotificationOutboxRepository
+{
   private readonly db: PrismaDatabase;
 
   constructor(client: PrismaDatabase) {

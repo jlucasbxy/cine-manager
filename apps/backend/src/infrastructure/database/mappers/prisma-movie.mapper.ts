@@ -8,8 +8,8 @@ import {
   Url,
   Uuid
 } from "@/domain/value-objects";
-import { MovieStatusEnum } from "@/domain/enums/movie-status.enum";
-import { AgeRatingEnum } from "@/domain/enums/age-rating.enum";
+import type { MovieStatusEnum } from "@/domain/enums/movie-status.enum";
+import type { AgeRatingEnum } from "@/domain/enums/age-rating.enum";
 
 export class PrismaMovieMapper {
   static toDomain(raw: MovieModel): Movie {

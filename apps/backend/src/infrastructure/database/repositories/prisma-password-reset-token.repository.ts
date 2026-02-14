@@ -1,10 +1,12 @@
 import type { PasswordResetTokenRepository } from "@/application/interfaces/repositories";
-import { PasswordResetToken } from "@/domain/entities";
-import { Uuid } from "@/domain/value-objects";
+import type { PasswordResetToken } from "@/domain/entities";
+import type { Uuid } from "@/domain/value-objects";
 import type { PrismaDatabase } from "@/infrastructure/database/prisma";
 import { PrismaPasswordResetTokenMapper } from "@/infrastructure/database/mappers";
 
-export class PrismaPasswordResetTokenRepository implements PasswordResetTokenRepository {
+export class PrismaPasswordResetTokenRepository
+  implements PasswordResetTokenRepository
+{
   private readonly db: PrismaDatabase;
 
   constructor(client: PrismaDatabase) {

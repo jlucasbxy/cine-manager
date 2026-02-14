@@ -1,9 +1,9 @@
 import type { UserRepository } from "@/application/interfaces/repositories";
-import { User } from "@/domain/entities";
-import { Email, Uuid } from "@/domain/value-objects";
+import type { User } from "@/domain/entities";
+import { type Email, Uuid } from "@/domain/value-objects";
 import type { PrismaDatabase } from "@/infrastructure/database/prisma";
 import { PrismaUserMapper } from "@/infrastructure/database/mappers";
-import { UpdateUserData } from "@/application/interfaces/repositories/user-repository";
+import type { UpdateUserData } from "@/application/interfaces/repositories/user-repository";
 
 export class PrismaUserRepository implements UserRepository {
   private readonly db: PrismaDatabase;

@@ -2,8 +2,8 @@ import type {
   MovieRepository,
   UpdateMovieData
 } from "@/application/interfaces/repositories";
-import { Movie } from "@/domain/entities";
-import { Uuid, MovieQuery } from "@/domain/value-objects";
+import type { Movie } from "@/domain/entities";
+import type { Uuid, MovieQuery } from "@/domain/value-objects";
 import type { PrismaDatabase } from "@/infrastructure/database/prisma";
 import { PrismaMovieMapper } from "@/infrastructure/database/mappers";
 

@@ -1,4 +1,4 @@
-import { ErrorCode } from "@repo/dtos";
+import type { ErrorCode } from "@repo/dtos";
 
 export class DomainError extends Error {
   public readonly code: ErrorCode;

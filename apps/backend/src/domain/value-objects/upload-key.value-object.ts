@@ -1,4 +1,4 @@
-import { Uuid, ImageMimeType } from "@/domain/value-objects";
+import { Uuid, type ImageMimeType } from "@/domain/value-objects";
 
 interface UploadKeyCreateParams {
   userId: Uuid;
@@ -18,7 +18,7 @@ export class UploadKey {
   }
 
   static reconstitute(props: UploadKeyCreateParams): UploadKey {
-    return this.create(props);
+    return UploadKey.create(props);
   }
 
   public getMimeType(): ImageMimeType {

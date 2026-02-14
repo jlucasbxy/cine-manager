@@ -1,4 +1,4 @@
-import { type StringValue } from "ms";
+import type { StringValue } from "ms";
 import type { TransactionManager } from "@/application/interfaces/providers";
 import { PasswordResetToken, NotificationOutbox } from "@/domain/entities";
 import { NotificationTypeEnum } from "@/domain/enums";
