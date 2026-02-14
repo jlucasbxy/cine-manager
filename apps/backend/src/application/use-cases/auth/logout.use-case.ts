@@ -8,8 +8,9 @@ export class Logout {
   ) { }
 
   async execute(input: LogoutDTO): Promise<void> {
-    await this.refreshTokenRepository.revokeByToken(
-      Token.create(input.refreshToken)
+    await this.refreshTokenRepository.updateByToken(
+      Token.create(input.refreshToken),
+      { revokedAt: new Date() }
     );
   }
 }

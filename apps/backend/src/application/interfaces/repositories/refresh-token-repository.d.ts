@@ -1,11 +1,15 @@
 import { RefreshToken } from "@/domain/entities";
 import { Token, Uuid } from "@/domain/value-objects";
 
+export interface UpdateRefreshTokenData {
+  revokedAt?: Date | null;
+}
+
 export interface RefreshTokenRepository {
   create(token: RefreshToken): Promise<RefreshToken>;
   findByToken(token: string): Promise<RefreshToken | null>;
   update(token: RefreshToken): Promise<void>;
-  revokeByToken(token: Token): Promise<void>;
+  updateByToken(token: Token, data: UpdateRefreshTokenData): Promise<void>;
   revokeAllByUserId(userId: Uuid): Promise<void>;
   deleteExpired(): Promise<void>;
 }

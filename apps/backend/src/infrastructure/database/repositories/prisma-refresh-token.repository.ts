@@ -1,4 +1,4 @@
-import type { RefreshTokenRepository } from "@/application/interfaces/repositories";
+import type { RefreshTokenRepository, UpdateRefreshTokenData } from "@/application/interfaces/repositories";
 import { RefreshToken } from "@/domain/entities";
 import { Token, Uuid } from "@/domain/value-objects";
 import type { PrismaDatabase } from "@/infrastructure/database/prisma";
@@ -40,10 +40,10 @@ export class PrismaRefreshTokenRepository implements RefreshTokenRepository {
     });
   }
 
-  async revokeByToken(token: Token): Promise<void> {
+  async updateByToken(token: Token, data: UpdateRefreshTokenData): Promise<void> {
     await this.db.refreshToken.updateMany({
-      where: { token: token.toString(), revokedAt: null },
-      data: { revokedAt: new Date() }
+      where: { token: token.toString() },
+      data
     });
   }
 
