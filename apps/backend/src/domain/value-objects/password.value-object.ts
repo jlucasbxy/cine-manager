@@ -1,4 +1,5 @@
 import { InvalidPasswordError } from "@/domain/errors";
+import { passwordZodSchema } from "@repo/validators";
 
 export class Password {
   private readonly value: string;
@@ -8,7 +9,8 @@ export class Password {
   }
 
   static create(value: string): Password {
-    if (value.length < 8 || value.length > 64) {
+    const result = passwordZodSchema.safeParse(value);
+    if (!result.success) {
       throw new InvalidPasswordError();
     }
     return new Password(value);
