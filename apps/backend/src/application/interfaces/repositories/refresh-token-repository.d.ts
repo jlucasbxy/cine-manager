@@ -1,9 +1,7 @@
 import { RefreshToken } from "@/domain/entities";
 import { Token, Uuid } from "@/domain/value-objects";
 
-export interface UpdateRefreshTokenData {
-  revokedAt?: Date | null;
-}
+export type UpdateRefreshTokenData = Pick<RefreshToken, "revokedAt">;
 
 export interface RefreshTokenRepository {
   create(token: RefreshToken): Promise<RefreshToken>;
