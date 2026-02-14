@@ -52,6 +52,15 @@ export class PrismaUserRepository implements UserRepository {
     return PrismaUserMapper.toDomain(raw);
   }
 
+  async existsByEmail(email: Email): Promise<Uuid | null> {
+    const raw = await this.db.user.findUnique({
+      where: { email: email.toString() },
+      select: { id: true }
+    });
+    if (!raw) return null;
+    return Uuid.create(raw.id);
+  }
+
   async updateById(id: Uuid, data: UpdateUserData): Promise<void> {
     if (!data.password) {
       return;

@@ -19,26 +19,26 @@ export class RequestPasswordReset {
     const email = Email.create(input.email);
 
     await this.transactionManager.execute(async (repos) => {
-      const user = await repos.userRepository.findByEmail(email);
+      const userId = await repos.userRepository.existsByEmail(email);
 
-      if (!user) {
+      if (!userId) {
         return;
       }
 
       const resetToken = PasswordResetToken.create({
-        userId: user.id,
+        userId,
         expiresIn: this.config.passwordResetTokenExpiresIn
       });
 
       const outboxEntry = NotificationOutbox.create({
         type: NotificationTypeEnum.PASSWORD_RESET_EMAIL,
         payload: {
-          to: user.email.toString(),
+          to: email.toString(),
           token: resetToken.token.toString()
         }
       });
 
-      await repos.passwordResetTokenRepository.deleteByUserId(user.id);
+      await repos.passwordResetTokenRepository.deleteByUserId(userId);
       await repos.passwordResetTokenRepository.create(resetToken);
       await repos.notificationOutboxRepository.create(outboxEntry);
     });
