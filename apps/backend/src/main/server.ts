@@ -83,7 +83,7 @@ export async function start() {
         authMiddleware
       });
     },
-    { prefix: "/api" }
+    { prefix: "/api/v1" }
   );
 
   try {

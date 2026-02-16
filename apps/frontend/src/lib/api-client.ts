@@ -46,7 +46,7 @@ function scheduleRefresh(expiresIn: number) {
 }
 
 export const apiClient = axios.create({
-  baseURL: "/api",
+  baseURL: "/api/v1",
   headers: {
     "Content-Type": "application/json"
   }
