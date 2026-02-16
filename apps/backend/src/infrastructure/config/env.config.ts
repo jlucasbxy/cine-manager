@@ -18,7 +18,8 @@ const envSchema = z.object({
   PASSWORD_RESET_TOKEN_EXPIRES_IN: durationString.default("1h"),
   RESEND_API_KEY: z.string(),
   EMAIL_FROM: z.email(),
-  REDIS_URL: z.url()
+  REDIS_URL: z.url(),
+  FRONTEND_URL: z.url()
 });
 
 export const env = envSchema.parse(process.env);
