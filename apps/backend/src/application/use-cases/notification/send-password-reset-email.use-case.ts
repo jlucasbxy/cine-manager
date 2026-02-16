@@ -15,7 +15,7 @@ export class SendPasswordResetEmail {
     await this.emailProvider.send({
       to,
       subject: "Password Reset Request",
-      body: `Click the link below to reset your password:\n\n${resetUrl}\n\nIf you did not request a password reset, you can ignore this email.`,
+      body: `Click the link below to reset your password:\n\n<a href="${resetUrl}">Reset your password</a>\n\nIf you did not request a password reset, you can ignore this email.`,
       idempotencyKey
     });
   }
