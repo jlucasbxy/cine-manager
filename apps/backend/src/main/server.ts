@@ -30,7 +30,6 @@ export async function start() {
     logger: true
   });
 
-  await app.register(cors);
   await app.register(cookie);
   const redis = makeRedisClient();
 
