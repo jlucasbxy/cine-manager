@@ -12,3 +12,4 @@ export { GenerateUploadUrlValidator } from "./generate-upload-url.validator";
 export { AgeRating, MovieStatus } from "./enums";
 export { passwordZodSchema } from "./schemas/password.schema";
 export { idZodSchema } from "./schemas/id.schema";
+export { movieSchema } from "./schemas/movie.schema";

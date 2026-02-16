@@ -1,0 +1,90 @@
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader2 } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Separator } from "@/components/ui/separator";
+import type { ProfileFormData } from "@/lib/schemas";
+import { profileSchema } from "@/lib/schemas";
+
+interface ProfileFormProps {
+  defaultName: string;
+  onSubmit: (data: ProfileFormData) => Promise<void>;
+  isSubmitting: boolean;
+}
+
+export function ProfileForm({
+  defaultName,
+  onSubmit,
+  isSubmitting
+}: ProfileFormProps) {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm<ProfileFormData>({
+    resolver: zodResolver(profileSchema),
+    defaultValues: {
+      name: defaultName,
+      password: "",
+      confirmPassword: ""
+    }
+  });
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+      <div className="space-y-2">
+        <Label htmlFor="name">Name</Label>
+        <Input id="name" {...register("name")} />
+        {errors.name && (
+          <p className="text-sm text-destructive">{errors.name.message}</p>
+        )}
+      </div>
+
+      <Separator />
+
+      <div>
+        <h3 className="mb-4 text-lg font-medium">Change Password</h3>
+        <p className="mb-4 text-sm text-muted-foreground">
+          Leave blank to keep your current password
+        </p>
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="password">New Password</Label>
+            <Input
+              id="password"
+              type="password"
+              placeholder="At least 8 characters"
+              {...register("password")}
+            />
+            {errors.password && (
+              <p className="text-sm text-destructive">
+                {errors.password.message}
+              </p>
+            )}
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="confirmPassword">Confirm Password</Label>
+            <Input
+              id="confirmPassword"
+              type="password"
+              {...register("confirmPassword")}
+            />
+            {errors.confirmPassword && (
+              <p className="text-sm text-destructive">
+                {errors.confirmPassword.message}
+              </p>
+            )}
+          </div>
+        </div>
+      </div>
+
+      <Button type="submit" disabled={isSubmitting}>
+        {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+        Save Changes
+      </Button>
+    </form>
+  );
+}
