@@ -53,35 +53,40 @@ export async function start() {
   const userController = makeUserController();
   const authMiddleware = makeAuthMiddleware();
 
-  await app.register(authRoutes, {
-    prefix: ROUTE_PREFIXES.auth,
-    authController
-  });
-  await app.register(genreRoutes, {
-    prefix: ROUTE_PREFIXES.genres,
-    genreController,
-    authMiddleware
-  });
-  await app.register(languageRoutes, {
-    prefix: ROUTE_PREFIXES.languages,
-    languageController,
-    authMiddleware
-  });
-  await app.register(movieRoutes, {
-    prefix: ROUTE_PREFIXES.movies,
-    movieController,
-    authMiddleware
-  });
-  await app.register(uploadRoutes, {
-    prefix: ROUTE_PREFIXES.uploads,
-    uploadController,
-    authMiddleware
-  });
-  await app.register(userRoutes, {
-    prefix: ROUTE_PREFIXES.users,
-    userController,
-    authMiddleware
-  });
+  await app.register(
+    async (api) => {
+      await api.register(authRoutes, {
+        prefix: ROUTE_PREFIXES.auth,
+        authController
+      });
+      await api.register(genreRoutes, {
+        prefix: ROUTE_PREFIXES.genres,
+        genreController,
+        authMiddleware
+      });
+      await api.register(languageRoutes, {
+        prefix: ROUTE_PREFIXES.languages,
+        languageController,
+        authMiddleware
+      });
+      await api.register(movieRoutes, {
+        prefix: ROUTE_PREFIXES.movies,
+        movieController,
+        authMiddleware
+      });
+      await api.register(uploadRoutes, {
+        prefix: ROUTE_PREFIXES.uploads,
+        uploadController,
+        authMiddleware
+      });
+      await api.register(userRoutes, {
+        prefix: ROUTE_PREFIXES.users,
+        userController,
+        authMiddleware
+      });
+    },
+    { prefix: "/api" }
+  );
 
   try {
     await app.listen({ port: env.PORT, host: env.HOST });

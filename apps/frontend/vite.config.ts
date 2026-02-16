@@ -12,12 +12,7 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      "/auth": { target: "http://localhost:3000", changeOrigin: true },
-      "/movies": { target: "http://localhost:3000", changeOrigin: true },
-      "/users": { target: "http://localhost:3000", changeOrigin: true },
-      "/genres": { target: "http://localhost:3000", changeOrigin: true },
-      "/languages": { target: "http://localhost:3000", changeOrigin: true },
-      "/uploads": { target: "http://localhost:3000", changeOrigin: true }
+      "/api": { target: "http://localhost:3000", changeOrigin: true }
     }
   }
 });
