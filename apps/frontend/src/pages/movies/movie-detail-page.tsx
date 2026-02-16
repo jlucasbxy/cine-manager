@@ -18,6 +18,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useAuth } from "@/hooks/use-auth";
 import { useDeleteMovie, useMovie } from "@/queries/use-movies";
 
 function formatCurrency(value: number) {
@@ -31,9 +32,11 @@ function formatCurrency(value: number) {
 export function MovieDetailPage() {
   const { id = "" } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const { user } = useAuth();
   const { data: movie, isLoading } = useMovie(id);
   const deleteMovie = useDeleteMovie();
   const [showDelete, setShowDelete] = useState(false);
+  const isOwner = user?.id === movie?.userId;
 
   const handleDelete = async () => {
     try {
@@ -179,22 +182,24 @@ export function MovieDetailPage() {
             </div>
           )}
 
-          <div className="flex gap-2 pt-4">
-            <Link to={`/movies/${movie.id}/edit`}>
-              <Button variant="outline" className="gap-2">
-                <Edit className="h-4 w-4" />
-                Edit
+          {isOwner && (
+            <div className="flex gap-2 pt-4">
+              <Link to={`/movies/${movie.id}/edit`}>
+                <Button variant="outline" className="gap-2">
+                  <Edit className="h-4 w-4" />
+                  Edit
+                </Button>
+              </Link>
+              <Button
+                variant="destructive"
+                className="gap-2"
+                onClick={() => setShowDelete(true)}
+              >
+                <Trash2 className="h-4 w-4" />
+                Delete
               </Button>
-            </Link>
-            <Button
-              variant="destructive"
-              className="gap-2"
-              onClick={() => setShowDelete(true)}
-            >
-              <Trash2 className="h-4 w-4" />
-              Delete
-            </Button>
-          </div>
+            </div>
+          )}
         </div>
       </div>
 
