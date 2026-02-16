@@ -8,6 +8,7 @@ import { AuthFormLayout } from "@/components/auth/auth-form-layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { PasswordInput } from "@/components/ui/password-input";
 import { useAuth } from "@/hooks/use-auth";
 import type { RegisterFormData } from "@/lib/schemas";
 import { registerSchema } from "@/lib/schemas";
@@ -67,9 +68,8 @@ export function RegisterPage() {
 
         <div className="space-y-2">
           <Label htmlFor="password">Password</Label>
-          <Input
+          <PasswordInput
             id="password"
-            type="password"
             placeholder="At least 8 characters"
             {...register("password")}
           />
@@ -82,9 +82,8 @@ export function RegisterPage() {
 
         <div className="space-y-2">
           <Label htmlFor="confirmPassword">Confirm Password</Label>
-          <Input
+          <PasswordInput
             id="confirmPassword"
-            type="password"
             placeholder="Repeat your password"
             {...register("confirmPassword")}
           />
