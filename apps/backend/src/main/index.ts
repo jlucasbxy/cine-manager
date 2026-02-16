@@ -11,7 +11,9 @@ const commands: Record<string, () => Promise<void>> = {
   },
   seed: async () => {
     const { seedGenres } = await import("@/infrastructure/database/seeds/genre.seed");
+    const { seedLanguages } = await import("@/infrastructure/database/seeds/language.seed");
     await seedGenres();
+    await seedLanguages();
   }
 };
 
