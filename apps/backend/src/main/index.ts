@@ -8,6 +8,10 @@ const commands: Record<string, () => Promise<void>> = {
   worker: async () => {
     const { startWorker } = await import("@/main/worker");
     startWorker();
+  },
+  seed: async () => {
+    const { seedGenres } = await import("@/infrastructure/database/seeds/genre.seed");
+    await seedGenres();
   }
 };
 

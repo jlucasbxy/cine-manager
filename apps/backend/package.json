@@ -8,6 +8,7 @@
     "build": "tsc",
     "start": "node dist/main/index.js server",
     "start:worker": "node dist/main/index.js worker",
+    "seed": "tsx src/main/index.ts seed",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
