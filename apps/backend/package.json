@@ -9,6 +9,7 @@
     "start": "node dist/main/index.js server",
     "start:worker": "node dist/main/index.js worker",
     "seed": "tsx src/main/index.ts seed",
+    "seed:dev": "tsx src/main/index.ts seed:dev",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
