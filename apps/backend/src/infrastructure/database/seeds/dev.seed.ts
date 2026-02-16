@@ -40,7 +40,7 @@ const DEV_MOVIES = [
     ageRating: "EIGHTEEN" as const,
     budget: 3300000,
     revenue: 30680000,
-    posterUrl: "https://image.tmdb.org/t/p/w500/k7eYdWvhYQyRQoU2TB2A2Xu2TfC.jpg",
+    posterUrl: "https://image.tmdb.org/t/p/w500/gfnXixcGC060QcG6JPxN6AMdVsq.jpg",
     backdropUrl: "https://image.tmdb.org/t/p/w1280/5CS0hBnmRmh3jnqGxFBfx5VLqH0.jpg",
     trailerUrl: "https://www.youtube.com/watch?v=dcUOO4Itgmw",
     votes: 11456,
