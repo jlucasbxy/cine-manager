@@ -31,6 +31,23 @@ export function getTokenExpiresAt() {
   return tokenExpiresAt;
 }
 
+// Single in-flight refresh promise shared between the proactive timer and the
+// reactive 401 interceptor. Prevents duplicate /auth/refresh calls when both
+// fire at the same time (e.g. a request fails with 401 right as the timer fires).
+let refreshPromise: Promise<{ accessToken: string; expiresIn: number }> | null =
+  null;
+
+function doRefresh(): Promise<{ accessToken: string; expiresIn: number }> {
+  if (refreshPromise) return refreshPromise;
+  refreshPromise = apiClient
+    .post<{ accessToken: string; expiresIn: number }>("/auth/refresh")
+    .then((res) => res.data)
+    .finally(() => {
+      refreshPromise = null;
+    });
+  return refreshPromise;
+}
+
 // Schedules a silent token refresh 60 seconds before the token expires.
 // This keeps the session alive without the user noticing any interruption.
 function scheduleRefresh(expiresIn: number) {
@@ -41,11 +58,8 @@ function scheduleRefresh(expiresIn: number) {
   const refreshIn = Math.max((expiresIn - 60) * 1000, 0);
   refreshTimer = setTimeout(async () => {
     try {
-      const response = await apiClient.post<{
-        accessToken: string;
-        expiresIn: number;
-      }>("/auth/refresh");
-      setAccessToken(response.data.accessToken, response.data.expiresIn);
+      const data = await doRefresh();
+      setAccessToken(data.accessToken, data.expiresIn);
     } catch {
       // Refresh failed (e.g. refresh token expired) — force the user to log in again.
       clearAccessToken();
@@ -68,28 +82,6 @@ apiClient.interceptors.request.use((config) => {
   return config;
 });
 
-// Tracks whether a token refresh is already in flight.
-let isRefreshing = false;
-// Requests that arrived while a refresh was in progress are queued here
-// so they can be retried with the new token once refresh completes.
-let failedQueue: Array<{
-  resolve: (token: string | null) => void;
-  reject: (error: unknown) => void;
-}> = [];
-
-// Drains the queue: resolves each waiting request with the new token,
-// or rejects them all if the refresh itself failed.
-function processQueue(error: unknown, token: string | null = null) {
-  for (const prom of failedQueue) {
-    if (error) {
-      prom.reject(error);
-    } else {
-      prom.resolve(token);
-    }
-  }
-  failedQueue = [];
-}
-
 apiClient.interceptors.response.use(
   (response) => response,
   async (error) => {
@@ -103,37 +95,19 @@ apiClient.interceptors.response.use(
       !originalRequest.url?.includes("/auth/refresh") &&
       !originalRequest.url?.includes("/auth/login")
     ) {
-      if (isRefreshing) {
-        // A refresh is already running — queue this request and wait for it to finish.
-        return new Promise((resolve, reject) => {
-          failedQueue.push({ resolve, reject });
-        }).then((token) => {
-          originalRequest.headers.Authorization = `Bearer ${token}`;
-          return apiClient(originalRequest);
-        });
-      }
-
       originalRequest._retry = true;
-      isRefreshing = true;
 
       try {
-        const response = await apiClient.post<{
-          accessToken: string;
-          expiresIn: number;
-        }>("/auth/refresh");
-        const { accessToken: newToken, expiresIn } = response.data;
-        setAccessToken(newToken, expiresIn);
-        // Let all queued requests through with the new token.
-        processQueue(null, newToken);
-        originalRequest.headers.Authorization = `Bearer ${newToken}`;
+        // doRefresh() deduplicates concurrent calls — if the proactive timer
+        // already triggered a refresh, we share that same promise instead of
+        // firing a second /auth/refresh request.
+        const data = await doRefresh();
+        setAccessToken(data.accessToken, data.expiresIn);
+        originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
         return apiClient(originalRequest);
       } catch (refreshError) {
-        // Refresh failed — reject every queued request and clear the session.
-        processQueue(refreshError, null);
         clearAccessToken();
         return Promise.reject(refreshError);
-      } finally {
-        isRefreshing = false;
       }
     }
 
