@@ -2,7 +2,7 @@ import type {
   HashProvider,
   TransactionManager
 } from "@/application/interfaces/providers";
-import { Password } from "@/domain/value-objects";
+import { Password, Token } from "@/domain/value-objects";
 import {
   ResetTokenExpiredError,
   ResetTokenInvalidError
@@ -18,7 +18,7 @@ export class ResetPassword {
   async execute(input: ResetPasswordDTO): Promise<void> {
     await this.transactionManager.execute(async (repos) => {
       const token = await repos.passwordResetTokenRepository.findByToken(
-        input.token
+        Token.create(input.token)
       );
 
       if (!token) {
