@@ -19,6 +19,11 @@ export const userRoutes: FastifyPluginAsync<UserRoutesOptions> = async (
     handler: userController.createUser.bind(userController)
   });
 
+  fastify.get("/me", {
+    preHandler: authMiddleware.preHandler,
+    handler: userController.getMe.bind(userController)
+  });
+
   fastify.patch("/", {
     preHandler: authMiddleware.preHandler,
     handler: userController.updateUser.bind(userController)

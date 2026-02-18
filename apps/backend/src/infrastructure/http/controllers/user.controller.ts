@@ -18,6 +18,11 @@ export class UserController {
     return reply.status(201).send(user);
   }
 
+  async getMe(request: FastifyRequest, reply: FastifyReply) {
+    const user = await this.userService.getUser(request.userId);
+    return reply.send(user);
+  }
+
   async updateUser(request: FastifyRequest, reply: FastifyReply) {
     const data = this.updateUserValidator.parse(request.body);
     const user = await this.userService.updateUser(request.userId, data);
