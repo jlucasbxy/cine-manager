@@ -40,7 +40,7 @@ export class PrismaRefreshTokenRepository implements RefreshTokenRepository {
     token: Token,
     data: UpdateRefreshTokenData
   ): Promise<void> {
-    await this.db.refreshToken.updateMany({
+    await this.db.refreshToken.update({
       where: { token: token.toString() },
       data
     });
