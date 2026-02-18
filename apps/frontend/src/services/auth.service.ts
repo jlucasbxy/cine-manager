@@ -32,6 +32,11 @@ export async function register(data: CreateUserDTO) {
   return response.data;
 }
 
+export async function getMe() {
+  const response = await apiClient.get<UserDTO>("/users/me");
+  return response.data;
+}
+
 export async function updateUser(data: { name?: string; password?: string }) {
   const response = await apiClient.patch<UserDTO>("/users", data);
   return response.data;
