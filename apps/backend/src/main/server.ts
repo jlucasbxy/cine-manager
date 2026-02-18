@@ -25,8 +25,16 @@ import {
 import { makeAuthMiddleware } from "@/main/factories/middlewares";
 
 export async function start() {
+  const isDev = process.env.NODE_ENV !== "production";
   const app = Fastify({
-    logger: true
+    logger: isDev
+      ? {
+          transport: {
+            target: "pino-pretty",
+            options: { translateTime: "HH:MM:ss", ignore: "pid,hostname" }
+          }
+        }
+      : true
   });
 
   await app.register(cookie);
