@@ -8,9 +8,10 @@ export class ListMovies {
 
   async execute(input: QueryMoviesDTO): Promise<PaginatedResultDTO<MovieDTO>> {
     const query = MovieQuery.create(input);
-    const { movies, total } = await this.movieRepository.findAll(query);
+    const result = await this.movieRepository.findAll(query);
+    const total = result.total.toNumber();
     return {
-      data: movies.map(MovieMapper.toDTO),
+      data: result.items.map(MovieMapper.toDTO),
       meta: {
         page: input.page,
         perPage: input.perPage,

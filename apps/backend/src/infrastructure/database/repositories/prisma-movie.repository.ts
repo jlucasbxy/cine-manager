@@ -4,6 +4,7 @@ import type {
 } from "@/application/interfaces/repositories";
 import type { Movie } from "@/domain/entities";
 import type { Uuid, MovieQuery } from "@/domain/value-objects";
+import { PaginatedResult } from "@/domain/value-objects";
 import type { PrismaDatabase } from "@/infrastructure/database/prisma";
 import { PrismaMovieMapper } from "@/infrastructure/database/mappers";
 
@@ -50,9 +51,7 @@ export class PrismaMovieRepository implements MovieRepository {
     return PrismaMovieMapper.toDomain(raw);
   }
 
-  async findAll(
-    query: MovieQuery
-  ): Promise<{ movies: Movie[]; total: number }> {
+  async findAll(query: MovieQuery): Promise<PaginatedResult<Movie>> {
     const where: Record<string, unknown> = {};
 
     if (query.runtime !== undefined) {
@@ -74,7 +73,7 @@ export class PrismaMovieRepository implements MovieRepository {
       this.db.movie.count({ where })
     ]);
 
-    return { movies: rawList.map(PrismaMovieMapper.toDomain), total };
+    return PaginatedResult.create(rawList.map(PrismaMovieMapper.toDomain), total);
   }
 
   async update(id: Uuid, data: UpdateMovieData): Promise<Movie | null> {

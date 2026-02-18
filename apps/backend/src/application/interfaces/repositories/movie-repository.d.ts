@@ -1,5 +1,5 @@
 import { Movie } from "@/domain/entities";
-import { Uuid, MovieQuery } from "@/domain/value-objects";
+import { Uuid, MovieQuery, PaginatedResult } from "@/domain/value-objects";
 
 export type UpdateMovieData = Partial<
   Omit<Movie, "id" | "createdAt" | "updatedAt">
@@ -8,7 +8,7 @@ export type UpdateMovieData = Partial<
 export interface MovieRepository {
   create(movie: Movie): Promise<Movie>;
   findById(id: Uuid): Promise<Movie | null>;
-  findAll(query: MovieQuery): Promise<{ movies: Movie[]; total: number }>;
+  findAll(query: MovieQuery): Promise<PaginatedResult<Movie>>;
   update(id: Uuid, data: UpdateMovieData): Promise<Movie | null>;
   delete(id: Uuid): Promise<boolean>;
 }

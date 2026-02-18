@@ -10,3 +10,4 @@ export { Uuid } from "@/domain/value-objects/uuid.value-object";
 export { MovieQuery } from "@/domain/value-objects/movie-query.value-object";
 export { Token } from "@/domain/value-objects/token.value-object";
 export { UploadKey } from "@/domain/value-objects/upload-key.value-object";
+export { PaginatedResult } from "@/domain/value-objects/paginated-result.value-object";
