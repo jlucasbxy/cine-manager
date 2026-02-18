@@ -5,7 +5,7 @@ import type {
   ResetPasswordValidator,
   EmailValidator
 } from "@repo/validators";
-import { ROUTE_PREFIXES } from "@/infrastructure/config/routes.config";
+import { env } from "@/infrastructure/config/env.config";
 
 const REFRESH_TOKEN_COOKIE = "refreshToken";
 
@@ -69,18 +69,18 @@ export class AuthController {
   private setRefreshTokenCookie(reply: FastifyReply, token: string) {
     reply.setCookie(REFRESH_TOKEN_COOKIE, token, {
       httpOnly: true,
-      secure: true,
+      secure: env.FRONTEND_URL.startsWith("https://"),
       sameSite: "strict",
-      path: ROUTE_PREFIXES.auth
+      path: "/"
     });
   }
 
   private clearRefreshTokenCookie(reply: FastifyReply) {
     reply.clearCookie(REFRESH_TOKEN_COOKIE, {
       httpOnly: true,
-      secure: true,
+      secure: env.FRONTEND_URL.startsWith("https://"),
       sameSite: "strict",
-      path: ROUTE_PREFIXES.auth
+      path: "/"
     });
   }
 }
