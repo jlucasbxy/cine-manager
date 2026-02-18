@@ -39,21 +39,34 @@ export class PrismaRefreshTokenRepository implements RefreshTokenRepository {
   async updateByToken(
     token: Token,
     data: UpdateRefreshTokenData
-  ): Promise<void> {
-    await this.db.refreshToken.update({
-      where: { token: token.toString() },
-      data: { revokedAt: data.revokedAt }
-    });
+  ): Promise<RefreshToken | null> {
+    try {
+      const raw = await this.db.refreshToken.update({
+        where: { token: token.toString() },
+        data: { revokedAt: data.revokedAt }
+      });
+      return PrismaRefreshTokenMapper.toDomain(raw);
+    } catch (error: unknown) {
+      if (
+        error instanceof Error &&
+        "code" in error &&
+        (error as { code: string }).code === "P2025"
+      ) {
+        return null;
+      }
+      throw error;
+    }
   }
 
   async updateManyByUserId(
     userId: Uuid,
     data: UpdateRefreshTokenData
-  ): Promise<void> {
-    await this.db.refreshToken.updateMany({
+  ): Promise<number | null> {
+    const result = await this.db.refreshToken.updateMany({
       where: { userId: userId.toString() },
       data: { revokedAt: data.revokedAt }
     });
+    return result.count === 0 ? null : result.count;
   }
 
   async deleteExpired(): Promise<void> {
