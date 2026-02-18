@@ -46,6 +46,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         const result = await authService.refreshTokens();
         if (!cancelled) {
           setAccessToken(result.accessToken, result.expiresIn);
+          const userData = await authService.getMe();
+          saveUser(userData);
         }
       } catch {
         if (!cancelled) {
@@ -68,7 +70,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     async (email: string, password: string) => {
       const result = await authService.login(email, password);
       setAccessToken(result.accessToken, result.expiresIn);
-      const userData = await authService.updateUser({});
+      const userData = await authService.getMe();
       saveUser(userData);
     },
     [saveUser]
