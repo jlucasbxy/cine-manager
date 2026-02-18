@@ -53,10 +53,9 @@ export class RefreshTokens {
         expiresIn: this.config.refreshTokenExpiresIn
       });
 
-      await repos.refreshTokenRepository.updateByToken(
-        token.token,
-        { revokedAt: revokedRefreshToken.revokedAt }
-      );
+      await repos.refreshTokenRepository.updateByToken(token.token, {
+        revokedAt: revokedRefreshToken.revokedAt
+      });
       await repos.refreshTokenRepository.create(newRefreshToken);
       await repos.refreshTokenRepository.deleteExpired();
 

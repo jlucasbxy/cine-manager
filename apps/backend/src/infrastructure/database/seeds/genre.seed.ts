@@ -20,7 +20,7 @@ const TMDB_GENRES = [
   "TV Movie",
   "Thriller",
   "War",
-  "Western",
+  "Western"
 ];
 
 export async function seedGenres() {
@@ -28,7 +28,7 @@ export async function seedGenres() {
 
   const result = await prisma.genre.createMany({
     skipDuplicates: true,
-    data: TMDB_GENRES.map((name) => ({ id: uuidv7(), name })),
+    data: TMDB_GENRES.map((name) => ({ id: uuidv7(), name }))
   });
 
   console.log(`Seeded ${result.count} genres`);

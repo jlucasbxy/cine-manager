@@ -10,15 +10,25 @@ const commands: Record<string, () => Promise<void>> = {
     startWorker();
   },
   seed: async () => {
-    const { seedGenres } = await import("@/infrastructure/database/seeds/genre.seed");
-    const { seedLanguages } = await import("@/infrastructure/database/seeds/language.seed");
+    const { seedGenres } = await import(
+      "@/infrastructure/database/seeds/genre.seed"
+    );
+    const { seedLanguages } = await import(
+      "@/infrastructure/database/seeds/language.seed"
+    );
     await seedGenres();
     await seedLanguages();
   },
   "seed:dev": async () => {
-    const { seedGenres } = await import("@/infrastructure/database/seeds/genre.seed");
-    const { seedLanguages } = await import("@/infrastructure/database/seeds/language.seed");
-    const { seedDev } = await import("@/infrastructure/database/seeds/dev.seed");
+    const { seedGenres } = await import(
+      "@/infrastructure/database/seeds/genre.seed"
+    );
+    const { seedLanguages } = await import(
+      "@/infrastructure/database/seeds/language.seed"
+    );
+    const { seedDev } = await import(
+      "@/infrastructure/database/seeds/dev.seed"
+    );
     await seedGenres();
     await seedLanguages();
     await seedDev();

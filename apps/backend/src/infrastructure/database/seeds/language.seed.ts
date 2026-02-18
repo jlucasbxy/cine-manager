@@ -31,7 +31,7 @@ const TMDB_LANGUAGES: { code: string; name: string }[] = [
   { code: "ro", name: "Romanian" },
   { code: "uk", name: "Ukrainian" },
   { code: "vi", name: "Vietnamese" },
-  { code: "tl", name: "Tagalog" },
+  { code: "tl", name: "Tagalog" }
 ];
 
 export async function seedLanguages() {
@@ -39,7 +39,7 @@ export async function seedLanguages() {
 
   const result = await prisma.language.createMany({
     skipDuplicates: true,
-    data: TMDB_LANGUAGES.map(({ code, name }) => ({ id: uuidv7(), code, name })),
+    data: TMDB_LANGUAGES.map(({ code, name }) => ({ id: uuidv7(), code, name }))
   });
 
   console.log(`Seeded ${result.count} languages`);
