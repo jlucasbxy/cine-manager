@@ -42,7 +42,7 @@ export class PrismaRefreshTokenRepository implements RefreshTokenRepository {
   ): Promise<void> {
     await this.db.refreshToken.update({
       where: { token: token.toString() },
-      data
+      data: { revokedAt: data.revokedAt }
     });
   }
 
@@ -52,7 +52,7 @@ export class PrismaRefreshTokenRepository implements RefreshTokenRepository {
   ): Promise<void> {
     await this.db.refreshToken.updateMany({
       where: { userId: userId.toString() },
-      data
+      data: { revokedAt: data.revokedAt }
     });
   }
 
