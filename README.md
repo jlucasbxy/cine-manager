@@ -60,18 +60,43 @@ Esses dados sao necessarios para o sistema funcionar corretamente. O comando e i
 
 Executa os seeds de producao **e adicionalmente** popula dados de exemplo para desenvolvimento:
 
-- **Usuarios** - 2 usuarios de teste:
-  | Nome         | Email             | Senha         |
-  |--------------|-------------------|---------------|
-  | Alice Silva  | alice@example.com | password123   |
-  | Bob Santos   | bob@example.com   | password123   |
+- **Usuarios** - 5 usuarios de teste:
+  | Nome              | Email                  | Senha         |
+  |-------------------|------------------------|---------------|
+  | Alice Silva       | alice@example.com      | password123   |
+  | Bob Santos        | bob@example.com        | password123   |
+  | Charlie Johnson   | charlie@example.com    | password123   |
+  | Diana Rodriguez   | diana@example.com      | password123   |
+  | Eduardo Ferreira  | eduardo@example.com    | password123   |
 
-- **Filmes** - 5 filmes de exemplo com generos, idiomas e poster/backdrop do TMDb:
+- **Filmes** - 25 filmes de exemplo com generos, idiomas e poster/backdrop do TMDb:
   - The Matrix (en, Action/Sci-Fi)
   - Cidade de Deus (pt, Drama/Crime)
   - A Viagem de Chihiro (ja, Animation/Family/Fantasy)
   - Parasita (ko, Comedy/Thriller/Drama)
   - Interestelar (en, Adventure/Drama/Sci-Fi)
+  - Um Sonho de Liberdade (en, Drama/Crime)
+  - O Poderoso Chefão (en, Drama/Crime)
+  - Batman: O Cavaleiro das Trevas (en, Action/Crime/Drama/Thriller)
+  - Pulp Fiction (en, Thriller/Crime)
+  - A Lista de Schindler (en, Drama/History/War)
+  - A Origem (en, Action/Sci-Fi/Adventure)
+  - Forrest Gump (en, Comedy/Drama/Romance)
+  - Clube da Luta (en, Drama/Thriller)
+  - O Silêncio dos Inocentes (en, Crime/Drama/Thriller)
+  - O Senhor dos Anéis: A Sociedade do Anel (en, Adventure/Fantasy/Action)
+  - Titanic (en, Drama/Romance)
+  - Os Bons Companheiros (en, Crime/Drama)
+  - Avatar (en, Action/Adventure/Sci-Fi)
+  - Jurassic Park (en, Adventure/Sci-Fi)
+  - De Volta para o Futuro (en, Adventure/Comedy/Sci-Fi)
+  - Blade Runner 2049 (en, Sci-Fi/Drama/Mystery)
+  - La La Land (en, Drama/Music/Romance)
+  - Oppenheimer (en, Drama/History)
+  - Tudo em Todo o Lugar ao Mesmo Tempo (en, Action/Adventure/Sci-Fi/Comedy)
+  - O Fabuloso Destino de Amélie Poulain (fr, Comedy/Romance)
+  - Os Sete Samurais (ja, Action/Adventure/Drama)
+  - O Labirinto do Fauno (es, Drama/Fantasy/Thriller)
 
 ## Executando
 
