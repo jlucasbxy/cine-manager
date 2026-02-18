@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <defs>
+    <clipPath id="stripClip">
+      <rect x="3" y="7" width="26" height="7" rx="1"/>
+    </clipPath>
+  </defs>
+
+  <!-- Background card -->
+  <rect width="32" height="32" rx="5" fill="#0f172a"/>
+
+  <!-- Lower board body -->
+  <rect x="3" y="14" width="26" height="14" rx="2" fill="#1e293b"/>
+
+  <!-- Upper strip with diagonal stripes (clipped) -->
+  <g clip-path="url(#stripClip)">
+    <rect x="3" y="7" width="26" height="7" fill="white"/>
+    <polygon points="3,7 9,7 16,14 10,14" fill="#0f172a"/>
+    <polygon points="15,7 21,7 28,14 22,14" fill="#0f172a"/>
+  </g>
+
+  <!-- Play triangle -->
+  <polygon points="12,18 12,25 20,21.5" fill="white"/>
+</svg>
