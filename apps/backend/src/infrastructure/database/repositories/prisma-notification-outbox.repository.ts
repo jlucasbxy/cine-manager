@@ -39,15 +39,27 @@ export class PrismaNotificationOutboxRepository
     return rows.map(PrismaNotificationOutboxMapper.toDomain);
   }
 
-  async update(entry: NotificationOutbox): Promise<void> {
-    await this.db.notificationOutbox.update({
-      where: { id: entry.id.toString() },
-      data: {
-        status: entry.status,
-        retryCount: entry.retryCount,
-        error: entry.error,
-        processedAt: entry.processedAt
+  async update(entry: NotificationOutbox): Promise<NotificationOutbox | null> {
+    try {
+      const raw = await this.db.notificationOutbox.update({
+        where: { id: entry.id.toString() },
+        data: {
+          status: entry.status,
+          retryCount: entry.retryCount,
+          error: entry.error,
+          processedAt: entry.processedAt
+        }
+      });
+      return PrismaNotificationOutboxMapper.toDomain(raw);
+    } catch (error: unknown) {
+      if (
+        error instanceof Error &&
+        "code" in error &&
+        (error as { code: string }).code === "P2025"
+      ) {
+        return null;
       }
-    });
+      throw error;
+    }
   }
 }
