@@ -10,6 +10,7 @@ import {
   TokenRevokedError
 } from "@/domain/errors";
 import type { RefreshTokensDTO, RefreshTokensResultDTO } from "@repo/dtos";
+import { Token } from "@/domain/value-objects";
 
 export type RefreshTokensConfig = {
   accessTokenExpiresIn: StringValue;
@@ -25,35 +26,35 @@ export class RefreshTokens {
 
   async execute(input: RefreshTokensDTO): Promise<RefreshTokensResultDTO> {
     return this.transactionManager.execute(async (repos) => {
-      const token = await repos.refreshTokenRepository.findByToken(
-        input.refreshToken
-      );
+      const token = Token.create(input.refreshToken);
+      const refreshToken =
+        await repos.refreshTokenRepository.findByToken(token);
 
-      if (!token) {
+      if (!refreshToken) {
         throw new TokenInvalidError();
       }
 
-      if (token.isRevoked()) {
+      if (refreshToken.isRevoked()) {
         throw new TokenRevokedError();
       }
 
-      if (token.isExpired()) {
+      if (refreshToken.isExpired()) {
         throw new TokenExpiredError();
       }
 
-      const revokedRefreshToken = token.revoke();
+      const revokedRefreshToken = refreshToken.revoke();
 
       const accessToken = await this.tokenProvider.generate(
-        { userId: token.userId.toString() },
+        { userId: refreshToken.userId.toString() },
         this.config.accessTokenExpiresIn
       );
 
       const newRefreshToken = RefreshToken.create({
-        userId: token.userId,
+        userId: refreshToken.userId,
         expiresIn: this.config.refreshTokenExpiresIn
       });
 
-      await repos.refreshTokenRepository.updateByToken(token.token, {
+      await repos.refreshTokenRepository.updateByToken(token, {
         revokedAt: revokedRefreshToken.revokedAt
       });
       await repos.refreshTokenRepository.create(newRefreshToken);
