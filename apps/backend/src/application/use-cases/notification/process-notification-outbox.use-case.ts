@@ -58,6 +58,12 @@ export class ProcessNotificationOutbox {
           idempotencyKey: entry.id.toString()
         });
         break;
+      case NotificationTypeEnum.WELCOME_EMAIL:
+        await this.notificationService.sendWelcomeEmail({
+          ...(entry.payload as { to: string }),
+          idempotencyKey: entry.id.toString()
+        });
+        break;
       default:
         throw new Error(`Unknown notification type: ${entry.type}`);
     }

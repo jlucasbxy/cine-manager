@@ -85,6 +85,7 @@ enum MovieStatus {
 enum NotificationType {
   PASSWORD_RESET_EMAIL
   MOVIE_RELEASE_DATE
+  WELCOME_EMAIL
 }
 
 enum NotificationStatus {

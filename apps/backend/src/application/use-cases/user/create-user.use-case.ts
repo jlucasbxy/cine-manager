@@ -1,15 +1,18 @@
-import { User } from "@/domain/entities";
+import { NotificationOutbox, User } from "@/domain/entities";
+import { NotificationTypeEnum } from "@/domain/enums";
 import { Email, Password } from "@/domain/value-objects";
 import { EmailAlreadyInUseError } from "@/domain/errors";
-import type { UserRepository } from "@/application/interfaces/repositories";
-import type { HashProvider } from "@/application/interfaces/providers";
+import type {
+  HashProvider,
+  TransactionManager
+} from "@/application/interfaces/providers";
 import { UserMapper } from "@/application/mappers";
 import type { CreateUserDTO, UserDTO } from "@repo/dtos";
 
 export class CreateUser {
   constructor(
-    private readonly userRepository: UserRepository,
-    private readonly hashProvider: HashProvider
+    private readonly hashProvider: HashProvider,
+    private readonly transactionManager: TransactionManager
   ) {}
 
   async execute(input: CreateUserDTO): Promise<UserDTO> {
@@ -21,20 +24,31 @@ export class CreateUser {
       await this.hashProvider.hash(password.toString())
     );
 
-    const created = await this.userRepository.create(
-      User.reconstitute({
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        password: hashedPassword,
-        createdAt: user.createdAt,
-        updatedAt: user.updatedAt
-      })
-    );
+    const created = await this.transactionManager.execute(async (repos) => {
+      const savedUser = await repos.userRepository.create(
+        User.reconstitute({
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          password: hashedPassword,
+          createdAt: user.createdAt,
+          updatedAt: user.updatedAt
+        })
+      );
 
-    if (!created) {
-      throw new EmailAlreadyInUseError();
-    }
+      if (!savedUser) {
+        throw new EmailAlreadyInUseError();
+      }
+
+      await repos.notificationOutboxRepository.create(
+        NotificationOutbox.create({
+          type: NotificationTypeEnum.WELCOME_EMAIL,
+          payload: { to: email.toString() }
+        })
+      );
+
+      return savedUser;
+    });
 
     return UserMapper.toDTO(created);
   }

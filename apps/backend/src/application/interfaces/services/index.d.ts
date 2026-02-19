@@ -3,7 +3,8 @@ export type { MovieService } from "@/application/interfaces/services/movie-servi
 export type {
   NotificationService,
   SendPasswordResetEmailData,
-  SendMovieReleaseDateEmailData
+  SendMovieReleaseDateEmailData,
+  SendWelcomeEmailData
 } from "@/application/interfaces/services/notification-service";
 export type { UserService } from "@/application/interfaces/services/user-service";
 export type { LanguageService } from "@/application/interfaces/services/language-service";

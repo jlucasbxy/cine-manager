@@ -1,17 +1,20 @@
 import type {
   NotificationService,
   SendPasswordResetEmailData,
-  SendMovieReleaseDateEmailData
+  SendMovieReleaseDateEmailData,
+  SendWelcomeEmailData
 } from "@/application/interfaces/services";
 import type {
   SendPasswordResetEmail,
-  SendMovieReleaseDateEmail
+  SendMovieReleaseDateEmail,
+  SendWelcomeEmail
 } from "@/application/use-cases/notification";
 
 export class NotificationServiceImpl implements NotificationService {
   constructor(
     private readonly sendPasswordResetEmailUseCase: SendPasswordResetEmail,
-    private readonly sendMovieReleaseDateEmailUseCase: SendMovieReleaseDateEmail
+    private readonly sendMovieReleaseDateEmailUseCase: SendMovieReleaseDateEmail,
+    private readonly sendWelcomeEmailUseCase: SendWelcomeEmail
   ) {}
 
   async sendPasswordResetEmail(
@@ -24,5 +27,9 @@ export class NotificationServiceImpl implements NotificationService {
     data: SendMovieReleaseDateEmailData
   ): Promise<void> {
     return this.sendMovieReleaseDateEmailUseCase.execute(data);
+  }
+
+  async sendWelcomeEmail(data: SendWelcomeEmailData): Promise<void> {
+    return this.sendWelcomeEmailUseCase.execute(data);
   }
 }
