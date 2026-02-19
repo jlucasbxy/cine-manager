@@ -12,7 +12,7 @@ export function MovieCard({ movie }: MovieCardProps) {
   return (
     <Link to={`/movies/${movie.id}`}>
       <Card className="group overflow-hidden transition-all hover:shadow-lg hover:scale-[1.02]">
-        <div className="relative aspect-[2/3] overflow-hidden">
+        <div className="relative aspect-2/3 overflow-hidden">
           <img
             src={movie.posterUrl}
             alt={movie.title}
