@@ -44,7 +44,7 @@ export function ProfilePage() {
     }
   };
 
-  const handleAvatarChange = async (avatarUrl: string) => {
+  const handleAvatarChange = async (avatarUrl: string | null) => {
     try {
       await updateUser({ avatarUrl });
     } catch {

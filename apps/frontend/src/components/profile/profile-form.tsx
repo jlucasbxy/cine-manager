@@ -16,7 +16,7 @@ interface ProfileFormProps {
   avatarUrl?: string | null;
   initials?: string;
   onSubmit: (data: ProfileFormData) => Promise<void>;
-  onAvatarChange: (avatarUrl: string) => Promise<void>;
+  onAvatarChange: (avatarUrl: string | null) => Promise<void>;
   isSubmitting: boolean;
 }
 
@@ -62,6 +62,16 @@ export function ProfileForm({
     }
   }
 
+  async function handleRemoveAvatar() {
+    setIsUploadingAvatar(true);
+    try {
+      await onAvatarChange(null);
+      setCurrentAvatarUrl(null);
+    } finally {
+      setIsUploadingAvatar(false);
+    }
+  }
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       <div className="flex items-center gap-4">
@@ -76,7 +86,7 @@ export function ProfileForm({
             </div>
           )}
         </div>
-        <div>
+        <div className="flex flex-col gap-2">
           <Button
             type="button"
             variant="outline"
@@ -86,6 +96,17 @@ export function ProfileForm({
           >
             Change avatar
           </Button>
+          {currentAvatarUrl && (
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              disabled={isUploadingAvatar}
+              onClick={() => void handleRemoveAvatar()}
+            >
+              Remove avatar
+            </Button>
+          )}
           <input
             ref={fileInputRef}
             type="file"

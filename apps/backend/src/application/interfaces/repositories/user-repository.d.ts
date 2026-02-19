@@ -2,7 +2,8 @@ import { User } from "@/domain/entities";
 import { Email, Uuid } from "@/domain/value-objects";
 import { Pick } from "@prisma/client/runtime/client";
 
-export type UpdateUserData = Partial<Pick<User, "name" | "password" | "avatarUrl">> &
+export type UpdateUserData = Partial<Pick<User, "name" | "password">> &
+  { avatarUrl?: string | null } &
   Pick<User, "updatedAt">;
 
 export interface UserRepository {
