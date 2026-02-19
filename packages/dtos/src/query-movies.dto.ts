@@ -10,6 +10,7 @@ export interface QueryMoviesDTO {
   ageRating?: AgeRating;
   search?: string;
   onlyMine?: boolean;
+  genreIds?: string[];
 }
 
 export interface PaginatedResultDTO<T> {

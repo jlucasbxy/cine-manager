@@ -15,6 +15,7 @@ type MovieQueryProps = {
   ageRating?: AgeRatingEnum;
   search?: string;
   userId?: string;
+  genreIds?: string[];
 };
 
 const movieQuerySchema = z
@@ -27,7 +28,8 @@ const movieQuerySchema = z
     status: z.enum(MovieStatusEnum).optional(),
     ageRating: z.enum(AgeRatingEnum).optional(),
     search: z.string().min(1).optional(),
-    userId: z.uuidv7().optional()
+    userId: z.uuidv7().optional(),
+    genreIds: z.array(z.string()).optional()
   })
   .refine(
     (data) => {
@@ -49,6 +51,7 @@ export class MovieQuery {
   readonly ageRating?: AgeRatingEnum;
   readonly search?: string;
   readonly userId?: Uuid;
+  readonly genreIds?: string[];
 
   private constructor(
     page: NonNegativeInt,
@@ -59,7 +62,8 @@ export class MovieQuery {
     status?: MovieStatusEnum,
     ageRating?: AgeRatingEnum,
     search?: string,
-    userId?: Uuid
+    userId?: Uuid,
+    genreIds?: string[]
   ) {
     this.runtime = runtime;
     this.releaseDateStart = releaseDateStart;
@@ -70,6 +74,7 @@ export class MovieQuery {
     this.ageRating = ageRating;
     this.search = search;
     this.userId = userId;
+    this.genreIds = genreIds;
   }
 
   static create(props: MovieQueryProps): MovieQuery {
@@ -88,7 +93,8 @@ export class MovieQuery {
       r.data.status,
       r.data.ageRating,
       r.data.search,
-      r.data.userId !== undefined ? Uuid.create(r.data.userId) : undefined
+      r.data.userId !== undefined ? Uuid.create(r.data.userId) : undefined,
+      r.data.genreIds
     );
   }
 }

@@ -20,13 +20,15 @@ function parseFilters(params: URLSearchParams): MovieFiltersState {
   const status = params.get("status") as MovieStatus | null;
   const ageRating = params.get("ageRating") as AgeRating | null;
   const onlyMine = params.get("onlyMine");
+  const genreIds = params.getAll("genreIds");
   return {
     runtime: runtime ? Number(runtime) : undefined,
     releaseDateStart: params.get("releaseDateStart") ?? undefined,
     releaseDateEnd: params.get("releaseDateEnd") ?? undefined,
     status: status ?? undefined,
     ageRating: ageRating ?? undefined,
-    onlyMine: onlyMine === "true" ? true : undefined
+    onlyMine: onlyMine === "true" ? true : undefined,
+    genreIds: genreIds.length > 0 ? genreIds : undefined
   };
 }
 
@@ -74,8 +76,9 @@ export function MovieListPage() {
   };
 
   const handleFiltersChange = (newFilters: MovieFiltersState) => {
-    updateParams(
-      {
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev);
+      const scalars: Record<string, string | undefined> = {
         runtime: newFilters.runtime?.toString(),
         releaseDateStart: newFilters.releaseDateStart,
         releaseDateEnd: newFilters.releaseDateEnd,
@@ -83,9 +86,15 @@ export function MovieListPage() {
         ageRating: newFilters.ageRating,
         onlyMine: newFilters.onlyMine ? "true" : undefined,
         page: undefined
-      },
-      { replace: true }
-    );
+      };
+      for (const [key, value] of Object.entries(scalars)) {
+        if (value !== undefined && value !== "") next.set(key, value);
+        else next.delete(key);
+      }
+      next.delete("genreIds");
+      for (const id of newFilters.genreIds ?? []) next.append("genreIds", id);
+      return next;
+    }, { replace: true });
   };
 
   const handlePageChange = (newPage: number) => {
@@ -102,7 +111,8 @@ export function MovieListPage() {
       status: filters.status,
       ageRating: filters.ageRating,
       search: debouncedSearch || undefined,
-      onlyMine: filters.onlyMine
+      onlyMine: filters.onlyMine,
+      genreIds: filters.genreIds
     }),
     [page, filters, debouncedSearch]
   );

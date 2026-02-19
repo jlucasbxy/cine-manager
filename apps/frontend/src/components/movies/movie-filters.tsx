@@ -1,6 +1,7 @@
 import { AgeRating, MovieStatus } from "@repo/dtos";
 import { Filter } from "lucide-react";
 import { useEffect, useState } from "react";
+import { GenreMultiSelect } from "@/components/movie-form/genre-multi-select";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -27,6 +28,7 @@ export interface MovieFiltersState {
   status?: MovieStatus;
   ageRating?: AgeRating;
   onlyMine?: boolean;
+  genreIds?: string[];
 }
 
 interface MovieFiltersProps {
@@ -165,6 +167,15 @@ export function MovieFilters({ filters, onFiltersChange }: MovieFiltersProps) {
                 ))}
               </SelectContent>
             </Select>
+          </div>
+
+          <div className="space-y-2">
+            <GenreMultiSelect
+              value={local.genreIds ?? []}
+              onChange={(ids) =>
+                setLocal({ ...local, genreIds: ids.length > 0 ? ids : undefined })
+              }
+            />
           </div>
 
           <div className="flex items-center justify-between">

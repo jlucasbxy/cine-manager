@@ -13,7 +13,11 @@ export class QueryMoviesValidator implements Validator<QueryMoviesDTO> {
     status: z.nativeEnum(MovieStatus).optional(),
     ageRating: z.nativeEnum(AgeRating).optional(),
     search: z.string().min(1).optional(),
-    onlyMine: z.coerce.boolean().optional()
+    onlyMine: z.coerce.boolean().optional(),
+    genreIds: z
+      .union([z.string().uuid(), z.array(z.string().uuid())])
+      .transform((val) => (Array.isArray(val) ? val : [val]))
+      .optional()
   });
 
   parse(data: unknown) {
