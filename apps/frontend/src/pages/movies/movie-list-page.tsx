@@ -1,6 +1,7 @@
+import { AgeRating, MovieStatus } from "@repo/dtos";
 import { Film, Plus } from "lucide-react";
-import { useMemo, useState } from "react";
-import { Link } from "react-router";
+import { useMemo } from "react";
+import { Link, useSearchParams } from "react-router";
 import {
   MovieFilters,
   type MovieFiltersState
@@ -13,19 +14,57 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useMovies } from "@/queries/use-movies";
 
+function parseFilters(params: URLSearchParams): MovieFiltersState {
+  const runtime = params.get("runtime");
+  const status = params.get("status") as MovieStatus | null;
+  const ageRating = params.get("ageRating") as AgeRating | null;
+  return {
+    runtime: runtime ? Number(runtime) : undefined,
+    releaseDateStart: params.get("releaseDateStart") ?? undefined,
+    releaseDateEnd: params.get("releaseDateEnd") ?? undefined,
+    status: status ?? undefined,
+    ageRating: ageRating ?? undefined
+  };
+}
+
 export function MovieListPage() {
-  const [page, setPage] = useState(1);
-  const [search, setSearch] = useState("");
-  const [filters, setFilters] = useState<MovieFiltersState>({});
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const page = Number(searchParams.get("page") ?? "1");
+  const search = searchParams.get("search") ?? "";
+  const filters = useMemo(() => parseFilters(searchParams), [searchParams]);
+
+  const updateParams = (updates: Record<string, string | undefined>) => {
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev);
+      for (const [key, value] of Object.entries(updates)) {
+        if (value !== undefined && value !== "") {
+          next.set(key, value);
+        } else {
+          next.delete(key);
+        }
+      }
+      return next;
+    });
+  };
 
   const handleSearchChange = (value: string) => {
-    setSearch(value);
-    setPage(1);
+    updateParams({ search: value || undefined, page: undefined });
   };
 
   const handleFiltersChange = (newFilters: MovieFiltersState) => {
-    setFilters(newFilters);
-    setPage(1);
+    updateParams({
+      runtime: newFilters.runtime?.toString(),
+      releaseDateStart: newFilters.releaseDateStart,
+      releaseDateEnd: newFilters.releaseDateEnd,
+      status: newFilters.status,
+      ageRating: newFilters.ageRating,
+      page: undefined
+    });
+  };
+
+  const handlePageChange = (newPage: number) => {
+    updateParams({ page: newPage === 1 ? undefined : String(newPage) });
   };
 
   const queryFilters = useMemo(
@@ -99,7 +138,7 @@ export function MovieListPage() {
             <MoviePagination
               page={data.meta.page}
               totalPages={data.meta.totalPages}
-              onPageChange={setPage}
+              onPageChange={handlePageChange}
             />
           )}
         </>

@@ -1,6 +1,6 @@
 import { AgeRating, MovieStatus } from "@repo/dtos";
 import { Filter } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -35,6 +35,10 @@ interface MovieFiltersProps {
 export function MovieFilters({ filters, onFiltersChange }: MovieFiltersProps) {
   const [open, setOpen] = useState(false);
   const [local, setLocal] = useState<MovieFiltersState>(filters);
+
+  useEffect(() => {
+    if (open) setLocal(filters);
+  }, [open]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleApply = () => {
     onFiltersChange(local);
