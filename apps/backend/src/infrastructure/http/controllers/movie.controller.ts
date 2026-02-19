@@ -1,11 +1,11 @@
-import type { FastifyReply, FastifyRequest } from "fastify";
-import type { MovieService } from "@/application/interfaces/services";
 import type {
   CreateMovieValidator,
-  UpdateMovieValidator,
   IdValidator,
-  QueryMoviesValidator
+  QueryMoviesValidator,
+  UpdateMovieValidator
 } from "@repo/validators";
+import type { FastifyReply, FastifyRequest } from "fastify";
+import type { MovieService } from "@/application/interfaces/services";
 
 export class MovieController {
   constructor(

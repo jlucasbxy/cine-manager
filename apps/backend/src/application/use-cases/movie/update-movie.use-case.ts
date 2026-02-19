@@ -1,3 +1,7 @@
+import type { MovieDTO, UpdateMovieDTO } from "@repo/dtos";
+import type { MovieRepository } from "@/application/interfaces/repositories";
+import { MovieMapper } from "@/application/mappers";
+import { MovieNotFoundError } from "@/domain/errors";
 import {
   AgeRating,
   MovieStatus,
@@ -6,10 +10,6 @@ import {
   Url,
   Uuid
 } from "@/domain/value-objects";
-import { MovieNotFoundError } from "@/domain/errors";
-import type { MovieRepository } from "@/application/interfaces/repositories";
-import { MovieMapper } from "@/application/mappers";
-import type { UpdateMovieDTO, MovieDTO } from "@repo/dtos";
 
 export class UpdateMovie {
   constructor(private readonly movieRepository: MovieRepository) {}

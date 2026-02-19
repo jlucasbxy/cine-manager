@@ -1,6 +1,6 @@
-import type { RefreshTokenModel } from "@/infrastructure/database/prisma/generated/prisma/models/RefreshToken";
 import { RefreshToken } from "@/domain/entities";
 import { Token, Uuid } from "@/domain/value-objects";
+import type { RefreshTokenModel } from "@/infrastructure/database/prisma/generated/prisma/models/RefreshToken";
 
 export class PrismaRefreshTokenMapper {
   static toDomain(raw: RefreshTokenModel): RefreshToken {

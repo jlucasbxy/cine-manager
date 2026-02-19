@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import { notificationOutboxWorkerConfig } from "@/infrastructure/config/worker-env.config";
-import { makeProcessNotificationOutbox } from "@/main/factories/use-cases/notification";
 import { NotificationOutboxWorker } from "@/infrastructure/workers";
+import { makeProcessNotificationOutbox } from "@/main/factories/use-cases/notification";
 
 export function startWorker() {
   const processOutbox = makeProcessNotificationOutbox();

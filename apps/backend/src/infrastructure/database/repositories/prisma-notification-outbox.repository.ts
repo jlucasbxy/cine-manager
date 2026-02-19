@@ -1,9 +1,9 @@
+import type { InputJsonValue } from "@prisma/client/runtime/client";
 import type { NotificationOutboxRepository } from "@/application/interfaces/repositories";
 import type { NotificationOutbox } from "@/domain/entities";
 import { NotificationStatusEnum } from "@/domain/enums";
-import type { PrismaDatabase } from "@/infrastructure/database/prisma";
 import { PrismaNotificationOutboxMapper } from "@/infrastructure/database/mappers";
-import type { InputJsonValue } from "@prisma/client/runtime/client";
+import type { PrismaDatabase } from "@/infrastructure/database/prisma";
 
 export class PrismaNotificationOutboxRepository
   implements NotificationOutboxRepository

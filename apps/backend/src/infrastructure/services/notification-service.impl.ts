@@ -1,12 +1,12 @@
 import type {
   NotificationService,
-  SendPasswordResetEmailData,
   SendMovieReleaseDateEmailData,
+  SendPasswordResetEmailData,
   SendWelcomeEmailData
 } from "@/application/interfaces/services";
 import type {
-  SendPasswordResetEmail,
   SendMovieReleaseDateEmail,
+  SendPasswordResetEmail,
   SendWelcomeEmail
 } from "@/application/use-cases/notification";
 

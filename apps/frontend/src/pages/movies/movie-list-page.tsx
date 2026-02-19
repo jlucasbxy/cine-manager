@@ -1,8 +1,7 @@
-import { AgeRating, MovieStatus } from "@repo/dtos";
+import type { AgeRating, MovieStatus } from "@repo/dtos";
 import { Film, Plus } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router";
-import { useDebounce } from "@/hooks/use-debounce";
 import {
   MovieFilters,
   type MovieFiltersState
@@ -13,6 +12,7 @@ import { MovieSearchBar } from "@/components/movies/movie-search-bar";
 import { EmptyState } from "@/components/shared/empty-state";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useDebounce } from "@/hooks/use-debounce";
 import { useMovies } from "@/queries/use-movies";
 
 function parseFilters(params: URLSearchParams): MovieFiltersState {

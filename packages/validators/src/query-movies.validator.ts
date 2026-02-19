@@ -1,7 +1,7 @@
-import z from "zod";
-import type { Validator } from "./validator";
 import type { QueryMoviesDTO } from "@repo/dtos";
+import z from "zod";
 import { AgeRating, MovieStatus } from "./enums";
+import type { Validator } from "./validator";
 
 export class QueryMoviesValidator implements Validator<QueryMoviesDTO> {
   private readonly queryMoviesSchema = z.object({

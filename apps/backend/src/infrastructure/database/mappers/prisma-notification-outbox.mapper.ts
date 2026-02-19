@@ -1,10 +1,10 @@
-import type { NotificationOutboxModel } from "@/infrastructure/database/prisma/generated/prisma/models/NotificationOutbox";
 import { NotificationOutbox } from "@/domain/entities";
 import type {
-  NotificationTypeEnum,
-  NotificationStatusEnum
+  NotificationStatusEnum,
+  NotificationTypeEnum
 } from "@/domain/enums";
 import { Uuid } from "@/domain/value-objects";
+import type { NotificationOutboxModel } from "@/infrastructure/database/prisma/generated/prisma/models/NotificationOutbox";
 
 export class PrismaNotificationOutboxMapper {
   static toDomain(raw: NotificationOutboxModel): NotificationOutbox {

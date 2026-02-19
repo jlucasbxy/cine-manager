@@ -1,7 +1,7 @@
 import type { FastifyPluginAsync } from "fastify";
+import { RATE_LIMITS } from "@/infrastructure/config/rate-limit.config";
 import type { UploadController } from "@/infrastructure/http/controllers";
 import type { AuthMiddleware } from "@/infrastructure/http/middlewares";
-import { RATE_LIMITS } from "@/infrastructure/config/rate-limit.config";
 
 interface UploadRoutesOptions {
   uploadController: UploadController;

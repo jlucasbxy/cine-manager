@@ -1,8 +1,8 @@
-import { MovieQuery } from "@/domain/value-objects";
+import type { MovieDTO, PaginatedResultDTO, QueryMoviesDTO } from "@repo/dtos";
 import type { MovieRepository } from "@/application/interfaces/repositories";
 import { MovieMapper } from "@/application/mappers";
-import { MovieStatusEnum, AgeRatingEnum } from "@/domain/enums";
-import type { QueryMoviesDTO, MovieDTO, PaginatedResultDTO } from "@repo/dtos";
+import type { AgeRatingEnum, MovieStatusEnum } from "@/domain/enums";
+import { MovieQuery } from "@/domain/value-objects";
 
 export class ListMovies {
   constructor(private readonly movieRepository: MovieRepository) {}

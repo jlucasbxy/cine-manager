@@ -1,9 +1,9 @@
-import type { UploadService } from "@/application/interfaces/services";
-import type { GenerateUploadUrl } from "@/application/use-cases/upload";
 import type {
   GenerateUploadUrlDTO,
   GenerateUploadUrlResultDTO
 } from "@repo/dtos";
+import type { UploadService } from "@/application/interfaces/services";
+import type { GenerateUploadUrl } from "@/application/use-cases/upload";
 
 export class UploadServiceImpl implements UploadService {
   constructor(private readonly generateUploadUrlUseCase: GenerateUploadUrl) {}

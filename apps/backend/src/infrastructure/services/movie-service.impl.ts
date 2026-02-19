@@ -1,18 +1,18 @@
+import type {
+  CreateMovieDTO,
+  MovieDTO,
+  PaginatedResultDTO,
+  QueryMoviesDTO,
+  UpdateMovieDTO
+} from "@repo/dtos";
 import type { MovieService } from "@/application/interfaces/services";
 import type {
   CreateMovie,
-  UpdateMovie,
   DeleteMovie,
   GetMovie,
-  ListMovies
+  ListMovies,
+  UpdateMovie
 } from "@/application/use-cases/movie";
-import type {
-  CreateMovieDTO,
-  UpdateMovieDTO,
-  QueryMoviesDTO,
-  MovieDTO,
-  PaginatedResultDTO
-} from "@repo/dtos";
 
 export class MovieServiceImpl implements MovieService {
   constructor(

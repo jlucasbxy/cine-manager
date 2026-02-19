@@ -1,12 +1,3 @@
-import type { AuthService } from "@/application/interfaces/services";
-import type {
-  Login,
-  Logout,
-  RefreshTokens,
-  RequestPasswordReset,
-  ResetPassword,
-  ValidateToken
-} from "@/application/use-cases/auth";
 import type {
   LoginDTO,
   LoginResultDTO,
@@ -18,6 +9,15 @@ import type {
   ValidateTokenDTO,
   ValidateTokenResultDTO
 } from "@repo/dtos";
+import type { AuthService } from "@/application/interfaces/services";
+import type {
+  Login,
+  Logout,
+  RefreshTokens,
+  RequestPasswordReset,
+  ResetPassword,
+  ValidateToken
+} from "@/application/use-cases/auth";
 
 export class AuthServiceImpl implements AuthService {
   constructor(

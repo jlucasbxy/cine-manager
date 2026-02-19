@@ -1,8 +1,8 @@
 import z from "zod";
-import { NonNegativeInt } from "@/domain/value-objects/non-negative-int.value-object";
-import { InvalidMovieQueryError } from "@/domain/errors";
-import { MovieStatusEnum } from "@/domain/enums/movie-status.enum";
 import { AgeRatingEnum } from "@/domain/enums/age-rating.enum";
+import { MovieStatusEnum } from "@/domain/enums/movie-status.enum";
+import { InvalidMovieQueryError } from "@/domain/errors";
+import { NonNegativeInt } from "@/domain/value-objects/non-negative-int.value-object";
 
 type MovieQueryProps = {
   runtime?: number;

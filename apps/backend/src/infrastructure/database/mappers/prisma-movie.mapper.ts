@@ -1,5 +1,6 @@
-import type { MovieModel } from "@/infrastructure/database/prisma/generated/prisma/models/Movie";
 import { Movie } from "@/domain/entities";
+import type { AgeRatingEnum } from "@/domain/enums/age-rating.enum";
+import type { MovieStatusEnum } from "@/domain/enums/movie-status.enum";
 import {
   AgeRating,
   MovieStatus,
@@ -8,8 +9,7 @@ import {
   Url,
   Uuid
 } from "@/domain/value-objects";
-import type { MovieStatusEnum } from "@/domain/enums/movie-status.enum";
-import type { AgeRatingEnum } from "@/domain/enums/age-rating.enum";
+import type { MovieModel } from "@/infrastructure/database/prisma/generated/prisma/models/Movie";
 
 export class PrismaMovieMapper {
   static toDomain(raw: MovieModel): Movie {

@@ -3,10 +3,10 @@ import type {
   UpdateMovieData
 } from "@/application/interfaces/repositories";
 import type { Movie } from "@/domain/entities";
-import type { Uuid, MovieQuery } from "@/domain/value-objects";
+import type { MovieQuery, Uuid } from "@/domain/value-objects";
 import { PaginatedResult } from "@/domain/value-objects";
-import type { PrismaDatabase } from "@/infrastructure/database/prisma";
 import { PrismaMovieMapper } from "@/infrastructure/database/mappers";
+import type { PrismaDatabase } from "@/infrastructure/database/prisma";
 
 export class PrismaMovieRepository implements MovieRepository {
   private readonly db: PrismaDatabase;
@@ -82,7 +82,10 @@ export class PrismaMovieRepository implements MovieRepository {
       this.db.movie.count({ where })
     ]);
 
-    return PaginatedResult.create(rawList.map(PrismaMovieMapper.toDomain), total);
+    return PaginatedResult.create(
+      rawList.map(PrismaMovieMapper.toDomain),
+      total
+    );
   }
 
   async update(id: Uuid, data: UpdateMovieData): Promise<Movie | null> {

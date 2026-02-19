@@ -1,10 +1,10 @@
+import type {
+  EmailValidator,
+  LoginValidator,
+  ResetPasswordValidator
+} from "@repo/validators";
 import type { FastifyReply, FastifyRequest } from "fastify";
 import type { AuthService } from "@/application/interfaces/services";
-import type {
-  LoginValidator,
-  ResetPasswordValidator,
-  EmailValidator
-} from "@repo/validators";
 import { env } from "@/infrastructure/config/env.config";
 
 const REFRESH_TOKEN_COOKIE = "refreshToken";

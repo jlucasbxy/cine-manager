@@ -1,6 +1,6 @@
+import type { GenerateUploadUrlDTO } from "@repo/dtos";
 import z from "zod";
 import type { Validator } from "./validator";
-import type { GenerateUploadUrlDTO } from "@repo/dtos";
 
 export class GenerateUploadUrlValidator
   implements Validator<GenerateUploadUrlDTO>

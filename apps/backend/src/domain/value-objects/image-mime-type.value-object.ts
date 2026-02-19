@@ -1,7 +1,7 @@
 import path from "node:path";
 import z from "zod";
-import { InvalidImageMimeTypeError } from "@/domain/errors";
 import { ImageMimeTypeEnum } from "@/domain/enums/image-mime-type.enum";
+import { InvalidImageMimeTypeError } from "@/domain/errors";
 
 const extensionToMimeType: Record<string, ImageMimeTypeEnum> = {
   ".jpg": ImageMimeTypeEnum.JPEG,

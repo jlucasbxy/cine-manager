@@ -1,10 +1,10 @@
+import type { StringValue } from "ms";
 import { RefreshTokens } from "@/application/use-cases/auth";
+import { env } from "@/infrastructure/config/env.config";
 import {
   makeTokenProvider,
   makeTransactionManager
 } from "@/main/factories/providers";
-import { env } from "@/infrastructure/config/env.config";
-import type { StringValue } from "ms";
 
 export function makeRefreshTokens(): RefreshTokens {
   return new RefreshTokens(makeTokenProvider(), makeTransactionManager(), {

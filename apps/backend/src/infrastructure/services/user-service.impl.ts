@@ -1,6 +1,10 @@
-import type { UserService } from "@/application/interfaces/services";
-import type { CreateUser, GetUser, UpdateUser } from "@/application/use-cases/user";
 import type { CreateUserDTO, UpdateUserDTO, UserDTO } from "@repo/dtos";
+import type { UserService } from "@/application/interfaces/services";
+import type {
+  CreateUser,
+  GetUser,
+  UpdateUser
+} from "@/application/use-cases/user";
 
 export class UserServiceImpl implements UserService {
   constructor(

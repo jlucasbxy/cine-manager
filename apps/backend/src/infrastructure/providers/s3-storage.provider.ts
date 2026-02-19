@@ -1,8 +1,8 @@
-import { type S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import { PutObjectCommand, type S3Client } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import type { StorageProvider } from "@/application/interfaces/providers";
-import { type UploadKey, Url } from "@/domain/value-objects";
 import { ImageUpload } from "@/domain/entities";
+import { type UploadKey, Url } from "@/domain/value-objects";
 
 interface S3StorageProviderConfig {
   bucket: string;

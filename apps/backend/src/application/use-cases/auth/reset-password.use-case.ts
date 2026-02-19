@@ -1,13 +1,13 @@
+import type { ResetPasswordDTO } from "@repo/dtos";
 import type {
   HashProvider,
   TransactionManager
 } from "@/application/interfaces/providers";
-import { Password, Token } from "@/domain/value-objects";
 import {
   ResetTokenExpiredError,
   ResetTokenInvalidError
 } from "@/domain/errors";
-import type { ResetPasswordDTO } from "@repo/dtos";
+import { Password, Token } from "@/domain/value-objects";
 
 export class ResetPassword {
   constructor(

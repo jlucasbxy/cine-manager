@@ -1,8 +1,8 @@
-import type { StorageProvider } from "@/application/interfaces/providers";
 import type {
   GenerateUploadUrlDTO,
   GenerateUploadUrlResultDTO
 } from "@repo/dtos";
+import type { StorageProvider } from "@/application/interfaces/providers";
 import { ImageUploadMapper } from "@/application/mappers";
 import { ImageMimeType, UploadKey, Uuid } from "@/domain/value-objects";
 

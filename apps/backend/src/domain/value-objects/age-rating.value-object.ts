@@ -1,6 +1,6 @@
 import z from "zod";
-import { InvalidAgeRatingError } from "@/domain/errors";
 import { AgeRatingEnum } from "@/domain/enums/age-rating.enum";
+import { InvalidAgeRatingError } from "@/domain/errors";
 
 const ageRatingValues = Object.values(AgeRatingEnum) as [
   AgeRatingEnum,

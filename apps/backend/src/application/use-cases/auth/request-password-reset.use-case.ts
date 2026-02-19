@@ -1,9 +1,9 @@
+import type { RequestPasswordResetDTO } from "@repo/dtos";
 import type { StringValue } from "ms";
 import type { TransactionManager } from "@/application/interfaces/providers";
-import { PasswordResetToken, NotificationOutbox } from "@/domain/entities";
+import { NotificationOutbox, PasswordResetToken } from "@/domain/entities";
 import { NotificationTypeEnum } from "@/domain/enums";
 import { Email } from "@/domain/value-objects";
-import type { RequestPasswordResetDTO } from "@repo/dtos";
 
 export type RequestPasswordResetConfig = {
   passwordResetTokenExpiresIn: StringValue;

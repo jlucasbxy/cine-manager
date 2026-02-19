@@ -1,6 +1,6 @@
+import type { LogoutDTO } from "@repo/dtos";
 import type { RefreshTokenRepository } from "@/application/interfaces/repositories";
 import { Token } from "@/domain/value-objects";
-import type { LogoutDTO } from "@repo/dtos";
 
 export class Logout {
   constructor(

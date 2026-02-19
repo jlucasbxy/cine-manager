@@ -1,4 +1,4 @@
-import { Uuid, type ImageMimeType } from "@/domain/value-objects";
+import { type ImageMimeType, Uuid } from "@/domain/value-objects";
 
 interface UploadKeyCreateParams {
   userId: Uuid;

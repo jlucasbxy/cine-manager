@@ -1,10 +1,10 @@
-import { MovieController } from "@/infrastructure/http/controllers";
 import {
   CreateMovieValidator,
-  UpdateMovieValidator,
   IdValidator,
-  QueryMoviesValidator
+  QueryMoviesValidator,
+  UpdateMovieValidator
 } from "@repo/validators";
+import { MovieController } from "@/infrastructure/http/controllers";
 import { makeMovieService } from "@/main/factories/services";
 
 export function makeMovieController(): MovieController {

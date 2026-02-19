@@ -1,3 +1,4 @@
+import type { RefreshTokensDTO, RefreshTokensResultDTO } from "@repo/dtos";
 import ms, { type StringValue } from "ms";
 import type {
   TokenProvider,
@@ -9,7 +10,6 @@ import {
   TokenInvalidError,
   TokenRevokedError
 } from "@/domain/errors";
-import type { RefreshTokensDTO, RefreshTokensResultDTO } from "@repo/dtos";
 import { Token } from "@/domain/value-objects";
 
 export type RefreshTokensConfig = {

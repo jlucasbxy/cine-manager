@@ -1,6 +1,6 @@
 import z from "zod";
-import { InvalidMovieStatusError } from "@/domain/errors";
 import { MovieStatusEnum } from "@/domain/enums/movie-status.enum";
+import { InvalidMovieStatusError } from "@/domain/errors";
 
 const movieStatusValues = Object.values(MovieStatusEnum) as [
   MovieStatusEnum,

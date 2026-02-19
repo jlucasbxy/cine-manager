@@ -1,5 +1,5 @@
-import type { LanguageRepository } from "@/application/interfaces/repositories";
 import type { LanguageDTO } from "@repo/dtos";
+import type { LanguageRepository } from "@/application/interfaces/repositories";
 
 export class ListLanguages {
   constructor(private readonly languageRepository: LanguageRepository) {}

@@ -1,6 +1,6 @@
-import type { PasswordResetTokenModel } from "@/infrastructure/database/prisma/generated/prisma/models/PasswordResetToken";
 import { PasswordResetToken } from "@/domain/entities";
 import { Token, Uuid } from "@/domain/value-objects";
+import type { PasswordResetTokenModel } from "@/infrastructure/database/prisma/generated/prisma/models/PasswordResetToken";
 
 export class PrismaPasswordResetTokenMapper {
   static toDomain(raw: PasswordResetTokenModel): PasswordResetToken {

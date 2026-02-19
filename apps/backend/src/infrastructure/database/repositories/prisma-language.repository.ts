@@ -1,5 +1,5 @@
-import type { LanguageRepository } from "@/application/interfaces/repositories";
 import type { LanguageDTO } from "@repo/dtos";
+import type { LanguageRepository } from "@/application/interfaces/repositories";
 import type { PrismaDatabase } from "@/infrastructure/database/prisma";
 
 export class PrismaLanguageRepository implements LanguageRepository {

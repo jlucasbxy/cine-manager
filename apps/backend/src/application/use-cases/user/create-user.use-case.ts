@@ -1,13 +1,13 @@
-import { NotificationOutbox, User } from "@/domain/entities";
-import { NotificationTypeEnum } from "@/domain/enums";
-import { Email, Password } from "@/domain/value-objects";
-import { EmailAlreadyInUseError } from "@/domain/errors";
+import type { CreateUserDTO, UserDTO } from "@repo/dtos";
 import type {
   HashProvider,
   TransactionManager
 } from "@/application/interfaces/providers";
 import { UserMapper } from "@/application/mappers";
-import type { CreateUserDTO, UserDTO } from "@repo/dtos";
+import { NotificationOutbox, User } from "@/domain/entities";
+import { NotificationTypeEnum } from "@/domain/enums";
+import { EmailAlreadyInUseError } from "@/domain/errors";
+import { Email, Password } from "@/domain/value-objects";
 
 export class CreateUser {
   constructor(

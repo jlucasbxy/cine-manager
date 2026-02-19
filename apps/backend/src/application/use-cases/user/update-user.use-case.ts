@@ -1,11 +1,11 @@
-import { Password, Uuid } from "@/domain/value-objects";
-import { UserNotFoundError } from "@/domain/errors";
+import type { UpdateUserDTO, UserDTO } from "@repo/dtos";
 import type {
   HashProvider,
   TransactionManager
 } from "@/application/interfaces/providers";
 import { UserMapper } from "@/application/mappers";
-import type { UpdateUserDTO, UserDTO } from "@repo/dtos";
+import { UserNotFoundError } from "@/domain/errors";
+import { Password, Uuid } from "@/domain/value-objects";
 
 export class UpdateUser {
   constructor(

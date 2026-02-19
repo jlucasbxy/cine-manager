@@ -1,5 +1,5 @@
-import { InvalidPasswordError } from "@/domain/errors";
 import { passwordZodSchema } from "@repo/validators";
+import { InvalidPasswordError } from "@/domain/errors";
 
 export class Password {
   private readonly value: string;

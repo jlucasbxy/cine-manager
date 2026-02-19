@@ -1,8 +1,8 @@
-import { Uuid } from "@/domain/value-objects";
 import {
-  type NotificationTypeEnum,
-  NotificationStatusEnum
+  NotificationStatusEnum,
+  type NotificationTypeEnum
 } from "@/domain/enums";
+import { Uuid } from "@/domain/value-objects";
 
 interface CreateNotificationOutboxProps {
   type: NotificationTypeEnum;

@@ -1,12 +1,12 @@
 import { MovieServiceImpl } from "@/infrastructure/services";
+import { singleton } from "@/main/factories/singleton.util";
 import {
   makeCreateMovie,
-  makeUpdateMovie,
   makeDeleteMovie,
   makeGetMovie,
-  makeListMovies
+  makeListMovies,
+  makeUpdateMovie
 } from "@/main/factories/use-cases/movie";
-import { singleton } from "@/main/factories/singleton.util";
 
 export const makeMovieService = singleton(
   () =>

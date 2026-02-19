@@ -1,11 +1,11 @@
+import type { StringValue } from "ms";
 import { Login } from "@/application/use-cases/auth";
+import { env } from "@/infrastructure/config/env.config";
 import {
   makeHashProvider,
   makeTokenProvider,
   makeTransactionManager
 } from "@/main/factories/providers";
-import { env } from "@/infrastructure/config/env.config";
-import type { StringValue } from "ms";
 
 export function makeLogin(): Login {
   return new Login(

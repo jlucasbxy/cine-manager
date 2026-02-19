@@ -1,6 +1,6 @@
+import type { LoginDTO } from "@repo/dtos";
 import z from "zod";
 import type { Validator } from "./validator";
-import type { LoginDTO } from "@repo/dtos";
 
 export class LoginValidator implements Validator<LoginDTO> {
   private readonly loginSchema = z.object({

@@ -1,5 +1,5 @@
-import { JwtTokenProvider } from "@/infrastructure/providers";
 import { env } from "@/infrastructure/config/env.config";
+import { JwtTokenProvider } from "@/infrastructure/providers";
 import { singleton } from "@/main/factories/singleton.util";
 
 export const makeTokenProvider = singleton(

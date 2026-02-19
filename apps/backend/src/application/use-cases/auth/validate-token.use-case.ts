@@ -1,5 +1,5 @@
-import type { TokenProvider } from "@/application/interfaces/providers";
 import type { ValidateTokenDTO, ValidateTokenResultDTO } from "@repo/dtos";
+import type { TokenProvider } from "@/application/interfaces/providers";
 
 export class ValidateToken {
   constructor(private readonly tokenProvider: TokenProvider) {}

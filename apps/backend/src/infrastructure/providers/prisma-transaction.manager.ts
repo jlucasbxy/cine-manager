@@ -5,13 +5,13 @@ import type {
 
 import type { PrismaClient } from "@/infrastructure/database/prisma/generated/prisma/client";
 import {
-  PrismaMovieRepository,
-  PrismaUserRepository,
-  PrismaRefreshTokenRepository,
-  PrismaPasswordResetTokenRepository,
-  PrismaNotificationOutboxRepository,
+  PrismaGenreRepository,
   PrismaLanguageRepository,
-  PrismaGenreRepository
+  PrismaMovieRepository,
+  PrismaNotificationOutboxRepository,
+  PrismaPasswordResetTokenRepository,
+  PrismaRefreshTokenRepository,
+  PrismaUserRepository
 } from "@/infrastructure/database/repositories";
 
 export class PrismaTransactionManager implements TransactionManager {

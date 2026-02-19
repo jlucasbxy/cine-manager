@@ -1,6 +1,6 @@
-import type { UserModel } from "@/infrastructure/database/prisma/generated/prisma/models/User";
 import { User } from "@/domain/entities";
 import { Email, Password, Uuid } from "@/domain/value-objects";
+import type { UserModel } from "@/infrastructure/database/prisma/generated/prisma/models/User";
 
 export class PrismaUserMapper {
   static toDomain(raw: UserModel): User {

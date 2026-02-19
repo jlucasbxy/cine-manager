@@ -1,9 +1,9 @@
-import { AuthController } from "@/infrastructure/http/controllers";
 import {
-  LoginValidator,
   EmailValidator,
+  LoginValidator,
   ResetPasswordValidator
 } from "@repo/validators";
+import { AuthController } from "@/infrastructure/http/controllers";
 import { makeAuthService } from "@/main/factories/services";
 
 export function makeAuthController(): AuthController {

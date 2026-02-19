@@ -1,8 +1,8 @@
-import { Uuid } from "@/domain/value-objects";
-import { MovieNotFoundError } from "@/domain/errors";
+import type { MovieDTO } from "@repo/dtos";
 import type { MovieRepository } from "@/application/interfaces/repositories";
 import { MovieMapper } from "@/application/mappers";
-import type { MovieDTO } from "@repo/dtos";
+import { MovieNotFoundError } from "@/domain/errors";
+import { Uuid } from "@/domain/value-objects";
 
 interface GetMovieInput {
   id: string;

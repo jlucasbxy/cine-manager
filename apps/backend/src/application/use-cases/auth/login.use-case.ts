@@ -1,3 +1,4 @@
+import type { LoginDTO, LoginResultDTO } from "@repo/dtos";
 import ms, { type StringValue } from "ms";
 import type {
   HashProvider,
@@ -5,9 +6,8 @@ import type {
   TransactionManager
 } from "@/application/interfaces/providers";
 import { RefreshToken } from "@/domain/entities";
-import { Email } from "@/domain/value-objects";
 import { InvalidCredentialsError } from "@/domain/errors";
-import type { LoginDTO, LoginResultDTO } from "@repo/dtos";
+import { Email } from "@/domain/value-objects";
 
 type LoginConfig = {
   accessTokenExpiresIn: StringValue;

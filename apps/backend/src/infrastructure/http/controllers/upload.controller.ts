@@ -1,6 +1,6 @@
+import type { GenerateUploadUrlValidator } from "@repo/validators";
 import type { FastifyReply, FastifyRequest } from "fastify";
 import type { UploadService } from "@/application/interfaces/services";
-import type { GenerateUploadUrlValidator } from "@repo/validators";
 
 export class UploadController {
   constructor(

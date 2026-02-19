@@ -1,13 +1,25 @@
-import { makePrismaClient } from "@/main/factories/prisma";
-import { uuidv7 } from "uuidv7";
 import argon2 from "argon2";
+import { uuidv7 } from "uuidv7";
+import { makePrismaClient } from "@/main/factories/prisma";
 
 const DEV_USERS = [
   { name: "Alice Silva", email: "alice@example.com", password: "password123" },
   { name: "Bob Santos", email: "bob@example.com", password: "password123" },
-  { name: "Charlie Johnson", email: "charlie@example.com", password: "password123" },
-  { name: "Diana Rodriguez", email: "diana@example.com", password: "password123" },
-  { name: "Eduardo Ferreira", email: "eduardo@example.com", password: "password123" }
+  {
+    name: "Charlie Johnson",
+    email: "charlie@example.com",
+    password: "password123"
+  },
+  {
+    name: "Diana Rodriguez",
+    email: "diana@example.com",
+    password: "password123"
+  },
+  {
+    name: "Eduardo Ferreira",
+    email: "eduardo@example.com",
+    password: "password123"
+  }
 ];
 
 const DEV_MOVIES = [
@@ -191,7 +203,8 @@ const DEV_MOVIES = [
   {
     title: "Pulp Fiction",
     originalTitle: "Pulp Fiction",
-    tagline: "Just because you are a character doesn't mean you have character.",
+    tagline:
+      "Just because you are a character doesn't mean you have character.",
     synopsis:
       "A burger-loving hit man, his philosophical partner, a drug-addled gangster's moll and a washed-up boxer converge in this sprawling, comedic crime caper. Their adventures unfurl in three stories that ingeniously trip back and forth in time.",
     releaseDate: new Date("1994-10-14"),
@@ -257,7 +270,8 @@ const DEV_MOVIES = [
   {
     title: "Forrest Gump: O Contador de Histórias",
     originalTitle: "Forrest Gump",
-    tagline: "Life is like a box of chocolates...you never know what you're gonna get.",
+    tagline:
+      "Life is like a box of chocolates...you never know what you're gonna get.",
     synopsis:
       "A man with a low IQ has accomplished great things in his life and been present during significant historic events — in each case, far exceeding what anyone imagined he could do. But despite all he has achieved, his one true love eludes him.",
     releaseDate: new Date("1994-07-06"),
@@ -301,7 +315,8 @@ const DEV_MOVIES = [
   {
     title: "O Silêncio dos Inocentes",
     originalTitle: "The Silence of the Lambs",
-    tagline: "To enter the mind of a killer she must challenge the mind of a madman.",
+    tagline:
+      "To enter the mind of a killer she must challenge the mind of a madman.",
     synopsis:
       "Clarice Starling is a top student at the FBI's training academy. Jack Crawford wants Clarice to interview Dr. Hannibal Lecter, a brilliant psychiatrist who is also a violent psychopath serving life behind bars, to gain insight on a serial killer who skins his victims.",
     releaseDate: new Date("1991-02-14"),
@@ -565,7 +580,8 @@ const DEV_MOVIES = [
   {
     title: "Os Sete Samurais",
     originalTitle: "七人の侍",
-    tagline: "The Mighty Warriors Who Became the Seven National Heroes of a Small Town.",
+    tagline:
+      "The Mighty Warriors Who Became the Seven National Heroes of a Small Town.",
     synopsis:
       "A veteran samurai, who has fallen on hard times, answers a poor village's request for protection after he falls on hard times. Gathering six other samurais to help him, they teach the townspeople how to defend themselves and then, together, defend the village against the bandits.",
     releaseDate: new Date("1954-04-26"),

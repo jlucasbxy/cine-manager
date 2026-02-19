@@ -1,6 +1,6 @@
+import { ErrorCode } from "@repo/dtos";
 import type { FastifyError, FastifyReply, FastifyRequest } from "fastify";
 import { ZodError } from "zod";
-import { ErrorCode } from "@repo/dtos";
 import { DomainError } from "@/domain/errors";
 import { ErrorPresenter } from "@/infrastructure/http/presenters";
 

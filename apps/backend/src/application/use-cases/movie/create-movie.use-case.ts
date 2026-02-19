@@ -1,3 +1,6 @@
+import type { CreateMovieDTO, MovieDTO } from "@repo/dtos";
+import type { TransactionManager } from "@/application/interfaces/providers";
+import { MovieMapper } from "@/application/mappers";
 import { Movie, NotificationOutbox } from "@/domain/entities";
 import { NotificationTypeEnum } from "@/domain/enums";
 import {
@@ -8,9 +11,6 @@ import {
   Url,
   Uuid
 } from "@/domain/value-objects";
-import type { TransactionManager } from "@/application/interfaces/providers";
-import { MovieMapper } from "@/application/mappers";
-import type { CreateMovieDTO, MovieDTO } from "@repo/dtos";
 
 export class CreateMovie {
   constructor(private readonly transactionManager: TransactionManager) {}

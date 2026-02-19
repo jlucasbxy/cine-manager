@@ -1,10 +1,9 @@
-import Fastify from "fastify";
 import cookie from "@fastify/cookie";
 import rateLimit from "@fastify/rate-limit";
-import { env } from "@/infrastructure/config/env.config";
-import { makeRedisClient } from "@/main/factories/redis";
-import { ROUTE_PREFIXES } from "@/infrastructure/config/routes.config";
 import { ErrorCode } from "@repo/dtos";
+import Fastify from "fastify";
+import { env } from "@/infrastructure/config/env.config";
+import { ROUTE_PREFIXES } from "@/infrastructure/config/routes.config";
 import { errorHandler } from "@/infrastructure/http/middlewares";
 import {
   authRoutes,
@@ -23,6 +22,7 @@ import {
   makeUserController
 } from "@/main/factories/controllers";
 import { makeAuthMiddleware } from "@/main/factories/middlewares";
+import { makeRedisClient } from "@/main/factories/redis";
 
 export async function start() {
   const isDev = process.env.NODE_ENV !== "production";

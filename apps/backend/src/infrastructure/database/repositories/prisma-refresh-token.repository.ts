@@ -4,8 +4,8 @@ import type {
 } from "@/application/interfaces/repositories";
 import type { RefreshToken } from "@/domain/entities";
 import type { Token, Uuid } from "@/domain/value-objects";
-import type { PrismaDatabase } from "@/infrastructure/database/prisma";
 import { PrismaRefreshTokenMapper } from "@/infrastructure/database/mappers";
+import type { PrismaDatabase } from "@/infrastructure/database/prisma";
 
 export class PrismaRefreshTokenRepository implements RefreshTokenRepository {
   private readonly db: PrismaDatabase;

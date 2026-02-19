@@ -1,7 +1,7 @@
-import z from "zod";
-import type { Validator } from "./validator";
 import type { ResetPasswordDTO } from "@repo/dtos";
+import z from "zod";
 import { passwordZodSchema } from "./schemas/password.schema";
+import type { Validator } from "./validator";
 
 export class ResetPasswordValidator implements Validator<ResetPasswordDTO> {
   private readonly resetPasswordSchema = z.object({

@@ -1,5 +1,5 @@
-import { Token, Uuid } from "@/domain/value-objects";
 import ms, { type StringValue } from "ms";
+import { Token, Uuid } from "@/domain/value-objects";
 
 interface CreateRefreshTokenProps {
   userId: Uuid;

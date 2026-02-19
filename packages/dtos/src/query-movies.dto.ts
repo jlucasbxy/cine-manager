@@ -1,4 +1,4 @@
-import { AgeRating, MovieStatus } from "@repo/validators";
+import type { AgeRating, MovieStatus } from "@repo/validators";
 
 export interface QueryMoviesDTO {
   runtime?: number;

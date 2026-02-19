@@ -1,4 +1,5 @@
 import { AuthServiceImpl } from "@/infrastructure/services";
+import { singleton } from "@/main/factories/singleton.util";
 import {
   makeLogin,
   makeLogout,
@@ -7,7 +8,6 @@ import {
   makeResetPassword,
   makeValidateToken
 } from "@/main/factories/use-cases/auth";
-import { singleton } from "@/main/factories/singleton.util";
 
 export const makeAuthService = singleton(
   () =>
