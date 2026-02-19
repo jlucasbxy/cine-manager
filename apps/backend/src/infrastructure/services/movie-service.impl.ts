@@ -40,8 +40,9 @@ export class MovieServiceImpl implements MovieService {
   }
 
   async listMovies(
-    query: QueryMoviesDTO
+    query: QueryMoviesDTO,
+    userId: string
   ): Promise<PaginatedResultDTO<MovieDTO>> {
-    return this.listMoviesUseCase.execute(query);
+    return this.listMoviesUseCase.execute(query, userId);
   }
 }

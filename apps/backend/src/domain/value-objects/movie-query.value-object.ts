@@ -3,6 +3,7 @@ import { AgeRatingEnum } from "@/domain/enums/age-rating.enum";
 import { MovieStatusEnum } from "@/domain/enums/movie-status.enum";
 import { InvalidMovieQueryError } from "@/domain/errors";
 import { NonNegativeInt } from "@/domain/value-objects/non-negative-int.value-object";
+import { Uuid } from "@/domain/value-objects/uuid.value-object";
 
 type MovieQueryProps = {
   runtime?: number;
@@ -13,6 +14,7 @@ type MovieQueryProps = {
   status?: MovieStatusEnum;
   ageRating?: AgeRatingEnum;
   search?: string;
+  userId?: string;
 };
 
 const movieQuerySchema = z
@@ -24,7 +26,8 @@ const movieQuerySchema = z
     perPage: z.int().nonnegative(),
     status: z.enum(MovieStatusEnum).optional(),
     ageRating: z.enum(AgeRatingEnum).optional(),
-    search: z.string().min(1).optional()
+    search: z.string().min(1).optional(),
+    userId: z.uuidv7().optional()
   })
   .refine(
     (data) => {
@@ -45,6 +48,7 @@ export class MovieQuery {
   readonly status?: MovieStatusEnum;
   readonly ageRating?: AgeRatingEnum;
   readonly search?: string;
+  readonly userId?: Uuid;
 
   private constructor(
     page: NonNegativeInt,
@@ -54,7 +58,8 @@ export class MovieQuery {
     releaseDateEnd?: Date,
     status?: MovieStatusEnum,
     ageRating?: AgeRatingEnum,
-    search?: string
+    search?: string,
+    userId?: Uuid
   ) {
     this.runtime = runtime;
     this.releaseDateStart = releaseDateStart;
@@ -64,6 +69,7 @@ export class MovieQuery {
     this.status = status;
     this.ageRating = ageRating;
     this.search = search;
+    this.userId = userId;
   }
 
   static create(props: MovieQueryProps): MovieQuery {
@@ -81,7 +87,8 @@ export class MovieQuery {
       r.data.releaseDateEnd,
       r.data.status,
       r.data.ageRating,
-      r.data.search
+      r.data.search,
+      r.data.userId !== undefined ? Uuid.create(r.data.userId) : undefined
     );
   }
 }

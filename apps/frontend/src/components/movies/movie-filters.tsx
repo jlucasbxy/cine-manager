@@ -18,6 +18,7 @@ import {
   SheetTitle,
   SheetTrigger
 } from "@/components/ui/sheet";
+import { Switch } from "@/components/ui/switch";
 
 export interface MovieFiltersState {
   runtime?: number;
@@ -25,6 +26,7 @@ export interface MovieFiltersState {
   releaseDateEnd?: string;
   status?: MovieStatus;
   ageRating?: AgeRating;
+  onlyMine?: boolean;
 }
 
 interface MovieFiltersProps {
@@ -163,6 +165,17 @@ export function MovieFilters({ filters, onFiltersChange }: MovieFiltersProps) {
                 ))}
               </SelectContent>
             </Select>
+          </div>
+
+          <div className="flex items-center justify-between">
+            <Label htmlFor="only-mine">My Movies only</Label>
+            <Switch
+              id="only-mine"
+              checked={local.onlyMine ?? false}
+              onCheckedChange={(checked) =>
+                setLocal({ ...local, onlyMine: checked || undefined })
+              }
+            />
           </div>
 
           <div className="flex gap-2">

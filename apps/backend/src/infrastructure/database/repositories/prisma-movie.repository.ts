@@ -72,6 +72,9 @@ export class PrismaMovieRepository implements MovieRepository {
     if (query.search !== undefined) {
       where.title = { contains: query.search, mode: "insensitive" };
     }
+    if (query.userId !== undefined) {
+      where.userId = query.userId.toString();
+    }
 
     const [rawList, total] = await Promise.all([
       this.db.movie.findMany({

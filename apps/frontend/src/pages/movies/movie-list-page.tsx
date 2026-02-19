@@ -19,12 +19,14 @@ function parseFilters(params: URLSearchParams): MovieFiltersState {
   const runtime = params.get("runtime");
   const status = params.get("status") as MovieStatus | null;
   const ageRating = params.get("ageRating") as AgeRating | null;
+  const onlyMine = params.get("onlyMine");
   return {
     runtime: runtime ? Number(runtime) : undefined,
     releaseDateStart: params.get("releaseDateStart") ?? undefined,
     releaseDateEnd: params.get("releaseDateEnd") ?? undefined,
     status: status ?? undefined,
-    ageRating: ageRating ?? undefined
+    ageRating: ageRating ?? undefined,
+    onlyMine: onlyMine === "true" ? true : undefined
   };
 }
 
@@ -79,6 +81,7 @@ export function MovieListPage() {
         releaseDateEnd: newFilters.releaseDateEnd,
         status: newFilters.status,
         ageRating: newFilters.ageRating,
+        onlyMine: newFilters.onlyMine ? "true" : undefined,
         page: undefined
       },
       { replace: true }
@@ -98,7 +101,8 @@ export function MovieListPage() {
       releaseDateEnd: filters.releaseDateEnd,
       status: filters.status,
       ageRating: filters.ageRating,
-      search: debouncedSearch || undefined
+      search: debouncedSearch || undefined,
+      onlyMine: filters.onlyMine
     }),
     [page, filters, debouncedSearch]
   );

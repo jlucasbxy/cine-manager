@@ -11,5 +11,8 @@ export interface MovieService {
   updateMovie(id: string, input: UpdateMovieDTO): Promise<MovieDTO>;
   deleteMovie(id: string): Promise<void>;
   getMovie(id: string): Promise<MovieDTO>;
-  listMovies(query: QueryMoviesDTO): Promise<PaginatedResultDTO<MovieDTO>>;
+  listMovies(
+    query: QueryMoviesDTO,
+    userId: string
+  ): Promise<PaginatedResultDTO<MovieDTO>>;
 }

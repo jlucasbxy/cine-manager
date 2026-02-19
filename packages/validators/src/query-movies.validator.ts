@@ -12,7 +12,8 @@ export class QueryMoviesValidator implements Validator<QueryMoviesDTO> {
     perPage: z.coerce.number().int().min(1).max(100).default(10),
     status: z.nativeEnum(MovieStatus).optional(),
     ageRating: z.nativeEnum(AgeRating).optional(),
-    search: z.string().min(1).optional()
+    search: z.string().min(1).optional(),
+    onlyMine: z.coerce.boolean().optional()
   });
 
   parse(data: unknown) {

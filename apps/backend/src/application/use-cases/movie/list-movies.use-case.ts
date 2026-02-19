@@ -7,11 +7,15 @@ import { MovieQuery } from "@/domain/value-objects";
 export class ListMovies {
   constructor(private readonly movieRepository: MovieRepository) {}
 
-  async execute(input: QueryMoviesDTO): Promise<PaginatedResultDTO<MovieDTO>> {
+  async execute(
+    input: QueryMoviesDTO,
+    userId: string
+  ): Promise<PaginatedResultDTO<MovieDTO>> {
     const query = MovieQuery.create({
       ...input,
       status: input.status as MovieStatusEnum | undefined,
-      ageRating: input.ageRating as AgeRatingEnum | undefined
+      ageRating: input.ageRating as AgeRatingEnum | undefined,
+      userId: input.onlyMine ? userId : undefined
     });
     const result = await this.movieRepository.findAll(query);
     const total = result.total.toNumber();
