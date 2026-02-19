@@ -1,24 +1,39 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
+import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import type { ProfileFormData } from "@/lib/schemas";
 import { profileSchema } from "@/lib/schemas";
+import { getSignedUrl, uploadFile } from "@/services/upload.service";
 
 interface ProfileFormProps {
   defaultName: string;
+  avatarUrl?: string | null;
+  initials?: string;
   onSubmit: (data: ProfileFormData) => Promise<void>;
+  onAvatarChange: (avatarUrl: string) => Promise<void>;
   isSubmitting: boolean;
 }
 
 export function ProfileForm({
   defaultName,
+  avatarUrl,
+  initials,
   onSubmit,
+  onAvatarChange,
   isSubmitting
 }: ProfileFormProps) {
+  const [currentAvatarUrl, setCurrentAvatarUrl] = useState<string | null>(
+    avatarUrl ?? null
+  );
+  const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   const {
     register,
     handleSubmit,
@@ -32,8 +47,57 @@ export function ProfileForm({
     }
   });
 
+  async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setIsUploadingAvatar(true);
+    try {
+      const { uploadUrl, fileUrl } = await getSignedUrl(file.name, file.type);
+      await uploadFile(uploadUrl, file);
+      setCurrentAvatarUrl(fileUrl);
+      await onAvatarChange(fileUrl);
+    } finally {
+      setIsUploadingAvatar(false);
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    }
+  }
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+      <div className="flex items-center gap-4">
+        <div className="relative">
+          <Avatar className="h-20 w-20">
+            <AvatarImage src={currentAvatarUrl ?? undefined} />
+            <AvatarFallback className="text-lg">{initials}</AvatarFallback>
+          </Avatar>
+          {isUploadingAvatar && (
+            <div className="absolute inset-0 flex items-center justify-center rounded-full bg-background/70">
+              <Loader2 className="h-6 w-6 animate-spin" />
+            </div>
+          )}
+        </div>
+        <div>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            disabled={isUploadingAvatar}
+            onClick={() => fileInputRef.current?.click()}
+          >
+            Change avatar
+          </Button>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={(e) => void handleFileChange(e)}
+          />
+        </div>
+      </div>
+
+      <Separator />
+
       <div className="space-y-2">
         <Label htmlFor="name">Name</Label>
         <Input id="name" {...register("name")} />

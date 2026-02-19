@@ -6,7 +6,8 @@ import type { Validator } from "./validator";
 export class UpdateUserValidator implements Validator<UpdateUserDTO> {
   private readonly updateUserSchema = z.object({
     name: z.string().min(1).optional(),
-    password: passwordZodSchema.optional()
+    password: passwordZodSchema.optional(),
+    avatarUrl: z.string().url().optional()
   });
 
   parse(data: unknown) {

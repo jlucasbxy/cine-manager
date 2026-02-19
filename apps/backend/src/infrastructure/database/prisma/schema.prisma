@@ -18,6 +18,7 @@ model User {
   name                String
   email               String               @unique
   password            String
+  avatarUrl           String?
   createdAt           DateTime
   updatedAt           DateTime
   movies              Movie[]

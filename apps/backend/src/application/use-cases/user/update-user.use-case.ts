@@ -28,6 +28,7 @@ export class UpdateUser {
       const updated = await repos.userRepository.update(id, {
         name: input.name,
         password: hashedPassword,
+        avatarUrl: input.avatarUrl,
         updatedAt: new Date()
       });
 

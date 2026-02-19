@@ -2,7 +2,7 @@ import { Film, LogOut, Menu, Moon, Sun, User } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router";
 import { MobileNav } from "@/components/layout/mobile-nav";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -68,6 +68,7 @@ export function Header() {
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="relative h-8 w-8 rounded-full">
                 <Avatar className="h-8 w-8">
+                  <AvatarImage src={user?.avatarUrl ?? undefined} />
                   <AvatarFallback className="text-xs">
                     {initials}
                   </AvatarFallback>

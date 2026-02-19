@@ -65,11 +65,12 @@ export class PrismaUserRepository implements UserRepository {
 
   async update(id: Uuid, data: UpdateUserData): Promise<User | null> {
     try {
-      const updateData: Record<string, string | Date> = {
+      const updateData: Record<string, string | Date | null> = {
         updatedAt: data.updatedAt
       };
       if (data.name) updateData.name = data.name;
       if (data.password) updateData.password = data.password.toString();
+      if (data.avatarUrl !== undefined) updateData.avatarUrl = data.avatarUrl;
       const raw = await this.db.user.update({
         where: { id: id.toString() },
         data: updateData

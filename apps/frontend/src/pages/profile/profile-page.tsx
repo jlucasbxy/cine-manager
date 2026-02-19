@@ -16,6 +16,13 @@ export function ProfilePage() {
   const { user, updateUser } = useAuth();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const initials = user?.name
+    .split(" ")
+    .map((n) => n[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
+
   const handleSubmit = async (data: ProfileFormData) => {
     setIsSubmitting(true);
     try {
@@ -34,6 +41,14 @@ export function ProfilePage() {
       toast.error("Failed to update profile");
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  const handleAvatarChange = async (avatarUrl: string) => {
+    try {
+      await updateUser({ avatarUrl });
+    } catch {
+      toast.error("Failed to update avatar");
     }
   };
 
@@ -56,7 +71,10 @@ export function ProfilePage() {
           </div>
           <ProfileForm
             defaultName={user.name}
+            avatarUrl={user.avatarUrl}
+            initials={initials}
             onSubmit={handleSubmit}
+            onAvatarChange={handleAvatarChange}
             isSubmitting={isSubmitting}
           />
         </CardContent>

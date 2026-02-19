@@ -11,6 +11,7 @@ interface ReconstituteUserProps {
   name: string;
   email: Email;
   password: Password;
+  avatarUrl?: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -20,6 +21,7 @@ export class User {
   readonly name: string;
   readonly email: Email;
   readonly password: Password;
+  readonly avatarUrl?: string;
   readonly createdAt: Date;
   readonly updatedAt: Date;
 
@@ -28,6 +30,7 @@ export class User {
     name: string;
     email: Email;
     password: Password;
+    avatarUrl?: string;
     createdAt: Date;
     updatedAt: Date;
   }) {
@@ -35,6 +38,7 @@ export class User {
     this.name = data.name;
     this.email = data.email;
     this.password = data.password;
+    this.avatarUrl = data.avatarUrl;
     this.createdAt = data.createdAt;
     this.updatedAt = data.updatedAt;
   }
@@ -57,6 +61,7 @@ export class User {
       name: props.name,
       email: props.email,
       password: props.password,
+      avatarUrl: props.avatarUrl,
       createdAt: props.createdAt,
       updatedAt: props.updatedAt
     });

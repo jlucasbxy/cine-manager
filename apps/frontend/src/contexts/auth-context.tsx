@@ -11,7 +11,7 @@ interface AuthContextValue {
   login: (email: string, password: string) => Promise<void>;
   register: (name: string, email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
-  updateUser: (data: { name?: string; password?: string }) => Promise<void>;
+  updateUser: (data: { name?: string; password?: string; avatarUrl?: string }) => Promise<void>;
 }
 
 export const AuthContext = createContext<AuthContextValue | null>(null);
@@ -101,7 +101,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [saveUser]);
 
   const updateUser = useCallback(
-    async (data: { name?: string; password?: string }) => {
+    async (data: { name?: string; password?: string; avatarUrl?: string }) => {
       const updatedUser = await authService.updateUser(data);
       saveUser(updatedUser);
     },

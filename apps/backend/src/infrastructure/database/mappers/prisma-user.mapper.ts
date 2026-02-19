@@ -9,6 +9,7 @@ export class PrismaUserMapper {
       name: raw.name,
       email: Email.reconstitute(raw.email),
       password: Password.reconstitute(raw.password),
+      avatarUrl: raw.avatarUrl ?? undefined,
       createdAt: raw.createdAt,
       updatedAt: raw.updatedAt
     });
