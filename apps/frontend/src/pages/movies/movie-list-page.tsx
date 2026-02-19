@@ -1,7 +1,8 @@
 import { AgeRating, MovieStatus } from "@repo/dtos";
 import { Film, Plus } from "lucide-react";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router";
+import { useDebounce } from "@/hooks/use-debounce";
 import {
   MovieFilters,
   type MovieFiltersState
@@ -31,7 +32,9 @@ export function MovieListPage() {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const page = Number(searchParams.get("page") ?? "1");
-  const search = searchParams.get("search") ?? "";
+  const urlSearch = searchParams.get("search") ?? "";
+  const [searchInput, setSearchInput] = useState(urlSearch);
+  const debouncedSearch = useDebounce(searchInput, 400);
   const filters = useMemo(() => parseFilters(searchParams), [searchParams]);
 
   const updateParams = (updates: Record<string, string | undefined>) => {
@@ -48,8 +51,12 @@ export function MovieListPage() {
     });
   };
 
+  useEffect(() => {
+    updateParams({ search: debouncedSearch || undefined, page: undefined });
+  }, [debouncedSearch]);
+
   const handleSearchChange = (value: string) => {
-    updateParams({ search: value || undefined, page: undefined });
+    setSearchInput(value);
   };
 
   const handleFiltersChange = (newFilters: MovieFiltersState) => {
@@ -76,9 +83,9 @@ export function MovieListPage() {
       releaseDateEnd: filters.releaseDateEnd,
       status: filters.status,
       ageRating: filters.ageRating,
-      search: search || undefined
+      search: debouncedSearch || undefined
     }),
-    [page, filters, search]
+    [page, filters, debouncedSearch]
   );
 
   const { data, isLoading } = useMovies(queryFilters);
@@ -99,7 +106,7 @@ export function MovieListPage() {
 
       <div className="flex flex-col gap-4 sm:flex-row">
         <div className="flex-1">
-          <MovieSearchBar value={search} onChange={handleSearchChange} />
+          <MovieSearchBar value={searchInput} onChange={handleSearchChange} />
         </div>
         <MovieFilters filters={filters} onFiltersChange={handleFiltersChange} />
       </div>
@@ -119,12 +126,12 @@ export function MovieListPage() {
           icon={<Film className="h-12 w-12" />}
           title="No movies found"
           description={
-            search || Object.values(filters).some(Boolean)
+            searchInput || Object.values(filters).some(Boolean)
               ? "Try adjusting your search or filters"
               : "Get started by adding your first movie"
           }
           action={
-            !search && !Object.values(filters).some(Boolean) ? (
+            !searchInput && !Object.values(filters).some(Boolean) ? (
               <Link to="/movies/new">
                 <Button>Add Movie</Button>
               </Link>
