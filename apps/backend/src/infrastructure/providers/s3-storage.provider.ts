@@ -1,4 +1,4 @@
-import { PutObjectCommand, type S3Client } from "@aws-sdk/client-s3";
+import { DeleteObjectCommand, PutObjectCommand, type S3Client } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import type { StorageProvider } from "@/application/interfaces/providers";
 import { ImageUpload } from "@/domain/entities";
@@ -38,5 +38,13 @@ export class S3StorageProvider implements StorageProvider {
       uploadUrl: Url.create(uploadUrl),
       fileUrl: Url.create(fileUrl)
     });
+  }
+
+  async deleteFile(key: string): Promise<void> {
+    const command = new DeleteObjectCommand({
+      Bucket: this.config.bucket,
+      Key: key
+    });
+    await this.client.send(command);
   }
 }

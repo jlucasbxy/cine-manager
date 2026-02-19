@@ -3,4 +3,5 @@ import { ImageUpload } from "@/domain/entities";
 
 export interface StorageProvider {
   generateUploadUrl(uploadKey: UploadKey): Promise<ImageUpload>;
+  deleteFile(key: string): Promise<void>;
 }
