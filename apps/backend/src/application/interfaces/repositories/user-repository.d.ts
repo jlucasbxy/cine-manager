@@ -10,6 +10,6 @@ export interface UserRepository {
   findById(id: Uuid): Promise<User | null>;
   findByEmail(email: Email): Promise<User | null>;
   existsByEmail(email: Email): Promise<Uuid | null>;
-  updateById(id: Uuid, data: UpdateUserData): Promise<void>;
+  update(id: Uuid, data: UpdateUserData): Promise<User | null>;
   delete(id: Uuid): Promise<void>;
 }

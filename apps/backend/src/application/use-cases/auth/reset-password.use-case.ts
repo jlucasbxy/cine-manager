@@ -37,7 +37,7 @@ export class ResetPassword {
       const hashedPassword = await this.hashProvider.hash(password.toString());
       const usedToken = token.markAsUsed();
 
-      await repos.userRepository.updateById(token.userId, {
+      await repos.userRepository.update(token.userId, {
         password: Password.reconstitute(hashedPassword),
         updatedAt: new Date()
       });

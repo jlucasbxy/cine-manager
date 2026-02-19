@@ -61,16 +61,29 @@ export class PrismaUserRepository implements UserRepository {
     return Uuid.create(raw.id);
   }
 
-  async updateById(id: Uuid, data: UpdateUserData): Promise<void> {
-    const updateData: Record<string, string | Date> = {
-      updatedAt: data.updatedAt
-    };
-    if (data.name) updateData.name = data.name;
-    if (data.password) updateData.password = data.password.toString();
-    await this.db.user.update({
-      where: { id: id.toString() },
-      data: updateData
-    });
+  async update(id: Uuid, data: UpdateUserData): Promise<User | null> {
+    try {
+      const updateData: Record<string, string | Date> = {
+        updatedAt: data.updatedAt
+      };
+      if (data.name) updateData.name = data.name;
+      if (data.password) updateData.password = data.password.toString();
+      const raw = await this.db.user.update({
+        where: { id: id.toString() },
+        data: updateData
+      });
+      return PrismaUserMapper.toDomain(raw);
+    } catch (error: unknown) {
+      if (
+        typeof error === "object" &&
+        error !== null &&
+        "code" in error &&
+        error.code === "P2025"
+      ) {
+        return null;
+      }
+      throw error;
+    }
   }
 
   async delete(id: Uuid): Promise<void> {

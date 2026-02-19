@@ -16,11 +16,6 @@ export class UpdateUser {
   async execute(userId: string, input: UpdateUserDTO): Promise<UserDTO> {
     return this.transactionManager.execute(async (repos) => {
       const id = Uuid.create(userId);
-      const user = await repos.userRepository.findById(id);
-
-      if (!user) {
-        throw new UserNotFoundError();
-      }
 
       const hashedPassword = input.password
         ? Password.reconstitute(
@@ -30,14 +25,17 @@ export class UpdateUser {
           )
         : undefined;
 
-      await repos.userRepository.updateById(id, {
+      const updated = await repos.userRepository.update(id, {
         name: input.name,
         password: hashedPassword,
         updatedAt: new Date()
       });
 
-      const updated = await repos.userRepository.findById(id);
-      return UserMapper.toDTO(updated!);
+      if (!updated) {
+        throw new UserNotFoundError();
+      }
+
+      return UserMapper.toDTO(updated);
     });
   }
 }
