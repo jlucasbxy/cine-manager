@@ -22,11 +22,11 @@ export function MovieFormPage() {
       if (isEdit && id) {
         await updateMovie.mutateAsync({ id, data });
         toast.success("Movie updated");
-        navigate(`/movies/${id}`);
+        navigate(`/movies/${id}`, { replace: true });
       } else {
         const created = await createMovie.mutateAsync(data);
         toast.success("Movie created");
-        navigate(`/movies/${created.id}`);
+        navigate(`/movies/${created.id}`, { replace: true });
       }
     } catch {
       toast.error(isEdit ? "Failed to update movie" : "Failed to create movie");

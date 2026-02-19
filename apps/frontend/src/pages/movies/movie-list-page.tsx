@@ -37,7 +37,14 @@ export function MovieListPage() {
   const debouncedSearch = useDebounce(searchInput, 400);
   const filters = useMemo(() => parseFilters(searchParams), [searchParams]);
 
-  const updateParams = (updates: Record<string, string | undefined>) => {
+  useEffect(() => {
+    setSearchInput(urlSearch);
+  }, [urlSearch]);
+
+  const updateParams = (
+    updates: Record<string, string | undefined>,
+    options: { replace?: boolean } = {}
+  ) => {
     setSearchParams((prev) => {
       const next = new URLSearchParams(prev);
       for (const [key, value] of Object.entries(updates)) {
@@ -48,26 +55,34 @@ export function MovieListPage() {
         }
       }
       return next;
-    });
+    }, options);
   };
 
   useEffect(() => {
-    updateParams({ search: debouncedSearch || undefined, page: undefined });
-  }, [debouncedSearch]);
+    if (debouncedSearch !== urlSearch) {
+      updateParams(
+        { search: debouncedSearch || undefined, page: undefined },
+        { replace: true }
+      );
+    }
+  }, [debouncedSearch, urlSearch]);
 
   const handleSearchChange = (value: string) => {
     setSearchInput(value);
   };
 
   const handleFiltersChange = (newFilters: MovieFiltersState) => {
-    updateParams({
-      runtime: newFilters.runtime?.toString(),
-      releaseDateStart: newFilters.releaseDateStart,
-      releaseDateEnd: newFilters.releaseDateEnd,
-      status: newFilters.status,
-      ageRating: newFilters.ageRating,
-      page: undefined
-    });
+    updateParams(
+      {
+        runtime: newFilters.runtime?.toString(),
+        releaseDateStart: newFilters.releaseDateStart,
+        releaseDateEnd: newFilters.releaseDateEnd,
+        status: newFilters.status,
+        ageRating: newFilters.ageRating,
+        page: undefined
+      },
+      { replace: true }
+    );
   };
 
   const handlePageChange = (newPage: number) => {

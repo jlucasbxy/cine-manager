@@ -42,7 +42,7 @@ export function MovieDetailPage() {
     try {
       await deleteMovie.mutateAsync(id);
       toast.success("Movie deleted");
-      navigate("/movies");
+      navigate("/movies", { replace: true });
     } catch {
       toast.error("Failed to delete movie");
     }

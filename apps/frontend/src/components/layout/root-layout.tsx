@@ -1,4 +1,4 @@
-import { Outlet } from "react-router";
+import { Outlet, ScrollRestoration } from "react-router";
 import { Header } from "@/components/layout/header";
 
 export function RootLayout() {
@@ -8,6 +8,7 @@ export function RootLayout() {
       <main className="container mx-auto px-4 py-6">
         <Outlet />
       </main>
+      <ScrollRestoration />
     </div>
   );
 }
