@@ -18,38 +18,33 @@ export function MovieListPage() {
   const [search, setSearch] = useState("");
   const [filters, setFilters] = useState<MovieFiltersState>({});
 
+  const handleSearchChange = (value: string) => {
+    setSearch(value);
+    setPage(1);
+  };
+
+  const handleFiltersChange = (newFilters: MovieFiltersState) => {
+    setFilters(newFilters);
+    setPage(1);
+  };
+
   const queryFilters = useMemo(
     () => ({
       page,
       perPage: 10,
       runtime: filters.runtime,
       releaseDateStart: filters.releaseDateStart,
-      releaseDateEnd: filters.releaseDateEnd
+      releaseDateEnd: filters.releaseDateEnd,
+      status: filters.status,
+      ageRating: filters.ageRating,
+      search: search || undefined
     }),
-    [page, filters]
+    [page, filters, search]
   );
 
   const { data, isLoading } = useMovies(queryFilters);
 
-  const filteredMovies = useMemo(() => {
-    if (!data?.data) return [];
-    let movies = data.data;
-
-    if (search) {
-      const lower = search.toLowerCase();
-      movies = movies.filter((m) => m.title.toLowerCase().includes(lower));
-    }
-
-    if (filters.status) {
-      movies = movies.filter((m) => m.status === filters.status);
-    }
-
-    if (filters.ageRating) {
-      movies = movies.filter((m) => m.ageRating === filters.ageRating);
-    }
-
-    return movies;
-  }, [data?.data, search, filters.status, filters.ageRating]);
+  const filteredMovies = data?.data ?? [];
 
   return (
     <div className="space-y-6">
@@ -65,9 +60,9 @@ export function MovieListPage() {
 
       <div className="flex flex-col gap-4 sm:flex-row">
         <div className="flex-1">
-          <MovieSearchBar value={search} onChange={setSearch} />
+          <MovieSearchBar value={search} onChange={handleSearchChange} />
         </div>
-        <MovieFilters filters={filters} onFiltersChange={setFilters} />
+        <MovieFilters filters={filters} onFiltersChange={handleFiltersChange} />
       </div>
 
       {isLoading ? (

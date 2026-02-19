@@ -63,6 +63,15 @@ export class PrismaMovieRepository implements MovieRepository {
       if (query.releaseDateEnd) releaseDate.lte = query.releaseDateEnd;
       where.releaseDate = releaseDate;
     }
+    if (query.status !== undefined) {
+      where.status = query.status;
+    }
+    if (query.ageRating !== undefined) {
+      where.ageRating = query.ageRating;
+    }
+    if (query.search !== undefined) {
+      where.title = { contains: query.search, mode: "insensitive" };
+    }
 
     const [rawList, total] = await Promise.all([
       this.db.movie.findMany({

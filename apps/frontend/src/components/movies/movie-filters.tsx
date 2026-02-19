@@ -23,8 +23,8 @@ export interface MovieFiltersState {
   runtime?: number;
   releaseDateStart?: string;
   releaseDateEnd?: string;
-  status?: string;
-  ageRating?: string;
+  status?: MovieStatus;
+  ageRating?: AgeRating;
 }
 
 interface MovieFiltersProps {
@@ -118,7 +118,7 @@ export function MovieFilters({ filters, onFiltersChange }: MovieFiltersProps) {
               onValueChange={(v) =>
                 setLocal({
                   ...local,
-                  status: v === "all" ? undefined : v
+                  status: v === "all" ? undefined : (v as MovieStatus)
                 })
               }
             >
@@ -143,7 +143,7 @@ export function MovieFilters({ filters, onFiltersChange }: MovieFiltersProps) {
               onValueChange={(v) =>
                 setLocal({
                   ...local,
-                  ageRating: v === "all" ? undefined : v
+                  ageRating: v === "all" ? undefined : (v as AgeRating)
                 })
               }
             >

@@ -1,6 +1,8 @@
 import z from "zod";
 import { NonNegativeInt } from "@/domain/value-objects/non-negative-int.value-object";
 import { InvalidMovieQueryError } from "@/domain/errors";
+import { MovieStatusEnum } from "@/domain/enums/movie-status.enum";
+import { AgeRatingEnum } from "@/domain/enums/age-rating.enum";
 
 type MovieQueryProps = {
   runtime?: number;
@@ -8,6 +10,9 @@ type MovieQueryProps = {
   releaseDateEnd?: string;
   page: number;
   perPage: number;
+  status?: MovieStatusEnum;
+  ageRating?: AgeRatingEnum;
+  search?: string;
 };
 
 const movieQuerySchema = z
@@ -16,7 +21,10 @@ const movieQuerySchema = z
     releaseDateStart: z.coerce.date().optional(),
     releaseDateEnd: z.coerce.date().optional(),
     page: z.int().nonnegative(),
-    perPage: z.int().nonnegative()
+    perPage: z.int().nonnegative(),
+    status: z.nativeEnum(MovieStatusEnum).optional(),
+    ageRating: z.nativeEnum(AgeRatingEnum).optional(),
+    search: z.string().min(1).optional()
   })
   .refine(
     (data) => {
@@ -34,19 +42,28 @@ export class MovieQuery {
   readonly releaseDateEnd?: Date;
   readonly page: NonNegativeInt;
   readonly perPage: NonNegativeInt;
+  readonly status?: MovieStatusEnum;
+  readonly ageRating?: AgeRatingEnum;
+  readonly search?: string;
 
   private constructor(
     page: NonNegativeInt,
     perPage: NonNegativeInt,
     runtime?: NonNegativeInt,
     releaseDateStart?: Date,
-    releaseDateEnd?: Date
+    releaseDateEnd?: Date,
+    status?: MovieStatusEnum,
+    ageRating?: AgeRatingEnum,
+    search?: string
   ) {
     this.runtime = runtime;
     this.releaseDateStart = releaseDateStart;
     this.releaseDateEnd = releaseDateEnd;
     this.page = page;
     this.perPage = perPage;
+    this.status = status;
+    this.ageRating = ageRating;
+    this.search = search;
   }
 
   static create(props: MovieQueryProps): MovieQuery {
@@ -61,7 +78,10 @@ export class MovieQuery {
         ? NonNegativeInt.create(r.data.runtime)
         : undefined,
       r.data.releaseDateStart,
-      r.data.releaseDateEnd
+      r.data.releaseDateEnd,
+      r.data.status,
+      r.data.ageRating,
+      r.data.search
     );
   }
 }
