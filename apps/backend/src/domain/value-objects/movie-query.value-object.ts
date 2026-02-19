@@ -22,8 +22,8 @@ const movieQuerySchema = z
     releaseDateEnd: z.coerce.date().optional(),
     page: z.int().nonnegative(),
     perPage: z.int().nonnegative(),
-    status: z.nativeEnum(MovieStatusEnum).optional(),
-    ageRating: z.nativeEnum(AgeRatingEnum).optional(),
+    status: z.enum(MovieStatusEnum).optional(),
+    ageRating: z.enum(AgeRatingEnum).optional(),
     search: z.string().min(1).optional()
   })
   .refine(
