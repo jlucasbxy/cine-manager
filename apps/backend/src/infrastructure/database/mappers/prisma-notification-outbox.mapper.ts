@@ -16,7 +16,9 @@ export class PrismaNotificationOutboxMapper {
       retryCount: raw.retryCount,
       error: raw.error,
       createdAt: raw.createdAt,
-      processedAt: raw.processedAt
+      scheduledFor: raw.scheduledFor,
+      processedAt: raw.processedAt,
+      movieId: raw.movieId ? Uuid.reconstitute(raw.movieId) : null
     });
   }
 }

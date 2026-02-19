@@ -24,14 +24,20 @@ export class PrismaNotificationOutboxRepository
         retryCount: entry.retryCount,
         error: entry.error,
         createdAt: entry.createdAt,
-        processedAt: entry.processedAt
+        scheduledFor: entry.scheduledFor,
+        processedAt: entry.processedAt,
+        movieId: entry.movieId?.toString() ?? null
       }
     });
   }
 
   async findPendingBatch(limit: number): Promise<NotificationOutbox[]> {
+    const now = new Date();
     const rows = await this.db.notificationOutbox.findMany({
-      where: { status: NotificationStatusEnum.PENDING },
+      where: {
+        status: NotificationStatusEnum.PENDING,
+        OR: [{ scheduledFor: null }, { scheduledFor: { lte: now } }]
+      },
       orderBy: { createdAt: "asc" },
       take: limit
     });

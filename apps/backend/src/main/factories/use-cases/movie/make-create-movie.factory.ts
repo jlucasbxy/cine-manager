@@ -1,6 +1,6 @@
 import { CreateMovie } from "@/application/use-cases/movie";
-import { makeMovieRepository } from "@/main/factories/repositories";
+import { makeTransactionManager } from "@/main/factories/providers";
 
 export function makeCreateMovie(): CreateMovie {
-  return new CreateMovie(makeMovieRepository());
+  return new CreateMovie(makeTransactionManager());
 }

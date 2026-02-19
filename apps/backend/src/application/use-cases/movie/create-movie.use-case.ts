@@ -1,4 +1,5 @@
-import { Movie } from "@/domain/entities";
+import { Movie, NotificationOutbox } from "@/domain/entities";
+import { NotificationTypeEnum } from "@/domain/enums";
 import {
   AgeRating,
   MovieStatus,
@@ -7,14 +8,16 @@ import {
   Url,
   Uuid
 } from "@/domain/value-objects";
-import type { MovieRepository } from "@/application/interfaces/repositories";
+import type { TransactionManager } from "@/application/interfaces/providers";
 import { MovieMapper } from "@/application/mappers";
 import type { CreateMovieDTO, MovieDTO } from "@repo/dtos";
 
 export class CreateMovie {
-  constructor(private readonly movieRepository: MovieRepository) {}
+  constructor(private readonly transactionManager: TransactionManager) {}
 
   async execute(userId: string, input: CreateMovieDTO): Promise<MovieDTO> {
+    const userUuid = Uuid.create(userId);
+
     const movie = Movie.create({
       title: input.title,
       originalTitle: input.originalTitle,
@@ -30,10 +33,32 @@ export class CreateMovie {
       posterUrl: Url.create(input.posterUrl),
       backdropUrl: Url.create(input.backdropUrl),
       trailerUrl: Url.create(input.trailerUrl),
-      userId: Uuid.create(userId)
+      userId: userUuid
     });
 
-    const created = await this.movieRepository.create(movie);
+    const created = await this.transactionManager.execute(async (repos) => {
+      const savedMovie = await repos.movieRepository.create(movie);
+
+      if (movie.releaseDate > new Date()) {
+        const user = await repos.userRepository.findById(userUuid);
+        if (user) {
+          const outboxEntry = NotificationOutbox.create({
+            type: NotificationTypeEnum.MOVIE_RELEASE_DATE,
+            payload: {
+              to: user.email.toString(),
+              movieTitle: movie.title,
+              releaseDate: movie.releaseDate.toISOString()
+            },
+            movieId: movie.id,
+            scheduledFor: movie.releaseDate
+          });
+          await repos.notificationOutboxRepository.create(outboxEntry);
+        }
+      }
+
+      return savedMovie;
+    });
+
     return MovieMapper.toDTO(created);
   }
 }

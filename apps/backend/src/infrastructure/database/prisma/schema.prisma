@@ -84,6 +84,7 @@ enum MovieStatus {
 
 enum NotificationType {
   PASSWORD_RESET_EMAIL
+  MOVIE_RELEASE_DATE
 }
 
 enum NotificationStatus {
@@ -100,24 +101,28 @@ model NotificationOutbox {
   retryCount  Int
   error       String?
   createdAt   DateTime
+  scheduledFor DateTime?         @db.Timestamptz
   processedAt DateTime?          @db.Timestamptz
+  movieId     String?            @db.Uuid
+  movie       Movie?             @relation(fields: [movieId], references: [id], onDelete: Cascade)
 
   @@index([status, createdAt])
+  @@index([status, scheduledFor])
 }
 
 model Movie {
-  id            String      @id @db.Uuid
+  id            String                @id @db.Uuid
   title         String
   originalTitle String
   tagline       String
   synopsis      String
   genres        Genre[]
-  releaseDate   DateTime    @db.Timestamptz
+  releaseDate   DateTime              @db.Timestamptz
   runtime       Int
   status        MovieStatus
   ageRating     AgeRating
-  languageId    String      @db.Uuid
-  language      Language    @relation(fields: [languageId], references: [id])
+  languageId    String                @db.Uuid
+  language      Language              @relation(fields: [languageId], references: [id])
   budget        Float
   revenue       Float
   posterUrl     String
@@ -127,8 +132,9 @@ model Movie {
   score         Float
   createdAt     DateTime
   updatedAt     DateTime
-  userId        String      @db.Uuid
-  user          User        @relation(fields: [userId], references: [id])
+  userId        String                @db.Uuid
+  user          User                  @relation(fields: [userId], references: [id])
+  notifications NotificationOutbox[]
 
   @@index([userId])
   @@index([releaseDate])

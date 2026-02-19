@@ -48,6 +48,16 @@ export class ProcessNotificationOutbox {
           idempotencyKey: entry.id.toString()
         });
         break;
+      case NotificationTypeEnum.MOVIE_RELEASE_DATE:
+        await this.notificationService.sendMovieReleaseDateEmail({
+          ...(entry.payload as {
+            to: string;
+            movieTitle: string;
+            releaseDate: string;
+          }),
+          idempotencyKey: entry.id.toString()
+        });
+        break;
       default:
         throw new Error(`Unknown notification type: ${entry.type}`);
     }

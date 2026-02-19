@@ -7,6 +7,8 @@ import {
 interface CreateNotificationOutboxProps {
   type: NotificationTypeEnum;
   payload: Record<string, unknown>;
+  movieId?: Uuid | null;
+  scheduledFor?: Date | null;
 }
 
 interface ReconstituteNotificationOutboxProps {
@@ -17,7 +19,9 @@ interface ReconstituteNotificationOutboxProps {
   retryCount: number;
   error: string | null;
   createdAt: Date;
+  scheduledFor: Date | null;
   processedAt: Date | null;
+  movieId: Uuid | null;
 }
 
 export class NotificationOutbox {
@@ -28,7 +32,9 @@ export class NotificationOutbox {
   readonly retryCount: number;
   readonly error: string | null;
   readonly createdAt: Date;
+  readonly scheduledFor: Date | null;
   readonly processedAt: Date | null;
+  readonly movieId: Uuid | null;
 
   private constructor(data: {
     id: Uuid;
@@ -38,7 +44,9 @@ export class NotificationOutbox {
     retryCount: number;
     error: string | null;
     createdAt: Date;
+    scheduledFor: Date | null;
     processedAt: Date | null;
+    movieId: Uuid | null;
   }) {
     this.id = data.id;
     this.type = data.type;
@@ -47,7 +55,9 @@ export class NotificationOutbox {
     this.retryCount = data.retryCount;
     this.error = data.error;
     this.createdAt = data.createdAt;
+    this.scheduledFor = data.scheduledFor;
     this.processedAt = data.processedAt;
+    this.movieId = data.movieId;
   }
 
   static create(props: CreateNotificationOutboxProps): NotificationOutbox {
@@ -59,7 +69,9 @@ export class NotificationOutbox {
       retryCount: 0,
       error: null,
       createdAt: new Date(),
-      processedAt: null
+      scheduledFor: props.scheduledFor ?? null,
+      processedAt: null,
+      movieId: props.movieId ?? null
     });
   }
 
@@ -74,7 +86,9 @@ export class NotificationOutbox {
       retryCount: props.retryCount,
       error: props.error,
       createdAt: props.createdAt,
-      processedAt: props.processedAt
+      scheduledFor: props.scheduledFor,
+      processedAt: props.processedAt,
+      movieId: props.movieId
     });
   }
 
@@ -87,7 +101,9 @@ export class NotificationOutbox {
       retryCount: this.retryCount,
       error: this.error,
       createdAt: this.createdAt,
-      processedAt: new Date()
+      scheduledFor: this.scheduledFor,
+      processedAt: new Date(),
+      movieId: this.movieId
     });
   }
 
@@ -100,7 +116,9 @@ export class NotificationOutbox {
       retryCount: this.retryCount + 1,
       error,
       createdAt: this.createdAt,
-      processedAt: this.processedAt
+      scheduledFor: this.scheduledFor,
+      processedAt: this.processedAt,
+      movieId: this.movieId
     });
   }
 
@@ -113,7 +131,9 @@ export class NotificationOutbox {
       retryCount: this.retryCount + 1,
       error,
       createdAt: this.createdAt,
-      processedAt: this.processedAt
+      scheduledFor: this.scheduledFor,
+      processedAt: this.processedAt,
+      movieId: this.movieId
     });
   }
 }
