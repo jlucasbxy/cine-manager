@@ -7,7 +7,8 @@
       "!**/node_modules",
       "!*.generated.*",
       "!apps/backend/src/infrastructure/database/prisma",
-      "!package-lock.json"
+      "!package-lock.json",
+      "!**/.turbo"
     ]
   },
   "formatter": {
