@@ -3,7 +3,7 @@ import type {
   UserRepository,
   RefreshTokenRepository,
   PasswordResetTokenRepository,
-  NotificationOutboxRepository,
+  OutboxEventRepository,
   LanguageRepository,
   GenreRepository
 } from "@/application/interfaces/repositories";
@@ -13,7 +13,7 @@ export interface TransactionRepositories {
   userRepository: UserRepository;
   refreshTokenRepository: RefreshTokenRepository;
   passwordResetTokenRepository: PasswordResetTokenRepository;
-  notificationOutboxRepository: NotificationOutboxRepository;
+  outboxEventRepository: OutboxEventRepository;
   languageRepository: LanguageRepository;
   genreRepository: GenreRepository;
 }

@@ -4,8 +4,8 @@ import type {
   TransactionManager
 } from "@/application/interfaces/providers";
 import { UserMapper } from "@/application/mappers";
-import { NotificationOutbox } from "@/domain/entities";
-import { NotificationTypeEnum } from "@/domain/enums";
+import { OutboxEvent } from "@/domain/entities";
+import { OutboxEventTypeEnum } from "@/domain/enums";
 import { UserNotFoundError } from "@/domain/errors";
 import { Password, Uuid } from "@/domain/value-objects";
 
@@ -45,9 +45,9 @@ export class UpdateUser {
         const key = current.avatarUrl.substring(
           current.avatarUrl.indexOf("uploads/")
         );
-        await repos.notificationOutboxRepository.create(
-          NotificationOutbox.create({
-            type: NotificationTypeEnum.STORAGE_FILE_DELETE,
+        await repos.outboxEventRepository.create(
+          OutboxEvent.create({
+            type: OutboxEventTypeEnum.STORAGE_FILE_DELETE,
             payload: { key }
           })
         );

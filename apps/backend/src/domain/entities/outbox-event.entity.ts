@@ -1,21 +1,21 @@
 import {
-  NotificationStatusEnum,
-  type NotificationTypeEnum
+  OutboxEventStatusEnum,
+  type OutboxEventTypeEnum
 } from "@/domain/enums";
 import { Uuid } from "@/domain/value-objects";
 
-interface CreateNotificationOutboxProps {
-  type: NotificationTypeEnum;
+interface CreateOutboxEventProps {
+  type: OutboxEventTypeEnum;
   payload: Record<string, unknown>;
   movieId?: Uuid | null;
   scheduledFor?: Date | null;
 }
 
-interface ReconstituteNotificationOutboxProps {
+interface ReconstituteOutboxEventProps {
   id: Uuid;
-  type: NotificationTypeEnum;
+  type: OutboxEventTypeEnum;
   payload: Record<string, unknown>;
-  status: NotificationStatusEnum;
+  status: OutboxEventStatusEnum;
   retryCount: number;
   error: string | null;
   createdAt: Date;
@@ -24,11 +24,11 @@ interface ReconstituteNotificationOutboxProps {
   movieId: Uuid | null;
 }
 
-export class NotificationOutbox {
+export class OutboxEvent {
   readonly id: Uuid;
-  readonly type: NotificationTypeEnum;
+  readonly type: OutboxEventTypeEnum;
   readonly payload: Record<string, unknown>;
-  readonly status: NotificationStatusEnum;
+  readonly status: OutboxEventStatusEnum;
   readonly retryCount: number;
   readonly error: string | null;
   readonly createdAt: Date;
@@ -38,9 +38,9 @@ export class NotificationOutbox {
 
   private constructor(data: {
     id: Uuid;
-    type: NotificationTypeEnum;
+    type: OutboxEventTypeEnum;
     payload: Record<string, unknown>;
-    status: NotificationStatusEnum;
+    status: OutboxEventStatusEnum;
     retryCount: number;
     error: string | null;
     createdAt: Date;
@@ -60,12 +60,12 @@ export class NotificationOutbox {
     this.movieId = data.movieId;
   }
 
-  static create(props: CreateNotificationOutboxProps): NotificationOutbox {
-    return new NotificationOutbox({
+  static create(props: CreateOutboxEventProps): OutboxEvent {
+    return new OutboxEvent({
       id: Uuid.generate(),
       type: props.type,
       payload: props.payload,
-      status: NotificationStatusEnum.PENDING,
+      status: OutboxEventStatusEnum.PENDING,
       retryCount: 0,
       error: null,
       createdAt: new Date(),
@@ -76,9 +76,9 @@ export class NotificationOutbox {
   }
 
   static reconstitute(
-    props: ReconstituteNotificationOutboxProps
-  ): NotificationOutbox {
-    return new NotificationOutbox({
+    props: ReconstituteOutboxEventProps
+  ): OutboxEvent {
+    return new OutboxEvent({
       id: props.id,
       type: props.type,
       payload: props.payload,
@@ -92,12 +92,12 @@ export class NotificationOutbox {
     });
   }
 
-  markAsProcessed(): NotificationOutbox {
-    return new NotificationOutbox({
+  markAsProcessed(): OutboxEvent {
+    return new OutboxEvent({
       id: this.id,
       type: this.type,
       payload: this.payload,
-      status: NotificationStatusEnum.PROCESSED,
+      status: OutboxEventStatusEnum.PROCESSED,
       retryCount: this.retryCount,
       error: this.error,
       createdAt: this.createdAt,
@@ -107,12 +107,12 @@ export class NotificationOutbox {
     });
   }
 
-  markAsFailed(error: string): NotificationOutbox {
-    return new NotificationOutbox({
+  markAsFailed(error: string): OutboxEvent {
+    return new OutboxEvent({
       id: this.id,
       type: this.type,
       payload: this.payload,
-      status: NotificationStatusEnum.FAILED,
+      status: OutboxEventStatusEnum.FAILED,
       retryCount: this.retryCount + 1,
       error,
       createdAt: this.createdAt,
@@ -122,12 +122,12 @@ export class NotificationOutbox {
     });
   }
 
-  recordFailure(error: string): NotificationOutbox {
-    return new NotificationOutbox({
+  recordFailure(error: string): OutboxEvent {
+    return new OutboxEvent({
       id: this.id,
       type: this.type,
       payload: this.payload,
-      status: NotificationStatusEnum.PENDING,
+      status: OutboxEventStatusEnum.PENDING,
       retryCount: this.retryCount + 1,
       error,
       createdAt: this.createdAt,

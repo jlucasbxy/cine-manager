@@ -1,13 +1,13 @@
 /* eslint-disable no-console */
-import { notificationOutboxWorkerConfig } from "@/infrastructure/config/worker-env.config";
-import { NotificationOutboxWorker } from "@/infrastructure/workers";
-import { makeProcessNotificationOutbox } from "@/main/factories/use-cases/notification";
+import { outboxEventWorkerConfig } from "@/infrastructure/config/worker-env.config";
+import { OutboxEventWorker } from "@/infrastructure/workers";
+import { makeProcessOutboxEvents } from "@/main/factories/use-cases/outbox";
 
 export function startWorker() {
-  const processOutbox = makeProcessNotificationOutbox();
+  const processOutbox = makeProcessOutboxEvents();
 
-  const worker = new NotificationOutboxWorker(processOutbox, {
-    pollIntervalMs: notificationOutboxWorkerConfig.pollIntervalMs
+  const worker = new OutboxEventWorker(processOutbox, {
+    pollIntervalMs: outboxEventWorkerConfig.pollIntervalMs
   });
 
   function shutdown() {
@@ -19,6 +19,6 @@ export function startWorker() {
   process.on("SIGINT", shutdown);
   process.on("SIGTERM", shutdown);
 
-  console.log("[Worker] Starting notification outbox worker...");
+  console.log("[Worker] Starting outbox event worker...");
   worker.start();
 }

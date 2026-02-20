@@ -8,6 +8,6 @@ export type {
   UpdateRefreshTokenData
 } from "@/application/interfaces/repositories/refresh-token-repository";
 export type { PasswordResetTokenRepository } from "@/application/interfaces/repositories/password-reset-token-repository";
-export type { NotificationOutboxRepository } from "@/application/interfaces/repositories/notification-outbox-repository";
+export type { OutboxEventRepository } from "@/application/interfaces/repositories/outbox-event-repository";
 export type { LanguageRepository } from "@/application/interfaces/repositories/language-repository";
 export type { GenreRepository } from "@/application/interfaces/repositories/genre-repository";

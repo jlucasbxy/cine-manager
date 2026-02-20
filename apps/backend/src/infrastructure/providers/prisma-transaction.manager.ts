@@ -8,7 +8,7 @@ import {
   PrismaGenreRepository,
   PrismaLanguageRepository,
   PrismaMovieRepository,
-  PrismaNotificationOutboxRepository,
+  PrismaOutboxEventRepository,
   PrismaPasswordResetTokenRepository,
   PrismaRefreshTokenRepository,
   PrismaUserRepository
@@ -28,7 +28,7 @@ export class PrismaTransactionManager implements TransactionManager {
         passwordResetTokenRepository: new PrismaPasswordResetTokenRepository(
           tx
         ),
-        notificationOutboxRepository: new PrismaNotificationOutboxRepository(
+        outboxEventRepository: new PrismaOutboxEventRepository(
           tx
         ),
         languageRepository: new PrismaLanguageRepository(tx),

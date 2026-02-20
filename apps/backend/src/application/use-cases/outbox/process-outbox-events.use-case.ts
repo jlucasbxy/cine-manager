@@ -1,20 +1,20 @@
 import type { StorageProvider } from "@/application/interfaces/providers";
-import type { NotificationOutboxRepository } from "@/application/interfaces/repositories";
+import type { OutboxEventRepository } from "@/application/interfaces/repositories";
 import type { NotificationService } from "@/application/interfaces/services";
-import type { NotificationOutbox } from "@/domain/entities";
-import { NotificationTypeEnum } from "@/domain/enums";
+import type { OutboxEvent } from "@/domain/entities";
+import { OutboxEventTypeEnum } from "@/domain/enums";
 
-interface ProcessNotificationOutboxConfig {
+interface ProcessOutboxEventsConfig {
   batchSize: number;
   maxRetries: number;
 }
 
-export class ProcessNotificationOutbox {
+export class ProcessOutboxEvents {
   constructor(
-    private readonly repository: NotificationOutboxRepository,
+    private readonly repository: OutboxEventRepository,
     private readonly notificationService: NotificationService,
     private readonly storageProvider: StorageProvider,
-    private readonly config: ProcessNotificationOutboxConfig
+    private readonly config: ProcessOutboxEventsConfig
   ) {}
 
   async execute(): Promise<void> {
@@ -27,7 +27,7 @@ export class ProcessNotificationOutbox {
     }
   }
 
-  private async processEntry(entry: NotificationOutbox): Promise<void> {
+  private async processEntry(entry: OutboxEvent): Promise<void> {
     try {
       await this.dispatch(entry);
       await this.repository.update(entry.markAsProcessed());
@@ -42,15 +42,15 @@ export class ProcessNotificationOutbox {
     }
   }
 
-  private async dispatch(entry: NotificationOutbox): Promise<void> {
+  private async dispatch(entry: OutboxEvent): Promise<void> {
     switch (entry.type) {
-      case NotificationTypeEnum.PASSWORD_RESET_EMAIL:
+      case OutboxEventTypeEnum.PASSWORD_RESET_EMAIL:
         await this.notificationService.sendPasswordResetEmail({
           ...(entry.payload as { to: string; token: string }),
           idempotencyKey: entry.id.toString()
         });
         break;
-      case NotificationTypeEnum.MOVIE_RELEASE_DATE:
+      case OutboxEventTypeEnum.MOVIE_RELEASE_DATE:
         await this.notificationService.sendMovieReleaseDateEmail({
           ...(entry.payload as {
             to: string;
@@ -60,19 +60,19 @@ export class ProcessNotificationOutbox {
           idempotencyKey: entry.id.toString()
         });
         break;
-      case NotificationTypeEnum.WELCOME_EMAIL:
+      case OutboxEventTypeEnum.WELCOME_EMAIL:
         await this.notificationService.sendWelcomeEmail({
           ...(entry.payload as { to: string }),
           idempotencyKey: entry.id.toString()
         });
         break;
-      case NotificationTypeEnum.STORAGE_FILE_DELETE:
+      case OutboxEventTypeEnum.STORAGE_FILE_DELETE:
         await this.storageProvider.deleteFile(
           (entry.payload as { key: string }).key
         );
         break;
       default:
-        throw new Error(`Unknown notification type: ${entry.type}`);
+        throw new Error(`Unknown outbox event type: ${entry.type}`);
     }
   }
 }

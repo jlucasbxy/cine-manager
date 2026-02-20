@@ -83,31 +83,31 @@ enum MovieStatus {
   RUMORED
 }
 
-enum NotificationType {
+enum OutboxEventType {
   PASSWORD_RESET_EMAIL
   MOVIE_RELEASE_DATE
   WELCOME_EMAIL
   STORAGE_FILE_DELETE
 }
 
-enum NotificationStatus {
+enum OutboxEventStatus {
   PENDING
   PROCESSED
   FAILED
 }
 
-model NotificationOutbox {
-  id          String             @id @db.Uuid
-  type        NotificationType
-  payload     Json
-  status      NotificationStatus
-  retryCount  Int
-  error       String?
-  createdAt   DateTime
+model OutboxEvent {
+  id           String            @id @db.Uuid
+  type         OutboxEventType
+  payload      Json
+  status       OutboxEventStatus
+  retryCount   Int
+  error        String?
+  createdAt    DateTime
   scheduledFor DateTime?         @db.Timestamptz
-  processedAt DateTime?          @db.Timestamptz
-  movieId     String?            @db.Uuid
-  movie       Movie?             @relation(fields: [movieId], references: [id], onDelete: Cascade)
+  processedAt  DateTime?         @db.Timestamptz
+  movieId      String?           @db.Uuid
+  movie        Movie?            @relation(fields: [movieId], references: [id], onDelete: Cascade)
 
   @@index([status, createdAt])
   @@index([status, scheduledFor])
@@ -137,7 +137,7 @@ model Movie {
   updatedAt     DateTime
   userId        String                @db.Uuid
   user          User                  @relation(fields: [userId], references: [id])
-  notifications NotificationOutbox[]
+  outboxEvents  OutboxEvent[]
 
   @@index([userId])
   @@index([releaseDate])

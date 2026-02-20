@@ -1,8 +1,8 @@
 import type { RequestPasswordResetDTO } from "@repo/dtos";
 import type { StringValue } from "ms";
 import type { TransactionManager } from "@/application/interfaces/providers";
-import { NotificationOutbox, PasswordResetToken } from "@/domain/entities";
-import { NotificationTypeEnum } from "@/domain/enums";
+import { OutboxEvent, PasswordResetToken } from "@/domain/entities";
+import { OutboxEventTypeEnum } from "@/domain/enums";
 import { Email } from "@/domain/value-objects";
 
 export type RequestPasswordResetConfig = {
@@ -30,8 +30,8 @@ export class RequestPasswordReset {
         expiresIn: this.config.passwordResetTokenExpiresIn
       });
 
-      const outboxEntry = NotificationOutbox.create({
-        type: NotificationTypeEnum.PASSWORD_RESET_EMAIL,
+      const outboxEntry = OutboxEvent.create({
+        type: OutboxEventTypeEnum.PASSWORD_RESET_EMAIL,
         payload: {
           to: email.toString(),
           token: resetToken.token.toString()
@@ -40,7 +40,7 @@ export class RequestPasswordReset {
 
       await repos.passwordResetTokenRepository.deleteByUserId(userId);
       await repos.passwordResetTokenRepository.create(resetToken);
-      await repos.notificationOutboxRepository.create(outboxEntry);
+      await repos.outboxEventRepository.create(outboxEntry);
     });
   }
 }

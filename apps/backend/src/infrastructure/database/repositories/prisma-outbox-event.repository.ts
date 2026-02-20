@@ -1,21 +1,19 @@
 import type { InputJsonValue } from "@prisma/client/runtime/client";
-import type { NotificationOutboxRepository } from "@/application/interfaces/repositories";
-import type { NotificationOutbox } from "@/domain/entities";
-import { NotificationStatusEnum } from "@/domain/enums";
-import { PrismaNotificationOutboxMapper } from "@/infrastructure/database/mappers";
+import type { OutboxEventRepository } from "@/application/interfaces/repositories";
+import type { OutboxEvent } from "@/domain/entities";
+import { OutboxEventStatusEnum } from "@/domain/enums";
+import { PrismaOutboxEventMapper } from "@/infrastructure/database/mappers";
 import type { PrismaDatabase } from "@/infrastructure/database/prisma";
 
-export class PrismaNotificationOutboxRepository
-  implements NotificationOutboxRepository
-{
+export class PrismaOutboxEventRepository implements OutboxEventRepository {
   private readonly db: PrismaDatabase;
 
   constructor(client: PrismaDatabase) {
     this.db = client;
   }
 
-  async create(entry: NotificationOutbox): Promise<void> {
-    await this.db.notificationOutbox.create({
+  async create(entry: OutboxEvent): Promise<void> {
+    await this.db.outboxEvent.create({
       data: {
         id: entry.id.toString(),
         type: entry.type,
@@ -31,23 +29,23 @@ export class PrismaNotificationOutboxRepository
     });
   }
 
-  async findPendingBatch(limit: number): Promise<NotificationOutbox[]> {
+  async findPendingBatch(limit: number): Promise<OutboxEvent[]> {
     const now = new Date();
-    const rows = await this.db.notificationOutbox.findMany({
+    const rows = await this.db.outboxEvent.findMany({
       where: {
-        status: NotificationStatusEnum.PENDING,
+        status: OutboxEventStatusEnum.PENDING,
         OR: [{ scheduledFor: null }, { scheduledFor: { lte: now } }]
       },
       orderBy: { createdAt: "asc" },
       take: limit
     });
 
-    return rows.map(PrismaNotificationOutboxMapper.toDomain);
+    return rows.map(PrismaOutboxEventMapper.toDomain);
   }
 
-  async update(entry: NotificationOutbox): Promise<NotificationOutbox | null> {
+  async update(entry: OutboxEvent): Promise<OutboxEvent | null> {
     try {
-      const raw = await this.db.notificationOutbox.update({
+      const raw = await this.db.outboxEvent.update({
         where: { id: entry.id.toString() },
         data: {
           status: entry.status,
@@ -56,7 +54,7 @@ export class PrismaNotificationOutboxRepository
           processedAt: entry.processedAt
         }
       });
-      return PrismaNotificationOutboxMapper.toDomain(raw);
+      return PrismaOutboxEventMapper.toDomain(raw);
     } catch (error: unknown) {
       if (
         error instanceof Error &&

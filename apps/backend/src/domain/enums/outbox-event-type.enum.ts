@@ -1,4 +1,4 @@
-export enum NotificationTypeEnum {
+export enum OutboxEventTypeEnum {
   PASSWORD_RESET_EMAIL = "PASSWORD_RESET_EMAIL",
   MOVIE_RELEASE_DATE = "MOVIE_RELEASE_DATE",
   WELCOME_EMAIL = "WELCOME_EMAIL",

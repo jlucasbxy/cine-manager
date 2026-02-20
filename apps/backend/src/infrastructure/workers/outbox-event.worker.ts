@@ -1,15 +1,15 @@
-import type { ProcessNotificationOutbox } from "@/application/use-cases/notification";
+import type { ProcessOutboxEvents } from "@/application/use-cases/outbox";
 
-interface NotificationOutboxWorkerConfig {
+interface OutboxEventWorkerConfig {
   pollIntervalMs: number;
 }
 
-export class NotificationOutboxWorker {
+export class OutboxEventWorker {
   private intervalId: ReturnType<typeof setInterval> | null = null;
 
   constructor(
-    private readonly processOutbox: ProcessNotificationOutbox,
-    private readonly config: NotificationOutboxWorkerConfig
+    private readonly processOutbox: ProcessOutboxEvents,
+    private readonly config: OutboxEventWorkerConfig
   ) {}
 
   start(): void {
@@ -19,7 +19,7 @@ export class NotificationOutboxWorker {
       } catch (err) {
         // eslint-disable-next-line no-console
         console.error(
-          "[NotificationOutboxWorker] Error processing outbox:",
+          "[OutboxEventWorker] Error processing outbox:",
           err
         );
       }
