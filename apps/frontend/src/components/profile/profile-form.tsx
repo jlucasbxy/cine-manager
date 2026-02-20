@@ -1,14 +1,16 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { ImageFile } from "@/components/ui/image-file";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import type { ProfileFormData } from "@/lib/schemas";
 import { profileSchema } from "@/lib/schemas";
+
 interface ProfileFormProps {
   defaultName: string;
   avatarUrl?: string | null;
@@ -24,19 +26,9 @@ export function ProfileForm({
   onSubmit,
   isSubmitting
 }: ProfileFormProps) {
-  const [currentAvatarUrl, setCurrentAvatarUrl] = useState<string | null>(
-    avatarUrl ?? null
-  );
   const [pendingFile, setPendingFile] = useState<File | null>(null);
   const [avatarRemoved, setAvatarRemoved] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const previewUrlRef = useRef<string | null>(null);
-
-  useEffect(() => {
-    return () => {
-      if (previewUrlRef.current) URL.revokeObjectURL(previewUrlRef.current);
-    };
-  }, []);
 
   const {
     register,
@@ -54,21 +46,12 @@ export function ProfileForm({
   function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
-    if (previewUrlRef.current) URL.revokeObjectURL(previewUrlRef.current);
-    const previewUrl = URL.createObjectURL(file);
-    previewUrlRef.current = previewUrl;
-    setCurrentAvatarUrl(previewUrl);
     setPendingFile(file);
     setAvatarRemoved(false);
     if (fileInputRef.current) fileInputRef.current.value = "";
   }
 
   function handleRemoveAvatar() {
-    if (previewUrlRef.current) {
-      URL.revokeObjectURL(previewUrlRef.current);
-      previewUrlRef.current = null;
-    }
-    setCurrentAvatarUrl(null);
     setPendingFile(null);
     setAvatarRemoved(true);
   }
@@ -84,8 +67,17 @@ export function ProfileForm({
       <div className="flex items-center gap-4">
         <div className="relative">
           <Avatar className="h-20 w-20">
-            <AvatarImage src={currentAvatarUrl ?? undefined} />
-            <AvatarFallback className="text-lg">{initials}</AvatarFallback>
+            {pendingFile ? (
+              <ImageFile
+                file={pendingFile}
+                className="h-full w-full rounded-full object-cover"
+              />
+            ) : (
+              <>
+                <AvatarImage src={avatarRemoved ? undefined : (avatarUrl ?? undefined)} />
+                <AvatarFallback className="text-lg">{initials}</AvatarFallback>
+              </>
+            )}
           </Avatar>
           {isSubmitting && (
             <div className="absolute inset-0 flex items-center justify-center rounded-full bg-background/70">
@@ -103,7 +95,7 @@ export function ProfileForm({
           >
             Change avatar
           </Button>
-          {currentAvatarUrl && (
+          {(pendingFile ?? (!avatarRemoved && avatarUrl)) && (
             <Button
               type="button"
               variant="ghost"
