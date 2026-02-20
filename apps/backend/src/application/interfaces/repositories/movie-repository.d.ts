@@ -1,20 +1,10 @@
 import { Movie } from "@/domain/entities";
 import { Uuid, MovieQuery, PaginatedResult } from "@/domain/value-objects";
+import type { MovieWithUser } from "@/application/read-models";
 
 export type UpdateMovieData = Partial<
   Omit<Movie, "id" | "createdAt" | "updatedAt">
 >;
-
-export type MoviePublisher = {
-  id: string;
-  name: string;
-  avatarUrl: string | null;
-};
-
-export type MovieWithUser = {
-  movie: Movie;
-  user: MoviePublisher | null;
-};
 
 export interface MovieRepository {
   create(movie: Movie): Promise<Movie>;

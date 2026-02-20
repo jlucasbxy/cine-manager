@@ -1,8 +1,8 @@
 import type {
   MovieRepository,
-  MovieWithUser,
   UpdateMovieData
 } from "@/application/interfaces/repositories";
+import type { MovieWithUser } from "@/application/read-models";
 import type { Movie } from "@/domain/entities";
 import type { MovieQuery, Uuid } from "@/domain/value-objects";
 import { PaginatedResult } from "@/domain/value-objects";
