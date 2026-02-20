@@ -18,6 +18,11 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage
+} from "@/components/ui/avatar";
 import { useAuth } from "@/hooks/use-auth";
 import { useDeleteMovie, useMovie } from "@/queries/use-movies";
 
@@ -178,6 +183,24 @@ export function MovieDetailPage() {
                 Watch Trailer
               </a>
             </div>
+          )}
+
+          {movie.user && (
+            <>
+              <Separator />
+              <div className="flex items-center gap-3">
+                <Avatar className="h-8 w-8">
+                  <AvatarImage src={movie.user.avatarUrl ?? undefined} />
+                  <AvatarFallback>
+                    {movie.user.name.slice(0, 2).toUpperCase()}
+                  </AvatarFallback>
+                </Avatar>
+                <div className="text-sm">
+                  <span className="text-muted-foreground">Published by </span>
+                  <span className="font-medium">{movie.user.name}</span>
+                </div>
+              </div>
+            </>
           )}
 
           {isOwner && (

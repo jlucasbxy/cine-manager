@@ -19,4 +19,9 @@ export interface MovieDTO {
   createdAt: string;
   updatedAt: string;
   userId: string;
+  user?: {
+    id: string;
+    name: string;
+    avatarUrl: string | null;
+  };
 }

@@ -20,7 +20,7 @@ export class ListMovies {
     const result = await this.movieRepository.findAll(query);
     const total = result.total.toNumber();
     return {
-      data: result.items.map(MovieMapper.toDTO),
+      data: result.items.map((m) => MovieMapper.toDTO(m)),
       meta: {
         page: input.page,
         perPage: input.perPage,

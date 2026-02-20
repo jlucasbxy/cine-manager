@@ -1,8 +1,10 @@
 import type { MovieDTO } from "@repo/dtos";
 import type { Movie } from "@/domain/entities";
 
+type MovieUserInfo = { id: string; name: string; avatarUrl: string | null };
+
 export class MovieMapper {
-  static toDTO(movie: Movie): MovieDTO {
+  static toDTO(movie: Movie, user?: MovieUserInfo): MovieDTO {
     return {
       id: movie.id.toString(),
       title: movie.title,
@@ -23,7 +25,8 @@ export class MovieMapper {
       score: movie.score.toNumber(),
       createdAt: movie.createdAt.toISOString(),
       updatedAt: movie.updatedAt.toISOString(),
-      userId: movie.userId.toString()
+      userId: movie.userId.toString(),
+      user
     };
   }
 }
