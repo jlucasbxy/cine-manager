@@ -2,6 +2,7 @@ export { PrismaGenreRepository } from "@/infrastructure/database/repositories/pr
 export { PrismaLanguageRepository } from "@/infrastructure/database/repositories/prisma-language.repository";
 export { PrismaMovieRepository } from "@/infrastructure/database/repositories/prisma-movie.repository";
 export { PrismaOutboxEventRepository } from "@/infrastructure/database/repositories/prisma-outbox-event.repository";
+export { PrismaRatingRepository } from "@/infrastructure/database/repositories/prisma-rating.repository";
 export { PrismaPasswordResetTokenRepository } from "@/infrastructure/database/repositories/prisma-password-reset-token.repository";
 export { PrismaRefreshTokenRepository } from "@/infrastructure/database/repositories/prisma-refresh-token.repository";
 export { PrismaUserRepository } from "@/infrastructure/database/repositories/prisma-user.repository";

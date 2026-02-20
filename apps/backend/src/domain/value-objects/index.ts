@@ -7,6 +7,7 @@ export { NonNegativeInt } from "@/domain/value-objects/non-negative-int.value-ob
 export { NonNegativeNumber } from "@/domain/value-objects/non-negative-number.value-object";
 export { PaginatedResult } from "@/domain/value-objects/paginated-result.value-object";
 export { Password } from "@/domain/value-objects/password.value-object";
+export { RatingValue } from "@/domain/value-objects/rating-value.value-object";
 export { Token } from "@/domain/value-objects/token.value-object";
 export { UploadKey } from "@/domain/value-objects/upload-key.value-object";
 export { Url } from "@/domain/value-objects/url.value-object";

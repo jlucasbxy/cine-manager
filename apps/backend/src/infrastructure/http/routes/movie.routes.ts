@@ -20,4 +20,5 @@ export const movieRoutes: FastifyPluginAsync<MovieRoutesOptions> = async (
   fastify.get("/:id", movieController.getMovie.bind(movieController));
   fastify.put("/:id", movieController.updateMovie.bind(movieController));
   fastify.delete("/:id", movieController.deleteMovie.bind(movieController));
+  fastify.post("/:id/rate", movieController.rateMovie.bind(movieController));
 };

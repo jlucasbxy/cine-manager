@@ -5,7 +5,8 @@ import type {
   PasswordResetTokenRepository,
   OutboxEventRepository,
   LanguageRepository,
-  GenreRepository
+  GenreRepository,
+  RatingRepository
 } from "@/application/interfaces/repositories";
 
 export interface TransactionRepositories {
@@ -16,6 +17,7 @@ export interface TransactionRepositories {
   outboxEventRepository: OutboxEventRepository;
   languageRepository: LanguageRepository;
   genreRepository: GenreRepository;
+  ratingRepository: RatingRepository;
 }
 
 export interface TransactionManager {

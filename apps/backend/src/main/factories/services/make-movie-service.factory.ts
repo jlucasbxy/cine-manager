@@ -5,6 +5,7 @@ import {
   makeDeleteMovie,
   makeGetMovie,
   makeListMovies,
+  makeRateMovie,
   makeUpdateMovie
 } from "@/main/factories/use-cases/movie";
 
@@ -15,6 +16,7 @@ export const makeMovieService = singleton(
       makeUpdateMovie(),
       makeDeleteMovie(),
       makeGetMovie(),
-      makeListMovies()
+      makeListMovies(),
+      makeRateMovie()
     )
 );

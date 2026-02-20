@@ -11,3 +11,4 @@ export type { PasswordResetTokenRepository } from "@/application/interfaces/repo
 export type { OutboxEventRepository } from "@/application/interfaces/repositories/outbox-event-repository";
 export type { LanguageRepository } from "@/application/interfaces/repositories/language-repository";
 export type { GenreRepository } from "@/application/interfaces/repositories/genre-repository";
+export type { RatingRepository } from "@/application/interfaces/repositories/rating-repository";

@@ -3,7 +3,8 @@ import type {
   UpdateMovieDTO,
   QueryMoviesDTO,
   MovieDTO,
-  PaginatedResultDTO
+  PaginatedResultDTO,
+  RateMovieDTO
 } from "@repo/dtos";
 
 export interface MovieService {
@@ -15,4 +16,5 @@ export interface MovieService {
     query: QueryMoviesDTO,
     userId: string
   ): Promise<PaginatedResultDTO<MovieDTO>>;
+  rateMovie(movieId: string, userId: string, input: RateMovieDTO): Promise<MovieDTO>;
 }

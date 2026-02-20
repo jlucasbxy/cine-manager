@@ -2,6 +2,7 @@ import {
   CreateMovieValidator,
   IdValidator,
   QueryMoviesValidator,
+  RateMovieValidator,
   UpdateMovieValidator
 } from "@repo/validators";
 import { MovieController } from "@/infrastructure/http/controllers";
@@ -13,6 +14,7 @@ export function makeMovieController(): MovieController {
     new CreateMovieValidator(),
     new UpdateMovieValidator(),
     new IdValidator(),
-    new QueryMoviesValidator()
+    new QueryMoviesValidator(),
+    new RateMovieValidator()
   );
 }

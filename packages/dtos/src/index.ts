@@ -18,6 +18,7 @@ export type {
 } from "./refresh-tokens.dto";
 export type { RequestPasswordResetDTO } from "./request-password-reset.dto";
 export type { ResetPasswordDTO } from "./reset-password.dto";
+export type { RateMovieDTO } from "./rate-movie.dto";
 export type { UpdateMovieDTO } from "./update-movie.dto";
 export type { UpdateUserDTO } from "./update-user.dto";
 export type { UserDTO } from "./user.dto";

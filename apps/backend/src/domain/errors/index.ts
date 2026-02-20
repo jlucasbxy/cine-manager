@@ -6,6 +6,7 @@ export { InvalidEmailError } from "@/domain/errors/invalid-email.error";
 export { InvalidImageMimeTypeError } from "@/domain/errors/invalid-image-mime-type.error";
 export { InvalidMovieQueryError } from "@/domain/errors/invalid-movie-query.error";
 export { InvalidMovieStatusError } from "@/domain/errors/invalid-movie-status.error";
+export { InvalidRatingError } from "@/domain/errors/invalid-rating.error";
 export { InvalidNonNegativeIntError } from "@/domain/errors/invalid-non-negative-int.error";
 export { InvalidNonNegativeNumberError } from "@/domain/errors/invalid-non-negative-number.error";
 export { InvalidPasswordError } from "@/domain/errors/invalid-password.error";

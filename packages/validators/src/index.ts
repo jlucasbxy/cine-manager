@@ -6,6 +6,7 @@ export { GenerateUploadUrlValidator } from "./generate-upload-url.validator";
 export { IdValidator } from "./id.validator";
 export { LoginValidator } from "./login.validator";
 export { QueryMoviesValidator } from "./query-movies.validator";
+export { RateMovieValidator } from "./rate-movie.validator";
 export { RefreshTokenValidator } from "./refresh-token.validator";
 export { ResetPasswordValidator } from "./reset-password.validator";
 export { idZodSchema } from "./schemas/id.schema";

@@ -33,3 +33,8 @@ export async function updateMovie(id: string, data: UpdateMovieDTO) {
 export async function deleteMovie(id: string) {
   await apiClient.delete(`/movies/${id}`);
 }
+
+export async function rateMovie(id: string, value: number) {
+  const response = await apiClient.post<MovieDTO>(`/movies/${id}/rate`, { value });
+  return response.data;
+}

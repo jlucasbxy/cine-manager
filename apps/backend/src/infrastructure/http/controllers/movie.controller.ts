@@ -2,6 +2,7 @@ import type {
   CreateMovieValidator,
   IdValidator,
   QueryMoviesValidator,
+  RateMovieValidator,
   UpdateMovieValidator
 } from "@repo/validators";
 import type { FastifyReply, FastifyRequest } from "fastify";
@@ -13,7 +14,8 @@ export class MovieController {
     private readonly createMovieValidator: CreateMovieValidator,
     private readonly updateMovieValidator: UpdateMovieValidator,
     private readonly idValidator: IdValidator,
-    private readonly queryMoviesValidator: QueryMoviesValidator
+    private readonly queryMoviesValidator: QueryMoviesValidator,
+    private readonly rateMovieValidator: RateMovieValidator
   ) {}
 
   async createMovie(request: FastifyRequest, reply: FastifyReply) {
@@ -45,5 +47,12 @@ export class MovieController {
     const query = this.queryMoviesValidator.parse(request.query);
     const movies = await this.movieService.listMovies(query, request.userId);
     return reply.status(200).send(movies);
+  }
+
+  async rateMovie(request: FastifyRequest, reply: FastifyReply) {
+    const id = this.idValidator.parse(request.params);
+    const data = this.rateMovieValidator.parse(request.body);
+    const movie = await this.movieService.rateMovie(id, request.userId, data);
+    return reply.status(200).send(movie);
   }
 }

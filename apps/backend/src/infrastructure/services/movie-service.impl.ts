@@ -3,6 +3,7 @@ import type {
   MovieDTO,
   PaginatedResultDTO,
   QueryMoviesDTO,
+  RateMovieDTO,
   UpdateMovieDTO
 } from "@repo/dtos";
 import type { MovieService } from "@/application/interfaces/services";
@@ -11,6 +12,7 @@ import type {
   DeleteMovie,
   GetMovie,
   ListMovies,
+  RateMovie,
   UpdateMovie
 } from "@/application/use-cases/movie";
 
@@ -20,7 +22,8 @@ export class MovieServiceImpl implements MovieService {
     private readonly updateMovieUseCase: UpdateMovie,
     private readonly deleteMovieUseCase: DeleteMovie,
     private readonly getMovieUseCase: GetMovie,
-    private readonly listMoviesUseCase: ListMovies
+    private readonly listMoviesUseCase: ListMovies,
+    private readonly rateMovieUseCase: RateMovie
   ) {}
 
   async createMovie(userId: string, input: CreateMovieDTO): Promise<MovieDTO> {
@@ -44,5 +47,9 @@ export class MovieServiceImpl implements MovieService {
     userId: string
   ): Promise<PaginatedResultDTO<MovieDTO>> {
     return this.listMoviesUseCase.execute(query, userId);
+  }
+
+  async rateMovie(movieId: string, userId: string, input: RateMovieDTO): Promise<MovieDTO> {
+    return this.rateMovieUseCase.execute(movieId, userId, input);
   }
 }

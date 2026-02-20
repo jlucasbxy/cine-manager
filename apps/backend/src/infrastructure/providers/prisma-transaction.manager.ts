@@ -10,6 +10,7 @@ import {
   PrismaMovieRepository,
   PrismaOutboxEventRepository,
   PrismaPasswordResetTokenRepository,
+  PrismaRatingRepository,
   PrismaRefreshTokenRepository,
   PrismaUserRepository
 } from "@/infrastructure/database/repositories";
@@ -32,7 +33,8 @@ export class PrismaTransactionManager implements TransactionManager {
           tx
         ),
         languageRepository: new PrismaLanguageRepository(tx),
-        genreRepository: new PrismaGenreRepository(tx)
+        genreRepository: new PrismaGenreRepository(tx),
+        ratingRepository: new PrismaRatingRepository(tx)
       };
       return fn(repos);
     });

@@ -6,13 +6,13 @@ import {
   DollarSign,
   Edit,
   ExternalLink,
-  Star,
   Trash2,
   Users
 } from "lucide-react";
 import { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router";
 import { toast } from "sonner";
+import { MovieRating } from "@/components/movies/movie-rating";
 import { ConfirmDialog } from "@/components/shared/confirm-dialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -132,16 +132,12 @@ export function MovieDetailPage() {
               <span>{movie.runtime} min</span>
             </div>
             <div className="flex items-center gap-2">
-              <Star className="h-4 w-4 text-muted-foreground" />
-              <span>
-                {movie.score.toFixed(1)} ({movie.votes} votes)
-              </span>
-            </div>
-            <div className="flex items-center gap-2">
               <Users className="h-4 w-4 text-muted-foreground" />
               <span>{movie.votes} votes</span>
             </div>
           </div>
+
+          <MovieRating movieId={movie.id} score={movie.score} votes={movie.votes} />
 
           <Separator />
 

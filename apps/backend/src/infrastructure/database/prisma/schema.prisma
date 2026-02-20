@@ -22,6 +22,7 @@ model User {
   createdAt           DateTime
   updatedAt           DateTime
   movies              Movie[]
+  ratings             Rating[]
   refreshTokens       RefreshToken[]
   passwordResetTokens PasswordResetToken[]
 }
@@ -138,8 +139,24 @@ model Movie {
   userId        String                @db.Uuid
   user          User                  @relation(fields: [userId], references: [id])
   outboxEvents  OutboxEvent[]
+  ratings       Rating[]
 
   @@index([userId])
   @@index([releaseDate])
   @@index([runtime])
+}
+
+model Rating {
+  id        String   @id @db.Uuid
+  userId    String   @db.Uuid
+  movieId   String   @db.Uuid
+  value     Int
+  createdAt DateTime
+  updatedAt DateTime
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  movie Movie @relation(fields: [movieId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, movieId])
+  @@index([movieId])
 }
