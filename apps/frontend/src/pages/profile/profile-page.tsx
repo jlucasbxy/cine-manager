@@ -2,6 +2,7 @@ import { format } from "date-fns";
 import { useState } from "react";
 import { toast } from "sonner";
 import { ProfileForm } from "@/components/profile/profile-form";
+import { getSignedUrl, uploadFile } from "@/services/upload.service";
 import {
   Card,
   CardContent,
@@ -23,12 +24,24 @@ export function ProfilePage() {
     .slice(0, 2)
     .toUpperCase();
 
-  const handleSubmit = async (data: ProfileFormData) => {
+  const handleSubmit = async (
+    data: ProfileFormData,
+    pendingFile: File | null,
+    avatarRemoved: boolean
+  ) => {
     setIsSubmitting(true);
     try {
-      const updateData: { name?: string; password?: string } = {};
+      const updateData: { name?: string; password?: string; avatarUrl?: string | null } = {};
       if (data.name !== user?.name) updateData.name = data.name;
       if (data.password) updateData.password = data.password;
+
+      if (pendingFile) {
+        const { uploadUrl, fileUrl } = await getSignedUrl(pendingFile.name, pendingFile.type);
+        await uploadFile(uploadUrl, pendingFile);
+        updateData.avatarUrl = fileUrl;
+      } else if (avatarRemoved) {
+        updateData.avatarUrl = null;
+      }
 
       if (Object.keys(updateData).length === 0) {
         toast.info("No changes to save");
@@ -41,14 +54,6 @@ export function ProfilePage() {
       toast.error("Failed to update profile");
     } finally {
       setIsSubmitting(false);
-    }
-  };
-
-  const handleAvatarChange = async (avatarUrl: string | null) => {
-    try {
-      await updateUser({ avatarUrl });
-    } catch {
-      toast.error("Failed to update avatar");
     }
   };
 
@@ -74,7 +79,6 @@ export function ProfilePage() {
             avatarUrl={user.avatarUrl}
             initials={initials}
             onSubmit={handleSubmit}
-            onAvatarChange={handleAvatarChange}
             isSubmitting={isSubmitting}
           />
         </CardContent>

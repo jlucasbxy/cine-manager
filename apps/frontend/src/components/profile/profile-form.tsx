@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -9,14 +9,11 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import type { ProfileFormData } from "@/lib/schemas";
 import { profileSchema } from "@/lib/schemas";
-import { getSignedUrl, uploadFile } from "@/services/upload.service";
-
 interface ProfileFormProps {
   defaultName: string;
   avatarUrl?: string | null;
   initials?: string;
-  onSubmit: (data: ProfileFormData) => Promise<void>;
-  onAvatarChange: (avatarUrl: string | null) => Promise<void>;
+  onSubmit: (data: ProfileFormData, pendingFile: File | null, avatarRemoved: boolean) => Promise<void>;
   isSubmitting: boolean;
 }
 
@@ -25,14 +22,21 @@ export function ProfileForm({
   avatarUrl,
   initials,
   onSubmit,
-  onAvatarChange,
   isSubmitting
 }: ProfileFormProps) {
   const [currentAvatarUrl, setCurrentAvatarUrl] = useState<string | null>(
     avatarUrl ?? null
   );
-  const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
+  const [pendingFile, setPendingFile] = useState<File | null>(null);
+  const [avatarRemoved, setAvatarRemoved] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const previewUrlRef = useRef<string | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (previewUrlRef.current) URL.revokeObjectURL(previewUrlRef.current);
+    };
+  }, []);
 
   const {
     register,
@@ -47,40 +51,43 @@ export function ProfileForm({
     }
   });
 
-  async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
-    setIsUploadingAvatar(true);
-    try {
-      const { uploadUrl, fileUrl } = await getSignedUrl(file.name, file.type);
-      await uploadFile(uploadUrl, file);
-      setCurrentAvatarUrl(fileUrl);
-      await onAvatarChange(fileUrl);
-    } finally {
-      setIsUploadingAvatar(false);
-      if (fileInputRef.current) fileInputRef.current.value = "";
-    }
+    if (previewUrlRef.current) URL.revokeObjectURL(previewUrlRef.current);
+    const previewUrl = URL.createObjectURL(file);
+    previewUrlRef.current = previewUrl;
+    setCurrentAvatarUrl(previewUrl);
+    setPendingFile(file);
+    setAvatarRemoved(false);
+    if (fileInputRef.current) fileInputRef.current.value = "";
   }
 
-  async function handleRemoveAvatar() {
-    setIsUploadingAvatar(true);
-    try {
-      await onAvatarChange(null);
-      setCurrentAvatarUrl(null);
-    } finally {
-      setIsUploadingAvatar(false);
+  function handleRemoveAvatar() {
+    if (previewUrlRef.current) {
+      URL.revokeObjectURL(previewUrlRef.current);
+      previewUrlRef.current = null;
     }
+    setCurrentAvatarUrl(null);
+    setPendingFile(null);
+    setAvatarRemoved(true);
+  }
+
+  async function handleFormSubmit(data: ProfileFormData) {
+    await onSubmit(data, pendingFile, avatarRemoved);
+    setPendingFile(null);
+    setAvatarRemoved(false);
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+    <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
       <div className="flex items-center gap-4">
         <div className="relative">
           <Avatar className="h-20 w-20">
             <AvatarImage src={currentAvatarUrl ?? undefined} />
             <AvatarFallback className="text-lg">{initials}</AvatarFallback>
           </Avatar>
-          {isUploadingAvatar && (
+          {isSubmitting && (
             <div className="absolute inset-0 flex items-center justify-center rounded-full bg-background/70">
               <Loader2 className="h-6 w-6 animate-spin" />
             </div>
@@ -91,7 +98,7 @@ export function ProfileForm({
             type="button"
             variant="outline"
             size="sm"
-            disabled={isUploadingAvatar}
+            disabled={isSubmitting}
             onClick={() => fileInputRef.current?.click()}
           >
             Change avatar
@@ -101,8 +108,8 @@ export function ProfileForm({
               type="button"
               variant="ghost"
               size="sm"
-              disabled={isUploadingAvatar}
-              onClick={() => void handleRemoveAvatar()}
+              disabled={isSubmitting}
+              onClick={handleRemoveAvatar}
             >
               Remove avatar
             </Button>
@@ -112,7 +119,7 @@ export function ProfileForm({
             type="file"
             accept="image/*"
             className="hidden"
-            onChange={(e) => void handleFileChange(e)}
+            onChange={handleFileChange}
           />
         </div>
       </div>
