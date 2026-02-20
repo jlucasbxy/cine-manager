@@ -1,5 +1,6 @@
 import type {
   MovieRepository,
+  MovieWithUser,
   UpdateMovieData
 } from "@/application/interfaces/repositories";
 import type { Movie } from "@/domain/entities";
@@ -49,6 +50,20 @@ export class PrismaMovieRepository implements MovieRepository {
     });
     if (!raw) return null;
     return PrismaMovieMapper.toDomain(raw);
+  }
+
+  async findByIdWithUser(id: Uuid): Promise<MovieWithUser | null> {
+    const raw = await this.db.movie.findUnique({
+      where: { id: id.toString() },
+      include: {
+        user: { select: { id: true, name: true, avatarUrl: true } }
+      }
+    });
+    if (!raw) return null;
+    return {
+      movie: PrismaMovieMapper.toDomain(raw),
+      user: raw.user
+    };
   }
 
   async findAll(query: MovieQuery): Promise<PaginatedResult<Movie>> {
