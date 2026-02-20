@@ -1,3 +1,4 @@
+import type { StorageProvider } from "@/application/interfaces/providers";
 import type { NotificationOutboxRepository } from "@/application/interfaces/repositories";
 import type { NotificationService } from "@/application/interfaces/services";
 import type { NotificationOutbox } from "@/domain/entities";
@@ -12,6 +13,7 @@ export class ProcessNotificationOutbox {
   constructor(
     private readonly repository: NotificationOutboxRepository,
     private readonly notificationService: NotificationService,
+    private readonly storageProvider: StorageProvider,
     private readonly config: ProcessNotificationOutboxConfig
   ) {}
 
@@ -63,6 +65,11 @@ export class ProcessNotificationOutbox {
           ...(entry.payload as { to: string }),
           idempotencyKey: entry.id.toString()
         });
+        break;
+      case NotificationTypeEnum.STORAGE_FILE_DELETE:
+        await this.storageProvider.deleteFile(
+          (entry.payload as { key: string }).key
+        );
         break;
       default:
         throw new Error(`Unknown notification type: ${entry.type}`);
