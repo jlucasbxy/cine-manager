@@ -14,4 +14,5 @@ export interface UpdateMovieDTO {
   backdropUrl?: string;
   trailerUrl?: string;
   genres?: string[];
+  isPublic?: boolean;
 }

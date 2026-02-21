@@ -6,6 +6,7 @@ import { Uuid } from "@/domain/value-objects";
 
 interface GetMovieInput {
   id: string;
+  currentUserId: string;
 }
 
 export class GetMovie {
@@ -16,6 +17,10 @@ export class GetMovie {
       Uuid.create(input.id)
     );
     if (!result) {
+      throw new MovieNotFoundError();
+    }
+
+    if (!result.movie.isPublic && result.movie.userId.toString() !== input.currentUserId) {
       throw new MovieNotFoundError();
     }
 

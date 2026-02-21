@@ -38,8 +38,8 @@ export class MovieServiceImpl implements MovieService {
     return this.deleteMovieUseCase.execute(id);
   }
 
-  async getMovie(id: string): Promise<MovieDTO> {
-    return this.getMovieUseCase.execute({ id });
+  async getMovie(id: string, currentUserId: string): Promise<MovieDTO> {
+    return this.getMovieUseCase.execute({ id, currentUserId });
   }
 
   async listMovies(

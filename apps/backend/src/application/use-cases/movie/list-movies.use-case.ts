@@ -15,7 +15,8 @@ export class ListMovies {
       ...input,
       status: input.status as MovieStatusEnum | undefined,
       ageRating: input.ageRating as AgeRatingEnum | undefined,
-      userId: input.onlyMine ? userId : undefined
+      userId: input.onlyMine ? userId : undefined,
+      currentUserId: userId
     });
     const result = await this.movieRepository.findAll(query);
     const total = result.total.toNumber();

@@ -14,4 +14,5 @@ export interface CreateMovieDTO {
   backdropUrl: string;
   trailerUrl: string;
   genres?: string[];
+  isPublic?: boolean;
 }

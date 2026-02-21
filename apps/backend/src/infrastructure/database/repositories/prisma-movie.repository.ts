@@ -36,6 +36,7 @@ export class PrismaMovieRepository implements MovieRepository {
         trailerUrl: movie.trailerUrl.toString(),
         votes: movie.votes.toNumber(),
         score: movie.score.toNumber(),
+        isPublic: movie.isPublic,
         userId: movie.userId.toString(),
         createdAt: movie.createdAt,
         updatedAt: movie.updatedAt
@@ -93,6 +94,7 @@ export class PrismaMovieRepository implements MovieRepository {
     if (query.genreIds !== undefined && query.genreIds.length > 0) {
       where.genres = { some: { id: { in: query.genreIds } } };
     }
+    where.AND = [{ OR: [{ isPublic: true }, { userId: query.currentUserId.toString() }] }];
 
     const [rawList, total] = await Promise.all([
       this.db.movie.findMany({
@@ -138,6 +140,7 @@ export class PrismaMovieRepository implements MovieRepository {
       prismaData.trailerUrl = data.trailerUrl.toString();
     if (data.votes !== undefined) prismaData.votes = data.votes.toNumber();
     if (data.score !== undefined) prismaData.score = data.score.toNumber();
+    if (data.isPublic !== undefined) prismaData.isPublic = data.isPublic;
 
     try {
       const raw = await this.db.movie.update({

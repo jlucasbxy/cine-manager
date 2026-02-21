@@ -23,6 +23,7 @@ export class MovieMapper {
       trailerUrl: movie.trailerUrl.toString(),
       votes: movie.votes.toNumber(),
       score: movie.score.toNumber(),
+      isPublic: movie.isPublic,
       createdAt: movie.createdAt.toISOString(),
       updatedAt: movie.updatedAt.toISOString(),
       userId: movie.userId.toString(),

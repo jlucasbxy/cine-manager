@@ -23,6 +23,7 @@ interface CreateMovieProps {
   backdropUrl: Url;
   trailerUrl: Url;
   userId: Uuid;
+  isPublic?: boolean;
 }
 
 interface ReconstituteMovieProps extends CreateMovieProps {
@@ -31,6 +32,7 @@ interface ReconstituteMovieProps extends CreateMovieProps {
   score: NonNegativeNumber;
   createdAt: Date;
   updatedAt: Date;
+  isPublic: boolean;
 }
 
 export class Movie {
@@ -51,6 +53,7 @@ export class Movie {
   readonly trailerUrl: Url;
   readonly votes: NonNegativeInt;
   readonly score: NonNegativeNumber;
+  readonly isPublic: boolean;
   readonly createdAt: Date;
   readonly updatedAt: Date;
   readonly userId: Uuid;
@@ -73,6 +76,7 @@ export class Movie {
     this.trailerUrl = data.trailerUrl;
     this.votes = data.votes;
     this.score = data.score;
+    this.isPublic = data.isPublic;
     this.createdAt = data.createdAt;
     this.updatedAt = data.updatedAt;
     this.userId = data.userId;
@@ -98,6 +102,7 @@ export class Movie {
       trailerUrl: props.trailerUrl,
       votes: NonNegativeInt.create(0),
       score: NonNegativeNumber.create(0),
+      isPublic: props.isPublic ?? true,
       createdAt: now,
       updatedAt: now,
       userId: props.userId
@@ -123,6 +128,7 @@ export class Movie {
       trailerUrl: props.trailerUrl,
       votes: props.votes,
       score: props.score,
+      isPublic: props.isPublic,
       createdAt: props.createdAt,
       updatedAt: props.updatedAt,
       userId: props.userId

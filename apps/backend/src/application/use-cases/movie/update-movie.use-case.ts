@@ -54,6 +54,7 @@ export class UpdateMovie {
       ...(input.trailerUrl !== undefined && {
         trailerUrl: Url.create(input.trailerUrl)
       }),
+      ...(input.isPublic !== undefined && { isPublic: input.isPublic }),
       updatedAt: new Date()
     };
 

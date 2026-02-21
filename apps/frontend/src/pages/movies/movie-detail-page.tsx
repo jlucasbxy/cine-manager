@@ -6,6 +6,7 @@ import {
   DollarSign,
   Edit,
   ExternalLink,
+  Lock,
   Trash2,
   Users
 } from "lucide-react";
@@ -83,6 +84,12 @@ export function MovieDetailPage() {
           <ArrowLeft className="h-4 w-4" />
         </Button>
         <h1 className="text-2xl font-bold">{movie.title}</h1>
+        {isOwner && !movie.isPublic && (
+          <Badge variant="secondary" className="gap-1">
+            <Lock className="h-3 w-3" />
+            Private
+          </Badge>
+        )}
       </div>
 
       {movie.backdropUrl && (

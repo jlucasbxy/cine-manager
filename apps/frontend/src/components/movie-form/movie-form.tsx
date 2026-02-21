@@ -11,6 +11,7 @@ import { LanguageSelect } from "@/components/movie-form/language-select";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
 import {
   Select,
   SelectContent,
@@ -22,7 +23,8 @@ import { Textarea } from "@/components/ui/textarea";
 
 const formSchema = movieSchema.extend({
   genres: z.array(z.string()).optional(),
-  releaseDate: z.coerce.date()
+  releaseDate: z.coerce.date(),
+  isPublic: z.boolean().default(true)
 });
 
 type MovieFormData = z.infer<typeof formSchema>;
@@ -68,7 +70,8 @@ export function MovieForm({
           posterUrl: defaultValues.posterUrl,
           backdropUrl: defaultValues.backdropUrl,
           trailerUrl: defaultValues.trailerUrl,
-          genres: []
+          genres: [],
+          isPublic: defaultValues.isPublic ?? true
         }
       : {
           title: "",
@@ -81,7 +84,8 @@ export function MovieForm({
           posterUrl: "",
           backdropUrl: "",
           trailerUrl: "",
-          genres: []
+          genres: [],
+          isPublic: true
         }
   });
 
@@ -311,6 +315,21 @@ export function MovieForm({
           )}
         />
       </div>
+
+      <Controller
+        control={control}
+        name="isPublic"
+        render={({ field }) => (
+          <div className="flex items-center gap-3">
+            <Switch
+              id="isPublic"
+              checked={field.value}
+              onCheckedChange={field.onChange}
+            />
+            <Label htmlFor="isPublic">Public</Label>
+          </div>
+        )}
+      />
 
       <Button type="submit" disabled={isSubmitting} className="w-full">
         {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}

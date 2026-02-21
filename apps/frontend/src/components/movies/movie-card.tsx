@@ -1,5 +1,5 @@
 import type { MovieDTO } from "@repo/dtos";
-import { Star } from "lucide-react";
+import { Lock, Star } from "lucide-react";
 import { Link } from "react-router";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
@@ -18,6 +18,14 @@ export function MovieCard({ movie }: MovieCardProps) {
             alt={movie.title}
             className="h-full w-full object-cover transition-transform group-hover:scale-105"
           />
+          {movie.isPublic === false && (
+            <div className="absolute top-2 left-2">
+              <Badge variant="secondary" className="gap-1">
+                <Lock className="h-3 w-3" />
+                Private
+              </Badge>
+            </div>
+          )}
           <div className="absolute top-2 right-2">
             <Badge variant="secondary" className="gap-1">
               <Star className="h-3 w-3 fill-current" />

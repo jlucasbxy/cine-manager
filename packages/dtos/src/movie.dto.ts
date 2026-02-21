@@ -16,6 +16,7 @@ export interface MovieDTO {
   trailerUrl: string;
   votes: number;
   score: number;
+  isPublic: boolean;
   createdAt: string;
   updatedAt: string;
   userId: string;

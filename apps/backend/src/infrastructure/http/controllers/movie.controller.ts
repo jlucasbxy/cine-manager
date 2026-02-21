@@ -39,7 +39,7 @@ export class MovieController {
 
   async getMovie(request: FastifyRequest, reply: FastifyReply) {
     const id = this.idValidator.parse(request.params);
-    const movie = await this.movieService.getMovie(id);
+    const movie = await this.movieService.getMovie(id, request.userId);
     return reply.status(200).send(movie);
   }
 

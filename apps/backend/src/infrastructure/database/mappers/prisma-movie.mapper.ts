@@ -31,6 +31,7 @@ export class PrismaMovieMapper {
       trailerUrl: Url.reconstitute(raw.trailerUrl),
       votes: NonNegativeInt.reconstitute(raw.votes),
       score: NonNegativeNumber.reconstitute(raw.score),
+      isPublic: raw.isPublic,
       createdAt: raw.createdAt,
       updatedAt: raw.updatedAt,
       userId: Uuid.reconstitute(raw.userId)

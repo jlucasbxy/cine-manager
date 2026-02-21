@@ -135,6 +135,7 @@ model Movie {
   trailerUrl    String
   votes         Int
   score         Float
+  isPublic      Boolean               @default(true)
   createdAt     DateTime
   updatedAt     DateTime
   userId        String                @db.Uuid
