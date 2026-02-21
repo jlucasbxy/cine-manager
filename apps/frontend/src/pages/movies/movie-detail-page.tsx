@@ -12,6 +12,7 @@ import {
 import { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router";
 import { toast } from "sonner";
+import { AddToListButton } from "@/components/lists/add-to-list-button";
 import { MovieRating } from "@/components/movies/movie-rating";
 import { ConfirmDialog } from "@/components/shared/confirm-dialog";
 import { Badge } from "@/components/ui/badge";
@@ -199,24 +200,27 @@ export function MovieDetailPage() {
             </>
           )}
 
-          {isOwner && (
-            <div className="flex gap-2 pt-4">
-              <Link to={`/movies/${movie.id}/edit`}>
-                <Button variant="outline" className="gap-2">
-                  <Edit className="h-4 w-4" />
-                  Edit
+          <div className="flex flex-wrap gap-2 pt-4">
+            <AddToListButton movieId={movie.id} />
+            {isOwner && (
+              <>
+                <Link to={`/movies/${movie.id}/edit`}>
+                  <Button variant="outline" className="gap-2">
+                    <Edit className="h-4 w-4" />
+                    Edit
+                  </Button>
+                </Link>
+                <Button
+                  variant="destructive"
+                  className="gap-2"
+                  onClick={() => setShowDelete(true)}
+                >
+                  <Trash2 className="h-4 w-4" />
+                  Delete
                 </Button>
-              </Link>
-              <Button
-                variant="destructive"
-                className="gap-2"
-                onClick={() => setShowDelete(true)}
-              >
-                <Trash2 className="h-4 w-4" />
-                Delete
-              </Button>
-            </div>
-          )}
+              </>
+            )}
+          </div>
         </div>
       </div>
 

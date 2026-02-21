@@ -25,6 +25,7 @@ model User {
   ratings             Rating[]
   refreshTokens       RefreshToken[]
   passwordResetTokens PasswordResetToken[]
+  movieLists          MovieList[]
 }
 
 model RefreshToken {
@@ -140,10 +141,23 @@ model Movie {
   user          User                  @relation(fields: [userId], references: [id])
   outboxEvents  OutboxEvent[]
   ratings       Rating[]
+  lists         MovieList[]  @relation("MovieListMovies")
 
   @@index([userId])
   @@index([releaseDate])
   @@index([runtime])
+}
+
+model MovieList {
+  id        String   @id @db.Uuid
+  name      String
+  userId    String   @db.Uuid
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  movies    Movie[]  @relation("MovieListMovies")
+  createdAt DateTime
+  updatedAt DateTime
+
+  @@index([userId])
 }
 
 model Rating {

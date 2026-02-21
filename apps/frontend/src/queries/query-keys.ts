@@ -7,6 +7,10 @@ export const queryKeys = {
       ["movies", "list", filters] as const,
     detail: (id: string) => ["movies", "detail", id] as const
   },
+  lists: {
+    all: ["lists"] as const,
+    detail: (id: string) => ["lists", "detail", id] as const
+  },
   genres: {
     all: ["genres"] as const
   },

@@ -12,7 +12,9 @@ export { InvalidNonNegativeNumberError } from "@/domain/errors/invalid-non-negat
 export { InvalidPasswordError } from "@/domain/errors/invalid-password.error";
 export { InvalidUrlError } from "@/domain/errors/invalid-url.error";
 export { InvalidUuidError } from "@/domain/errors/invalid-uuid.error";
+export { MovieListNotFoundError } from "@/domain/errors/movie-list-not-found.error";
 export { MovieNotFoundError } from "@/domain/errors/movie-not-found.error";
+export { UnauthorizedError } from "@/domain/errors/unauthorized.error";
 export { ResetTokenExpiredError } from "@/domain/errors/reset-token-expired.error";
 export { ResetTokenInvalidError } from "@/domain/errors/reset-token-invalid.error";
 export { TokenExpiredError } from "@/domain/errors/token-expired.error";

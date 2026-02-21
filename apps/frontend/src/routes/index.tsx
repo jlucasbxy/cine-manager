@@ -1,5 +1,7 @@
 import { createBrowserRouter, Navigate } from "react-router";
 import { RootLayout } from "@/components/layout/root-layout";
+import { ListDetailPage } from "@/pages/lists/list-detail-page";
+import { ListPage } from "@/pages/lists/list-page";
 import { LoginPage } from "@/pages/login/login-page";
 import { MovieFormPage } from "@/pages/movie-form/movie-form-page";
 import { MovieDetailPage } from "@/pages/movies/movie-detail-page";
@@ -33,6 +35,8 @@ export const router = createBrowserRouter([
       {
         element: <RootLayout />,
         children: [
+          { path: "lists", element: <ListPage /> },
+          { path: "lists/:id", element: <ListDetailPage /> },
           { path: "movies", element: <MovieListPage /> },
           { path: "movies/new", element: <MovieFormPage /> },
           { path: "movies/:id", element: <MovieDetailPage /> },

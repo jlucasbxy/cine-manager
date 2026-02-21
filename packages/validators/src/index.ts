@@ -1,4 +1,6 @@
+export { AddMovieToListValidator } from "./add-movie-to-list.validator";
 export { CreateMovieValidator } from "./create-movie.validator";
+export { CreateMovieListValidator } from "./create-movie-list.validator";
 export { CreateUserValidator } from "./create-user.validator";
 export { EmailValidator } from "./email.validator";
 export { AgeRating, MovieStatus } from "./enums";
@@ -13,4 +15,5 @@ export { idZodSchema } from "./schemas/id.schema";
 export { movieSchema } from "./schemas/movie.schema";
 export { passwordZodSchema } from "./schemas/password.schema";
 export { UpdateMovieValidator } from "./update-movie.validator";
+export { UpdateMovieListValidator } from "./update-movie-list.validator";
 export { UpdateUserValidator } from "./update-user.validator";

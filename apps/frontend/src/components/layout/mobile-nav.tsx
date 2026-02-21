@@ -1,4 +1,4 @@
-import { Film, Plus } from "lucide-react";
+import { Film, List, Plus } from "lucide-react";
 import { Link } from "react-router";
 import { Button } from "@/components/ui/button";
 import {
@@ -28,6 +28,12 @@ export function MobileNav({ open, onOpenChange }: MobileNavProps) {
             <Button variant="ghost" className="w-full justify-start">
               <Film className="mr-2 h-4 w-4" />
               Movies
+            </Button>
+          </Link>
+          <Link to="/lists" onClick={() => onOpenChange(false)}>
+            <Button variant="ghost" className="w-full justify-start">
+              <List className="mr-2 h-4 w-4" />
+              Lists
             </Button>
           </Link>
           <Link to="/movies/new" onClick={() => onOpenChange(false)}>

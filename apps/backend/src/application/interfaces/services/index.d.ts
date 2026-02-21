@@ -1,4 +1,5 @@
 export type { AuthService } from "@/application/interfaces/services/auth-service";
+export type { MovieListService } from "@/application/interfaces/services/movie-list-service";
 export type { MovieService } from "@/application/interfaces/services/movie-service";
 export type {
   NotificationService,

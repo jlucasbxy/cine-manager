@@ -19,8 +19,10 @@ const STATUS_MAP: Record<ErrorCode, number> = {
   [ErrorCode.TOKEN_EXPIRED]: 401,
   [ErrorCode.TOKEN_INVALID]: 401,
   [ErrorCode.TOKEN_REVOKED]: 401,
+  [ErrorCode.MOVIE_LIST_NOT_FOUND]: 404,
   [ErrorCode.MOVIE_NOT_FOUND]: 404,
   [ErrorCode.USER_NOT_FOUND]: 404,
+  [ErrorCode.UNAUTHORIZED]: 403,
   [ErrorCode.EMAIL_ALREADY_IN_USE]: 409,
   [ErrorCode.RATE_LIMIT_EXCEEDED]: 429,
   [ErrorCode.INTERNAL_SERVER_ERROR]: 500

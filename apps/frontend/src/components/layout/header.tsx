@@ -43,6 +43,11 @@ export function Header() {
               Movies
             </Button>
           </Link>
+          <Link to="/lists">
+            <Button variant="ghost" size="sm">
+              Lists
+            </Button>
+          </Link>
           <Link to="/movies/new">
             <Button variant="ghost" size="sm">
               Add Movie

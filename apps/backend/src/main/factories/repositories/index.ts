@@ -1,4 +1,5 @@
 export { makeGenreRepository } from "@/main/factories/repositories/make-genre-repository.factory";
+export { makeMovieListRepository } from "@/main/factories/repositories/make-movie-list-repository.factory";
 export { makeLanguageRepository } from "@/main/factories/repositories/make-language-repository.factory";
 export { makeMovieRepository } from "@/main/factories/repositories/make-movie-repository.factory";
 export { makeOutboxEventRepository } from "@/main/factories/repositories/make-outbox-event-repository.factory";

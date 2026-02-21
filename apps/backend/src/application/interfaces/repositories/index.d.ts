@@ -1,4 +1,8 @@
 export type {
+  MovieListRepository,
+  MovieListWithMovies
+} from "@/application/interfaces/repositories/movie-list-repository";
+export type {
   MovieRepository,
   UpdateMovieData
 } from "@/application/interfaces/repositories/movie-repository";

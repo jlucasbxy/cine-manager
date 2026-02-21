@@ -9,6 +9,7 @@ import {
   authRoutes,
   genreRoutes,
   languageRoutes,
+  movieListRoutes,
   movieRoutes,
   uploadRoutes,
   userRoutes
@@ -17,6 +18,7 @@ import {
   makeAuthController,
   makeGenreController,
   makeLanguageController,
+  makeMovieListController,
   makeMovieController,
   makeUploadController,
   makeUserController
@@ -54,6 +56,7 @@ export async function start() {
   const authController = makeAuthController();
   const genreController = makeGenreController();
   const languageController = makeLanguageController();
+  const movieListController = makeMovieListController();
   const movieController = makeMovieController();
   const uploadController = makeUploadController();
   const userController = makeUserController();
@@ -73,6 +76,11 @@ export async function start() {
       await api.register(languageRoutes, {
         prefix: ROUTE_PREFIXES.languages,
         languageController,
+        authMiddleware
+      });
+      await api.register(movieListRoutes, {
+        prefix: ROUTE_PREFIXES.lists,
+        movieListController,
         authMiddleware
       });
       await api.register(movieRoutes, {

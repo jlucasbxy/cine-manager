@@ -1,4 +1,5 @@
 export { PrismaGenreRepository } from "@/infrastructure/database/repositories/prisma-genre.repository";
+export { PrismaMovieListRepository } from "@/infrastructure/database/repositories/prisma-movie-list.repository";
 export { PrismaLanguageRepository } from "@/infrastructure/database/repositories/prisma-language.repository";
 export { PrismaMovieRepository } from "@/infrastructure/database/repositories/prisma-movie.repository";
 export { PrismaOutboxEventRepository } from "@/infrastructure/database/repositories/prisma-outbox-event.repository";
