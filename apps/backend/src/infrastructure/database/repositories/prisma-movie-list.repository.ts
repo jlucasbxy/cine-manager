@@ -7,7 +7,6 @@ import type { Uuid } from "@/domain/value-objects";
 import { PrismaMovieListMapper } from "@/infrastructure/database/mappers";
 import { PrismaMovieMapper } from "@/infrastructure/database/mappers";
 import type { PrismaDatabase } from "@/infrastructure/database/prisma";
-import type { MovieListModel } from "@/infrastructure/database/prisma/generated/prisma/models/MovieList";
 
 export class PrismaMovieListRepository implements MovieListRepository {
   private readonly db: PrismaDatabase;
@@ -36,15 +35,11 @@ export class PrismaMovieListRepository implements MovieListRepository {
     return count > 0;
   }
 
-  async findByIdAndUserIdForUpdate(
-    id: Uuid,
-    userId: Uuid
-  ): Promise<MovieList | null> {
-    const results = await this.db.$queryRaw<MovieListModel[]>`
-      SELECT * FROM "MovieList" WHERE id = ${id.toString()}::uuid AND "userId" = ${userId.toString()}::uuid FOR UPDATE
+  async existsByIdAndUserIdForUpdate(id: Uuid, userId: Uuid): Promise<boolean> {
+    const results = await this.db.$queryRaw<{ id: string }[]>`
+      SELECT id FROM "MovieList" WHERE id = ${id.toString()}::uuid AND "userId" = ${userId.toString()}::uuid FOR UPDATE
     `;
-    if (!results[0]) return null;
-    return PrismaMovieListMapper.toDomain(results[0]);
+    return results.length > 0;
   }
 
   async findByIdAndUserIdWithMovies(

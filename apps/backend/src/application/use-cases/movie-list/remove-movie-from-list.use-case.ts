@@ -11,8 +11,7 @@ export class RemoveMovieFromList {
     const movieUuid = Uuid.create(movieId);
 
     await this.transactionManager.execute(async (repos) => {
-      const list = await repos.movieListRepository.findByIdAndUserIdForUpdate(listUuid, userUuid);
-      if (!list) throw new MovieListNotFoundError();
+      if (!(await repos.movieListRepository.existsByIdAndUserIdForUpdate(listUuid, userUuid))) throw new MovieListNotFoundError();
 
       await repos.movieListRepository.removeMovieByListIdAndMovieId(listUuid, movieUuid);
     });
