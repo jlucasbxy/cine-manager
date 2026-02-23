@@ -10,6 +10,7 @@ export interface MovieRepository {
   create(movie: Movie): Promise<Movie>;
   exists(id: Uuid): Promise<boolean>;
   findById(id: Uuid): Promise<Movie | null>;
+  findByIdForUpdate(id: Uuid): Promise<Movie | null>;
   findPublicOrOwnedByIdWithCreator(id: Uuid, userId: Uuid): Promise<MovieWithUser | null>;
   findAll(query: MovieQuery): Promise<PaginatedResult<Movie>>;
   update(id: Uuid, data: UpdateMovieData): Promise<Movie | null>;

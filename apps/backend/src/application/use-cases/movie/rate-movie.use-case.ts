@@ -23,7 +23,7 @@ export class RateMovie {
     const ratingValue = RatingValue.create(input.value);
 
     const updated = await this.transactionManager.execute(async (repos) => {
-      const movie = await repos.movieRepository.exists(movieUuid);
+      const movie = await repos.movieRepository.findByIdForUpdate(movieUuid);
       if (!movie) throw new MovieNotFoundError();
 
       await repos.ratingRepository.upsert(
@@ -43,7 +43,6 @@ export class RateMovie {
       });
     });
 
-    if (!updated) throw new MovieNotFoundError();
-    return MovieMapper.toDTO(updated);
+    return MovieMapper.toDTO(updated!);
   }
 }
