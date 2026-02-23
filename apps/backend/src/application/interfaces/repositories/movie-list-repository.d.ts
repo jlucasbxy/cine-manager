@@ -8,7 +8,6 @@ export interface MovieListWithMovies extends MovieList {
 
 export interface MovieListRepository {
   create(list: MovieList): Promise<MovieList>;
-  existsByIdAndUserId(id: Uuid, userId: Uuid): Promise<boolean>;
   existsByIdAndUserIdForUpdate(id: Uuid, userId: Uuid): Promise<boolean>;
   findByIdAndUserIdWithMovies(
     id: Uuid,

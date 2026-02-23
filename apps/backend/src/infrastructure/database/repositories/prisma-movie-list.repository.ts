@@ -28,13 +28,6 @@ export class PrismaMovieListRepository implements MovieListRepository {
     return PrismaMovieListMapper.toDomain(raw);
   }
 
-  async existsByIdAndUserId(id: Uuid, userId: Uuid): Promise<boolean> {
-    const count = await this.db.movieList.count({
-      where: { id: id.toString(), userId: userId.toString() }
-    });
-    return count > 0;
-  }
-
   async existsByIdAndUserIdForUpdate(id: Uuid, userId: Uuid): Promise<boolean> {
     const results = await this.db.$queryRaw<{ id: string }[]>`
       SELECT id FROM "MovieList" WHERE id = ${id.toString()}::uuid AND "userId" = ${userId.toString()}::uuid FOR UPDATE
