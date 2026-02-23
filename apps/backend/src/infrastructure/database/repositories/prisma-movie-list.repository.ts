@@ -83,10 +83,11 @@ export class PrismaMovieListRepository implements MovieListRepository {
     }
   }
 
-  async delete(id: Uuid): Promise<void> {
-    await this.db.movieList.delete({
-      where: { id: id.toString() }
+  async delete(id: Uuid, userId: Uuid): Promise<boolean> {
+    const { count } = await this.db.movieList.deleteMany({
+      where: { id: id.toString(), userId: userId.toString() }
     });
+    return count > 0;
   }
 
   async addMovie(listId: Uuid, movieId: Uuid): Promise<void> {
