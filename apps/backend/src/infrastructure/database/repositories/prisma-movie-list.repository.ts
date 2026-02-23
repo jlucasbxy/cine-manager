@@ -43,9 +43,9 @@ export class PrismaMovieListRepository implements MovieListRepository {
     return PrismaMovieListMapper.toDomain(raw);
   }
 
-  async findByIdWithMovies(id: Uuid): Promise<MovieListWithMovies | null> {
+  async findByIdAndUserIdWithMovies(id: Uuid, userId: Uuid): Promise<MovieListWithMovies | null> {
     const raw = await this.db.movieList.findUnique({
-      where: { id: id.toString() },
+      where: { id: id.toString(), userId: userId.toString() },
       include: { movies: true }
     });
     if (!raw) return null;
