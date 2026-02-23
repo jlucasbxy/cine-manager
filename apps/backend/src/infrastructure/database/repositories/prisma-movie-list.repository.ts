@@ -28,13 +28,6 @@ export class PrismaMovieListRepository implements MovieListRepository {
     return PrismaMovieListMapper.toDomain(raw);
   }
 
-  async existsByIdAndUserId(id: Uuid, userId: Uuid): Promise<boolean> {
-    const count = await this.db.movieList.count({
-      where: { id: id.toString(), userId: userId.toString() }
-    });
-    return count > 0;
-  }
-
   async findByIdAndUserIdWithMovies(
     id: Uuid,
     userId: Uuid
@@ -89,26 +82,60 @@ export class PrismaMovieListRepository implements MovieListRepository {
     return count > 0;
   }
 
-  async addMovie(listId: Uuid, movieId: Uuid): Promise<void> {
-    await this.db.movieList.update({
-      where: { id: listId.toString() },
-      data: {
-        movies: { connect: { id: movieId.toString() } },
-        updatedAt: new Date()
+  async addMovie(
+    listId: Uuid,
+    userId: Uuid,
+    movieId: Uuid
+  ): Promise<'ok' | 'list_not_found' | 'movie_not_found'> {
+    try {
+      await this.db.movieList.update({
+        where: { id: listId.toString(), userId: userId.toString() },
+        data: {
+          movies: { connect: { id: movieId.toString() } },
+          updatedAt: new Date()
+        }
+      });
+      return 'ok';
+    } catch (error: unknown) {
+      if (
+        error instanceof Error &&
+        "code" in error &&
+        (error as { code: string }).code === "P2025"
+      ) {
+        const meta = (error as { meta?: { cause?: string } }).meta;
+        const cause = meta?.cause ?? '';
+        if (cause.toLowerCase().includes('record to update not found')) {
+          return 'list_not_found';
+        }
+        return 'movie_not_found';
       }
-    });
+      throw error;
+    }
   }
 
   async removeMovieByListIdAndMovieId(
     listId: Uuid,
+    userId: Uuid,
     movieId: Uuid
-  ): Promise<void> {
-    await this.db.movieList.update({
-      where: { id: listId.toString() },
-      data: {
-        movies: { disconnect: { id: movieId.toString() } },
-        updatedAt: new Date()
+  ): Promise<boolean> {
+    try {
+      await this.db.movieList.update({
+        where: { id: listId.toString(), userId: userId.toString() },
+        data: {
+          movies: { disconnect: { id: movieId.toString() } },
+          updatedAt: new Date()
+        }
+      });
+      return true;
+    } catch (error: unknown) {
+      if (
+        error instanceof Error &&
+        "code" in error &&
+        (error as { code: string }).code === "P2025"
+      ) {
+        return false;
       }
-    });
+      throw error;
+    }
   }
 }

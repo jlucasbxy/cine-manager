@@ -23,15 +23,14 @@ export class RateMovie {
     const ratingValue = RatingValue.create(input.value);
 
     const updated = await this.transactionManager.execute(async (repos) => {
-      if (!(await repos.movieRepository.exists(movieUuid))) throw new MovieNotFoundError();
-
-      await repos.ratingRepository.upsert(
+      const rating = await repos.ratingRepository.upsert(
         Rating.create({
           userId: userUuid,
           movieId: movieUuid,
           value: ratingValue
         })
       );
+      if (!rating) throw new MovieNotFoundError();
 
       const { average, count } =
         await repos.ratingRepository.getAverageAndCount(movieUuid);

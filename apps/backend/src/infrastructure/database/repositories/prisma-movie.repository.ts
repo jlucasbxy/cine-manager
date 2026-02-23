@@ -53,11 +53,6 @@ export class PrismaMovieRepository implements MovieRepository {
     return PrismaMovieMapper.toDomain(raw);
   }
 
-  async exists(id: Uuid): Promise<boolean> {
-    const count = await this.db.movie.count({ where: { id: id.toString() } });
-    return count > 0;
-  }
-
   async findPublicOrOwnedByIdWithCreator(
     id: Uuid,
     userId: Uuid

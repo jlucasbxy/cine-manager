@@ -8,7 +8,6 @@ export interface MovieListWithMovies extends MovieList {
 
 export interface MovieListRepository {
   create(list: MovieList): Promise<MovieList>;
-  existsByIdAndUserId(id: Uuid, userId: Uuid): Promise<boolean>;
   findByIdAndUserIdWithMovies(
     id: Uuid,
     userId: Uuid
@@ -20,6 +19,6 @@ export interface MovieListRepository {
     name: string
   ): Promise<MovieList | null>;
   deleteByIdAndUserId(id: Uuid, userId: Uuid): Promise<boolean>;
-  addMovie(listId: Uuid, movieId: Uuid): Promise<void>;
-  removeMovieByListIdAndMovieId(listId: Uuid, movieId: Uuid): Promise<void>;
+  addMovie(listId: Uuid, userId: Uuid, movieId: Uuid): Promise<'ok' | 'list_not_found' | 'movie_not_found'>;
+  removeMovieByListIdAndMovieId(listId: Uuid, userId: Uuid, movieId: Uuid): Promise<boolean>;
 }

@@ -12,11 +12,9 @@ export class AddMovieToList {
     const movieUuid = Uuid.create(input.movieId);
 
     await this.transactionManager.execute(async (repos) => {
-      if (!(await repos.movieListRepository.existsByIdAndUserId(listUuid, userUuid))) throw new MovieListNotFoundError();
-
-      if (!(await repos.movieRepository.exists(movieUuid))) throw new MovieNotFoundError();
-
-      await repos.movieListRepository.addMovie(listUuid, movieUuid);
+      const result = await repos.movieListRepository.addMovie(listUuid, userUuid, movieUuid);
+      if (result === 'list_not_found') throw new MovieListNotFoundError();
+      if (result === 'movie_not_found') throw new MovieNotFoundError();
     });
   }
 }
