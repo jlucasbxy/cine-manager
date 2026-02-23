@@ -13,14 +13,11 @@ export class GetMovie {
   constructor(private readonly movieRepository: MovieRepository) {}
 
   async execute(input: GetMovieInput): Promise<MovieDTO> {
-    const result = await this.movieRepository.findByIdWithUser(
-      Uuid.create(input.id)
+    const result = await this.movieRepository.findPublicOrOwnedByIdWithCreator(
+      Uuid.create(input.id),
+      Uuid.create(input.currentUserId)
     );
     if (!result) {
-      throw new MovieNotFoundError();
-    }
-
-    if (!result.movie.isPublic && result.movie.userId.toString() !== input.currentUserId) {
       throw new MovieNotFoundError();
     }
 

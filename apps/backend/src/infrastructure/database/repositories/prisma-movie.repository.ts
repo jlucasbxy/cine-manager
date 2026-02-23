@@ -60,9 +60,12 @@ export class PrismaMovieRepository implements MovieRepository {
     return PrismaMovieMapper.toDomain(raw);
   }
 
-  async findByIdWithUser(id: Uuid): Promise<MovieWithUser | null> {
-    const raw = await this.db.movie.findUnique({
-      where: { id: id.toString() },
+  async findPublicOrOwnedByIdWithCreator(id: Uuid, userId: Uuid): Promise<MovieWithUser | null> {
+    const raw = await this.db.movie.findFirst({
+      where: {
+        id: id.toString(),
+        OR: [{ isPublic: true }, { userId: userId.toString() }]
+      },
       include: {
         user: { select: { id: true, name: true, avatarUrl: true } }
       }
