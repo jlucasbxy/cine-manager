@@ -4,6 +4,7 @@ import type { User } from "@/domain/entities";
 import { type Email, Uuid } from "@/domain/value-objects";
 import { PrismaUserMapper } from "@/infrastructure/database/mappers";
 import type { PrismaDatabase } from "@/infrastructure/database/prisma";
+import type { UserModel } from "@/infrastructure/database/prisma/generated/prisma/models/User";
 
 export class PrismaUserRepository implements UserRepository {
   private readonly db: PrismaDatabase;
@@ -44,6 +45,17 @@ export class PrismaUserRepository implements UserRepository {
     });
     if (!raw) return null;
     return PrismaUserMapper.toDomain(raw);
+  }
+
+  async findByIdForUpdate(id: Uuid): Promise<User | null> {
+    const results = await this.db.$queryRaw<UserModel[]>`
+      SELECT id, name, email, password, "avatarUrl", "createdAt", "updatedAt"
+      FROM "User"
+      WHERE id = ${id.toString()}::uuid
+      FOR UPDATE
+    `;
+    if (!results[0]) return null;
+    return PrismaUserMapper.toDomain(results[0]);
   }
 
   async findByEmail(email: Email): Promise<User | null> {

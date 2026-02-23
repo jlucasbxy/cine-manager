@@ -9,6 +9,7 @@ export type UpdateUserData = Partial<Pick<User, "name" | "password">> &
 export interface UserRepository {
   create(user: User): Promise<User | null>;
   findById(id: Uuid): Promise<User | null>;
+  findByIdForUpdate(id: Uuid): Promise<User | null>;
   findByEmail(email: Email): Promise<User | null>;
   existsByEmail(email: Email): Promise<Uuid | null>;
   update(id: Uuid, data: UpdateUserData): Promise<User | null>;

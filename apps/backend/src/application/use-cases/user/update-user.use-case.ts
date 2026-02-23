@@ -27,7 +27,7 @@ export class UpdateUser {
           )
         : undefined;
 
-      const current = await repos.userRepository.findById(id);
+      const current = await repos.userRepository.findByIdForUpdate(id);
       if (!current) throw new UserNotFoundError();
 
       const updated = await repos.userRepository.update(id, {
