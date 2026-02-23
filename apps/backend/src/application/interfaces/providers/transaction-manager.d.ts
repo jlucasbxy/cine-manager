@@ -1,4 +1,5 @@
 import type {
+  MovieListRepository,
   MovieRepository,
   UserRepository,
   RefreshTokenRepository,
@@ -10,6 +11,7 @@ import type {
 } from "@/application/interfaces/repositories";
 
 export interface TransactionRepositories {
+  movieListRepository: MovieListRepository;
   movieRepository: MovieRepository;
   userRepository: UserRepository;
   refreshTokenRepository: RefreshTokenRepository;

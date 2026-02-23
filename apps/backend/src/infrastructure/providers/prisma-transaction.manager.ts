@@ -7,6 +7,7 @@ import type { PrismaClient } from "@/infrastructure/database/prisma/generated/pr
 import {
   PrismaGenreRepository,
   PrismaLanguageRepository,
+  PrismaMovieListRepository,
   PrismaMovieRepository,
   PrismaOutboxEventRepository,
   PrismaPasswordResetTokenRepository,
@@ -23,6 +24,7 @@ export class PrismaTransactionManager implements TransactionManager {
   ): Promise<T> {
     return this.db.$transaction(async (tx) => {
       const repos: TransactionRepositories = {
+        movieListRepository: new PrismaMovieListRepository(tx),
         movieRepository: new PrismaMovieRepository(tx),
         userRepository: new PrismaUserRepository(tx),
         refreshTokenRepository: new PrismaRefreshTokenRepository(tx),
