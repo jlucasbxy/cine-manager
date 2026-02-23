@@ -84,7 +84,15 @@ export class PrismaMovieRepository implements MovieRepository {
       where.ageRating = query.ageRating;
     }
     if (query.search !== undefined) {
-      where.title = { contains: query.search, mode: "insensitive" };
+      const matchingIds = await this.db.$queryRaw<Array<{ id: string }>>`
+        SELECT id FROM "Movie"
+        WHERE word_similarity(${query.search}, title) > 0.2
+           OR title ILIKE ${'%' + query.search + '%'}
+      `;
+      if (matchingIds.length === 0) {
+        return PaginatedResult.create([], 0);
+      }
+      where.id = { in: matchingIds.map(r => r.id) };
     }
     if (query.userId !== undefined) {
       where.userId = query.userId.toString();
