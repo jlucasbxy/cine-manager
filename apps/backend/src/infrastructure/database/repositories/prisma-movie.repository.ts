@@ -8,7 +8,6 @@ import type { MovieQuery, Uuid } from "@/domain/value-objects";
 import { PaginatedResult } from "@/domain/value-objects";
 import { PrismaMovieMapper } from "@/infrastructure/database/mappers";
 import type { PrismaDatabase } from "@/infrastructure/database/prisma";
-import type { MovieModel } from "@/infrastructure/database/prisma/generated/prisma/models/Movie";
 
 export class PrismaMovieRepository implements MovieRepository {
   private readonly db: PrismaDatabase;
@@ -61,12 +60,11 @@ export class PrismaMovieRepository implements MovieRepository {
     return PrismaMovieMapper.toDomain(raw);
   }
 
-  async findByIdForUpdate(id: Uuid): Promise<Movie | null> {
-    const results = await this.db.$queryRaw<MovieModel[]>`
-      SELECT * FROM "Movie" WHERE id = ${id.toString()}::uuid FOR UPDATE
+  async existsForUpdate(id: Uuid): Promise<boolean> {
+    const results = await this.db.$queryRaw<{ id: string }[]>`
+      SELECT id FROM "Movie" WHERE id = ${id.toString()}::uuid FOR UPDATE
     `;
-    if (!results[0]) return null;
-    return PrismaMovieMapper.toDomain(results[0]);
+    return results.length > 0;
   }
 
   async findPublicOrOwnedByIdWithCreator(id: Uuid, userId: Uuid): Promise<MovieWithUser | null> {
