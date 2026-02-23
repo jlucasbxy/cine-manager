@@ -3,6 +3,7 @@ import type { PasswordResetToken } from "@/domain/entities";
 import type { Token, Uuid } from "@/domain/value-objects";
 import { PrismaPasswordResetTokenMapper } from "@/infrastructure/database/mappers";
 import type { PrismaDatabase } from "@/infrastructure/database/prisma";
+import type { PasswordResetTokenModel } from "@/infrastructure/database/prisma/generated/prisma/models/PasswordResetToken";
 
 export class PrismaPasswordResetTokenRepository
   implements PasswordResetTokenRepository
@@ -27,12 +28,12 @@ export class PrismaPasswordResetTokenRepository
     return PrismaPasswordResetTokenMapper.toDomain(raw);
   }
 
-  async findByToken(token: Token): Promise<PasswordResetToken | null> {
-    const raw = await this.db.passwordResetToken.findUnique({
-      where: { token: token.toString() }
-    });
-    if (!raw) return null;
-    return PrismaPasswordResetTokenMapper.toDomain(raw);
+  async findByTokenForUpdate(token: Token): Promise<PasswordResetToken | null> {
+    const results = await this.db.$queryRaw<PasswordResetTokenModel[]>`
+      SELECT * FROM "PasswordResetToken" WHERE token = ${token.toString()} FOR UPDATE
+    `;
+    if (!results[0]) return null;
+    return PrismaPasswordResetTokenMapper.toDomain(results[0]);
   }
 
   async update(token: PasswordResetToken): Promise<void> {
