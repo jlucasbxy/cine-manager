@@ -8,7 +8,6 @@ export type UpdateMovieData = Partial<
 
 export interface MovieRepository {
   create(movie: Movie): Promise<Movie>;
-  findById(id: Uuid): Promise<Movie | null>;
   findPublicOrOwnedByIdWithCreator(
     id: Uuid,
     userId: Uuid

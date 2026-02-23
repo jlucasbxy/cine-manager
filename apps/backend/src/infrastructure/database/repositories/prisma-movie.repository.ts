@@ -45,14 +45,6 @@ export class PrismaMovieRepository implements MovieRepository {
     return PrismaMovieMapper.toDomain(raw);
   }
 
-  async findById(id: Uuid): Promise<Movie | null> {
-    const raw = await this.db.movie.findUnique({
-      where: { id: id.toString() }
-    });
-    if (!raw) return null;
-    return PrismaMovieMapper.toDomain(raw);
-  }
-
   async findPublicOrOwnedByIdWithCreator(
     id: Uuid,
     userId: Uuid
