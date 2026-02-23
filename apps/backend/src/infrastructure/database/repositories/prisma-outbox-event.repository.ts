@@ -36,7 +36,7 @@ export class PrismaOutboxEventRepository implements OutboxEventRepository {
         status: OutboxEventStatusEnum.PENDING,
         OR: [{ scheduledFor: null }, { scheduledFor: { lte: now } }]
       },
-      orderBy: { createdAt: "asc" },
+      orderBy: { id: "asc" },
       take: limit
     });
 
