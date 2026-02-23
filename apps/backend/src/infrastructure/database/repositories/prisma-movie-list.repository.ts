@@ -36,15 +36,10 @@ export class PrismaMovieListRepository implements MovieListRepository {
     return count > 0;
   }
 
-  async findById(id: Uuid): Promise<MovieList | null> {
-    const raw = await this.db.movieList.findUnique({
-      where: { id: id.toString() }
-    });
-    if (!raw) return null;
-    return PrismaMovieListMapper.toDomain(raw);
-  }
-
-  async findByIdAndUserIdForUpdate(id: Uuid, userId: Uuid): Promise<MovieList | null> {
+  async findByIdAndUserIdForUpdate(
+    id: Uuid,
+    userId: Uuid
+  ): Promise<MovieList | null> {
     const results = await this.db.$queryRaw<MovieListModel[]>`
       SELECT * FROM "MovieList" WHERE id = ${id.toString()}::uuid AND "userId" = ${userId.toString()}::uuid FOR UPDATE
     `;
@@ -52,7 +47,10 @@ export class PrismaMovieListRepository implements MovieListRepository {
     return PrismaMovieListMapper.toDomain(results[0]);
   }
 
-  async findByIdAndUserIdWithMovies(id: Uuid, userId: Uuid): Promise<MovieListWithMovies | null> {
+  async findByIdAndUserIdWithMovies(
+    id: Uuid,
+    userId: Uuid
+  ): Promise<MovieListWithMovies | null> {
     const raw = await this.db.movieList.findUnique({
       where: { id: id.toString(), userId: userId.toString() },
       include: { movies: true }
@@ -73,7 +71,11 @@ export class PrismaMovieListRepository implements MovieListRepository {
     return raws.map(PrismaMovieListMapper.toDomain);
   }
 
-  async updateByIdAndUserId(id: Uuid, userId: Uuid, name: string): Promise<MovieList | null> {
+  async updateByIdAndUserId(
+    id: Uuid,
+    userId: Uuid,
+    name: string
+  ): Promise<MovieList | null> {
     try {
       const raw = await this.db.movieList.update({
         where: { id: id.toString(), userId: userId.toString() },
@@ -109,7 +111,10 @@ export class PrismaMovieListRepository implements MovieListRepository {
     });
   }
 
-  async removeMovieByListIdAndMovieId(listId: Uuid, movieId: Uuid): Promise<void> {
+  async removeMovieByListIdAndMovieId(
+    listId: Uuid,
+    movieId: Uuid
+  ): Promise<void> {
     await this.db.movieList.update({
       where: { id: listId.toString() },
       data: {
