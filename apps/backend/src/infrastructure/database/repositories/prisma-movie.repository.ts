@@ -45,13 +45,6 @@ export class PrismaMovieRepository implements MovieRepository {
     return PrismaMovieMapper.toDomain(raw);
   }
 
-  async exists(id: Uuid): Promise<boolean> {
-    const count = await this.db.movie.count({
-      where: { id: id.toString() }
-    });
-    return count > 0;
-  }
-
   async findById(id: Uuid): Promise<Movie | null> {
     const raw = await this.db.movie.findUnique({
       where: { id: id.toString() }
@@ -67,7 +60,10 @@ export class PrismaMovieRepository implements MovieRepository {
     return results.length > 0;
   }
 
-  async findPublicOrOwnedByIdWithCreator(id: Uuid, userId: Uuid): Promise<MovieWithUser | null> {
+  async findPublicOrOwnedByIdWithCreator(
+    id: Uuid,
+    userId: Uuid
+  ): Promise<MovieWithUser | null> {
     const raw = await this.db.movie.findFirst({
       where: {
         id: id.toString(),
@@ -111,7 +107,9 @@ export class PrismaMovieRepository implements MovieRepository {
     if (query.genreIds !== undefined && query.genreIds.length > 0) {
       where.genres = { some: { id: { in: query.genreIds } } };
     }
-    where.AND = [{ OR: [{ isPublic: true }, { userId: query.currentUserId.toString() }] }];
+    where.AND = [
+      { OR: [{ isPublic: true }, { userId: query.currentUserId.toString() }] }
+    ];
 
     const [rawList, total] = await Promise.all([
       this.db.movie.findMany({
