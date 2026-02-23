@@ -34,7 +34,7 @@ export class CreateMovie {
       backdropUrl: Url.create(input.backdropUrl),
       trailerUrl: Url.create(input.trailerUrl),
       userId: userUuid,
-      isPublic: input.isPublic ?? true
+      isPublic: input.isPublic
     });
 
     const created = await this.transactionManager.execute(async (repos) => {
