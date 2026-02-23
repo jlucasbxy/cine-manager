@@ -18,8 +18,7 @@ export class AddMovieToList {
     if (!list) throw new MovieListNotFoundError();
     if (list.userId.toString() !== userUuid.toString()) throw new UnauthorizedError();
 
-    const movie = await this.movieRepository.findById(movieUuid);
-    if (!movie) throw new MovieNotFoundError();
+    if (!(await this.movieRepository.exists(movieUuid))) throw new MovieNotFoundError();
 
     await this.movieListRepository.addMovie(listUuid, movieUuid);
   }

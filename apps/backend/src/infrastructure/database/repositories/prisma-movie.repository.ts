@@ -45,6 +45,13 @@ export class PrismaMovieRepository implements MovieRepository {
     return PrismaMovieMapper.toDomain(raw);
   }
 
+  async exists(id: Uuid): Promise<boolean> {
+    const count = await this.db.movie.count({
+      where: { id: id.toString() }
+    });
+    return count > 0;
+  }
+
   async findById(id: Uuid): Promise<Movie | null> {
     const raw = await this.db.movie.findUnique({
       where: { id: id.toString() }
