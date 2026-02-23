@@ -53,11 +53,9 @@ export class PrismaMovieRepository implements MovieRepository {
     return PrismaMovieMapper.toDomain(raw);
   }
 
-  async existsForUpdate(id: Uuid): Promise<boolean> {
-    const results = await this.db.$queryRaw<{ id: string }[]>`
-      SELECT id FROM "Movie" WHERE id = ${id.toString()}::uuid FOR UPDATE
-    `;
-    return results.length > 0;
+  async exists(id: Uuid): Promise<boolean> {
+    const count = await this.db.movie.count({ where: { id: id.toString() } });
+    return count > 0;
   }
 
   async findPublicOrOwnedByIdWithCreator(
