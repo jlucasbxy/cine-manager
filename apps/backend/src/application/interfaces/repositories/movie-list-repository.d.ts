@@ -10,7 +10,7 @@ export interface MovieListRepository {
   create(list: MovieList): Promise<MovieList>;
   existsByIdAndUserId(id: Uuid, userId: Uuid): Promise<boolean>;
   findById(id: Uuid): Promise<MovieList | null>;
-  findByIdForUpdate(id: Uuid): Promise<MovieList | null>;
+  findByIdAndUserIdForUpdate(id: Uuid, userId: Uuid): Promise<MovieList | null>;
   findByIdAndUserIdWithMovies(id: Uuid, userId: Uuid): Promise<MovieListWithMovies | null>;
   findAllByUserId(userId: Uuid): Promise<MovieList[]>;
   update(id: Uuid, name: string): Promise<MovieList | null>;

@@ -1,5 +1,5 @@
 import type { TransactionManager } from "@/application/interfaces/providers";
-import { MovieListNotFoundError, UnauthorizedError } from "@/domain/errors";
+import { MovieListNotFoundError } from "@/domain/errors";
 import { Uuid } from "@/domain/value-objects";
 
 export class RemoveMovieFromList {
@@ -11,9 +11,8 @@ export class RemoveMovieFromList {
     const movieUuid = Uuid.create(movieId);
 
     await this.transactionManager.execute(async (repos) => {
-      const list = await repos.movieListRepository.findByIdForUpdate(listUuid);
+      const list = await repos.movieListRepository.findByIdAndUserIdForUpdate(listUuid, userUuid);
       if (!list) throw new MovieListNotFoundError();
-      if (list.userId.toString() !== userUuid.toString()) throw new UnauthorizedError();
 
       await repos.movieListRepository.removeMovieByListIdAndMovieId(listUuid, movieUuid);
     });

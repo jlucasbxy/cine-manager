@@ -44,9 +44,9 @@ export class PrismaMovieListRepository implements MovieListRepository {
     return PrismaMovieListMapper.toDomain(raw);
   }
 
-  async findByIdForUpdate(id: Uuid): Promise<MovieList | null> {
+  async findByIdAndUserIdForUpdate(id: Uuid, userId: Uuid): Promise<MovieList | null> {
     const results = await this.db.$queryRaw<MovieListModel[]>`
-      SELECT * FROM "MovieList" WHERE id = ${id.toString()}::uuid FOR UPDATE
+      SELECT * FROM "MovieList" WHERE id = ${id.toString()}::uuid AND "userId" = ${userId.toString()}::uuid FOR UPDATE
     `;
     if (!results[0]) return null;
     return PrismaMovieListMapper.toDomain(results[0]);
