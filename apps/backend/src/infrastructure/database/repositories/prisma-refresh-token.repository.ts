@@ -31,7 +31,7 @@ export class PrismaRefreshTokenRepository implements RefreshTokenRepository {
 
   async findByTokenForUpdate(token: Token): Promise<RefreshToken | null> {
     const results = await this.db.$queryRaw<RefreshTokenModel[]>`
-      SELECT * FROM "RefreshToken" WHERE token = ${token.toString()} FOR UPDATE
+      SELECT id, token, "userId", "expiresAt", "revokedAt", "createdAt" FROM "RefreshToken" WHERE token = ${token.toString()} FOR UPDATE
     `;
     if (!results[0]) return null;
     return PrismaRefreshTokenMapper.toDomain(results[0]);

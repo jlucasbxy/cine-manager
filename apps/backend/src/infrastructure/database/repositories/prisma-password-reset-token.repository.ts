@@ -30,7 +30,7 @@ export class PrismaPasswordResetTokenRepository
 
   async findByTokenForUpdate(token: Token): Promise<PasswordResetToken | null> {
     const results = await this.db.$queryRaw<PasswordResetTokenModel[]>`
-      SELECT * FROM "PasswordResetToken" WHERE token = ${token.toString()} FOR UPDATE
+      SELECT id, token, "userId", "expiresAt", "usedAt", "createdAt" FROM "PasswordResetToken" WHERE token = ${token.toString()} FOR UPDATE
     `;
     if (!results[0]) return null;
     return PrismaPasswordResetTokenMapper.toDomain(results[0]);
