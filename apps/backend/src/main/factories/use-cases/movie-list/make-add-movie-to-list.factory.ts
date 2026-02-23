@@ -1,6 +1,6 @@
 import { AddMovieToList } from "@/application/use-cases/movie-list";
-import { makeMovieListRepository, makeMovieRepository } from "@/main/factories/repositories";
+import { makeTransactionManager } from "@/main/factories/providers";
 
 export function makeAddMovieToList(): AddMovieToList {
-  return new AddMovieToList(makeMovieListRepository(), makeMovieRepository());
+  return new AddMovieToList(makeTransactionManager());
 }
