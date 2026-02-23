@@ -73,10 +73,10 @@ export class PrismaMovieListRepository implements MovieListRepository {
     return raws.map(PrismaMovieListMapper.toDomain);
   }
 
-  async update(id: Uuid, name: string): Promise<MovieList | null> {
+  async updateByIdAndUserId(id: Uuid, userId: Uuid, name: string): Promise<MovieList | null> {
     try {
       const raw = await this.db.movieList.update({
-        where: { id: id.toString() },
+        where: { id: id.toString(), userId: userId.toString() },
         data: { name, updatedAt: new Date() }
       });
       return PrismaMovieListMapper.toDomain(raw);

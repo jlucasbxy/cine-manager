@@ -13,7 +13,7 @@ export interface MovieListRepository {
   findByIdAndUserIdForUpdate(id: Uuid, userId: Uuid): Promise<MovieList | null>;
   findByIdAndUserIdWithMovies(id: Uuid, userId: Uuid): Promise<MovieListWithMovies | null>;
   findAllByUserId(userId: Uuid): Promise<MovieList[]>;
-  update(id: Uuid, name: string): Promise<MovieList | null>;
+  updateByIdAndUserId(id: Uuid, userId: Uuid, name: string): Promise<MovieList | null>;
   deleteByIdAndUserId(id: Uuid, userId: Uuid): Promise<boolean>;
   addMovie(listId: Uuid, movieId: Uuid): Promise<void>;
   removeMovieByListIdAndMovieId(listId: Uuid, movieId: Uuid): Promise<void>;
