@@ -6,6 +6,7 @@ import type { RefreshToken } from "@/domain/entities";
 import type { Token, Uuid } from "@/domain/value-objects";
 import { PrismaRefreshTokenMapper } from "@/infrastructure/database/mappers";
 import type { PrismaDatabase } from "@/infrastructure/database/prisma";
+import type { RefreshTokenModel } from "@/infrastructure/database/prisma/generated/prisma/models/RefreshToken";
 
 export class PrismaRefreshTokenRepository implements RefreshTokenRepository {
   private readonly db: PrismaDatabase;
@@ -34,6 +35,14 @@ export class PrismaRefreshTokenRepository implements RefreshTokenRepository {
     });
     if (!raw) return null;
     return PrismaRefreshTokenMapper.toDomain(raw);
+  }
+
+  async findByTokenForUpdate(token: Token): Promise<RefreshToken | null> {
+    const results = await this.db.$queryRaw<RefreshTokenModel[]>`
+      SELECT * FROM "RefreshToken" WHERE token = ${token.toString()} FOR UPDATE
+    `;
+    if (!results[0]) return null;
+    return PrismaRefreshTokenMapper.toDomain(results[0]);
   }
 
   async updateByToken(

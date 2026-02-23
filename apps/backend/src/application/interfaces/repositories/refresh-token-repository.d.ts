@@ -5,7 +5,7 @@ export type UpdateRefreshTokenData = Pick<RefreshToken, "revokedAt">;
 
 export interface RefreshTokenRepository {
   create(token: RefreshToken): Promise<RefreshToken>;
-  findByToken(token: Token): Promise<RefreshToken | null>;
+  findByTokenForUpdate(token: Token): Promise<RefreshToken | null>;
   updateByToken(
     token: Token,
     data: UpdateRefreshTokenData

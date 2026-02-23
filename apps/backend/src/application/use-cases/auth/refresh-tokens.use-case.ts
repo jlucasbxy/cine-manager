@@ -28,7 +28,7 @@ export class RefreshTokens {
     return this.transactionManager.execute(async (repos) => {
       const token = Token.create(input.refreshToken);
       const refreshToken =
-        await repos.refreshTokenRepository.findByToken(token);
+        await repos.refreshTokenRepository.findByTokenForUpdate(token);
 
       if (!refreshToken) {
         throw new TokenInvalidError();
