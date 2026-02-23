@@ -100,7 +100,7 @@ export class PrismaMovieListRepository implements MovieListRepository {
     });
   }
 
-  async removeMovie(listId: Uuid, movieId: Uuid): Promise<void> {
+  async removeMovieByListIdAndMovieId(listId: Uuid, movieId: Uuid): Promise<void> {
     await this.db.movieList.update({
       where: { id: listId.toString() },
       data: {

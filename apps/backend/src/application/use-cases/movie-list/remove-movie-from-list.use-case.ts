@@ -14,6 +14,6 @@ export class RemoveMovieFromList {
     if (!list) throw new MovieListNotFoundError();
     if (list.userId.toString() !== userUuid.toString()) throw new UnauthorizedError();
 
-    await this.movieListRepository.removeMovie(listUuid, movieUuid);
+    await this.movieListRepository.removeMovieByListIdAndMovieId(listUuid, movieUuid);
   }
 }

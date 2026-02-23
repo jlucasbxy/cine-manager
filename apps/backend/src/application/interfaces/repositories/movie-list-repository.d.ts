@@ -15,5 +15,5 @@ export interface MovieListRepository {
   update(id: Uuid, name: string): Promise<MovieList | null>;
   deleteByIdAndUserId(id: Uuid, userId: Uuid): Promise<boolean>;
   addMovie(listId: Uuid, movieId: Uuid): Promise<void>;
-  removeMovie(listId: Uuid, movieId: Uuid): Promise<void>;
+  removeMovieByListIdAndMovieId(listId: Uuid, movieId: Uuid): Promise<void>;
 }
