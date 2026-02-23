@@ -47,7 +47,7 @@ export class PrismaMovieListRepository implements MovieListRepository {
   async findAllByUserId(userId: Uuid): Promise<MovieList[]> {
     const raws = await this.db.movieList.findMany({
       where: { userId: userId.toString() },
-      orderBy: { createdAt: "desc" }
+      orderBy: { id: "desc" }
     });
     return raws.map(PrismaMovieListMapper.toDomain);
   }

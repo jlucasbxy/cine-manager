@@ -99,6 +99,7 @@ export class PrismaMovieRepository implements MovieRepository {
     const [rawList, total] = await Promise.all([
       this.db.movie.findMany({
         where,
+        orderBy: { id: "desc" },
         skip: (query.page.toNumber() - 1) * query.perPage.toNumber(),
         take: query.perPage.toNumber()
       }),
