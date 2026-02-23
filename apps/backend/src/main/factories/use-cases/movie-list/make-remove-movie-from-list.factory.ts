@@ -1,6 +1,6 @@
 import { RemoveMovieFromList } from "@/application/use-cases/movie-list";
-import { makeTransactionManager } from "@/main/factories/providers";
+import { makeMovieListRepository } from "@/main/factories/repositories";
 
 export function makeRemoveMovieFromList(): RemoveMovieFromList {
-  return new RemoveMovieFromList(makeTransactionManager());
+  return new RemoveMovieFromList(makeMovieListRepository());
 }
