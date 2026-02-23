@@ -28,7 +28,7 @@ export class PrismaMovieListRepository implements MovieListRepository {
     return PrismaMovieListMapper.toDomain(raw);
   }
 
-  async exists(id: Uuid, userId: Uuid): Promise<boolean> {
+  async existsByIdAndUserId(id: Uuid, userId: Uuid): Promise<boolean> {
     const count = await this.db.movieList.count({
       where: { id: id.toString(), userId: userId.toString() }
     });
@@ -83,7 +83,7 @@ export class PrismaMovieListRepository implements MovieListRepository {
     }
   }
 
-  async delete(id: Uuid, userId: Uuid): Promise<boolean> {
+  async deleteByIdAndUserId(id: Uuid, userId: Uuid): Promise<boolean> {
     const { count } = await this.db.movieList.deleteMany({
       where: { id: id.toString(), userId: userId.toString() }
     });

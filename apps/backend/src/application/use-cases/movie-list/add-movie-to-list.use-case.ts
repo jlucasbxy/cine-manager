@@ -14,7 +14,7 @@ export class AddMovieToList {
     const userUuid = Uuid.create(userId);
     const movieUuid = Uuid.create(input.movieId);
 
-    if (!(await this.movieListRepository.exists(listUuid, userUuid))) throw new UnauthorizedError();
+    if (!(await this.movieListRepository.existsByIdAndUserId(listUuid, userUuid))) throw new UnauthorizedError();
 
     if (!(await this.movieRepository.exists(movieUuid))) throw new MovieNotFoundError();
 
