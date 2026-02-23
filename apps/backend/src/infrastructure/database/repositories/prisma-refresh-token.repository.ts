@@ -29,14 +29,6 @@ export class PrismaRefreshTokenRepository implements RefreshTokenRepository {
     return PrismaRefreshTokenMapper.toDomain(raw);
   }
 
-  async findByToken(token: Token): Promise<RefreshToken | null> {
-    const raw = await this.db.refreshToken.findUnique({
-      where: { token: token.toString() }
-    });
-    if (!raw) return null;
-    return PrismaRefreshTokenMapper.toDomain(raw);
-  }
-
   async findByTokenForUpdate(token: Token): Promise<RefreshToken | null> {
     const results = await this.db.$queryRaw<RefreshTokenModel[]>`
       SELECT * FROM "RefreshToken" WHERE token = ${token.toString()} FOR UPDATE
