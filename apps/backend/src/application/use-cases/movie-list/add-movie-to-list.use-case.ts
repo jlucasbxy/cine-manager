@@ -1,6 +1,6 @@
 import type { AddMovieToListDTO } from "@repo/dtos";
 import type { MovieListRepository, MovieRepository } from "@/application/interfaces/repositories";
-import { MovieListNotFoundError, MovieNotFoundError, UnauthorizedError } from "@/domain/errors";
+import { MovieNotFoundError, UnauthorizedError } from "@/domain/errors";
 import { Uuid } from "@/domain/value-objects";
 
 export class AddMovieToList {
@@ -14,9 +14,7 @@ export class AddMovieToList {
     const userUuid = Uuid.create(userId);
     const movieUuid = Uuid.create(input.movieId);
 
-    const list = await this.movieListRepository.findById(listUuid);
-    if (!list) throw new MovieListNotFoundError();
-    if (list.userId.toString() !== userUuid.toString()) throw new UnauthorizedError();
+    if (!(await this.movieListRepository.exists(listUuid, userUuid))) throw new UnauthorizedError();
 
     if (!(await this.movieRepository.exists(movieUuid))) throw new MovieNotFoundError();
 

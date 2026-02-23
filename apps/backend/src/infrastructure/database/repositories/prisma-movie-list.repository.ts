@@ -28,6 +28,13 @@ export class PrismaMovieListRepository implements MovieListRepository {
     return PrismaMovieListMapper.toDomain(raw);
   }
 
+  async exists(id: Uuid, userId: Uuid): Promise<boolean> {
+    const count = await this.db.movieList.count({
+      where: { id: id.toString(), userId: userId.toString() }
+    });
+    return count > 0;
+  }
+
   async findById(id: Uuid): Promise<MovieList | null> {
     const raw = await this.db.movieList.findUnique({
       where: { id: id.toString() }
