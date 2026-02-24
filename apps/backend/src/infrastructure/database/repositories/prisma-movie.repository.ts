@@ -86,7 +86,7 @@ export class PrismaMovieRepository implements MovieRepository {
     if (query.search !== undefined) {
       const matchingIds = await this.db.$queryRaw<Array<{ id: string }>>`
         SELECT id FROM "Movie"
-        WHERE word_similarity(${query.search}, title) > 0.2
+        WHERE ${query.search} <% title
            OR title ILIKE ${'%' + query.search + '%'}
       `;
       if (matchingIds.length === 0) {
