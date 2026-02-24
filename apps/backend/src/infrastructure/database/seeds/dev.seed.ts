@@ -40,8 +40,8 @@ const DEV_MOVIES = [
     backdropUrl:
       "https://image.tmdb.org/t/p/w1280/fNG7i7RqMErkcqhohV2a6cV1Ehy.jpg",
     trailerUrl: "https://www.youtube.com/watch?v=vKQi3bBA1y8",
-    votes: 24531,
-    score: 8.7,
+    votes: 0,
+    score: 0,
     languageCode: "en",
     genres: ["Action", "Science Fiction"]
   },
@@ -63,8 +63,8 @@ const DEV_MOVIES = [
     backdropUrl:
       "https://image.tmdb.org/t/p/w1280/uvitbjFU4JqvMwIkMWHp69bmUzG.jpg",
     trailerUrl: "https://www.youtube.com/watch?v=dcUOO4Itgmw",
-    votes: 11456,
-    score: 8.6,
+    votes: 0,
+    score: 0,
     languageCode: "pt",
     genres: ["Drama", "Crime"]
   },
@@ -85,8 +85,8 @@ const DEV_MOVIES = [
     backdropUrl:
       "https://image.tmdb.org/t/p/w1280/ukfI9QkU1aIhOhKXYWE9n3z1mFR.jpg",
     trailerUrl: "https://www.youtube.com/watch?v=ByXuk9QqQkk",
-    votes: 15234,
-    score: 8.6,
+    votes: 0,
+    score: 0,
     languageCode: "ja",
     genres: ["Animation", "Family", "Fantasy"]
   },
@@ -107,8 +107,8 @@ const DEV_MOVIES = [
     backdropUrl:
       "https://image.tmdb.org/t/p/w1280/hiKmpZMGZsrkA3cdce8a7Dpos1j.jpg",
     trailerUrl: "https://www.youtube.com/watch?v=5xH0HfJHsaY",
-    votes: 16890,
-    score: 8.5,
+    votes: 0,
+    score: 0,
     languageCode: "ko",
     genres: ["Comedy", "Thriller", "Drama"]
   },
@@ -129,8 +129,8 @@ const DEV_MOVIES = [
     backdropUrl:
       "https://image.tmdb.org/t/p/w1280/2ssWTSVklAEc98frZUQhgtGHx7s.jpg",
     trailerUrl: "https://www.youtube.com/watch?v=zSWdZVtXT7E",
-    votes: 33210,
-    score: 8.7,
+    votes: 0,
+    score: 0,
     languageCode: "en",
     genres: ["Adventure", "Drama", "Science Fiction"]
   },
@@ -151,8 +151,8 @@ const DEV_MOVIES = [
     backdropUrl:
       "https://image.tmdb.org/t/p/w1280/kXfqcdQKsToO0OUXHcrrNCHDBzO.jpg",
     trailerUrl: "https://www.youtube.com/watch?v=6hB3S9bIaco",
-    votes: 26547,
-    score: 8.7,
+    votes: 0,
+    score: 0,
     languageCode: "en",
     genres: ["Drama", "Crime"]
   },
@@ -173,8 +173,8 @@ const DEV_MOVIES = [
     backdropUrl:
       "https://image.tmdb.org/t/p/w1280/tSPT36ZKlP2WVHJLM4cQPLSzv3b.jpg",
     trailerUrl: "https://www.youtube.com/watch?v=sY1S34973zA",
-    votes: 19032,
-    score: 8.7,
+    votes: 0,
+    score: 0,
     languageCode: "en",
     genres: ["Drama", "Crime"]
   },
@@ -195,8 +195,8 @@ const DEV_MOVIES = [
     backdropUrl:
       "https://image.tmdb.org/t/p/w1280/hkBaDkMWbLaf8B1lsWsKX7Ew3Xq.jpg",
     trailerUrl: "https://www.youtube.com/watch?v=EXeTwQWrcwY",
-    votes: 31200,
-    score: 8.5,
+    votes: 0,
+    score: 0,
     languageCode: "en",
     genres: ["Action", "Crime", "Drama", "Thriller"]
   },
@@ -218,8 +218,8 @@ const DEV_MOVIES = [
     backdropUrl:
       "https://image.tmdb.org/t/p/w1280/4EYPN5mVIhKLfxGruy7Dy41dTVn.jpg",
     trailerUrl: "https://www.youtube.com/watch?v=s7EdQ4FqbhY",
-    votes: 25890,
-    score: 8.5,
+    votes: 0,
+    score: 0,
     languageCode: "en",
     genres: ["Thriller", "Crime"]
   },
@@ -240,8 +240,8 @@ const DEV_MOVIES = [
     backdropUrl:
       "https://image.tmdb.org/t/p/w1280/loRmRzQXZeqG78TqZuyvSlEQfZb.jpg",
     trailerUrl: "https://www.youtube.com/watch?v=gG22XNhtnoY",
-    votes: 14320,
-    score: 8.6,
+    votes: 0,
+    score: 0,
     languageCode: "en",
     genres: ["Drama", "History", "War"]
   },
@@ -262,8 +262,8 @@ const DEV_MOVIES = [
     backdropUrl:
       "https://image.tmdb.org/t/p/w1280/s3TBrRGB1iav7gFOCNx3H31MoES.jpg",
     trailerUrl: "https://www.youtube.com/watch?v=YoHD9XEInc0",
-    votes: 34512,
-    score: 8.4,
+    votes: 0,
+    score: 0,
     languageCode: "en",
     genres: ["Action", "Science Fiction", "Adventure"]
   },
@@ -285,8 +285,8 @@ const DEV_MOVIES = [
     backdropUrl:
       "https://image.tmdb.org/t/p/w1280/qdIMHd4sEfJSckfVJfKQvisL02a.jpg",
     trailerUrl: "https://www.youtube.com/watch?v=bLvqoHBptjg",
-    votes: 25780,
-    score: 8.5,
+    votes: 0,
+    score: 0,
     languageCode: "en",
     genres: ["Comedy", "Drama", "Romance"]
   },
@@ -307,8 +307,8 @@ const DEV_MOVIES = [
     backdropUrl:
       "https://image.tmdb.org/t/p/w1280/52AfXWuXCHn3UjD17rBruA9f5qb.jpg",
     trailerUrl: "https://www.youtube.com/watch?v=SUXWAEX2jlg",
-    votes: 26100,
-    score: 8.4,
+    votes: 0,
+    score: 0,
     languageCode: "en",
     genres: ["Drama", "Thriller"]
   },
@@ -330,8 +330,8 @@ const DEV_MOVIES = [
     backdropUrl:
       "https://image.tmdb.org/t/p/w1280/aYcnDyLMnpKce1FOYUpZrXtgUye.jpg",
     trailerUrl: "https://www.youtube.com/watch?v=W6Mm8Sbe__o",
-    votes: 14120,
-    score: 8.3,
+    votes: 0,
+    score: 0,
     languageCode: "en",
     genres: ["Crime", "Drama", "Thriller"]
   },
@@ -352,8 +352,8 @@ const DEV_MOVIES = [
     backdropUrl:
       "https://image.tmdb.org/t/p/w1280/pIkRyD18kl4FhoCNQuWxWu5cBLM.jpg",
     trailerUrl: "https://www.youtube.com/watch?v=V75dMMIW2B4",
-    votes: 23450,
-    score: 8.4,
+    votes: 0,
+    score: 0,
     languageCode: "en",
     genres: ["Adventure", "Fantasy", "Action"]
   },
@@ -374,8 +374,8 @@ const DEV_MOVIES = [
     backdropUrl:
       "https://image.tmdb.org/t/p/w1280/xnHVX37XZEp33hhCbYlQFq7ux1J.jpg",
     trailerUrl: "https://www.youtube.com/watch?v=2e-eXJ6HgkQ",
-    votes: 22780,
-    score: 7.9,
+    votes: 0,
+    score: 0,
     languageCode: "en",
     genres: ["Drama", "Romance"]
   },
@@ -396,8 +396,8 @@ const DEV_MOVIES = [
     backdropUrl:
       "https://image.tmdb.org/t/p/w1280/sw7mordbZxgITU877yTpZCud90M.jpg",
     trailerUrl: "https://www.youtube.com/watch?v=qo5jJpHtI1Y",
-    votes: 12650,
-    score: 8.5,
+    votes: 0,
+    score: 0,
     languageCode: "en",
     genres: ["Crime", "Drama"]
   },
@@ -418,8 +418,8 @@ const DEV_MOVIES = [
     backdropUrl:
       "https://image.tmdb.org/t/p/w1280/o0s4XsEDfDlvit5pDRKjzXR4pp2.jpg",
     trailerUrl: "https://www.youtube.com/watch?v=5PSNL1qE6VY",
-    votes: 29340,
-    score: 7.6,
+    votes: 0,
+    score: 0,
     languageCode: "en",
     genres: ["Action", "Adventure", "Science Fiction"]
   },
@@ -440,8 +440,8 @@ const DEV_MOVIES = [
     backdropUrl:
       "https://image.tmdb.org/t/p/w1280/alqZDg4DXBpNCVTzRPXe5zkkAXX.jpg",
     trailerUrl: "https://www.youtube.com/watch?v=lc0UehYemQA",
-    votes: 16230,
-    score: 8.1,
+    votes: 0,
+    score: 0,
     languageCode: "en",
     genres: ["Adventure", "Science Fiction"]
   },
@@ -462,8 +462,8 @@ const DEV_MOVIES = [
     backdropUrl:
       "https://image.tmdb.org/t/p/w1280/qskzmLTbarKnXDbo2HRj4NJ3vcW.jpg",
     trailerUrl: "https://www.youtube.com/watch?v=qvsgGtivCgs",
-    votes: 22140,
-    score: 8.3,
+    votes: 0,
+    score: 0,
     languageCode: "en",
     genres: ["Adventure", "Comedy", "Science Fiction"]
   },
@@ -484,8 +484,8 @@ const DEV_MOVIES = [
     backdropUrl:
       "https://image.tmdb.org/t/p/w1280/ilRyazdMJwN05exqhwK4tMKBYZs.jpg",
     trailerUrl: "https://www.youtube.com/watch?v=gCcx85zbxz4",
-    votes: 12890,
-    score: 8.0,
+    votes: 0,
+    score: 0,
     languageCode: "en",
     genres: ["Science Fiction", "Drama", "Mystery"]
   },
@@ -506,8 +506,8 @@ const DEV_MOVIES = [
     backdropUrl:
       "https://image.tmdb.org/t/p/w1280/nlPCdZlHtRNcF6C9hzUH4ebmV1w.jpg",
     trailerUrl: "https://www.youtube.com/watch?v=0pdqf4P9MB8",
-    votes: 15670,
-    score: 8.0,
+    votes: 0,
+    score: 0,
     languageCode: "en",
     genres: ["Drama", "Music", "Romance"]
   },
@@ -528,8 +528,8 @@ const DEV_MOVIES = [
     backdropUrl:
       "https://image.tmdb.org/t/p/w1280/fm6KqXpk3M2HVveHwCrBSSBaO0V.jpg",
     trailerUrl: "https://www.youtube.com/watch?v=uYPbbksJxIg",
-    votes: 9210,
-    score: 8.2,
+    votes: 0,
+    score: 0,
     languageCode: "en",
     genres: ["Drama", "History"]
   },
@@ -550,8 +550,8 @@ const DEV_MOVIES = [
     backdropUrl:
       "https://image.tmdb.org/t/p/w1280/ss0Os3uWJfQAENILHZUdX8Tt1OC.jpg",
     trailerUrl: "https://www.youtube.com/watch?v=wxN1T1uxQ2g",
-    votes: 8760,
-    score: 8.1,
+    votes: 0,
+    score: 0,
     languageCode: "en",
     genres: ["Action", "Adventure", "Science Fiction", "Comedy"]
   },
@@ -572,8 +572,8 @@ const DEV_MOVIES = [
     backdropUrl:
       "https://image.tmdb.org/t/p/w1280/6n53UI4mX9QMfe2S0Pgt8mGebY1.jpg",
     trailerUrl: "https://www.youtube.com/watch?v=HkBZAJim7r0",
-    votes: 14320,
-    score: 8.3,
+    votes: 0,
+    score: 0,
     languageCode: "fr",
     genres: ["Comedy", "Romance"]
   },
@@ -595,8 +595,8 @@ const DEV_MOVIES = [
     backdropUrl:
       "https://image.tmdb.org/t/p/w1280/qvZ91FwMq6O47VViAr8vZNQz3WI.jpg",
     trailerUrl: "https://www.youtube.com/watch?v=FIFIutfajFU",
-    votes: 9120,
-    score: 8.2,
+    votes: 0,
+    score: 0,
     languageCode: "ja",
     genres: ["Action", "Adventure", "Drama"]
   },
@@ -617,8 +617,8 @@ const DEV_MOVIES = [
     backdropUrl:
       "https://image.tmdb.org/t/p/w1280/6G6nqSW9S7EHA9HrYl0Z8uo2H7f.jpg",
     trailerUrl: "https://www.youtube.com/watch?v=DFElnxfDaGs",
-    votes: 11230,
-    score: 8.2,
+    votes: 0,
+    score: 0,
     languageCode: "es",
     genres: ["Drama", "Fantasy", "Thriller"]
   }
