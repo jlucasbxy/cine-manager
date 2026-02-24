@@ -19,14 +19,12 @@ export class ListMovies {
       currentUserId: userId
     });
     const result = await this.movieRepository.findAll(query);
-    const total = result.total.toNumber();
     return {
       data: result.items.map((m) => MovieMapper.toDTO(m)),
       meta: {
-        page: input.page,
-        perPage: input.perPage,
-        totalItems: total,
-        totalPages: Math.ceil(total / input.perPage)
+        limit: input.limit,
+        nextCursor: result.nextCursor,
+        hasNextPage: result.hasNextPage
       }
     };
   }

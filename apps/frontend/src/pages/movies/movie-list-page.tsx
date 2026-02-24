@@ -35,7 +35,8 @@ function parseFilters(params: URLSearchParams): MovieFiltersState {
 export function MovieListPage() {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const page = Number(searchParams.get("page") ?? "1");
+  const cursor = searchParams.get("cursor") ?? undefined;
+  const [cursorStack, setCursorStack] = useState<Array<string | undefined>>([]);
   const urlSearch = searchParams.get("search") ?? "";
   const [searchInput, setSearchInput] = useState(urlSearch);
   const debouncedSearch = useDebounce(searchInput, 400);
@@ -64,8 +65,9 @@ export function MovieListPage() {
 
   useEffect(() => {
     if (debouncedSearch !== urlSearch) {
+      setCursorStack([]);
       updateParams(
-        { search: debouncedSearch || undefined, page: undefined },
+        { search: debouncedSearch || undefined, cursor: undefined },
         { replace: true }
       );
     }
@@ -76,6 +78,7 @@ export function MovieListPage() {
   };
 
   const handleFiltersChange = (newFilters: MovieFiltersState) => {
+    setCursorStack([]);
     setSearchParams((prev) => {
       const next = new URLSearchParams(prev);
       const scalars: Record<string, string | undefined> = {
@@ -85,7 +88,7 @@ export function MovieListPage() {
         status: newFilters.status,
         ageRating: newFilters.ageRating,
         onlyMine: newFilters.onlyMine ? "true" : undefined,
-        page: undefined
+        cursor: undefined
       };
       for (const [key, value] of Object.entries(scalars)) {
         if (value !== undefined && value !== "") next.set(key, value);
@@ -97,14 +100,23 @@ export function MovieListPage() {
     }, { replace: true });
   };
 
-  const handlePageChange = (newPage: number) => {
-    updateParams({ page: newPage === 1 ? undefined : String(newPage) });
+  const handleNext = () => {
+    setCursorStack((prev) => [...prev, cursor]);
+    updateParams({ cursor: data?.meta.nextCursor ?? undefined });
+  };
+
+  const handlePrev = () => {
+    setCursorStack((prev) => {
+      const next = prev.slice(0, -1);
+      updateParams({ cursor: prev.at(-1) });
+      return next;
+    });
   };
 
   const queryFilters = useMemo(
     () => ({
-      page,
-      perPage: 10,
+      cursor,
+      limit: 10,
       runtime: filters.runtime,
       releaseDateStart: filters.releaseDateStart,
       releaseDateEnd: filters.releaseDateEnd,
@@ -114,7 +126,7 @@ export function MovieListPage() {
       onlyMine: filters.onlyMine,
       genreIds: filters.genreIds
     }),
-    [page, filters, debouncedSearch]
+    [cursor, filters, debouncedSearch]
   );
 
   const { data, isLoading } = useMovies(queryFilters);
@@ -172,9 +184,10 @@ export function MovieListPage() {
           <MovieGrid movies={filteredMovies} />
           {data?.meta && (
             <MoviePagination
-              page={data.meta.page}
-              totalPages={data.meta.totalPages}
-              onPageChange={handlePageChange}
+              hasNextPage={data.meta.hasNextPage}
+              hasPrevPage={cursorStack.length > 0}
+              onNext={handleNext}
+              onPrev={handlePrev}
             />
           )}
         </>

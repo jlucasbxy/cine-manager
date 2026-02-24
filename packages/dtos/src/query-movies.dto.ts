@@ -4,8 +4,8 @@ export interface QueryMoviesDTO {
   runtime?: number;
   releaseDateStart?: string;
   releaseDateEnd?: string;
-  page: number;
-  perPage: number;
+  cursor?: string;
+  limit: number;
   status?: MovieStatus;
   ageRating?: AgeRating;
   search?: string;
@@ -16,9 +16,8 @@ export interface QueryMoviesDTO {
 export interface PaginatedResultDTO<T> {
   data: T[];
   meta: {
-    page: number;
-    perPage: number;
-    totalItems: number;
-    totalPages: number;
+    limit: number;
+    nextCursor: string | null;
+    hasNextPage: boolean;
   };
 }

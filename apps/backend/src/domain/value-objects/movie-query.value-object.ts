@@ -9,8 +9,8 @@ type MovieQueryProps = {
   runtime?: number;
   releaseDateStart?: string;
   releaseDateEnd?: string;
-  page: number;
-  perPage: number;
+  cursor?: string;
+  limit: number;
   status?: MovieStatusEnum;
   ageRating?: AgeRatingEnum;
   search?: string;
@@ -24,8 +24,8 @@ const movieQuerySchema = z
     runtime: z.int().nonnegative().optional(),
     releaseDateStart: z.coerce.date().optional(),
     releaseDateEnd: z.coerce.date().optional(),
-    page: z.int().nonnegative(),
-    perPage: z.int().nonnegative(),
+    cursor: z.string().uuid().optional(),
+    limit: z.int().nonnegative(),
     status: z.enum(MovieStatusEnum).optional(),
     ageRating: z.enum(AgeRatingEnum).optional(),
     search: z.string().min(1).optional(),
@@ -47,8 +47,8 @@ export class MovieQuery {
   readonly runtime?: NonNegativeInt;
   readonly releaseDateStart?: Date;
   readonly releaseDateEnd?: Date;
-  readonly page: NonNegativeInt;
-  readonly perPage: NonNegativeInt;
+  readonly cursor?: Uuid;
+  readonly limit: NonNegativeInt;
   readonly status?: MovieStatusEnum;
   readonly ageRating?: AgeRatingEnum;
   readonly search?: string;
@@ -57,9 +57,9 @@ export class MovieQuery {
   readonly currentUserId: Uuid;
 
   private constructor(
-    page: NonNegativeInt,
-    perPage: NonNegativeInt,
+    limit: NonNegativeInt,
     currentUserId: Uuid,
+    cursor?: Uuid,
     runtime?: NonNegativeInt,
     releaseDateStart?: Date,
     releaseDateEnd?: Date,
@@ -72,8 +72,8 @@ export class MovieQuery {
     this.runtime = runtime;
     this.releaseDateStart = releaseDateStart;
     this.releaseDateEnd = releaseDateEnd;
-    this.page = page;
-    this.perPage = perPage;
+    this.cursor = cursor;
+    this.limit = limit;
     this.status = status;
     this.ageRating = ageRating;
     this.search = search;
@@ -88,9 +88,9 @@ export class MovieQuery {
       throw new InvalidMovieQueryError(r.error.issues[0].message);
     }
     return new MovieQuery(
-      NonNegativeInt.create(r.data.page),
-      NonNegativeInt.create(r.data.perPage),
+      NonNegativeInt.create(r.data.limit),
       Uuid.create(r.data.currentUserId),
+      r.data.cursor !== undefined ? Uuid.create(r.data.cursor) : undefined,
       r.data.runtime !== undefined
         ? NonNegativeInt.create(r.data.runtime)
         : undefined,

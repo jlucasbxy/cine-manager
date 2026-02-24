@@ -90,7 +90,7 @@ export class PrismaMovieRepository implements MovieRepository {
            OR title ILIKE ${'%' + query.search + '%'}
       `;
       if (matchingIds.length === 0) {
-        return PaginatedResult.create([], 0);
+        return PaginatedResult.create([], null, false);
       }
       where.id = { in: matchingIds.map(r => r.id) };
     }
@@ -104,20 +104,32 @@ export class PrismaMovieRepository implements MovieRepository {
       { OR: [{ isPublic: true }, { userId: query.currentUserId.toString() }] }
     ];
 
-    const [rawList, total] = await Promise.all([
-      this.db.movie.findMany({
-        where,
-        orderBy: { id: "desc" },
-        skip: (query.page.toNumber() - 1) * query.perPage.toNumber(),
-        take: query.perPage.toNumber()
-      }),
-      this.db.movie.count({ where })
-    ]);
+    const limit = query.limit.toNumber();
+    const findManyArgs: Parameters<typeof this.db.movie.findMany>[0] = {
+      where,
+      orderBy: { id: "desc" },
+      take: limit + 1,
+      ...(query.cursor
+        ? { cursor: { id: query.cursor.toString() }, skip: 1 }
+        : {})
+    };
 
-    return PaginatedResult.create(
-      rawList.map(PrismaMovieMapper.toDomain),
-      total
-    );
+    try {
+      const rawList = await this.db.movie.findMany(findManyArgs);
+      const hasNextPage = rawList.length > limit;
+      const pageItems = hasNextPage ? rawList.slice(0, limit) : rawList;
+      const nextCursor = hasNextPage ? (pageItems.at(-1)?.id ?? null) : null;
+      return PaginatedResult.create(pageItems.map(PrismaMovieMapper.toDomain), nextCursor, hasNextPage);
+    } catch (error: unknown) {
+      if (
+        error instanceof Error &&
+        "code" in error &&
+        (error as { code: string }).code === "P2025"
+      ) {
+        return PaginatedResult.create([], null, false);
+      }
+      throw error;
+    }
   }
 
   async update(id: Uuid, data: UpdateMovieData): Promise<Movie | null> {
