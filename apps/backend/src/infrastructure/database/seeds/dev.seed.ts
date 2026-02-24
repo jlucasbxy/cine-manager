@@ -700,5 +700,53 @@ export async function seedDev() {
   }
   console.log(`Seeded ${movieCount} dev movies`);
 
+  // Seed ratings — one per user per movie
+  const movies = await prisma.movie.findMany({ select: { id: true } });
+  let ratingCount = 0;
+
+  for (const movie of movies) {
+    const values: number[] = [];
+
+    for (const userId of userIds) {
+      const existing = await prisma.rating.findUnique({
+        where: { userId_movieId: { userId, movieId: movie.id } }
+      });
+      if (existing) continue;
+
+      const value = Math.floor(Math.random() * 10) + 1;
+      await prisma.rating.create({
+        data: {
+          id: uuidv7(),
+          userId,
+          movieId: movie.id,
+          value,
+          createdAt: now,
+          updatedAt: now
+        }
+      });
+      values.push(value);
+      ratingCount++;
+    }
+
+    if (values.length > 0) {
+      const allRatings = await prisma.rating.findMany({
+        where: { movieId: movie.id },
+        select: { value: true }
+      });
+      const count = allRatings.length;
+      const average =
+        allRatings.reduce((sum, r) => sum + r.value, 0) / count;
+      await prisma.movie.update({
+        where: { id: movie.id },
+        data: {
+          votes: count,
+          score: Math.round(average * 10) / 10
+        }
+      });
+    }
+  }
+
+  console.log(`Seeded ${ratingCount} dev ratings`);
+
   await prisma.$disconnect();
 }
