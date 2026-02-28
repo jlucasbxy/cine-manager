@@ -1,5 +1,15 @@
 import type { MovieDTO } from "@repo/dtos";
-import type { Movie } from "@/domain/entities";
+import { Movie } from "@/domain/entities";
+import type { AgeRatingEnum } from "@/domain/enums/age-rating.enum";
+import type { MovieStatusEnum } from "@/domain/enums/movie-status.enum";
+import {
+  AgeRating,
+  MovieStatus,
+  NonNegativeInt,
+  NonNegativeNumber,
+  Url,
+  Uuid
+} from "@/domain/value-objects";
 
 type MovieUserInfo = { id: string; name: string; avatarUrl: string | null };
 
@@ -29,5 +39,31 @@ export class MovieMapper {
       userId: movie.userId.toString(),
       user
     };
+  }
+
+  static fromDto(data: MovieDTO) {
+    return Movie.reconstitute({
+      id: Uuid.reconstitute(data.id),
+      title: data.title,
+      originalTitle: data.originalTitle,
+      tagline: data.tagline,
+      synopsis: data.synopsis,
+      releaseDate: new Date(data.releaseDate),
+      runtime: NonNegativeInt.reconstitute(data.runtime),
+      status: MovieStatus.reconstitute(data.status as MovieStatusEnum),
+      ageRating: AgeRating.reconstitute(data.ageRating as AgeRatingEnum),
+      languageId: Uuid.reconstitute(data.languageId),
+      budget: NonNegativeNumber.reconstitute(data.budget),
+      revenue: NonNegativeNumber.reconstitute(data.revenue),
+      posterUrl: Url.reconstitute(data.posterUrl),
+      backdropUrl: Url.reconstitute(data.backdropUrl),
+      trailerUrl: Url.reconstitute(data.trailerUrl),
+      votes: NonNegativeInt.reconstitute(data.votes),
+      score: NonNegativeNumber.reconstitute(data.score),
+      isPublic: data.isPublic,
+      createdAt: new Date(data.createdAt),
+      updatedAt: new Date(data.updatedAt),
+      userId: Uuid.reconstitute(data.userId)
+    });
   }
 }
