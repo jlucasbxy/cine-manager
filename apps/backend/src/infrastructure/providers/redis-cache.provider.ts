@@ -1,5 +1,10 @@
 import type Redis from "ioredis";
-import type { CacheProvider } from "@/application/interfaces/providers/cache-provider";
+import type {
+  CacheProvider,
+  HGetParams,
+  HSetParams,
+  SetParams
+} from "@/application/interfaces/providers/cache-provider";
 
 export class RedisCacheProvider implements CacheProvider {
   constructor(private readonly redis: Redis) {}
@@ -10,11 +15,11 @@ export class RedisCacheProvider implements CacheProvider {
     return JSON.parse(value) as T;
   }
 
-  async set<T = unknown>(
-    key: string,
-    value: T,
-    ttlSeconds?: number
-  ): Promise<void> {
+  async set<T = unknown>({
+    key,
+    value,
+    ttlSeconds
+  }: SetParams<T>): Promise<void> {
     const serialized = JSON.stringify(value);
     if (ttlSeconds) {
       await this.redis.set(key, serialized, "EX", ttlSeconds);
@@ -23,18 +28,18 @@ export class RedisCacheProvider implements CacheProvider {
     }
   }
 
-  async hget<T = unknown>(key: string, field: string): Promise<T | null> {
+  async hget<T = unknown>({ key, field }: HGetParams): Promise<T | null> {
     const value = await this.redis.hget(key, field);
     if (value === null) return null;
     return JSON.parse(value) as T;
   }
 
-  async hset<T = unknown>(
-    key: string,
-    field: string,
-    value: T,
-    ttlSeconds?: number
-  ): Promise<void> {
+  async hset<T = unknown>({
+    key,
+    field,
+    value,
+    ttlSeconds
+  }: HSetParams<T>): Promise<void> {
     if (ttlSeconds) {
       await this.redis
         .multi()

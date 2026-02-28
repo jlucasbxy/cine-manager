@@ -22,7 +22,7 @@ export class CachedMovieRepository implements MovieRepository {
   ): Promise<MovieWithUser | null> {
     const key = `movie:${id}`;
     const field = userId.toString();
-    const cached = await this.cache.hget<MovieWithUser>(key, field);
+    const cached = await this.cache.hget<MovieWithUser>({ key, field });
     if (cached) return cached;
 
     const result = await this.inner.findPublicOrOwnedByIdWithCreator(
@@ -30,22 +30,21 @@ export class CachedMovieRepository implements MovieRepository {
       userId
     );
     if (result) {
-      await this.cache.hset(key, field, result);
-      await this.cache.setExpire(key, DEFAULT_TTL);
+      await this.cache.hset({ key, field, value: result, ttlSeconds: DEFAULT_TTL });
     }
     return result;
   }
 
   async findAll(query: MovieQuery): Promise<PaginatedResult<Movie>> {
     const field = this.serializeQuery(query);
-    const cached = await this.cache.hget<PaginatedResult<Movie>>(
-      MOVIES_LIST_KEY,
+    const cached = await this.cache.hget<PaginatedResult<Movie>>({
+      key: MOVIES_LIST_KEY,
       field
-    );
+    });
     if (cached) return cached;
 
     const result = await this.inner.findAll(query);
-    await this.cache.hset(MOVIES_LIST_KEY, field, result, DEFAULT_TTL);
+    await this.cache.hset({ key: MOVIES_LIST_KEY, field, value: result, ttlSeconds: DEFAULT_TTL });
     return result;
   }
 
