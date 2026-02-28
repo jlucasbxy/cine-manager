@@ -30,9 +30,8 @@ import { makeAuthMiddleware } from "@/main/factories/middlewares";
 import { makeRedisClient } from "@/main/factories/redis";
 
 export async function start() {
-  const isDev = process.env.NODE_ENV !== "production";
   const app = Fastify({
-    logger: isDev
+    logger: env.IS_DEVELOPMENT
       ? {
           transport: {
             target: "pino-pretty",
@@ -42,7 +41,7 @@ export async function start() {
       : true
   });
 
-  if (env.ENABLE_DOCS) {
+  if (!env.IS_PRODUCTION && env.ENABLE_DOCS) {
     await app.register(swagger, {
       mode: "static",
       specification: {
