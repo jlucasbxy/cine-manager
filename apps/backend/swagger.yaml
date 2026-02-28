@@ -1,0 +1,876 @@
+openapi: 3.0.3
+info:
+  title: Cine Manager API
+  description: API for managing movies, lists, and ratings.
+  version: 1.0.0
+servers:
+  - url: /api/v1
+    description: v1 API server
+tags:
+  - name: Auth
+    description: Authentication and password management
+  - name: Users
+    description: User profile and registration
+  - name: Movies
+    description: Movie management and discovery
+  - name: Lists
+    description: Movie lists management
+  - name: Genres
+    description: Movie genres
+  - name: Languages
+    description: Movie languages
+  - name: Uploads
+    description: Image uploads management
+
+paths:
+  /auth/login:
+    post:
+      tags:
+        - Auth
+      summary: Login
+      operationId: login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginDTO'
+      responses:
+        '200':
+          description: Successfully logged in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /auth/logout:
+    post:
+      tags:
+        - Auth
+      summary: Logout
+      operationId: logout
+      responses:
+        '204':
+          description: Successfully logged out
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /auth/refresh:
+    post:
+      tags:
+        - Auth
+      summary: Refresh tokens
+      operationId: refreshTokens
+      responses:
+        '200':
+          description: Tokens refreshed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /auth/password-reset/request:
+    post:
+      tags:
+        - Auth
+      summary: Request password reset
+      operationId: requestPasswordReset
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestPasswordResetDTO'
+      responses:
+        '204':
+          description: Password reset requested
+
+  /auth/password-reset/reset:
+    post:
+      tags:
+        - Auth
+      summary: Reset password
+      operationId: resetPassword
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResetPasswordDTO'
+      responses:
+        '204':
+          description: Password reset successful
+
+  /users:
+    post:
+      tags:
+        - Users
+      summary: Create user
+      operationId: createUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserDTO'
+      responses:
+        '201':
+          description: User created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDTO'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+
+  /users/me:
+    get:
+      tags:
+        - Users
+      summary: Get current user
+      operationId: getMe
+      security:
+        - cookieAuth: []
+      responses:
+        '200':
+          description: Current user info
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDTO'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /users/patch: # Wait, looking at user.routes.ts, it's patch "/" under /users
+    patch:
+      tags:
+        - Users
+      summary: Update user
+      operationId: updateUser
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserDTO'
+      responses:
+        '200':
+          description: User updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDTO'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /movies:
+    get:
+      tags:
+        - Movies
+      summary: List movies
+      operationId: listMovies
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 10
+        - name: query
+          in: query
+          schema:
+            type: string
+        - name: genreId
+          in: query
+          schema:
+            type: string
+        - name: languageId
+          in: query
+          schema:
+            type: string
+        - name: sortBy
+          in: query
+          schema:
+            type: string
+            enum: [createdAt, releaseDate, score, votes]
+            default: createdAt
+        - name: order
+          in: query
+          schema:
+            type: string
+            enum: [asc, desc]
+            default: desc
+      responses:
+        '200':
+          description: List of movies
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/MovieDTO'
+                  total:
+                    type: integer
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      tags:
+        - Movies
+      summary: Create movie
+      operationId: createMovie
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateMovieDTO'
+      responses:
+        '201':
+          description: Movie created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MovieDTO'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /movies/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    get:
+      tags:
+        - Movies
+      summary: Get movie by id
+      operationId: getMovie
+      responses:
+        '200':
+          description: Movie found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MovieDTO'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      tags:
+        - Movies
+      summary: Update movie
+      operationId: updateMovie
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateMovieDTO'
+      responses:
+        '200':
+          description: Movie updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MovieDTO'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      tags:
+        - Movies
+      summary: Delete movie
+      operationId: deleteMovie
+      security:
+        - cookieAuth: []
+      responses:
+        '204':
+          description: Movie deleted
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /movies/{id}/rate:
+    post:
+      tags:
+        - Movies
+      summary: Rate movie
+      operationId: rateMovie
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RateMovieDTO'
+      responses:
+        '204':
+          description: Movie rated
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /genres:
+    get:
+      tags:
+        - Genres
+      summary: List genres
+      operationId: listGenres
+      security:
+        - cookieAuth: []
+      responses:
+        '200':
+          description: List of genres
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GenreDTO'
+
+  /languages:
+    get:
+      tags:
+        - Languages
+      summary: List languages
+      operationId: listLanguages
+      security:
+        - cookieAuth: []
+      responses:
+        '200':
+          description: List of languages
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LanguageDTO'
+
+  /lists:
+    get:
+      tags:
+        - Lists
+      summary: List movie lists
+      operationId: getLists
+      security:
+        - cookieAuth: []
+      responses:
+        '200':
+          description: List of movie lists
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MovieListDTO'
+    post:
+      tags:
+        - Lists
+      summary: Create movie list
+      operationId: createList
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateMovieListDTO'
+      responses:
+        '201':
+          description: Movie list created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MovieListDTO'
+
+  /lists/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    get:
+      tags:
+        - Lists
+      summary: Get movie list by id
+      operationId: getList
+      security:
+        - cookieAuth: []
+      responses:
+        '200':
+          description: Movie list found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MovieListDTO'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      tags:
+        - Lists
+      summary: Update movie list
+      operationId: updateList
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateMovieListDTO'
+      responses:
+        '200':
+          description: Movie list updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MovieListDTO'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      tags:
+        - Lists
+      summary: Delete movie list
+      operationId: deleteList
+      security:
+        - cookieAuth: []
+      responses:
+        '204':
+          description: Movie list deleted
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /lists/{id}/movies:
+    post:
+      tags:
+        - Lists
+      summary: Add movie to list
+      operationId: addMovieToList
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddMovieToListDTO'
+      responses:
+        '204':
+          description: Movie added to list
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /lists/{id}/movies/{movieId}:
+    delete:
+      tags:
+        - Lists
+      summary: Remove movie from list
+      operationId: removeMovieFromList
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: movieId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Movie removed from list
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /uploads/signed-url:
+    post:
+      tags:
+        - Uploads
+      summary: Generate upload URL
+      operationId: generateUploadUrl
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GenerateUploadUrlDTO'
+      responses:
+        '200':
+          description: Upload URL generated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uploadUrl:
+                    type: string
+                  fileKey:
+                    type: string
+
+components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: accessToken
+  schemas:
+    LoginDTO:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+    AuthResponse:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/UserDTO'
+    RequestPasswordResetDTO:
+      type: object
+      required:
+        - email
+      properties:
+        email:
+          type: string
+          format: email
+    ResetPasswordDTO:
+      type: object
+      required:
+        - token
+        - password
+      properties:
+        token:
+          type: string
+        password:
+          type: string
+    CreateUserDTO:
+      type: object
+      required:
+        - name
+        - email
+        - password
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+    UpdateUserDTO:
+      type: object
+      properties:
+        name:
+          type: string
+        password:
+          type: string
+        avatarUrl:
+          type: string
+          nullable: true
+    UserDTO:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        avatarUrl:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    CreateMovieDTO:
+      type: object
+      required:
+        - title
+        - releaseDate
+        - languageId
+      properties:
+        title:
+          type: string
+        originalTitle:
+          type: string
+        tagline:
+          type: string
+        synopsis:
+          type: string
+        releaseDate:
+          type: string
+          format: date
+        runtime:
+          type: integer
+        status:
+          type: string
+        ageRating:
+          type: string
+        languageId:
+          type: string
+        budget:
+          type: number
+        revenue:
+          type: number
+        posterUrl:
+          type: string
+        backdropUrl:
+          type: string
+        trailerUrl:
+          type: string
+        genres:
+          type: array
+          items:
+            type: string
+        isPublic:
+          type: boolean
+    UpdateMovieDTO:
+      type: object
+      properties:
+        title:
+          type: string
+        originalTitle:
+          type: string
+        tagline:
+          type: string
+        synopsis:
+          type: string
+        releaseDate:
+          type: string
+          format: date
+        runtime:
+          type: integer
+        status:
+          type: string
+        ageRating:
+          type: string
+        languageId:
+          type: string
+        budget:
+          type: number
+        revenue:
+          type: number
+        posterUrl:
+          type: string
+        backdropUrl:
+          type: string
+        trailerUrl:
+          type: string
+        genres:
+          type: array
+          items:
+            type: string
+        isPublic:
+          type: boolean
+    MovieDTO:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        originalTitle:
+          type: string
+        tagline:
+          type: string
+        synopsis:
+          type: string
+        releaseDate:
+          type: string
+        runtime:
+          type: integer
+        status:
+          type: string
+        ageRating:
+          type: string
+        languageId:
+          type: string
+        budget:
+          type: number
+        revenue:
+          type: number
+        posterUrl:
+          type: string
+        backdropUrl:
+          type: string
+        trailerUrl:
+          type: string
+        votes:
+          type: integer
+        score:
+          type: number
+        isPublic:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        userId:
+          type: string
+          format: uuid
+        user:
+          type: object
+          properties:
+            id:
+              type: string
+            name:
+              type: string
+            avatarUrl:
+              type: string
+              nullable: true
+    RateMovieDTO:
+      type: object
+      required:
+        - score
+      properties:
+        score:
+          type: number
+          minimum: 0
+          maximum: 10
+    GenreDTO:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+    LanguageDTO:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+    MovieListDTO:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        isPublic:
+          boolean: true
+        userId:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+    CreateMovieListDTO:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        isPublic:
+          type: boolean
+    UpdateMovieListDTO:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+    AddMovieToListDTO:
+      type: object
+      required:
+        - movieId
+      properties:
+        movieId:
+          type: string
+          format: uuid
+    GenerateUploadUrlDTO:
+      type: object
+      required:
+        - fileName
+        - contentType
+      properties:
+        fileName:
+          type: string
+        contentType:
+          type: string
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+
+  responses:
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    ValidationError:
+      description: Validation error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
