@@ -6,16 +6,9 @@ import type {
 } from "@/application/interfaces/repositories/movie-repository";
 import type { MovieWithUser } from "@/application/read-models";
 import { Movie } from "@/domain/entities";
-import { AgeRatingEnum } from "@/domain/enums/age-rating.enum";
-import { MovieStatusEnum } from "@/domain/enums/movie-status.enum";
 import { type MovieQuery, PaginatedResult, Uuid } from "@/domain/value-objects";
 import { MovieMapper } from "@/application/mappers";
-
-const movieStatusValues = Object.values(MovieStatusEnum) as [
-  string,
-  ...string[]
-];
-const ageRatingValues = Object.values(AgeRatingEnum) as [string, ...string[]];
+import { ageRatingSchema, movieStatusSchema } from "@repo/validators";
 
 const cachedMovieSchema = z.object({
   id: z.string(),
@@ -25,8 +18,8 @@ const cachedMovieSchema = z.object({
   synopsis: z.string(),
   releaseDate: z.string(),
   runtime: z.number().int().nonnegative(),
-  status: z.enum(movieStatusValues),
-  ageRating: z.enum(ageRatingValues),
+  status: movieStatusSchema,
+  ageRating: ageRatingSchema,
   languageId: z.string(),
   budget: z.number().nonnegative(),
   revenue: z.number().nonnegative(),
