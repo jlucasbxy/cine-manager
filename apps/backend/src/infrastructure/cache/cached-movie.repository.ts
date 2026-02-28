@@ -8,16 +8,7 @@ import type { MovieWithUser } from "@/application/read-models";
 import { Movie } from "@/domain/entities";
 import { AgeRatingEnum } from "@/domain/enums/age-rating.enum";
 import { MovieStatusEnum } from "@/domain/enums/movie-status.enum";
-import {
-  type MovieQuery,
-  NonNegativeInt,
-  NonNegativeNumber,
-  PaginatedResult,
-  Url,
-  Uuid
-} from "@/domain/value-objects";
-import { AgeRating } from "@/domain/value-objects/age-rating.value-object";
-import { MovieStatus } from "@/domain/value-objects/movie-status.value-object";
+import { type MovieQuery, PaginatedResult, Uuid } from "@/domain/value-objects";
 import { MovieMapper } from "@/application/mappers";
 
 const movieStatusValues = Object.values(MovieStatusEnum) as [
@@ -67,34 +58,6 @@ const cachedPaginatedMovieSchema = z.object({
   hasNextPage: z.boolean()
 });
 
-type CachedMovie = z.infer<typeof cachedMovieSchema>;
-
-function cacheToMovie(data: CachedMovie): Movie {
-  return Movie.reconstitute({
-    id: Uuid.reconstitute(data.id),
-    title: data.title,
-    originalTitle: data.originalTitle,
-    tagline: data.tagline,
-    synopsis: data.synopsis,
-    releaseDate: new Date(data.releaseDate),
-    runtime: NonNegativeInt.reconstitute(data.runtime),
-    status: MovieStatus.reconstitute(data.status as MovieStatusEnum),
-    ageRating: AgeRating.reconstitute(data.ageRating as AgeRatingEnum),
-    languageId: Uuid.reconstitute(data.languageId),
-    budget: NonNegativeNumber.reconstitute(data.budget),
-    revenue: NonNegativeNumber.reconstitute(data.revenue),
-    posterUrl: Url.reconstitute(data.posterUrl),
-    backdropUrl: Url.reconstitute(data.backdropUrl),
-    trailerUrl: Url.reconstitute(data.trailerUrl),
-    votes: NonNegativeInt.reconstitute(data.votes),
-    score: NonNegativeNumber.reconstitute(data.score),
-    isPublic: data.isPublic,
-    createdAt: new Date(data.createdAt),
-    updatedAt: new Date(data.updatedAt),
-    userId: Uuid.reconstitute(data.userId)
-  });
-}
-
 const MOVIES_LIST_KEY = "movies:list";
 const DEFAULT_TTL = 300;
 
@@ -114,7 +77,7 @@ export class CachedMovieRepository implements MovieRepository {
     const parsed = cachedMovieWithUserSchema.safeParse(raw);
     if (parsed.success) {
       return {
-        movie: cacheToMovie(parsed.data.movie),
+        movie: MovieMapper.fromDto(parsed.data.movie),
         user: parsed.data.user
       };
     }
@@ -143,7 +106,7 @@ export class CachedMovieRepository implements MovieRepository {
     const parsed = cachedPaginatedMovieSchema.safeParse(raw);
     if (parsed.success) {
       return PaginatedResult.create(
-        parsed.data.items.map(cacheToMovie),
+        parsed.data.items.map((movie) => MovieMapper.fromDto(movie)),
         parsed.data.nextCursor,
         parsed.data.hasNextPage
       );
