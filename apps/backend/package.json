@@ -3,15 +3,15 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "tsx watch src/main/index.ts server",
-    "dev:worker": "tsx watch src/main/index.ts worker",
+    "dev": "cross-env NODE_ENV=development tsx watch src/main/index.ts server",
+    "dev:worker": "cross-env NODE_ENV=development tsx watch src/main/index.ts worker",
     "build": "tsc",
-    "start": "node dist/main/index.js server",
-    "start:worker": "node dist/main/index.js worker",
-    "seed": "tsx src/main/index.ts seed",
-    "seed:dev": "tsx src/main/index.ts seed:dev",
+    "start": "cross-env NODE_ENV=production node dist/main/index.js server",
+    "start:worker": "cross-env NODE_ENV=production node dist/main/index.js worker",
+    "seed": "cross-env NODE_ENV=production tsx src/main/index.ts seed",
+    "seed:dev": "cross-env NODE_ENV=development tsx src/main/index.ts seed:dev",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run"
+    "test": "cross-env NODE_ENV=test vitest run"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.986.0",
@@ -25,6 +25,7 @@
     "@repo/dtos": "*",
     "argon2": "^0.44.0",
     "bcrypt": "^6.0.0",
+    "cross-env": "^10.1.0",
     "dotenv": "^17.2.3",
     "fastify": "^5.3.3",
     "ioredis": "^5.9.2",
