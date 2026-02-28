@@ -1,4 +1,4 @@
-import { RatingValue } from "@/domain/value-objects/rating-value.value-object";
+import type { RatingValue } from "@/domain/value-objects/rating-value.value-object";
 import { Uuid } from "@/domain/value-objects/uuid.value-object";
 
 interface CreateRatingProps {

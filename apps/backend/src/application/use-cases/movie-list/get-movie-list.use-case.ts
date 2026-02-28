@@ -1,6 +1,6 @@
 import type { MovieListDTO } from "@repo/dtos";
-import { MovieListMapper } from "@/application/mappers/movie-list.mapper";
 import type { MovieListRepository } from "@/application/interfaces/repositories";
+import { MovieListMapper } from "@/application/mappers/movie-list.mapper";
 import { UnauthorizedError } from "@/domain/errors";
 import { Uuid } from "@/domain/value-objects";
 
@@ -11,7 +11,10 @@ export class GetMovieList {
     const listUuid = Uuid.create(id);
     const userUuid = Uuid.create(userId);
 
-    const list = await this.movieListRepository.findByIdAndUserIdWithMovies(listUuid, userUuid);
+    const list = await this.movieListRepository.findByIdAndUserIdWithMovies(
+      listUuid,
+      userUuid
+    );
     if (!list) throw new UnauthorizedError();
 
     return MovieListMapper.toDTOWithMovies(list);

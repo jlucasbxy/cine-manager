@@ -36,7 +36,11 @@ export class MovieListController {
   async updateList(request: FastifyRequest, reply: FastifyReply) {
     const id = this.idValidator.parse(request.params);
     const data = this.updateMovieListValidator.parse(request.body);
-    const list = await this.movieListService.updateList(id, request.userId, data);
+    const list = await this.movieListService.updateList(
+      id,
+      request.userId,
+      data
+    );
     return reply.status(200).send(list);
   }
 

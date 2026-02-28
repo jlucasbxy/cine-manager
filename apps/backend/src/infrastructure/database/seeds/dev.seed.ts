@@ -734,8 +734,7 @@ export async function seedDev() {
         select: { value: true }
       });
       const count = allRatings.length;
-      const average =
-        allRatings.reduce((sum, r) => sum + r.value, 0) / count;
+      const average = allRatings.reduce((sum, r) => sum + r.value, 0) / count;
       await prisma.movie.update({
         where: { id: movie.id },
         data: {

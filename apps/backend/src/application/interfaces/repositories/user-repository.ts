@@ -1,10 +1,10 @@
-import { User } from "@/domain/entities";
-import { Email, Uuid } from "@/domain/value-objects";
-import { Pick } from "@prisma/client/runtime/client";
+import type { Pick } from "@prisma/client/runtime/client";
+import type { User } from "@/domain/entities";
+import type { Email, Uuid } from "@/domain/value-objects";
 
-export type UpdateUserData = Partial<Pick<User, "name" | "password">> &
-  { avatarUrl?: string | null } &
-  Pick<User, "updatedAt">;
+export type UpdateUserData = Partial<Pick<User, "name" | "password">> & {
+  avatarUrl?: string | null;
+} & Pick<User, "updatedAt">;
 
 export interface UserRepository {
   create(user: User): Promise<User | null>;

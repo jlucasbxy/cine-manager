@@ -2,7 +2,6 @@ import { format } from "date-fns";
 import { useState } from "react";
 import { toast } from "sonner";
 import { ProfileForm } from "@/components/profile/profile-form";
-import { getSignedUrl, uploadFile } from "@/services/upload.service";
 import {
   Card,
   CardContent,
@@ -12,6 +11,7 @@ import {
 } from "@/components/ui/card";
 import { useAuth } from "@/hooks/use-auth";
 import type { ProfileFormData } from "@/lib/schemas";
+import { getSignedUrl, uploadFile } from "@/services/upload.service";
 
 export function ProfilePage() {
   const { user, updateUser } = useAuth();
@@ -31,12 +31,19 @@ export function ProfilePage() {
   ) => {
     setIsSubmitting(true);
     try {
-      const updateData: { name?: string; password?: string; avatarUrl?: string | null } = {};
+      const updateData: {
+        name?: string;
+        password?: string;
+        avatarUrl?: string | null;
+      } = {};
       if (data.name !== user?.name) updateData.name = data.name;
       if (data.password) updateData.password = data.password;
 
       if (pendingFile) {
-        const { uploadUrl, fileUrl } = await getSignedUrl(pendingFile.name, pendingFile.type);
+        const { uploadUrl, fileUrl } = await getSignedUrl(
+          pendingFile.name,
+          pendingFile.type
+        );
         await uploadFile(uploadUrl, pendingFile);
         updateData.avatarUrl = fileUrl;
       } else if (avatarRemoved) {

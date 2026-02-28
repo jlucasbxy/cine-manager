@@ -1,6 +1,6 @@
-import { Movie } from "@/domain/entities";
-import { Uuid, MovieQuery, PaginatedResult } from "@/domain/value-objects";
 import type { MovieWithUser } from "@/application/read-models";
+import type { Movie } from "@/domain/entities";
+import type { MovieQuery, PaginatedResult, Uuid } from "@/domain/value-objects";
 
 export type UpdateMovieData = Partial<
   Omit<Movie, "id" | "createdAt" | "updatedAt">

@@ -4,8 +4,10 @@ import type {
 } from "@/application/interfaces/repositories";
 import type { MovieList } from "@/domain/entities";
 import type { Uuid } from "@/domain/value-objects";
-import { PrismaMovieListMapper } from "@/infrastructure/database/mappers";
-import { PrismaMovieMapper } from "@/infrastructure/database/mappers";
+import {
+  PrismaMovieListMapper,
+  PrismaMovieMapper
+} from "@/infrastructure/database/mappers";
 import type { PrismaDatabase } from "@/infrastructure/database/prisma";
 
 export class PrismaMovieListRepository implements MovieListRepository {
@@ -86,7 +88,7 @@ export class PrismaMovieListRepository implements MovieListRepository {
     listId: Uuid,
     userId: Uuid,
     movieId: Uuid
-  ): Promise<'ok' | 'list_not_found' | 'movie_not_found'> {
+  ): Promise<"ok" | "list_not_found" | "movie_not_found"> {
     try {
       await this.db.movieList.update({
         where: { id: listId.toString(), userId: userId.toString() },
@@ -95,7 +97,7 @@ export class PrismaMovieListRepository implements MovieListRepository {
           updatedAt: new Date()
         }
       });
-      return 'ok';
+      return "ok";
     } catch (error: unknown) {
       if (
         error instanceof Error &&
@@ -103,11 +105,11 @@ export class PrismaMovieListRepository implements MovieListRepository {
         (error as { code: string }).code === "P2025"
       ) {
         const meta = (error as { meta?: { cause?: string } }).meta;
-        const cause = meta?.cause ?? '';
-        if (cause.toLowerCase().includes('record to update not found')) {
-          return 'list_not_found';
+        const cause = meta?.cause ?? "";
+        if (cause.toLowerCase().includes("record to update not found")) {
+          return "list_not_found";
         }
-        return 'movie_not_found';
+        return "movie_not_found";
       }
       throw error;
     }

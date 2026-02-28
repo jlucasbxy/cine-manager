@@ -16,15 +16,11 @@ import { toast } from "sonner";
 import { AddToListButton } from "@/components/lists/add-to-list-button";
 import { MovieRating } from "@/components/movies/movie-rating";
 import { ConfirmDialog } from "@/components/shared/confirm-dialog";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage
-} from "@/components/ui/avatar";
 import { useAuth } from "@/hooks/use-auth";
 import { useDeleteMovie, useMovie } from "@/queries/use-movies";
 
@@ -145,7 +141,11 @@ export function MovieDetailPage() {
             </div>
           </div>
 
-          <MovieRating movieId={movie.id} score={movie.score} votes={movie.votes} />
+          <MovieRating
+            movieId={movie.id}
+            score={movie.score}
+            votes={movie.votes}
+          />
 
           <Separator />
 

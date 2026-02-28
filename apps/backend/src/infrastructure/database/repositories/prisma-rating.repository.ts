@@ -1,7 +1,7 @@
 import type { RatingRepository } from "@/application/interfaces/repositories";
 import type { Rating } from "@/domain/entities";
-import type { Uuid } from "@/domain/value-objects";
 import { Rating as RatingEntity } from "@/domain/entities/rating.entity";
+import type { Uuid } from "@/domain/value-objects";
 import { RatingValue } from "@/domain/value-objects/rating-value.value-object";
 import { Uuid as UuidVO } from "@/domain/value-objects/uuid.value-object";
 import type { PrismaDatabase } from "@/infrastructure/database/prisma";
@@ -54,7 +54,9 @@ export class PrismaRatingRepository implements RatingRepository {
     }
   }
 
-  async getAverageAndCount(movieId: Uuid): Promise<{ average: number; count: number }> {
+  async getAverageAndCount(
+    movieId: Uuid
+  ): Promise<{ average: number; count: number }> {
     const result = await this.db.rating.aggregate({
       where: { movieId: movieId.toString() },
       _avg: { value: true },

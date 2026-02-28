@@ -1,6 +1,6 @@
-import { Movie } from "@/domain/entities/movie.entity";
-import { MovieList } from "@/domain/entities/movie-list.entity";
-import { Uuid } from "@/domain/value-objects";
+import type { Movie } from "@/domain/entities/movie.entity";
+import type { MovieList } from "@/domain/entities/movie-list.entity";
+import type { Uuid } from "@/domain/value-objects";
 
 export interface MovieListWithMovies extends MovieList {
   movies: Movie[];
@@ -19,6 +19,14 @@ export interface MovieListRepository {
     name: string
   ): Promise<MovieList | null>;
   deleteByIdAndUserId(id: Uuid, userId: Uuid): Promise<boolean>;
-  addMovie(listId: Uuid, userId: Uuid, movieId: Uuid): Promise<'ok' | 'list_not_found' | 'movie_not_found'>;
-  removeMovieByListIdAndMovieId(listId: Uuid, userId: Uuid, movieId: Uuid): Promise<boolean>;
+  addMovie(
+    listId: Uuid,
+    userId: Uuid,
+    movieId: Uuid
+  ): Promise<"ok" | "list_not_found" | "movie_not_found">;
+  removeMovieByListIdAndMovieId(
+    listId: Uuid,
+    userId: Uuid,
+    movieId: Uuid
+  ): Promise<boolean>;
 }

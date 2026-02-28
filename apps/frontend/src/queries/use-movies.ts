@@ -59,7 +59,10 @@ export function useRateMovie() {
     mutationFn: ({ id, value }: { id: string; value: number }) =>
       movieService.rateMovie(id, value),
     onSuccess: (updatedMovie) => {
-      queryClient.setQueryData(queryKeys.movies.detail(updatedMovie.id), updatedMovie);
+      queryClient.setQueryData(
+        queryKeys.movies.detail(updatedMovie.id),
+        updatedMovie
+      );
       queryClient.invalidateQueries({ queryKey: queryKeys.movies.all });
     }
   });

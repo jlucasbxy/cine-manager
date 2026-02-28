@@ -5,9 +5,9 @@ export const AgeRating = {
   FOURTEEN: "FOURTEEN",
   SIXTEEN: "SIXTEEN",
   EIGHTEEN: "EIGHTEEN"
-} as const
+} as const;
 
-export type AgeRating = (typeof AgeRating)[keyof typeof AgeRating]
+export type AgeRating = (typeof AgeRating)[keyof typeof AgeRating];
 
 export const MovieStatus = {
   RELEASED: "RELEASED",
@@ -16,6 +16,6 @@ export const MovieStatus = {
   PLANNED: "PLANNED",
   CANCELED: "CANCELED",
   RUMORED: "RUMORED"
-} as const
+} as const;
 
-export type MovieStatus = (typeof MovieStatus)[keyof typeof MovieStatus]
+export type MovieStatus = (typeof MovieStatus)[keyof typeof MovieStatus];

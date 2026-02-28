@@ -1,6 +1,6 @@
 import type { MovieListDTO } from "@repo/dtos";
-import { MovieListMapper } from "@/application/mappers/movie-list.mapper";
 import type { MovieListRepository } from "@/application/interfaces/repositories";
+import { MovieListMapper } from "@/application/mappers/movie-list.mapper";
 import { Uuid } from "@/domain/value-objects";
 
 export class ListMovieLists {

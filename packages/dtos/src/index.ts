@@ -15,13 +15,13 @@ export type { LogoutDTO } from "./logout.dto";
 export type { MovieDTO } from "./movie.dto";
 export type { MovieListDTO } from "./movie-list.dto";
 export type { PaginatedResultDTO, QueryMoviesDTO } from "./query-movies.dto";
+export type { RateMovieDTO } from "./rate-movie.dto";
 export type {
   RefreshTokensDTO,
   RefreshTokensResultDTO
 } from "./refresh-tokens.dto";
 export type { RequestPasswordResetDTO } from "./request-password-reset.dto";
 export type { ResetPasswordDTO } from "./reset-password.dto";
-export type { RateMovieDTO } from "./rate-movie.dto";
 export type { UpdateMovieDTO } from "./update-movie.dto";
 export type { UpdateMovieListDTO } from "./update-movie-list.dto";
 export type { UpdateUserDTO } from "./update-user.dto";

@@ -7,5 +7,4 @@ export const AgeRatingEnum = {
   EIGHTEEN: "EIGHTEEN"
 } as const;
 
-export type AgeRatingEnum =
-  (typeof AgeRatingEnum)[keyof typeof AgeRatingEnum];
+export type AgeRatingEnum = (typeof AgeRatingEnum)[keyof typeof AgeRatingEnum];

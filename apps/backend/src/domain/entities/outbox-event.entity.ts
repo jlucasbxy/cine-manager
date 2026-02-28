@@ -75,9 +75,7 @@ export class OutboxEvent {
     });
   }
 
-  static reconstitute(
-    props: ReconstituteOutboxEventProps
-  ): OutboxEvent {
+  static reconstitute(props: ReconstituteOutboxEventProps): OutboxEvent {
     return new OutboxEvent({
       id: props.id,
       type: props.type,

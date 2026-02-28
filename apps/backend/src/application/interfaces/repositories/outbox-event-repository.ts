@@ -1,4 +1,4 @@
-import { OutboxEvent } from "@/domain/entities";
+import type { OutboxEvent } from "@/domain/entities";
 
 export interface OutboxEventRepository {
   create(entry: OutboxEvent): Promise<void>;

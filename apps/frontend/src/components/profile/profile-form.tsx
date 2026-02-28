@@ -15,7 +15,11 @@ interface ProfileFormProps {
   defaultName: string;
   avatarUrl?: string | null;
   initials?: string;
-  onSubmit: (data: ProfileFormData, pendingFile: File | null, avatarRemoved: boolean) => Promise<void>;
+  onSubmit: (
+    data: ProfileFormData,
+    pendingFile: File | null,
+    avatarRemoved: boolean
+  ) => Promise<void>;
   isSubmitting: boolean;
 }
 
@@ -74,7 +78,9 @@ export function ProfileForm({
               />
             ) : (
               <>
-                <AvatarImage src={avatarRemoved ? undefined : (avatarUrl ?? undefined)} />
+                <AvatarImage
+                  src={avatarRemoved ? undefined : (avatarUrl ?? undefined)}
+                />
                 <AvatarFallback className="text-lg">{initials}</AvatarFallback>
               </>
             )}

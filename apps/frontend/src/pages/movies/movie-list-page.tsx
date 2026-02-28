@@ -79,25 +79,28 @@ export function MovieListPage() {
 
   const handleFiltersChange = (newFilters: MovieFiltersState) => {
     setCursorStack([]);
-    setSearchParams((prev) => {
-      const next = new URLSearchParams(prev);
-      const scalars: Record<string, string | undefined> = {
-        runtime: newFilters.runtime?.toString(),
-        releaseDateStart: newFilters.releaseDateStart,
-        releaseDateEnd: newFilters.releaseDateEnd,
-        status: newFilters.status,
-        ageRating: newFilters.ageRating,
-        onlyMine: newFilters.onlyMine ? "true" : undefined,
-        cursor: undefined
-      };
-      for (const [key, value] of Object.entries(scalars)) {
-        if (value !== undefined && value !== "") next.set(key, value);
-        else next.delete(key);
-      }
-      next.delete("genreIds");
-      for (const id of newFilters.genreIds ?? []) next.append("genreIds", id);
-      return next;
-    }, { replace: true });
+    setSearchParams(
+      (prev) => {
+        const next = new URLSearchParams(prev);
+        const scalars: Record<string, string | undefined> = {
+          runtime: newFilters.runtime?.toString(),
+          releaseDateStart: newFilters.releaseDateStart,
+          releaseDateEnd: newFilters.releaseDateEnd,
+          status: newFilters.status,
+          ageRating: newFilters.ageRating,
+          onlyMine: newFilters.onlyMine ? "true" : undefined,
+          cursor: undefined
+        };
+        for (const [key, value] of Object.entries(scalars)) {
+          if (value !== undefined && value !== "") next.set(key, value);
+          else next.delete(key);
+        }
+        next.delete("genreIds");
+        for (const id of newFilters.genreIds ?? []) next.append("genreIds", id);
+        return next;
+      },
+      { replace: true }
+    );
   };
 
   const handleNext = () => {

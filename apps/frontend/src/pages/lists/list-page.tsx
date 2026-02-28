@@ -46,7 +46,10 @@ export function ListPage() {
       {isLoading ? (
         <div className="space-y-3">
           {Array.from({ length: 4 }).map((_, i) => (
-            <Skeleton key={`skeleton-${i.toString()}`} className="h-16 w-full rounded-lg" />
+            <Skeleton
+              key={`skeleton-${i.toString()}`}
+              className="h-16 w-full rounded-lg"
+            />
           ))}
         </div>
       ) : lists.length === 0 ? (
@@ -78,7 +81,9 @@ export function ListPage() {
             placeholder="List name"
             value={newName}
             onChange={(e) => setNewName(e.target.value)}
-            onKeyDown={(e) => { if (e.key === "Enter") void handleCreate(); }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") void handleCreate();
+            }}
             autoFocus
           />
           <DialogFooter>

@@ -37,7 +37,11 @@ export async function getMe() {
   return response.data;
 }
 
-export async function updateUser(data: { name?: string; password?: string; avatarUrl?: string | null }) {
+export async function updateUser(data: {
+  name?: string;
+  password?: string;
+  avatarUrl?: string | null;
+}) {
   const response = await apiClient.patch<UserDTO>("/users", data);
   return response.data;
 }

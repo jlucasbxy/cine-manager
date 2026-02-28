@@ -87,12 +87,12 @@ export class PrismaMovieRepository implements MovieRepository {
       const matchingIds = await this.db.$queryRaw<Array<{ id: string }>>`
         SELECT id FROM "Movie"
         WHERE ${query.search} <% title
-           OR title ILIKE ${'%' + query.search + '%'}
+           OR title ILIKE ${"%" + query.search + "%"}
       `;
       if (matchingIds.length === 0) {
         return PaginatedResult.create([], null, false);
       }
-      where.id = { in: matchingIds.map(r => r.id) };
+      where.id = { in: matchingIds.map((r) => r.id) };
     }
     if (query.userId !== undefined) {
       where.userId = query.userId.toString();
@@ -119,7 +119,11 @@ export class PrismaMovieRepository implements MovieRepository {
       const hasNextPage = rawList.length > limit;
       const pageItems = hasNextPage ? rawList.slice(0, limit) : rawList;
       const nextCursor = hasNextPage ? (pageItems.at(-1)?.id ?? null) : null;
-      return PaginatedResult.create(pageItems.map(PrismaMovieMapper.toDomain), nextCursor, hasNextPage);
+      return PaginatedResult.create(
+        pageItems.map(PrismaMovieMapper.toDomain),
+        nextCursor,
+        hasNextPage
+      );
     } catch (error: unknown) {
       if (
         error instanceof Error &&

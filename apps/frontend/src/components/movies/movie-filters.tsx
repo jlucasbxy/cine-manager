@@ -173,7 +173,10 @@ export function MovieFilters({ filters, onFiltersChange }: MovieFiltersProps) {
             <GenreMultiSelect
               value={local.genreIds ?? []}
               onChange={(ids) =>
-                setLocal({ ...local, genreIds: ids.length > 0 ? ids : undefined })
+                setLocal({
+                  ...local,
+                  genreIds: ids.length > 0 ? ids : undefined
+                })
               }
             />
           </div>

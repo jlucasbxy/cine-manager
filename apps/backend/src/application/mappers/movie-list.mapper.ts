@@ -1,7 +1,7 @@
 import type { MovieListDTO } from "@repo/dtos";
 import type { MovieListWithMovies } from "@/application/interfaces/repositories";
-import type { MovieList } from "@/domain/entities";
 import { MovieMapper } from "@/application/mappers/movie.mapper";
+import type { MovieList } from "@/domain/entities";
 
 export class MovieListMapper {
   static toDTO(list: MovieList): MovieListDTO {

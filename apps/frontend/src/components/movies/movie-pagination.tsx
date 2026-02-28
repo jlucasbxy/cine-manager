@@ -18,19 +18,11 @@ export function MoviePagination({
 
   return (
     <div className="flex items-center justify-center gap-2">
-      <Button
-        variant="outline"
-        onClick={onPrev}
-        disabled={!hasPrevPage}
-      >
+      <Button variant="outline" onClick={onPrev} disabled={!hasPrevPage}>
         <ChevronLeft className="h-4 w-4" />
         Previous
       </Button>
-      <Button
-        variant="outline"
-        onClick={onNext}
-        disabled={!hasNextPage}
-      >
+      <Button variant="outline" onClick={onNext} disabled={!hasNextPage}>
         Next
         <ChevronRight className="h-4 w-4" />
       </Button>

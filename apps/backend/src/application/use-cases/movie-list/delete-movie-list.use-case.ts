@@ -9,6 +9,9 @@ export class DeleteMovieList {
     const listUuid = Uuid.create(id);
     const userUuid = Uuid.create(userId);
 
-    if (!(await this.movieListRepository.deleteByIdAndUserId(listUuid, userUuid))) throw new UnauthorizedError();
+    if (
+      !(await this.movieListRepository.deleteByIdAndUserId(listUuid, userUuid))
+    )
+      throw new UnauthorizedError();
   }
 }

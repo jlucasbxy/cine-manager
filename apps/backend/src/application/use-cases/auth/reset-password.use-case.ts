@@ -17,9 +17,10 @@ export class ResetPassword {
 
   async execute(input: ResetPasswordDTO): Promise<void> {
     await this.transactionManager.execute(async (repos) => {
-      const token = await repos.passwordResetTokenRepository.findByTokenForUpdate(
-        Token.create(input.token)
-      );
+      const token =
+        await repos.passwordResetTokenRepository.findByTokenForUpdate(
+          Token.create(input.token)
+        );
 
       if (!token) {
         throw new ResetTokenInvalidError();

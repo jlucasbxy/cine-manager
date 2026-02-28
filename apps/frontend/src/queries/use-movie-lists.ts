@@ -56,7 +56,9 @@ export function useAddMovieToList() {
     mutationFn: ({ listId, movieId }: { listId: string; movieId: string }) =>
       movieListService.addMovieToList(listId, { movieId }),
     onSuccess: (_result, { listId }) => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.lists.detail(listId) });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.lists.detail(listId)
+      });
     }
   });
 }
@@ -67,7 +69,9 @@ export function useRemoveMovieFromList() {
     mutationFn: ({ listId, movieId }: { listId: string; movieId: string }) =>
       movieListService.removeMovieFromList(listId, movieId),
     onSuccess: (_result, { listId }) => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.lists.detail(listId) });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.lists.detail(listId)
+      });
     }
   });
 }

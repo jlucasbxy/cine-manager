@@ -1,8 +1,8 @@
 import { Star } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
-import { useRateMovie } from "@/queries/use-movies";
 import { cn } from "@/lib/utils";
+import { useRateMovie } from "@/queries/use-movies";
 
 interface MovieRatingProps {
   movieId: string;
@@ -27,7 +27,10 @@ export function MovieRating({ movieId, score, votes }: MovieRatingProps) {
 
   return (
     <div className="space-y-1">
-      <div className="flex items-center gap-0.5" onMouseLeave={() => setHovered(null)}>
+      <div
+        className="flex items-center gap-0.5"
+        onMouseLeave={() => setHovered(null)}
+      >
         {Array.from({ length: 10 }, (_, i) => i + 1).map((star) => (
           <button
             key={star}

@@ -18,10 +18,7 @@ export class OutboxEventWorker {
         await this.processOutbox.execute();
       } catch (err) {
         // eslint-disable-next-line no-console
-        console.error(
-          "[OutboxEventWorker] Error processing outbox:",
-          err
-        );
+        console.error("[OutboxEventWorker] Error processing outbox:", err);
       }
     }, this.config.pollIntervalMs);
   }

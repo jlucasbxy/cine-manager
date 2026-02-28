@@ -18,7 +18,9 @@ export function ListCard({ list }: ListCardProps) {
           <div className="flex-1 min-w-0">
             <h3 className="font-semibold truncate">{list.name}</h3>
             <p className="text-xs text-muted-foreground">
-              {list.movies ? `${list.movies.length} movie${list.movies.length !== 1 ? "s" : ""}` : ""}
+              {list.movies
+                ? `${list.movies.length} movie${list.movies.length !== 1 ? "s" : ""}`
+                : ""}
             </p>
           </div>
         </CardContent>

@@ -1,13 +1,13 @@
 import type {
+  GenreRepository,
+  LanguageRepository,
   MovieListRepository,
   MovieRepository,
-  UserRepository,
-  RefreshTokenRepository,
-  PasswordResetTokenRepository,
   OutboxEventRepository,
-  LanguageRepository,
-  GenreRepository,
-  RatingRepository
+  PasswordResetTokenRepository,
+  RatingRepository,
+  RefreshTokenRepository,
+  UserRepository
 } from "@/application/interfaces/repositories";
 
 export interface TransactionRepositories {

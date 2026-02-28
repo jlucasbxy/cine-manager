@@ -1,5 +1,5 @@
-import { UploadKey } from "@/domain/value-objects";
-import { ImageUpload } from "@/domain/entities";
+import type { ImageUpload } from "@/domain/entities";
+import type { UploadKey } from "@/domain/value-objects";
 
 export interface StorageProvider {
   generateUploadUrl(uploadKey: UploadKey): Promise<ImageUpload>;

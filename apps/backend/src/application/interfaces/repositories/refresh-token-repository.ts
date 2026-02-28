@@ -1,5 +1,5 @@
-import { RefreshToken } from "@/domain/entities";
-import { Token, Uuid } from "@/domain/value-objects";
+import type { RefreshToken } from "@/domain/entities";
+import type { Token, Uuid } from "@/domain/value-objects";
 
 export type UpdateRefreshTokenData = Pick<RefreshToken, "revokedAt">;
 

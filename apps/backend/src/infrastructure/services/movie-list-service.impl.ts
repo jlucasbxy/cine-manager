@@ -26,7 +26,10 @@ export class MovieListServiceImpl implements MovieListService {
     private readonly removeMovieFromListUseCase: RemoveMovieFromList
   ) {}
 
-  async createList(userId: string, input: CreateMovieListDTO): Promise<MovieListDTO> {
+  async createList(
+    userId: string,
+    input: CreateMovieListDTO
+  ): Promise<MovieListDTO> {
     return this.createMovieListUseCase.execute(userId, input);
   }
 
@@ -38,7 +41,11 @@ export class MovieListServiceImpl implements MovieListService {
     return this.getMovieListUseCase.execute(id, userId);
   }
 
-  async updateList(id: string, userId: string, input: UpdateMovieListDTO): Promise<MovieListDTO> {
+  async updateList(
+    id: string,
+    userId: string,
+    input: UpdateMovieListDTO
+  ): Promise<MovieListDTO> {
     return this.updateMovieListUseCase.execute(id, userId, input);
   }
 
@@ -46,11 +53,19 @@ export class MovieListServiceImpl implements MovieListService {
     return this.deleteMovieListUseCase.execute(id, userId);
   }
 
-  async addMovie(listId: string, userId: string, input: AddMovieToListDTO): Promise<void> {
+  async addMovie(
+    listId: string,
+    userId: string,
+    input: AddMovieToListDTO
+  ): Promise<void> {
     return this.addMovieToListUseCase.execute(listId, userId, input);
   }
 
-  async removeMovie(listId: string, movieId: string, userId: string): Promise<void> {
+  async removeMovie(
+    listId: string,
+    movieId: string,
+    userId: string
+  ): Promise<void> {
     return this.removeMovieFromListUseCase.execute(listId, movieId, userId);
   }
 }

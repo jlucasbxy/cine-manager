@@ -1,5 +1,5 @@
-import { PasswordResetToken } from "@/domain/entities";
-import { Token, Uuid } from "@/domain/value-objects";
+import type { PasswordResetToken } from "@/domain/entities";
+import type { Token, Uuid } from "@/domain/value-objects";
 
 export interface PasswordResetTokenRepository {
   create(token: PasswordResetToken): Promise<PasswordResetToken>;

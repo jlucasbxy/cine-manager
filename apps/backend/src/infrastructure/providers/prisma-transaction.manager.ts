@@ -31,9 +31,7 @@ export class PrismaTransactionManager implements TransactionManager {
         passwordResetTokenRepository: new PrismaPasswordResetTokenRepository(
           tx
         ),
-        outboxEventRepository: new PrismaOutboxEventRepository(
-          tx
-        ),
+        outboxEventRepository: new PrismaOutboxEventRepository(tx),
         languageRepository: new PrismaLanguageRepository(tx),
         genreRepository: new PrismaGenreRepository(tx),
         ratingRepository: new PrismaRatingRepository(tx)

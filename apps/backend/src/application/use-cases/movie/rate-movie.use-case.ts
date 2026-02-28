@@ -1,4 +1,4 @@
-import type { RateMovieDTO, MovieDTO } from "@repo/dtos";
+import type { MovieDTO, RateMovieDTO } from "@repo/dtos";
 import type { TransactionManager } from "@/application/interfaces/providers";
 import { MovieMapper } from "@/application/mappers";
 import { Rating } from "@/domain/entities";

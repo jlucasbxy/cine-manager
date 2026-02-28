@@ -103,7 +103,10 @@ export function ListDetailPage() {
         <Button
           variant="ghost"
           size="icon"
-          onClick={() => { setNewName(list.name); setShowRename(true); }}
+          onClick={() => {
+            setNewName(list.name);
+            setShowRename(true);
+          }}
         >
           <Edit2 className="h-4 w-4" />
         </Button>
@@ -148,7 +151,9 @@ export function ListDetailPage() {
             placeholder="List name"
             value={newName}
             onChange={(e) => setNewName(e.target.value)}
-            onKeyDown={(e) => { if (e.key === "Enter") void handleRename(); }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") void handleRename();
+            }}
             autoFocus
           />
           <DialogFooter>

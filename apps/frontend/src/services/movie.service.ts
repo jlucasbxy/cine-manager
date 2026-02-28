@@ -35,6 +35,8 @@ export async function deleteMovie(id: string) {
 }
 
 export async function rateMovie(id: string, value: number) {
-  const response = await apiClient.post<MovieDTO>(`/movies/${id}/rate`, { value });
+  const response = await apiClient.post<MovieDTO>(`/movies/${id}/rate`, {
+    value
+  });
   return response.data;
 }

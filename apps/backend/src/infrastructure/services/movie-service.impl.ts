@@ -49,7 +49,11 @@ export class MovieServiceImpl implements MovieService {
     return this.listMoviesUseCase.execute(query, userId);
   }
 
-  async rateMovie(movieId: string, userId: string, input: RateMovieDTO): Promise<MovieDTO> {
+  async rateMovie(
+    movieId: string,
+    userId: string,
+    input: RateMovieDTO
+  ): Promise<MovieDTO> {
     return this.rateMovieUseCase.execute(movieId, userId, input);
   }
 }

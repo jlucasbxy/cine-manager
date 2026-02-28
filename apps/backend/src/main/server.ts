@@ -18,8 +18,8 @@ import {
   makeAuthController,
   makeGenreController,
   makeLanguageController,
-  makeMovieListController,
   makeMovieController,
+  makeMovieListController,
   makeUploadController,
   makeUserController
 } from "@/main/factories/controllers";
