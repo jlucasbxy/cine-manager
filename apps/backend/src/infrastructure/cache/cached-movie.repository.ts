@@ -30,7 +30,12 @@ export class CachedMovieRepository implements MovieRepository {
       userId
     );
     if (result) {
-      await this.cache.hset({ key, field, value: result, ttlSeconds: DEFAULT_TTL });
+      await this.cache.hset({
+        key,
+        field,
+        value: result,
+        ttlSeconds: DEFAULT_TTL
+      });
     }
     return result;
   }
@@ -44,7 +49,12 @@ export class CachedMovieRepository implements MovieRepository {
     if (cached) return cached;
 
     const result = await this.inner.findAll(query);
-    await this.cache.hset({ key: MOVIES_LIST_KEY, field, value: result, ttlSeconds: DEFAULT_TTL });
+    await this.cache.hset({
+      key: MOVIES_LIST_KEY,
+      field,
+      value: result,
+      ttlSeconds: DEFAULT_TTL
+    });
     return result;
   }
 
