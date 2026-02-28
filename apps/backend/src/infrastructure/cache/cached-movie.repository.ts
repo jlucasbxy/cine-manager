@@ -1,11 +1,125 @@
+import z from "zod";
 import type { CacheProvider } from "@/application/interfaces/providers/cache-provider";
 import type {
   MovieRepository,
   UpdateMovieData
 } from "@/application/interfaces/repositories/movie-repository";
 import type { MovieWithUser } from "@/application/read-models";
-import type { Movie } from "@/domain/entities";
-import type { MovieQuery, PaginatedResult, Uuid } from "@/domain/value-objects";
+import { Movie } from "@/domain/entities";
+import { AgeRatingEnum } from "@/domain/enums/age-rating.enum";
+import { MovieStatusEnum } from "@/domain/enums/movie-status.enum";
+import {
+  type MovieQuery,
+  NonNegativeInt,
+  NonNegativeNumber,
+  PaginatedResult,
+  Url,
+  type Uuid
+} from "@/domain/value-objects";
+import { AgeRating } from "@/domain/value-objects/age-rating.value-object";
+import { MovieStatus } from "@/domain/value-objects/movie-status.value-object";
+import { Uuid as UuidVO } from "@/domain/value-objects/uuid.value-object";
+
+const movieStatusValues = Object.values(MovieStatusEnum) as [
+  string,
+  ...string[]
+];
+const ageRatingValues = Object.values(AgeRatingEnum) as [string, ...string[]];
+
+const cachedMovieSchema = z.object({
+  id: z.string(),
+  title: z.string(),
+  originalTitle: z.string(),
+  tagline: z.string(),
+  synopsis: z.string(),
+  releaseDate: z.string(),
+  runtime: z.number().int().nonnegative(),
+  status: z.enum(movieStatusValues),
+  ageRating: z.enum(ageRatingValues),
+  languageId: z.string(),
+  budget: z.number().nonnegative(),
+  revenue: z.number().nonnegative(),
+  posterUrl: z.string(),
+  backdropUrl: z.string(),
+  trailerUrl: z.string(),
+  votes: z.number().int().nonnegative(),
+  score: z.number().nonnegative(),
+  isPublic: z.boolean(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
+  userId: z.string()
+});
+
+const cachedMoviePublisherSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  avatarUrl: z.string().nullable()
+});
+
+const cachedMovieWithUserSchema = z.object({
+  movie: cachedMovieSchema,
+  user: cachedMoviePublisherSchema.nullable()
+});
+
+const cachedPaginatedMovieSchema = z.object({
+  items: z.array(cachedMovieSchema),
+  nextCursor: z.string().nullable(),
+  hasNextPage: z.boolean()
+});
+
+type CachedMovie = z.infer<typeof cachedMovieSchema>;
+
+function movieToCache(movie: Movie): CachedMovie {
+  return {
+    id: movie.id.toString(),
+    title: movie.title,
+    originalTitle: movie.originalTitle,
+    tagline: movie.tagline,
+    synopsis: movie.synopsis,
+    releaseDate: movie.releaseDate.toISOString(),
+    runtime: movie.runtime.toNumber(),
+    status: movie.status.toString(),
+    ageRating: movie.ageRating.toString(),
+    languageId: movie.languageId.toString(),
+    budget: movie.budget.toNumber(),
+    revenue: movie.revenue.toNumber(),
+    posterUrl: movie.posterUrl.toString(),
+    backdropUrl: movie.backdropUrl.toString(),
+    trailerUrl: movie.trailerUrl.toString(),
+    votes: movie.votes.toNumber(),
+    score: movie.score.toNumber(),
+    isPublic: movie.isPublic,
+    createdAt: movie.createdAt.toISOString(),
+    updatedAt: movie.updatedAt.toISOString(),
+    userId: movie.userId.toString()
+  };
+}
+
+function cacheToMovie(data: CachedMovie): Movie {
+  return Movie.reconstitute({
+    id: UuidVO.reconstitute(data.id),
+    title: data.title,
+    originalTitle: data.originalTitle,
+    tagline: data.tagline,
+    synopsis: data.synopsis,
+    releaseDate: new Date(data.releaseDate),
+    runtime: NonNegativeInt.reconstitute(data.runtime),
+    status: MovieStatus.reconstitute(data.status as MovieStatusEnum),
+    ageRating: AgeRating.reconstitute(data.ageRating as AgeRatingEnum),
+    languageId: UuidVO.reconstitute(data.languageId),
+    budget: NonNegativeNumber.reconstitute(data.budget),
+    revenue: NonNegativeNumber.reconstitute(data.revenue),
+    posterUrl: Url.reconstitute(data.posterUrl),
+    backdropUrl: Url.reconstitute(data.backdropUrl),
+    trailerUrl: Url.reconstitute(data.trailerUrl),
+    votes: NonNegativeInt.reconstitute(data.votes),
+    score: NonNegativeNumber.reconstitute(data.score),
+    isPublic: data.isPublic,
+    createdAt: new Date(data.createdAt),
+    updatedAt: new Date(data.updatedAt),
+    userId: UuidVO.reconstitute(data.userId)
+  });
+}
 
 const MOVIES_LIST_KEY = "movies:list";
 const DEFAULT_TTL = 300;
@@ -22,8 +136,14 @@ export class CachedMovieRepository implements MovieRepository {
   ): Promise<MovieWithUser | null> {
     const key = `movie:${id}`;
     const field = userId.toString();
-    const cached = await this.cache.hget<MovieWithUser>({ key, field });
-    if (cached) return cached;
+    const raw = await this.cache.hget({ key, field });
+    const parsed = cachedMovieWithUserSchema.safeParse(raw);
+    if (parsed.success) {
+      return {
+        movie: cacheToMovie(parsed.data.movie),
+        user: parsed.data.user
+      };
+    }
 
     const result = await this.inner.findPublicOrOwnedByIdWithCreator(
       id,
@@ -33,7 +153,10 @@ export class CachedMovieRepository implements MovieRepository {
       await this.cache.hset({
         key,
         field,
-        value: result,
+        value: {
+          movie: movieToCache(result.movie),
+          user: result.user
+        },
         ttlSeconds: DEFAULT_TTL
       });
     }
@@ -42,17 +165,25 @@ export class CachedMovieRepository implements MovieRepository {
 
   async findAll(query: MovieQuery): Promise<PaginatedResult<Movie>> {
     const field = this.serializeQuery(query);
-    const cached = await this.cache.hget<PaginatedResult<Movie>>({
-      key: MOVIES_LIST_KEY,
-      field
-    });
-    if (cached) return cached;
+    const raw = await this.cache.hget({ key: MOVIES_LIST_KEY, field });
+    const parsed = cachedPaginatedMovieSchema.safeParse(raw);
+    if (parsed.success) {
+      return PaginatedResult.create(
+        parsed.data.items.map(cacheToMovie),
+        parsed.data.nextCursor,
+        parsed.data.hasNextPage
+      );
+    }
 
     const result = await this.inner.findAll(query);
     await this.cache.hset({
       key: MOVIES_LIST_KEY,
       field,
-      value: result,
+      value: {
+        items: result.items.map(movieToCache),
+        nextCursor: result.nextCursor,
+        hasNextPage: result.hasNextPage
+      },
       ttlSeconds: DEFAULT_TTL
     });
     return result;
