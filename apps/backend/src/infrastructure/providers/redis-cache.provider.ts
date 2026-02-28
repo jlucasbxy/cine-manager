@@ -19,6 +19,16 @@ export class RedisCacheProvider implements CacheProvider {
     }
   }
 
+  async hget<T = unknown>(key: string, field: string): Promise<T | null> {
+    const value = await this.redis.hget(key, field);
+    if (value === null) return null;
+    return JSON.parse(value) as T;
+  }
+
+  async hset<T = unknown>(key: string, field: string, value: T): Promise<void> {
+    await this.redis.hset(key, field, JSON.stringify(value));
+  }
+
   async delete(key: string): Promise<void> {
     await this.redis.del(key);
   }

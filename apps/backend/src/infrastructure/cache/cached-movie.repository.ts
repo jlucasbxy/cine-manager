@@ -7,12 +7,10 @@ import type { MovieWithUser } from "@/application/read-models";
 import type { Movie } from "@/domain/entities";
 import type { MovieQuery, PaginatedResult, Uuid } from "@/domain/value-objects";
 
+const MOVIES_LIST_KEY = "movies:list";
 const DEFAULT_TTL = 300;
 
 export class CachedMovieRepository implements MovieRepository {
-  private readonly movieKeys = new Map<string, Set<string>>();
-  private readonly listKeys = new Set<string>();
-
   constructor(
     private readonly inner: MovieRepository,
     private readonly cache: CacheProvider
@@ -22,8 +20,9 @@ export class CachedMovieRepository implements MovieRepository {
     id: Uuid,
     userId: Uuid
   ): Promise<MovieWithUser | null> {
-    const key = `movie:${id}:${userId}`;
-    const cached = await this.cache.get<MovieWithUser>(key);
+    const key = `movie:${id}`;
+    const field = userId.toString();
+    const cached = await this.cache.hget<MovieWithUser>(key, field);
     if (cached) return cached;
 
     const result = await this.inner.findPublicOrOwnedByIdWithCreator(
@@ -31,62 +30,44 @@ export class CachedMovieRepository implements MovieRepository {
       userId
     );
     if (result) {
-      await this.cache.set(key, result, DEFAULT_TTL);
-      this.trackMovieKey(id.toString(), key);
+      await this.cache.hset(key, field, result);
+      await this.cache.setExpire(key, DEFAULT_TTL);
     }
     return result;
   }
 
   async findAll(query: MovieQuery): Promise<PaginatedResult<Movie>> {
-    const key = `movies:list:${this.serializeQuery(query)}`;
-    const cached = await this.cache.get<PaginatedResult<Movie>>(key);
+    const field = this.serializeQuery(query);
+    const cached = await this.cache.hget<PaginatedResult<Movie>>(
+      MOVIES_LIST_KEY,
+      field
+    );
     if (cached) return cached;
 
     const result = await this.inner.findAll(query);
-    await this.cache.set(key, result, DEFAULT_TTL);
-    this.listKeys.add(key);
+    await this.cache.hset(MOVIES_LIST_KEY, field, result);
+    await this.cache.setExpire(MOVIES_LIST_KEY, DEFAULT_TTL);
     return result;
   }
 
   async create(movie: Movie): Promise<Movie> {
     const result = await this.inner.create(movie);
-    await this.invalidateListKeys();
+    await this.cache.delete(MOVIES_LIST_KEY);
     return result;
   }
 
   async update(id: Uuid, data: UpdateMovieData): Promise<Movie | null> {
     const result = await this.inner.update(id, data);
-    await this.invalidateMovieKeys(id.toString());
-    await this.invalidateListKeys();
+    await this.cache.delete(`movie:${id}`);
+    await this.cache.delete(MOVIES_LIST_KEY);
     return result;
   }
 
   async delete(id: Uuid): Promise<boolean> {
     const result = await this.inner.delete(id);
-    await this.invalidateMovieKeys(id.toString());
-    await this.invalidateListKeys();
+    await this.cache.delete(`movie:${id}`);
+    await this.cache.delete(MOVIES_LIST_KEY);
     return result;
-  }
-
-  private trackMovieKey(movieId: string, key: string): void {
-    const keys = this.movieKeys.get(movieId);
-    if (keys) {
-      keys.add(key);
-    } else {
-      this.movieKeys.set(movieId, new Set([key]));
-    }
-  }
-
-  private async invalidateMovieKeys(movieId: string): Promise<void> {
-    const keys = this.movieKeys.get(movieId);
-    if (!keys) return;
-    await Promise.all([...keys].map((key) => this.cache.delete(key)));
-    this.movieKeys.delete(movieId);
-  }
-
-  private async invalidateListKeys(): Promise<void> {
-    await Promise.all([...this.listKeys].map((key) => this.cache.delete(key)));
-    this.listKeys.clear();
   }
 
   private serializeQuery(query: MovieQuery): string {
