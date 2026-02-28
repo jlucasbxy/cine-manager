@@ -18,6 +18,7 @@ import {
 } from "@/domain/value-objects";
 import { AgeRating } from "@/domain/value-objects/age-rating.value-object";
 import { MovieStatus } from "@/domain/value-objects/movie-status.value-object";
+import { MovieMapper } from "@/application/mappers";
 
 const movieStatusValues = Object.values(MovieStatusEnum) as [
   string,
@@ -67,32 +68,6 @@ const cachedPaginatedMovieSchema = z.object({
 });
 
 type CachedMovie = z.infer<typeof cachedMovieSchema>;
-
-function movieToCache(movie: Movie): CachedMovie {
-  return {
-    id: movie.id.toString(),
-    title: movie.title,
-    originalTitle: movie.originalTitle,
-    tagline: movie.tagline,
-    synopsis: movie.synopsis,
-    releaseDate: movie.releaseDate.toISOString(),
-    runtime: movie.runtime.toNumber(),
-    status: movie.status.toString(),
-    ageRating: movie.ageRating.toString(),
-    languageId: movie.languageId.toString(),
-    budget: movie.budget.toNumber(),
-    revenue: movie.revenue.toNumber(),
-    posterUrl: movie.posterUrl.toString(),
-    backdropUrl: movie.backdropUrl.toString(),
-    trailerUrl: movie.trailerUrl.toString(),
-    votes: movie.votes.toNumber(),
-    score: movie.score.toNumber(),
-    isPublic: movie.isPublic,
-    createdAt: movie.createdAt.toISOString(),
-    updatedAt: movie.updatedAt.toISOString(),
-    userId: movie.userId.toString()
-  };
-}
 
 function cacheToMovie(data: CachedMovie): Movie {
   return Movie.reconstitute({
@@ -153,7 +128,7 @@ export class CachedMovieRepository implements MovieRepository {
         key,
         field,
         value: {
-          movie: movieToCache(result.movie),
+          movie: MovieMapper.toDTO(result.movie),
           user: result.user
         },
         ttlSeconds: DEFAULT_TTL
@@ -179,7 +154,7 @@ export class CachedMovieRepository implements MovieRepository {
       key: MOVIES_LIST_KEY,
       field,
       value: {
-        items: result.items.map(movieToCache),
+        items: result.items.map((movie) => MovieMapper.toDTO(movie)),
         nextCursor: result.nextCursor,
         hasNextPage: result.hasNextPage
       },
