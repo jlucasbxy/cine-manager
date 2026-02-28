@@ -1,9 +1,7 @@
 import z from "zod";
-import { AgeRating, MovieStatus } from "../enums";
+import { ageRatingSchema } from "./age-rating.schema";
 import { idZodSchema } from "./id.schema";
-
-const ageRatingValues = Object.values(AgeRating) as [string, ...string[]];
-const movieStatusValues = Object.values(MovieStatus) as [string, ...string[]];
+import { movieStatusSchema } from "./movie-status.schema";
 
 export const movieSchema = z.object({
   title: z.string().min(1),
@@ -12,8 +10,8 @@ export const movieSchema = z.object({
   synopsis: z.string().min(1),
   releaseDate: z.coerce.date(),
   runtime: z.number().int().positive(),
-  status: z.enum(movieStatusValues),
-  ageRating: z.enum(ageRatingValues),
+  status: movieStatusSchema,
+  ageRating: ageRatingSchema,
   languageId: idZodSchema,
   budget: z.number().nonnegative(),
   revenue: z.number().nonnegative(),
