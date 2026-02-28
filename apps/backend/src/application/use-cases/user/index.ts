@@ -1,3 +1,3 @@
-export { CreateUser } from "@/application/use-cases/user/create-user.use-case";
-export { GetUser } from "@/application/use-cases/user/get-user.use-case";
-export { UpdateUser } from "@/application/use-cases/user/update-user.use-case";
+export { CreateUser } from "./create-user.use-case";
+export { GetUser } from "./get-user.use-case";
+export { UpdateUser } from "./update-user.use-case";

@@ -1,1 +1,1 @@
-export { GenerateUploadUrl } from "@/application/use-cases/upload/generate-upload-url.use-case";
+export { GenerateUploadUrl } from "./generate-upload-url.use-case";

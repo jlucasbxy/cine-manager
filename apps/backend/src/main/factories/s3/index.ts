@@ -1,6 +1,6 @@
 import { S3Client } from "@aws-sdk/client-s3";
-import { s3Env } from "@/infrastructure/config/s3-env.config";
-import { singleton } from "@/main/factories/singleton.util";
+import { s3Env } from "../../../infrastructure/config/s3-env.config";
+import { singleton } from "../singleton.util";
 
 export const makeS3Client = singleton(
   () =>

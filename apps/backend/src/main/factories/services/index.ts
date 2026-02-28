@@ -1,8 +1,8 @@
-export { makeAuthService } from "@/main/factories/services/make-auth-service.factory";
-export { makeGenreService } from "@/main/factories/services/make-genre-service.factory";
-export { makeLanguageService } from "@/main/factories/services/make-language-service.factory";
-export { makeMovieListService } from "@/main/factories/services/make-movie-list-service.factory";
-export { makeMovieService } from "@/main/factories/services/make-movie-service.factory";
-export { makeNotificationService } from "@/main/factories/services/make-notification-service.factory";
-export { makeUploadService } from "@/main/factories/services/make-upload-service.factory";
-export { makeUserService } from "@/main/factories/services/make-user-service.factory";
+export { makeAuthService } from "./make-auth-service.factory";
+export { makeGenreService } from "./make-genre-service.factory";
+export { makeLanguageService } from "./make-language-service.factory";
+export { makeMovieListService } from "./make-movie-list-service.factory";
+export { makeMovieService } from "./make-movie-service.factory";
+export { makeNotificationService } from "./make-notification-service.factory";
+export { makeUploadService } from "./make-upload-service.factory";
+export { makeUserService } from "./make-user-service.factory";

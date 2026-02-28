@@ -1,1 +1,1 @@
-export { ErrorPresenter } from "@/infrastructure/http/presenters/error.presenter";
+export { ErrorPresenter } from "./error.presenter";

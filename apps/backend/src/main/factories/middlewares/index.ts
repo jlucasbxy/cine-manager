@@ -1,1 +1,1 @@
-export { makeAuthMiddleware } from "@/main/factories/middlewares/make-auth-middleware.factory";
+export { makeAuthMiddleware } from "./make-auth-middleware.factory";

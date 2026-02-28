@@ -1,1 +1,1 @@
-export { ProcessOutboxEvents } from "@/application/use-cases/outbox/process-outbox-events.use-case";
+export { ProcessOutboxEvents } from "./process-outbox-events.use-case";

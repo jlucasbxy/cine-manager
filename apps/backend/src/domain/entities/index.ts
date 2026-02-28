@@ -1,8 +1,8 @@
-export { ImageUpload } from "@/domain/entities/image-upload.entity";
-export { MovieList } from "@/domain/entities/movie-list.entity";
-export { Rating } from "@/domain/entities/rating.entity";
-export { Movie } from "@/domain/entities/movie.entity";
-export { OutboxEvent } from "@/domain/entities/outbox-event.entity";
-export { PasswordResetToken } from "@/domain/entities/password-reset-token.entity";
-export { RefreshToken } from "@/domain/entities/refresh-token.entity";
-export { User } from "@/domain/entities/user.entity";
+export { ImageUpload } from "./image-upload.entity";
+export { MovieList } from "./movie-list.entity";
+export { Rating } from "./rating.entity";
+export { Movie } from "./movie.entity";
+export { OutboxEvent } from "./outbox-event.entity";
+export { PasswordResetToken } from "./password-reset-token.entity";
+export { RefreshToken } from "./refresh-token.entity";
+export { User } from "./user.entity";

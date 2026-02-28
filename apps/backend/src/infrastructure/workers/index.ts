@@ -1,1 +1,1 @@
-export { OutboxEventWorker } from "@/infrastructure/workers/outbox-event.worker";
+export { OutboxEventWorker } from "./outbox-event.worker";

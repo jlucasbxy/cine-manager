@@ -1,2 +1,2 @@
-export { AuthMiddleware } from "@/infrastructure/http/middlewares/auth.middleware";
-export { errorHandler } from "@/infrastructure/http/middlewares/error-handler.middleware";
+export { AuthMiddleware } from "./auth.middleware";
+export { errorHandler } from "./error-handler.middleware";

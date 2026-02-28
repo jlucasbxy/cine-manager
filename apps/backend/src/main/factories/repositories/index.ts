@@ -1,8 +1,8 @@
-export { makeGenreRepository } from "@/main/factories/repositories/make-genre-repository.factory";
-export { makeMovieListRepository } from "@/main/factories/repositories/make-movie-list-repository.factory";
-export { makeLanguageRepository } from "@/main/factories/repositories/make-language-repository.factory";
-export { makeMovieRepository } from "@/main/factories/repositories/make-movie-repository.factory";
-export { makeOutboxEventRepository } from "@/main/factories/repositories/make-outbox-event-repository.factory";
-export { makePasswordResetTokenRepository } from "@/main/factories/repositories/make-password-reset-token-repository.factory";
-export { makeRefreshTokenRepository } from "@/main/factories/repositories/make-refresh-token-repository.factory";
-export { makeUserRepository } from "@/main/factories/repositories/make-user-repository.factory";
+export { makeGenreRepository } from "./make-genre-repository.factory";
+export { makeMovieListRepository } from "./make-movie-list-repository.factory";
+export { makeLanguageRepository } from "./make-language-repository.factory";
+export { makeMovieRepository } from "./make-movie-repository.factory";
+export { makeOutboxEventRepository } from "./make-outbox-event-repository.factory";
+export { makePasswordResetTokenRepository } from "./make-password-reset-token-repository.factory";
+export { makeRefreshTokenRepository } from "./make-refresh-token-repository.factory";
+export { makeUserRepository } from "./make-user-repository.factory";
