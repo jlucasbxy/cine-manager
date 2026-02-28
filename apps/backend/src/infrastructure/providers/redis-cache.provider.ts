@@ -9,9 +9,14 @@ export class RedisCacheProvider implements CacheProvider {
   constructor(private readonly redis: Redis) {}
 
   async hget<T = unknown>({ key, field }: HGetParams): Promise<T | null> {
-    const value = await this.redis.hget(key, field);
-    if (value === null) return null;
-    return JSON.parse(value) as T;
+    try {
+      const value = await this.redis.hget(key, field);
+      if (value === null) return null;
+      return JSON.parse(value) as T;
+    } catch (err) {
+      console.warn("[RedisCacheProvider] hget failed, treating as cache miss:", err);
+      return null;
+    }
   }
 
   async hset<T = unknown>({
@@ -20,18 +25,26 @@ export class RedisCacheProvider implements CacheProvider {
     value,
     ttlSeconds
   }: HSetParams<T>): Promise<void> {
-    if (ttlSeconds) {
-      await this.redis
-        .multi()
-        .hset(key, field, JSON.stringify(value))
-        .expire(key, ttlSeconds)
-        .exec();
-    } else {
-      await this.redis.hset(key, field, JSON.stringify(value));
+    try {
+      if (ttlSeconds) {
+        await this.redis
+          .multi()
+          .hset(key, field, JSON.stringify(value))
+          .expire(key, ttlSeconds)
+          .exec();
+      } else {
+        await this.redis.hset(key, field, JSON.stringify(value));
+      }
+    } catch (err) {
+      console.warn("[RedisCacheProvider] hset failed:", err);
     }
   }
 
   async delete(...keys: string[]): Promise<void> {
-    await this.redis.del(...keys);
+    try {
+      await this.redis.del(...keys);
+    } catch (err) {
+      console.warn("[RedisCacheProvider] delete failed:", err);
+    }
   }
 }

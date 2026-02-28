@@ -66,8 +66,7 @@ export class CachedMovieRepository implements MovieRepository {
 
   async update(id: Uuid, data: UpdateMovieData): Promise<Movie | null> {
     const result = await this.inner.update(id, data);
-    await this.cache.delete(`movie:${id}`);
-    await this.cache.delete(MOVIES_LIST_KEY);
+    await this.cache.delete(`movie:${id}`, MOVIES_LIST_KEY);
     return result;
   }
 
