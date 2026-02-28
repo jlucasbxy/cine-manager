@@ -9,6 +9,7 @@ const durationString = z
   });
 
 const envSchema = z.object({
+  NODE_ENV: z.enum(["development", "production"]).default("production"),
   PORT: z.coerce.number().int().min(1).max(65535).default(3000),
   HOST: z.ipv4().default("0.0.0.0"),
   DATABASE_URL: z.url(),
