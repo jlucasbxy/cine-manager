@@ -21,8 +21,28 @@ tags:
     description: Movie languages
   - name: Uploads
     description: Image uploads management
+  - name: System
+    description: System health and information
 
 paths:
+  /health:
+    get:
+      tags:
+        - System
+      summary: Health check
+      operationId: healthCheck
+      responses:
+        '200':
+          description: System is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+
   /auth/login:
     post:
       tags:
