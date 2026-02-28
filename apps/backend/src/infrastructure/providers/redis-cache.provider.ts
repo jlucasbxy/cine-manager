@@ -10,7 +10,11 @@ export class RedisCacheProvider implements CacheProvider {
     return JSON.parse(value) as T;
   }
 
-  async set<T = unknown>(key: string, value: T, ttlSeconds?: number): Promise<void> {
+  async set<T = unknown>(
+    key: string,
+    value: T,
+    ttlSeconds?: number
+  ): Promise<void> {
     const serialized = JSON.stringify(value);
     if (ttlSeconds) {
       await this.redis.set(key, serialized, "EX", ttlSeconds);
@@ -25,8 +29,21 @@ export class RedisCacheProvider implements CacheProvider {
     return JSON.parse(value) as T;
   }
 
-  async hset<T = unknown>(key: string, field: string, value: T): Promise<void> {
-    await this.redis.hset(key, field, JSON.stringify(value));
+  async hset<T = unknown>(
+    key: string,
+    field: string,
+    value: T,
+    ttlSeconds?: number
+  ): Promise<void> {
+    if (ttlSeconds) {
+      await this.redis
+        .multi()
+        .hset(key, field, JSON.stringify(value))
+        .expire(key, ttlSeconds)
+        .exec();
+    } else {
+      await this.redis.hset(key, field, JSON.stringify(value));
+    }
   }
 
   async delete(key: string): Promise<void> {

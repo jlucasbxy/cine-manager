@@ -1,7 +1,7 @@
 import type { CacheProvider } from "@/application/interfaces/providers/cache-provider";
 import type {
   MovieRepository,
-  UpdateMovieData,
+  UpdateMovieData
 } from "@/application/interfaces/repositories/movie-repository";
 import type { MovieWithUser } from "@/application/read-models";
 import type { Movie } from "@/domain/entities";
@@ -45,8 +45,7 @@ export class CachedMovieRepository implements MovieRepository {
     if (cached) return cached;
 
     const result = await this.inner.findAll(query);
-    await this.cache.hset(MOVIES_LIST_KEY, field, result);
-    await this.cache.setExpire(MOVIES_LIST_KEY, DEFAULT_TTL);
+    await this.cache.hset(MOVIES_LIST_KEY, field, result, DEFAULT_TTL);
     return result;
   }
 
@@ -82,7 +81,7 @@ export class CachedMovieRepository implements MovieRepository {
       search: query.search,
       userId: query.userId?.toString(),
       genreIds: query.genreIds,
-      currentUserId: query.currentUserId.toString(),
+      currentUserId: query.currentUserId.toString()
     });
   }
 }
