@@ -9,7 +9,7 @@ const durationString = z
   });
 
 const envSchema = z.object({
-  NODE_ENV: z.enum(["development", "production"]).default("production"),
+  NODE_ENV: z.enum(["development", "production", "test"]).default("production"),
   PORT: z.coerce.number().int().min(1).max(65535).default(3000),
   HOST: z.ipv4().default("0.0.0.0"),
   DATABASE_URL: z.url(),
@@ -27,4 +27,11 @@ const envSchema = z.object({
     .transform((v) => v === "true")
 });
 
-export const env = envSchema.parse(process.env);
+const parsedEnv = envSchema.parse(process.env);
+
+export const env = {
+  ...parsedEnv,
+  IS_DEVELOPMENT: parsedEnv.NODE_ENV === "development",
+  IS_PRODUCTION: parsedEnv.NODE_ENV === "production",
+  IS_TEST: parsedEnv.NODE_ENV === "test"
+};
