@@ -14,11 +14,10 @@ import {
   NonNegativeNumber,
   PaginatedResult,
   Url,
-  type Uuid
+  Uuid
 } from "@/domain/value-objects";
 import { AgeRating } from "@/domain/value-objects/age-rating.value-object";
 import { MovieStatus } from "@/domain/value-objects/movie-status.value-object";
-import { Uuid as UuidVO } from "@/domain/value-objects/uuid.value-object";
 
 const movieStatusValues = Object.values(MovieStatusEnum) as [
   string,
@@ -97,7 +96,7 @@ function movieToCache(movie: Movie): CachedMovie {
 
 function cacheToMovie(data: CachedMovie): Movie {
   return Movie.reconstitute({
-    id: UuidVO.reconstitute(data.id),
+    id: Uuid.reconstitute(data.id),
     title: data.title,
     originalTitle: data.originalTitle,
     tagline: data.tagline,
@@ -106,7 +105,7 @@ function cacheToMovie(data: CachedMovie): Movie {
     runtime: NonNegativeInt.reconstitute(data.runtime),
     status: MovieStatus.reconstitute(data.status as MovieStatusEnum),
     ageRating: AgeRating.reconstitute(data.ageRating as AgeRatingEnum),
-    languageId: UuidVO.reconstitute(data.languageId),
+    languageId: Uuid.reconstitute(data.languageId),
     budget: NonNegativeNumber.reconstitute(data.budget),
     revenue: NonNegativeNumber.reconstitute(data.revenue),
     posterUrl: Url.reconstitute(data.posterUrl),
@@ -117,7 +116,7 @@ function cacheToMovie(data: CachedMovie): Movie {
     isPublic: data.isPublic,
     createdAt: new Date(data.createdAt),
     updatedAt: new Date(data.updatedAt),
-    userId: UuidVO.reconstitute(data.userId)
+    userId: Uuid.reconstitute(data.userId)
   });
 }
 
