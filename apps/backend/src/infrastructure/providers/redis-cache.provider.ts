@@ -31,7 +31,7 @@ export class RedisCacheProvider implements CacheProvider {
     }
   }
 
-  async delete(key: string): Promise<void> {
-    await this.redis.del(key);
+  async delete(...keys: string[]): Promise<void> {
+    await this.redis.del(...keys);
   }
 }

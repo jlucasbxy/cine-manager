@@ -13,5 +13,5 @@ export interface HSetParams<T = unknown> {
 export interface CacheProvider {
   hget<T = unknown>(params: HGetParams): Promise<T | null>;
   hset<T = unknown>(params: HSetParams<T>): Promise<void>;
-  delete(key: string): Promise<void>;
+  delete(...keys: string[]): Promise<void>;
 }
