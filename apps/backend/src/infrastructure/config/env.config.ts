@@ -19,7 +19,11 @@ const envSchema = z.object({
   RESEND_API_KEY: z.string(),
   EMAIL_FROM: z.email(),
   REDIS_URL: z.url(),
-  FRONTEND_URL: z.url()
+  FRONTEND_URL: z.url(),
+  ENABLE_DOCS: z
+    .enum(["true", "false"])
+    .default("false")
+    .transform((v) => v === "true")
 });
 
 export const env = envSchema.parse(process.env);

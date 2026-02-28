@@ -1,5 +1,8 @@
+import path from "path";
 import cookie from "@fastify/cookie";
 import rateLimit from "@fastify/rate-limit";
+import swagger from "@fastify/swagger";
+import swaggerUi from "@fastify/swagger-ui";
 import { ErrorCode } from "@repo/dtos";
 import Fastify from "fastify";
 import { env } from "@/infrastructure/config/env.config";
@@ -38,6 +41,20 @@ export async function start() {
         }
       : true
   });
+
+  if (env.ENABLE_DOCS) {
+    await app.register(swagger, {
+      mode: "static",
+      specification: {
+        path: path.join(process.cwd(), "swagger.yaml"),
+        baseDir: process.cwd()
+      }
+    });
+
+    await app.register(swaggerUi, {
+      routePrefix: "/docs"
+    });
+  }
 
   await app.register(cookie);
   const redis = makeRedisClient();
