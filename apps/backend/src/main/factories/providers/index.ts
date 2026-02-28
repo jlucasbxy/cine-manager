@@ -1,3 +1,4 @@
+export { makeCacheProvider } from "./make-cache-provider.factory";
 export { makeEmailProvider } from "./make-email-provider.factory";
 export { makeHashProvider } from "./make-hash-provider.factory";
 export { makeStorageProvider } from "./make-storage-provider.factory";

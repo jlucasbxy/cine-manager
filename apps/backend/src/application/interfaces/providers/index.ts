@@ -1,3 +1,4 @@
+export type { CacheProvider } from "./cache-provider";
 export type {
   EmailProvider,
   SendEmailData
