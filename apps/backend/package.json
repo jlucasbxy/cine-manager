@@ -21,6 +21,7 @@
     "@prisma/adapter-pg": "^7.3.0",
     "@prisma/client": "^7.3.0",
     "@repo/dtos": "*",
+    "argon2": "^0.44.0",
     "bcrypt": "^6.0.0",
     "dotenv": "^17.2.3",
     "fastify": "^5.3.3",
