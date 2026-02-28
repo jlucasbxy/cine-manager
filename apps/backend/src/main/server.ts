@@ -11,6 +11,7 @@ import { errorHandler } from "@/infrastructure/http/middlewares";
 import {
   authRoutes,
   genreRoutes,
+  healthRoutes,
   languageRoutes,
   movieListRoutes,
   movieRoutes,
@@ -69,6 +70,8 @@ export async function start() {
 
   app.setErrorHandler(errorHandler);
 
+  await app.register(healthRoutes, { prefix: "/health" });
+
   const authController = makeAuthController();
   const genreController = makeGenreController();
   const languageController = makeLanguageController();
@@ -88,6 +91,9 @@ export async function start() {
         prefix: ROUTE_PREFIXES.genres,
         genreController,
         authMiddleware
+      });
+      await api.register(healthRoutes, {
+        prefix: ROUTE_PREFIXES.health
       });
       await api.register(languageRoutes, {
         prefix: ROUTE_PREFIXES.languages,
