@@ -27,13 +27,13 @@ export class MovieController {
   async updateMovie(request: FastifyRequest, reply: FastifyReply) {
     const id = this.idValidator.parse(request.params);
     const data = this.updateMovieValidator.parse(request.body);
-    const movie = await this.movieService.updateMovie(id, data);
+    const movie = await this.movieService.updateMovie(id, request.userId, data);
     return reply.status(200).send(movie);
   }
 
   async deleteMovie(request: FastifyRequest, reply: FastifyReply) {
     const id = this.idValidator.parse(request.params);
-    await this.movieService.deleteMovie(id);
+    await this.movieService.deleteMovie(id, request.userId);
     return reply.status(204).send();
   }
 

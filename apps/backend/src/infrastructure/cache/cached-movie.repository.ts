@@ -135,9 +135,19 @@ export class CachedMovieRepository implements MovieRepository {
     return result;
   }
 
-  async delete(id: Uuid): Promise<boolean> {
-    const result = await this.inner.delete(id);
-    await this.cache.delete(`movie:${id}`, MOVIES_LIST_KEY);
+  async updateByIdAndUserId(id: Uuid, userId: Uuid, data: UpdateMovieData): Promise<Movie | null> {
+    const result = await this.inner.updateByIdAndUserId(id, userId, data);
+    if (result) {
+      await this.cache.delete(`movie:${id}`, MOVIES_LIST_KEY);
+    }
+    return result;
+  }
+
+  async deleteByIdAndUserId(id: Uuid, userId: Uuid): Promise<boolean> {
+    const result = await this.inner.deleteByIdAndUserId(id, userId);
+    if (result) {
+      await this.cache.delete(`movie:${id}`, MOVIES_LIST_KEY);
+    }
     return result;
   }
 

@@ -5,10 +5,11 @@ import { Uuid } from "@/domain/value-objects";
 export class DeleteMovie {
   constructor(private readonly movieRepository: MovieRepository) {}
 
-  async execute(uuid: string): Promise<void> {
+  async execute(uuid: string, userId: string): Promise<void> {
     const id = Uuid.create(uuid);
+    const userUuid = Uuid.create(userId);
 
-    const deleted = await this.movieRepository.delete(id);
+    const deleted = await this.movieRepository.deleteByIdAndUserId(id, userUuid);
     if (!deleted) {
       throw new MovieNotFoundError();
     }

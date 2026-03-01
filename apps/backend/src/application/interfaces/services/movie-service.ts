@@ -9,8 +9,8 @@ import type {
 
 export interface MovieService {
   createMovie(userId: string, input: CreateMovieDTO): Promise<MovieDTO>;
-  updateMovie(id: string, input: UpdateMovieDTO): Promise<MovieDTO>;
-  deleteMovie(id: string): Promise<void>;
+  updateMovie(id: string, userId: string, input: UpdateMovieDTO): Promise<MovieDTO>;
+  deleteMovie(id: string, userId: string): Promise<void>;
   getMovie(id: string, currentUserId: string): Promise<MovieDTO>;
   listMovies(
     query: QueryMoviesDTO,

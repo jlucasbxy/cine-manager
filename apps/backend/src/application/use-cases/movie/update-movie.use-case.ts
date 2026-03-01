@@ -14,8 +14,9 @@ import {
 export class UpdateMovie {
   constructor(private readonly movieRepository: MovieRepository) {}
 
-  async execute(uuid: string, input: UpdateMovieDTO): Promise<MovieDTO> {
+  async execute(uuid: string, userId: string, input: UpdateMovieDTO): Promise<MovieDTO> {
     const id = Uuid.create(uuid);
+    const userUuid = Uuid.create(userId);
 
     const data = {
       ...(input.title !== undefined && { title: input.title }),
@@ -58,7 +59,7 @@ export class UpdateMovie {
       updatedAt: new Date()
     };
 
-    const updated = await this.movieRepository.update(id, data);
+    const updated = await this.movieRepository.updateByIdAndUserId(id, userUuid, data);
     if (!updated) {
       throw new MovieNotFoundError();
     }

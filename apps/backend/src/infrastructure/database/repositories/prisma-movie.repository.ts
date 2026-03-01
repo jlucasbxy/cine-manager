@@ -152,6 +152,17 @@ export class PrismaMovieRepository implements MovieRepository {
   }
 
   async update(id: Uuid, data: UpdateMovieData): Promise<Movie | null> {
+    return this.updateWithWhere({ id: id.toString() }, data);
+  }
+
+  async updateByIdAndUserId(id: Uuid, userId: Uuid, data: UpdateMovieData): Promise<Movie | null> {
+    return this.updateWithWhere({ id: id.toString(), userId: userId.toString() }, data);
+  }
+
+  private async updateWithWhere(
+    where: { id: string; userId?: string },
+    data: UpdateMovieData
+  ): Promise<Movie | null> {
     const prismaData: Record<string, unknown> = {
       updatedAt: new Date()
     };
@@ -184,7 +195,7 @@ export class PrismaMovieRepository implements MovieRepository {
 
     try {
       const raw = await this.db.movie.update({
-        where: { id: id.toString() },
+        where,
         data: prismaData
       });
       return PrismaMovieMapper.toDomain(raw);
@@ -200,21 +211,10 @@ export class PrismaMovieRepository implements MovieRepository {
     }
   }
 
-  async delete(id: Uuid): Promise<boolean> {
-    try {
-      await this.db.movie.delete({
-        where: { id: id.toString() }
-      });
-      return true;
-    } catch (error: unknown) {
-      if (
-        error instanceof Error &&
-        "code" in error &&
-        (error as { code: string }).code === "P2025"
-      ) {
-        return false;
-      }
-      throw error;
-    }
+  async deleteByIdAndUserId(id: Uuid, userId: Uuid): Promise<boolean> {
+    const { count } = await this.db.movie.deleteMany({
+      where: { id: id.toString(), userId: userId.toString() }
+    });
+    return count > 0;
   }
 }
