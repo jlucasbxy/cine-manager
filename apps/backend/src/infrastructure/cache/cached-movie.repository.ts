@@ -60,6 +60,10 @@ export class CachedMovieRepository implements MovieRepository {
     private readonly cache: CacheProvider
   ) {}
 
+  async findByIdForUpdate(id: Uuid): Promise<Movie | null> {
+    return this.inner.findByIdForUpdate(id);
+  }
+
   async findPublicOrOwnedByIdWithCreator(
     id: Uuid,
     userId: Uuid

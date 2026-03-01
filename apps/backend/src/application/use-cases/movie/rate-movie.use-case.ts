@@ -23,6 +23,9 @@ export class RateMovie {
     const ratingValue = RatingValue.create(input.value);
 
     const updated = await this.transactionManager.execute(async (repos) => {
+      const movie = await repos.movieRepository.findByIdForUpdate(movieUuid);
+      if (!movie) throw new MovieNotFoundError();
+
       const rating = await repos.ratingRepository.upsert(
         Rating.create({
           userId: userUuid,

@@ -8,12 +8,27 @@ import type { MovieQuery, Uuid } from "@/domain/value-objects";
 import { PaginatedResult } from "@/domain/value-objects";
 import { PrismaMovieMapper } from "@/infrastructure/database/mappers";
 import type { PrismaDatabase } from "@/infrastructure/database/prisma";
+import type { MovieModel } from "@/infrastructure/database/prisma/generated/prisma/models/Movie";
 
 export class PrismaMovieRepository implements MovieRepository {
   private readonly db: PrismaDatabase;
 
   constructor(client: PrismaDatabase) {
     this.db = client;
+  }
+
+  async findByIdForUpdate(id: Uuid): Promise<Movie | null> {
+    const results = await this.db.$queryRaw<MovieModel[]>`
+      SELECT id, title, "originalTitle", tagline, synopsis, "releaseDate",
+             runtime, status, "ageRating", "languageId", budget, revenue,
+             "posterUrl", "backdropUrl", "trailerUrl", votes, score,
+             "isPublic", "userId", "createdAt", "updatedAt"
+      FROM "Movie"
+      WHERE id = ${id.toString()}::uuid
+      FOR UPDATE
+    `;
+    if (!results[0]) return null;
+    return PrismaMovieMapper.toDomain(results[0]);
   }
 
   async create(movie: Movie): Promise<Movie> {
