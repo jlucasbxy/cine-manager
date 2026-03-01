@@ -1,4 +1,4 @@
-# Cubos Fullstack Challenge
+# Cine Manager
 
 Aplicacao web fullstack para gerenciamento de filmes com autenticacao de usuarios.
 
