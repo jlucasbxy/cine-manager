@@ -70,9 +70,10 @@ export class PrismaRefreshTokenRepository implements RefreshTokenRepository {
     return result.count === 0 ? null : result.count;
   }
 
-  async deleteExpired(): Promise<void> {
+  async deleteExpiredByUserId(userId: Uuid): Promise<void> {
     await this.db.refreshToken.deleteMany({
       where: {
+        userId: userId.toString(),
         expiresAt: { lt: new Date() }
       }
     });

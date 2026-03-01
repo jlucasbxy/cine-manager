@@ -14,5 +14,5 @@ export interface RefreshTokenRepository {
     userId: Uuid,
     data: UpdateRefreshTokenData
   ): Promise<number | null>;
-  deleteExpired(): Promise<void>;
+  deleteExpiredByUserId(userId: Uuid): Promise<void>;
 }
