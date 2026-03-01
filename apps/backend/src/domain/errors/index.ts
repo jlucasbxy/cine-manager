@@ -16,8 +16,6 @@ export { MovieListNotFoundError } from "./movie-list-not-found.error";
 export { MovieNotFoundError } from "./movie-not-found.error";
 export { ResetTokenExpiredError } from "./reset-token-expired.error";
 export { ResetTokenInvalidError } from "./reset-token-invalid.error";
-export { TokenExpiredError } from "./token-expired.error";
 export { TokenInvalidError } from "./token-invalid.error";
-export { TokenRevokedError } from "./token-revoked.error";
 export { UnauthorizedError } from "./unauthorized.error";
 export { UserNotFoundError } from "./user-not-found.error";
