@@ -26,6 +26,9 @@ tags:
 
 paths:
   /health:
+    servers:
+      - url: /
+        description: Root server (non-versioned)
     get:
       tags:
         - System

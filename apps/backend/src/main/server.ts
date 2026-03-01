@@ -99,9 +99,6 @@ export async function start() {
         genreController,
         authMiddleware
       });
-      await api.register(healthRoutes, {
-        prefix: ROUTE_PREFIXES.health
-      });
       await api.register(languageRoutes, {
         prefix: ROUTE_PREFIXES.languages,
         languageController,
