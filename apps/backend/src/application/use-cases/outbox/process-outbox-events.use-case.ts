@@ -1,5 +1,7 @@
-import type { StorageProvider } from "@/application/interfaces/providers";
-import type { OutboxEventRepository } from "@/application/interfaces/repositories";
+import type {
+  StorageProvider,
+  TransactionManager
+} from "@/application/interfaces/providers";
 import type { NotificationService } from "@/application/interfaces/services";
 import type { OutboxEvent } from "@/domain/entities";
 import { OutboxEventTypeEnum } from "@/domain/enums";
@@ -11,16 +13,18 @@ interface ProcessOutboxEventsConfig {
 
 export class ProcessOutboxEvents {
   constructor(
-    private readonly repository: OutboxEventRepository,
+    private readonly transactionManager: TransactionManager,
     private readonly notificationService: NotificationService,
     private readonly storageProvider: StorageProvider,
     private readonly config: ProcessOutboxEventsConfig
   ) {}
 
   async execute(): Promise<void> {
-    const entries = await this.repository.findPendingBatch(
-      this.config.batchSize
-    );
+    const entries = await this.transactionManager.execute(async (repos) => {
+      return repos.outboxEventRepository.findPendingBatch(
+        this.config.batchSize
+      );
+    });
 
     for (const entry of entries) {
       await this.processEntry(entry);
@@ -30,15 +34,19 @@ export class ProcessOutboxEvents {
   private async processEntry(entry: OutboxEvent): Promise<void> {
     try {
       await this.dispatch(entry);
-      await this.repository.update(entry.markAsProcessed());
+      await this.transactionManager.execute(async (repos) => {
+        await repos.outboxEventRepository.update(entry.markAsProcessed());
+      });
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : String(err);
 
-      await this.repository.update(
-        entry.retryCount + 1 >= this.config.maxRetries
-          ? entry.markAsFailed(errorMessage)
-          : entry.recordFailure(errorMessage)
-      );
+      await this.transactionManager.execute(async (repos) => {
+        await repos.outboxEventRepository.update(
+          entry.retryCount + 1 >= this.config.maxRetries
+            ? entry.markAsFailed(errorMessage)
+            : entry.recordFailure(errorMessage)
+        );
+      });
     }
   }
 

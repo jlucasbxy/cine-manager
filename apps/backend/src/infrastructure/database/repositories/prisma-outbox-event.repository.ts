@@ -4,6 +4,7 @@ import type { OutboxEvent } from "@/domain/entities";
 import { OutboxEventStatusEnum } from "@/domain/enums";
 import { PrismaOutboxEventMapper } from "@/infrastructure/database/mappers";
 import type { PrismaDatabase } from "@/infrastructure/database/prisma";
+import type { OutboxEventModel } from "@/infrastructure/database/prisma/generated/prisma/models/OutboxEvent";
 
 export class PrismaOutboxEventRepository implements OutboxEventRepository {
   private readonly db: PrismaDatabase;
@@ -31,14 +32,16 @@ export class PrismaOutboxEventRepository implements OutboxEventRepository {
 
   async findPendingBatch(limit: number): Promise<OutboxEvent[]> {
     const now = new Date();
-    const rows = await this.db.outboxEvent.findMany({
-      where: {
-        status: OutboxEventStatusEnum.PENDING,
-        OR: [{ scheduledFor: null }, { scheduledFor: { lte: now } }]
-      },
-      orderBy: { id: "asc" },
-      take: limit
-    });
+    const rows = await this.db.$queryRaw<OutboxEventModel[]>`
+      SELECT id, type, payload, status, "retryCount", error,
+             "createdAt", "scheduledFor", "processedAt", "movieId"
+      FROM "OutboxEvent"
+      WHERE status = ${OutboxEventStatusEnum.PENDING}
+        AND ("scheduledFor" IS NULL OR "scheduledFor" <= ${now})
+      ORDER BY id ASC
+      LIMIT ${limit}
+      FOR UPDATE SKIP LOCKED
+    `;
 
     return rows.map(PrismaOutboxEventMapper.toDomain);
   }
