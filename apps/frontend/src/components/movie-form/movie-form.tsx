@@ -24,7 +24,6 @@ import { Textarea } from "@/components/ui/textarea";
 const formSchema = movieSchema.extend({
   genres: z.array(z.string()).optional(),
   releaseDate: z.coerce.date(),
-  isPublic: z.boolean().default(true)
 });
 
 type MovieFormData = z.infer<typeof formSchema>;
@@ -52,7 +51,7 @@ export function MovieForm({
     handleSubmit,
     control,
     formState: { errors }
-  } = useForm<MovieFormData>({
+  } = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: defaultValues
       ? {
