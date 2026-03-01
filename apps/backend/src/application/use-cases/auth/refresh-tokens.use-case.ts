@@ -5,11 +5,7 @@ import type {
   TransactionManager
 } from "@/application/interfaces/providers";
 import { RefreshToken } from "@/domain/entities";
-import {
-  TokenExpiredError,
-  TokenInvalidError,
-  TokenRevokedError
-} from "@/domain/errors";
+import { TokenInvalidError } from "@/domain/errors";
 import { Token } from "@/domain/value-objects";
 
 export type RefreshTokensConfig = {
@@ -35,11 +31,11 @@ export class RefreshTokens {
       }
 
       if (refreshToken.isRevoked()) {
-        throw new TokenRevokedError();
+        throw new TokenInvalidError();
       }
 
       if (refreshToken.isExpired()) {
-        throw new TokenExpiredError();
+        throw new TokenInvalidError();
       }
 
       const revokedRefreshToken = refreshToken.revoke();
