@@ -149,26 +149,6 @@ paths:
                 $ref: '#/components/schemas/UserDTO'
         '400':
           $ref: '#/components/responses/ValidationError'
-
-  /users/me:
-    get:
-      tags:
-        - Users
-      summary: Get current user
-      operationId: getMe
-      security:
-        - cookieAuth: []
-      responses:
-        '200':
-          description: Current user info
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UserDTO'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-
-  /users/patch: # Wait, looking at user.routes.ts, it's patch "/" under /users
     patch:
       tags:
         - Users
@@ -192,47 +172,87 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 
+  /users/me:
+    get:
+      tags:
+        - Users
+      summary: Get current user
+      operationId: getMe
+      security:
+        - cookieAuth: []
+      responses:
+        '200':
+          description: Current user info
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDTO'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
   /movies:
     get:
       tags:
         - Movies
       summary: List movies
       operationId: listMovies
+      security:
+        - cookieAuth: []
       parameters:
-        - name: page
+        - name: cursor
           in: query
           schema:
-            type: integer
-            default: 1
+            type: string
+            format: uuid
         - name: limit
           in: query
           schema:
             type: integer
+            minimum: 1
+            maximum: 100
             default: 10
-        - name: query
+        - name: search
           in: query
           schema:
             type: string
-        - name: genreId
+        - name: onlyMine
+          in: query
+          schema:
+            type: boolean
+        - name: genreIds
+          in: query
+          schema:
+            oneOf:
+              - type: string
+                format: uuid
+              - type: array
+                items:
+                  type: string
+                  format: uuid
+        - name: status
           in: query
           schema:
             type: string
-        - name: languageId
+            enum: [RELEASED, POST_PRODUCTION, IN_PRODUCTION, PLANNED, CANCELED, RUMORED]
+        - name: ageRating
           in: query
           schema:
             type: string
-        - name: sortBy
+            enum: [L, TEN, TWELVE, FOURTEEN, SIXTEEN, EIGHTEEN]
+        - name: releaseDateStart
           in: query
           schema:
             type: string
-            enum: [createdAt, releaseDate, score, votes]
-            default: createdAt
-        - name: order
+            format: date
+        - name: releaseDateEnd
           in: query
           schema:
             type: string
-            enum: [asc, desc]
-            default: desc
+            format: date
+        - name: runtime
+          in: query
+          schema:
+            type: integer
       responses:
         '200':
           description: List of movies
@@ -245,8 +265,10 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/MovieDTO'
-                  total:
-                    type: integer
+                  nextCursor:
+                    type: string
+                    format: uuid
+                    nullable: true
         '401':
           $ref: '#/components/responses/Unauthorized'
     post:
@@ -351,7 +373,7 @@ paths:
             schema:
               $ref: '#/components/schemas/RateMovieDTO'
       responses:
-        '204':
+        '200':
           description: Movie rated
         '404':
           $ref: '#/components/responses/NotFound'
@@ -511,7 +533,7 @@ paths:
             schema:
               $ref: '#/components/schemas/AddMovieToListDTO'
       responses:
-        '204':
+        '200':
           description: Movie added to list
         '404':
           $ref: '#/components/responses/NotFound'
@@ -591,8 +613,10 @@ components:
     AuthResponse:
       type: object
       properties:
-        user:
-          $ref: '#/components/schemas/UserDTO'
+        accessToken:
+          type: string
+        expiresIn:
+          type: number
     RequestPasswordResetDTO:
       type: object
       required:
@@ -605,11 +629,11 @@ components:
       type: object
       required:
         - token
-        - password
+        - newPassword
       properties:
         token:
           type: string
-        password:
+        newPassword:
           type: string
     CreateUserDTO:
       type: object
@@ -677,8 +701,10 @@ components:
           type: integer
         status:
           type: string
+          enum: [RELEASED, POST_PRODUCTION, IN_PRODUCTION, PLANNED, CANCELED, RUMORED]
         ageRating:
           type: string
+          enum: [L, TEN, TWELVE, FOURTEEN, SIXTEEN, EIGHTEEN]
         languageId:
           type: string
         budget:
@@ -715,8 +741,10 @@ components:
           type: integer
         status:
           type: string
+          enum: [RELEASED, POST_PRODUCTION, IN_PRODUCTION, PLANNED, CANCELED, RUMORED]
         ageRating:
           type: string
+          enum: [L, TEN, TWELVE, FOURTEEN, SIXTEEN, EIGHTEEN]
         languageId:
           type: string
         budget:
@@ -773,6 +801,10 @@ components:
           type: integer
         score:
           type: number
+        genres:
+          type: array
+          items:
+            $ref: '#/components/schemas/GenreDTO'
         isPublic:
           type: boolean
         createdAt:
@@ -797,9 +829,9 @@ components:
     RateMovieDTO:
       type: object
       required:
-        - score
+        - value
       properties:
-        score:
+        value:
           type: number
           minimum: 0
           maximum: 10
@@ -827,7 +859,7 @@ components:
         description:
           type: string
         isPublic:
-          boolean: true
+          type: boolean
         userId:
           type: string
         createdAt:
@@ -841,10 +873,6 @@ components:
       properties:
         name:
           type: string
-        description:
-          type: string
-        isPublic:
-          type: boolean
     UpdateMovieListDTO:
       type: object
       required:
