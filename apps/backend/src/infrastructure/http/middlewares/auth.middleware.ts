@@ -24,7 +24,16 @@ export class AuthMiddleware {
     }
 
     const token = header.slice(7);
-    const result = await this.tokenProvider.verify(token);
-    request.userId = result.userId;
+
+    try {
+      const result = await this.tokenProvider.verify(token);
+      request.userId = result.userId;
+    } catch {
+      return reply.status(401).send({
+        statusCode: 401,
+        error: "Unauthorized",
+        message: "Invalid or expired token"
+      });
+    }
   }
 }
