@@ -3,6 +3,7 @@ import { ErrorCode } from "@repo/dtos";
 const STATUS_MAP: Record<ErrorCode, number> = {
   [ErrorCode.INVALID_EMAIL]: 400,
   [ErrorCode.INVALID_PASSWORD]: 400,
+  [ErrorCode.WEAK_PASSWORD]: 400,
   [ErrorCode.INVALID_URL]: 400,
   [ErrorCode.INVALID_UUID]: 400,
   [ErrorCode.INVALID_NON_NEGATIVE_INT]: 400,

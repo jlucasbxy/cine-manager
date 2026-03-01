@@ -19,3 +19,4 @@ export { ResetTokenInvalidError } from "./reset-token-invalid.error";
 export { TokenInvalidError } from "./token-invalid.error";
 export { UnauthorizedError } from "./unauthorized.error";
 export { UserNotFoundError } from "./user-not-found.error";
+export { WeakPasswordError } from "./weak-password.error";

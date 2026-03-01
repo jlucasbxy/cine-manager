@@ -7,7 +7,9 @@ import { Button } from "@/components/ui/button";
 import { ImageFile } from "@/components/ui/image-file";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { PasswordStrengthIndicator } from "@/components/ui/password-strength-indicator";
 import { Separator } from "@/components/ui/separator";
+import { usePasswordStrength } from "@/hooks/use-password-strength";
 import type { ProfileFormData } from "@/lib/schemas";
 import { profileSchema } from "@/lib/schemas";
 
@@ -37,6 +39,7 @@ export function ProfileForm({
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors }
   } = useForm<ProfileFormData>({
     resolver: zodResolver(profileSchema),
@@ -46,6 +49,9 @@ export function ProfileForm({
       confirmPassword: ""
     }
   });
+
+  const passwordValue = watch("password") ?? "";
+  const passwordStrength = usePasswordStrength(passwordValue);
 
   function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -147,6 +153,11 @@ export function ProfileForm({
               type="password"
               placeholder="At least 8 characters"
               {...register("password")}
+            />
+            <PasswordStrengthIndicator
+              score={passwordStrength.score}
+              feedback={passwordStrength.feedback}
+              show={passwordValue.length > 0}
             />
             {errors.password && (
               <p className="text-sm text-destructive">

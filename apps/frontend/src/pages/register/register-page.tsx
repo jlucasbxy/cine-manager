@@ -9,7 +9,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { PasswordInput } from "@/components/ui/password-input";
+import { PasswordStrengthIndicator } from "@/components/ui/password-strength-indicator";
 import { useAuth } from "@/hooks/use-auth";
+import { usePasswordStrength } from "@/hooks/use-password-strength";
 import type { RegisterFormData } from "@/lib/schemas";
 import { registerSchema } from "@/lib/schemas";
 
@@ -21,10 +23,14 @@ export function RegisterPage() {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors }
   } = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema)
   });
+
+  const passwordValue = watch("password") ?? "";
+  const passwordStrength = usePasswordStrength(passwordValue);
 
   const onSubmit = async (data: RegisterFormData) => {
     setIsSubmitting(true);
@@ -72,6 +78,11 @@ export function RegisterPage() {
             id="password"
             placeholder="At least 8 characters"
             {...register("password")}
+          />
+          <PasswordStrengthIndicator
+            score={passwordStrength.score}
+            feedback={passwordStrength.feedback}
+            show={passwordValue.length > 0}
           />
           {errors.password && (
             <p className="text-sm text-destructive">

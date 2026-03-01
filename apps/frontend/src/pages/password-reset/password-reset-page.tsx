@@ -8,6 +8,8 @@ import { AuthFormLayout } from "@/components/auth/auth-form-layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { PasswordStrengthIndicator } from "@/components/ui/password-strength-indicator";
+import { usePasswordStrength } from "@/hooks/use-password-strength";
 import type { PasswordResetFormData } from "@/lib/schemas";
 import { passwordResetSchema } from "@/lib/schemas";
 import * as authService from "@/services/auth.service";
@@ -21,11 +23,15 @@ export function PasswordResetPage() {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors }
   } = useForm<PasswordResetFormData>({
     resolver: zodResolver(passwordResetSchema),
     defaultValues: { token }
   });
+
+  const newPasswordValue = watch("newPassword") ?? "";
+  const passwordStrength = usePasswordStrength(newPasswordValue);
 
   const onSubmit = async (data: PasswordResetFormData) => {
     setIsSubmitting(true);
@@ -68,6 +74,11 @@ export function PasswordResetPage() {
             type="password"
             placeholder="At least 8 characters"
             {...register("newPassword")}
+          />
+          <PasswordStrengthIndicator
+            score={passwordStrength.score}
+            feedback={passwordStrength.feedback}
+            show={newPasswordValue.length > 0}
           />
           {errors.newPassword && (
             <p className="text-sm text-destructive">

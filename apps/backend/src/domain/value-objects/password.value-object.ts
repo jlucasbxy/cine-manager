@@ -1,5 +1,9 @@
 import { passwordZodSchema } from "@repo/validators";
-import { InvalidPasswordError } from "@/domain/errors";
+import { InvalidPasswordError, WeakPasswordError } from "@/domain/errors";
+import {
+  checkPasswordStrength,
+  MIN_PASSWORD_SCORE
+} from "@/infrastructure/config/password-strength.config";
 
 export class Password {
   private readonly value: string;
@@ -12,6 +16,10 @@ export class Password {
     const result = passwordZodSchema.safeParse(value);
     if (!result.success) {
       throw new InvalidPasswordError();
+    }
+    const { score } = checkPasswordStrength(value);
+    if (score < MIN_PASSWORD_SCORE) {
+      throw new WeakPasswordError();
     }
     return new Password(value);
   }
