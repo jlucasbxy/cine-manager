@@ -28,21 +28,7 @@ const envSchema = z.object({
   ENABLE_DOCS: z
     .enum(["true", "false"])
     .default("false")
-    .transform((v) => v === "true"),
-  RATE_LIMIT_LOGIN_MAX: z.coerce.number().int().positive().default(5),
-  RATE_LIMIT_LOGIN_WINDOW: z.string().default("1 minute"),
-  RATE_LIMIT_PASSWORD_RESET_REQUEST_MAX: z.coerce.number().int().positive().default(3),
-  RATE_LIMIT_PASSWORD_RESET_REQUEST_WINDOW: z.string().default("1 minute"),
-  RATE_LIMIT_PASSWORD_RESET_EXECUTE_MAX: z.coerce.number().int().positive().default(5),
-  RATE_LIMIT_PASSWORD_RESET_EXECUTE_WINDOW: z.string().default("1 minute"),
-  RATE_LIMIT_REFRESH_MAX: z.coerce.number().int().positive().default(10),
-  RATE_LIMIT_REFRESH_WINDOW: z.string().default("1 minute"),
-  RATE_LIMIT_LOGOUT_MAX: z.coerce.number().int().positive().default(10),
-  RATE_LIMIT_LOGOUT_WINDOW: z.string().default("1 minute"),
-  RATE_LIMIT_REGISTRATION_MAX: z.coerce.number().int().positive().default(10),
-  RATE_LIMIT_REGISTRATION_WINDOW: z.string().default("1 minute"),
-  RATE_LIMIT_UPLOAD_URL_MAX: z.coerce.number().int().positive().default(10),
-  RATE_LIMIT_UPLOAD_URL_WINDOW: z.string().default("1 day")
+    .transform((v) => v === "true")
 });
 
 const parsedEnv = envSchema.parse(process.env);
