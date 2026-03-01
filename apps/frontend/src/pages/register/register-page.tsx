@@ -1,4 +1,6 @@
+import { ErrorCode } from "@repo/dtos";
 import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -38,8 +40,28 @@ export function RegisterPage() {
       await registerUser(data.name, data.email, data.password);
       toast.success("Account created successfully!");
       navigate("/movies");
-    } catch {
-      toast.error("Could not create account. Email may already be in use.");
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const code = error.response?.data?.code;
+        switch (code) {
+          case ErrorCode.EMAIL_ALREADY_IN_USE:
+            toast.error("Email already in use.");
+            break;
+          case ErrorCode.WEAK_PASSWORD:
+            toast.error("Password is too weak. Please choose a stronger one.");
+            break;
+          case ErrorCode.INVALID_EMAIL:
+            toast.error("Invalid email address.");
+            break;
+          case ErrorCode.INVALID_PASSWORD:
+            toast.error("Invalid password format.");
+            break;
+          default:
+            toast.error("Could not create account. Please try again.");
+        }
+      } else {
+        toast.error("Could not create account. Please try again.");
+      }
     } finally {
       setIsSubmitting(false);
     }
