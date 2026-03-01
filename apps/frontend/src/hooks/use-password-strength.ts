@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import type { ZxcvbnResult } from "@zxcvbn-ts/core";
+import { PasswordStrengthValidator } from "@repo/validators";
 import { useDebounce } from "./use-debounce";
 
 interface PasswordStrengthResult {
@@ -14,6 +14,8 @@ const emptyResult: PasswordStrengthResult = {
   isLoading: false
 };
 
+const strengthValidator = new PasswordStrengthValidator();
+
 export function usePasswordStrength(password: string): PasswordStrengthResult {
   const [result, setResult] = useState<PasswordStrengthResult>(emptyResult);
   const debouncedPassword = useDebounce(password, 300);
@@ -24,42 +26,16 @@ export function usePasswordStrength(password: string): PasswordStrengthResult {
       return;
     }
 
-    let cancelled = false;
-    setResult((prev) => ({ ...prev, isLoading: true }));
+    const evaluation = strengthValidator.check(debouncedPassword);
 
-    (async () => {
-      const [{ zxcvbn, zxcvbnOptions }, common, en] = await Promise.all([
-        import("@zxcvbn-ts/core"),
-        import("@zxcvbn-ts/language-common"),
-        import("@zxcvbn-ts/language-en")
-      ]);
-
-      zxcvbnOptions.setOptions({
-        translations: en.translations,
-        graphs: common.adjacencyGraphs,
-        dictionary: {
-          ...common.dictionary,
-          ...en.dictionary
-        }
-      });
-
-      const evaluation: ZxcvbnResult = zxcvbn(debouncedPassword);
-
-      if (!cancelled) {
-        setResult({
-          score: evaluation.score,
-          feedback: {
-            warning: evaluation.feedback.warning?.toString() ?? "",
-            suggestions: evaluation.feedback.suggestions?.map(String) ?? []
-          },
-          isLoading: false
-        });
-      }
-    })();
-
-    return () => {
-      cancelled = true;
-    };
+    setResult({
+      score: evaluation.score,
+      feedback: {
+        warning: evaluation.feedback.warning?.toString() ?? "",
+        suggestions: evaluation.feedback.suggestions?.map(String) ?? []
+      },
+      isLoading: false
+    });
   }, [debouncedPassword]);
 
   return result;

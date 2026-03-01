@@ -13,6 +13,12 @@ zxcvbnOptions.setOptions({
 
 export const MIN_PASSWORD_SCORE = 3;
 
-export function checkPasswordStrength(password: string) {
-  return zxcvbn(password);
+export class PasswordStrengthValidator {
+  check(password: string) {
+    return zxcvbn(password);
+  }
+
+  isStrong(password: string): boolean {
+    return this.check(password).score >= MIN_PASSWORD_SCORE;
+  }
 }

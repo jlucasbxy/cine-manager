@@ -19,3 +19,7 @@ export { passwordZodSchema } from "./schemas/password.schema";
 export { UpdateMovieValidator } from "./update-movie.validator";
 export { UpdateMovieListValidator } from "./update-movie-list.validator";
 export { UpdateUserValidator } from "./update-user.validator";
+export {
+  PasswordStrengthValidator,
+  MIN_PASSWORD_SCORE
+} from "./password-strength.validator";
