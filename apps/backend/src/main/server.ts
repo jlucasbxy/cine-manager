@@ -1,5 +1,7 @@
 import path from "path";
 import cookie from "@fastify/cookie";
+import cors from "@fastify/cors";
+import helmet from "@fastify/helmet";
 import rateLimit from "@fastify/rate-limit";
 import swagger from "@fastify/swagger";
 import swaggerUi from "@fastify/swagger-ui";
@@ -56,6 +58,11 @@ export async function start() {
     });
   }
 
+  await app.register(helmet);
+  await app.register(cors, {
+    origin: env.FRONTEND_URL,
+    credentials: true
+  });
   await app.register(cookie);
   const redis = makeRedisClient();
 
