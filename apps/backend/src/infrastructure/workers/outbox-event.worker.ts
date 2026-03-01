@@ -1,3 +1,4 @@
+import type { LogProvider } from "@/application/interfaces/providers";
 import type { ProcessOutboxEvents } from "@/application/use-cases/outbox";
 
 interface OutboxEventWorkerConfig {
@@ -9,7 +10,8 @@ export class OutboxEventWorker {
 
   constructor(
     private readonly processOutbox: ProcessOutboxEvents,
-    private readonly config: OutboxEventWorkerConfig
+    private readonly config: OutboxEventWorkerConfig,
+    private readonly logProvider: LogProvider
   ) {}
 
   start(): void {
@@ -17,8 +19,9 @@ export class OutboxEventWorker {
       try {
         await this.processOutbox.execute();
       } catch (err) {
-        // eslint-disable-next-line no-console
-        console.error("[OutboxEventWorker] Error processing outbox:", err);
+        this.logProvider.error("Error processing outbox", {
+          error: String(err)
+        });
       }
     }, this.config.pollIntervalMs);
   }

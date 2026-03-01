@@ -7,9 +7,11 @@ import swagger from "@fastify/swagger";
 import swaggerUi from "@fastify/swagger-ui";
 import { ErrorCode } from "@repo/dtos";
 import Fastify from "fastify";
+import type { LogProvider } from "@/application/interfaces/providers";
 import { env } from "@/infrastructure/config/env.config";
 import { ROUTE_PREFIXES } from "@/infrastructure/config/routes.config";
 import { errorHandler } from "@/infrastructure/http/middlewares";
+import { PinoLogProvider } from "@/infrastructure/providers";
 import {
   authRoutes,
   genreRoutes,
@@ -31,6 +33,12 @@ import {
 } from "@/main/factories/controllers";
 import { makeAuthMiddleware } from "@/main/factories/middlewares";
 import { makeRedisClient } from "@/main/factories/redis";
+
+declare module "fastify" {
+  interface FastifyRequest {
+    logProvider: LogProvider;
+  }
+}
 
 export async function start() {
   const app = Fastify({
@@ -77,6 +85,11 @@ export async function start() {
 
   app.setErrorHandler(errorHandler);
 
+  app.addHook("onRequest", (request, _reply, done) => {
+    request.logProvider = PinoLogProvider.fromLogger(request.log);
+    done();
+  });
+
   await app.register(healthRoutes, { prefix: "/health" });
 
   const authController = makeAuthController();
@@ -90,6 +103,15 @@ export async function start() {
 
   await app.register(
     async (api) => {
+      api.addHook("preHandler", (request, _reply, done) => {
+        if (request.userId) {
+          request.logProvider = request.logProvider.child({
+            userId: request.userId
+          });
+        }
+        done();
+      });
+
       await api.register(authRoutes, {
         prefix: ROUTE_PREFIXES.auth,
         authController
