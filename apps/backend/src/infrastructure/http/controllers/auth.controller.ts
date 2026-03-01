@@ -69,7 +69,7 @@ export class AuthController {
   private setRefreshTokenCookie(reply: FastifyReply, token: string) {
     reply.setCookie(REFRESH_TOKEN_COOKIE, token, {
       httpOnly: true,
-      secure: env.FRONTEND_URL.startsWith("https://"),
+      secure: env.IS_PRODUCTION,
       sameSite: "strict",
       path: "/"
     });
@@ -78,7 +78,7 @@ export class AuthController {
   private clearRefreshTokenCookie(reply: FastifyReply) {
     reply.clearCookie(REFRESH_TOKEN_COOKIE, {
       httpOnly: true,
-      secure: env.FRONTEND_URL.startsWith("https://"),
+      secure: env.IS_PRODUCTION,
       sameSite: "strict",
       path: "/"
     });
