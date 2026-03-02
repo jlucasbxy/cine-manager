@@ -5,24 +5,11 @@ import {
   ResetTokenInvalidError
 } from "@/domain/errors";
 import { Token, Uuid } from "@/domain/value-objects";
+import { makeAuthDeps } from "../../../factories";
 
 describe("ResetPassword", () => {
   const validHex = "a".repeat(64);
-  const mockRepos = {
-    passwordResetTokenRepository: {
-      findByTokenForUpdate: vi.fn(),
-      update: vi.fn()
-    },
-    userRepository: { update: vi.fn() },
-    refreshTokenRepository: { updateManyByUserId: vi.fn() }
-  };
-  const transactionManager = {
-    execute: vi.fn((fn: any) => fn(mockRepos))
-  };
-  const hashProvider = {
-    hash: vi.fn(),
-    compare: vi.fn()
-  };
+  const { mockRepos, transactionManager, hashProvider } = makeAuthDeps();
 
   const useCase = new ResetPassword(hashProvider, transactionManager as any);
 

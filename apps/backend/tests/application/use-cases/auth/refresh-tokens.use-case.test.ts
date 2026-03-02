@@ -1,28 +1,10 @@
 import { RefreshTokens } from "@/application/use-cases/auth/refresh-tokens.use-case";
-import { RefreshToken } from "@/domain/entities/refresh-token.entity";
 import { TokenInvalidError } from "@/domain/errors";
-import { Token, Uuid } from "@/domain/value-objects";
+import { Uuid } from "@/domain/value-objects";
+import { makeAuthDeps, makeRefreshToken } from "../../../factories";
 
 describe("RefreshTokens", () => {
-  const mockRepos = {
-    refreshTokenRepository: {
-      findByTokenForUpdate: vi.fn(),
-      updateByToken: vi.fn(),
-      create: vi.fn(),
-      deleteExpiredByUserId: vi.fn()
-    }
-  };
-  const transactionManager = {
-    execute: vi.fn((fn: any) => fn(mockRepos))
-  };
-  const tokenProvider = {
-    generate: vi.fn(),
-    verify: vi.fn()
-  };
-  const config = {
-    accessTokenExpiresIn: "15m" as const,
-    refreshTokenExpiresIn: "7d" as const
-  };
+  const { mockRepos, transactionManager, tokenProvider, config } = makeAuthDeps();
 
   const useCase = new RefreshTokens(tokenProvider, transactionManager as any, config);
   const validHex = "a".repeat(64);
@@ -33,14 +15,7 @@ describe("RefreshTokens", () => {
 
   it("returns new tokens on valid refresh token", async () => {
     const userId = Uuid.generate();
-    const rt = RefreshToken.reconstitute({
-      id: Uuid.generate(),
-      token: Token.create(validHex),
-      userId,
-      expiresAt: new Date("2030-01-01"),
-      revokedAt: null,
-      createdAt: new Date()
-    });
+    const rt = makeRefreshToken({ token: validHex, userId });
 
     mockRepos.refreshTokenRepository.findByTokenForUpdate.mockResolvedValue(rt);
     mockRepos.refreshTokenRepository.updateByToken.mockResolvedValue(null);
@@ -64,13 +39,9 @@ describe("RefreshTokens", () => {
   });
 
   it("throws TokenInvalidError when token is revoked", async () => {
-    const rt = RefreshToken.reconstitute({
-      id: Uuid.generate(),
-      token: Token.create(validHex),
-      userId: Uuid.generate(),
-      expiresAt: new Date("2030-01-01"),
-      revokedAt: new Date(),
-      createdAt: new Date()
+    const rt = makeRefreshToken({
+      token: validHex,
+      revokedAt: new Date("2024-01-01T00:00:00.000Z")
     });
     mockRepos.refreshTokenRepository.findByTokenForUpdate.mockResolvedValue(rt);
 
@@ -80,14 +51,7 @@ describe("RefreshTokens", () => {
   });
 
   it("throws TokenInvalidError when token is expired", async () => {
-    const rt = RefreshToken.reconstitute({
-      id: Uuid.generate(),
-      token: Token.create(validHex),
-      userId: Uuid.generate(),
-      expiresAt: new Date("2020-01-01"),
-      revokedAt: null,
-      createdAt: new Date()
-    });
+    const rt = makeRefreshToken({ token: validHex, expiresAt: new Date("2020-01-01") });
     mockRepos.refreshTokenRepository.findByTokenForUpdate.mockResolvedValue(rt);
 
     await expect(

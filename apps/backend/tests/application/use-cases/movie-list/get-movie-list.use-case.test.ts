@@ -1,12 +1,11 @@
 import { GetMovieList } from "@/application/use-cases/movie-list/get-movie-list.use-case";
-import { MovieList } from "@/domain/entities/movie-list.entity";
 import { UnauthorizedError } from "@/domain/errors";
 import { Uuid } from "@/domain/value-objects";
+import { makeMovieList, makeMovieListDeps } from "../../../factories";
 
 describe("GetMovieList", () => {
-  const movieListRepository = {
-    findByIdAndUserIdWithMovies: vi.fn()
-  };
+  const { mockRepos } = makeMovieListDeps();
+  const movieListRepository = mockRepos.movieListRepository;
   const useCase = new GetMovieList(movieListRepository as any);
 
   beforeEach(() => {
@@ -14,13 +13,7 @@ describe("GetMovieList", () => {
   });
 
   it("returns movie list DTO with movies when found", async () => {
-    const list = MovieList.reconstitute({
-      id: Uuid.generate(),
-      name: "Favorites",
-      userId: Uuid.generate(),
-      createdAt: new Date(),
-      updatedAt: new Date()
-    });
+    const list = makeMovieList({ name: "Favorites", userId: Uuid.generate() });
     movieListRepository.findByIdAndUserIdWithMovies.mockResolvedValue({
       ...list,
       movies: []

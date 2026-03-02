@@ -1,9 +1,11 @@
 import { DeleteMovieList } from "@/application/use-cases/movie-list/delete-movie-list.use-case";
 import { MovieListNotFoundError } from "@/domain/errors";
 import { Uuid } from "@/domain/value-objects";
+import { makeMovieListDeps } from "../../../factories";
 
 describe("DeleteMovieList", () => {
-  const movieListRepository = { deleteByIdAndUserId: vi.fn() };
+  const { mockRepos } = makeMovieListDeps();
+  const movieListRepository = mockRepos.movieListRepository;
   const useCase = new DeleteMovieList(movieListRepository as any);
 
   beforeEach(() => {

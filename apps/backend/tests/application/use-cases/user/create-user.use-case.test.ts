@@ -1,20 +1,9 @@
 import { CreateUser } from "@/application/use-cases/user/create-user.use-case";
 import { EmailAlreadyInUseError } from "@/domain/errors";
-import { Email, Password, Uuid } from "@/domain/value-objects";
-import { User } from "@/domain/entities/user.entity";
+import { makeAuthDeps, makeUser } from "../../../factories";
 
 describe("CreateUser", () => {
-  const mockRepos = {
-    userRepository: { create: vi.fn() },
-    outboxEventRepository: { create: vi.fn() }
-  };
-  const transactionManager = {
-    execute: vi.fn((fn: any) => fn(mockRepos))
-  };
-  const hashProvider = {
-    hash: vi.fn(),
-    compare: vi.fn()
-  };
+  const { mockRepos, transactionManager, hashProvider } = makeAuthDeps();
 
   const useCase = new CreateUser(hashProvider, transactionManager as any);
 
@@ -24,13 +13,10 @@ describe("CreateUser", () => {
 
   it("creates user and returns DTO", async () => {
     hashProvider.hash.mockResolvedValue("hashed-password");
-    const savedUser = User.reconstitute({
-      id: Uuid.generate(),
+    const savedUser = makeUser({
       name: "John",
-      email: Email.reconstitute("john@example.com"),
-      password: Password.reconstitute("hashed-password"),
-      createdAt: new Date(),
-      updatedAt: new Date()
+      email: "john@example.com",
+      password: "hashed-password"
     });
     mockRepos.userRepository.create.mockResolvedValue(savedUser);
     mockRepos.outboxEventRepository.create.mockResolvedValue(undefined);

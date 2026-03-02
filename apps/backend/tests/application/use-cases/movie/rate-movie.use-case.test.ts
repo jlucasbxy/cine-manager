@@ -1,60 +1,21 @@
 import { RateMovie } from "@/application/use-cases/movie/rate-movie.use-case";
-import { Movie } from "@/domain/entities/movie.entity";
-import { AgeRatingEnum } from "@/domain/enums/age-rating.enum";
-import { MovieStatusEnum } from "@/domain/enums/movie-status.enum";
 import { MovieNotFoundError } from "@/domain/errors";
-import {
-  AgeRating,
-  Money,
-  MovieStatus,
-  NonNegativeInt,
-  NonNegativeNumber,
-  Url,
-  Uuid
-} from "@/domain/value-objects";
+import { Uuid } from "@/domain/value-objects";
 import { Rating } from "@/domain/entities/rating.entity";
 import { RatingValue } from "@/domain/value-objects/rating-value.value-object";
+import { makeMovie as makeMovieFactory, makeMovieDeps } from "../../../factories";
 
 function makeMovie(id?: Uuid) {
-  return Movie.reconstitute({
+  return makeMovieFactory({
     id: id ?? Uuid.generate(),
     title: "Test",
-    originalTitle: "Test",
-    tagline: "T",
-    synopsis: "S",
-    releaseDate: new Date(),
-    runtime: NonNegativeInt.reconstitute(120),
-    status: MovieStatus.reconstitute(MovieStatusEnum.RELEASED),
-    ageRating: AgeRating.reconstitute(AgeRatingEnum.L),
-    languageId: Uuid.generate(),
-    budget: Money.reconstitute(0),
-    revenue: Money.reconstitute(0),
-    posterUrl: Url.reconstitute("https://example.com/p.jpg"),
-    backdropUrl: Url.reconstitute("https://example.com/b.jpg"),
-    trailerUrl: Url.reconstitute("https://example.com/t.mp4"),
-    votes: NonNegativeInt.reconstitute(10),
-    score: NonNegativeNumber.reconstitute(7.5),
-    isPublic: true,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    userId: Uuid.generate()
+    votes: 10,
+    score: 7.5
   });
 }
 
 describe("RateMovie", () => {
-  const mockRepos = {
-    movieRepository: {
-      findByIdForUpdate: vi.fn(),
-      update: vi.fn()
-    },
-    ratingRepository: {
-      upsert: vi.fn(),
-      getAverageAndCount: vi.fn()
-    }
-  };
-  const transactionManager = {
-    execute: vi.fn((fn: any) => fn(mockRepos))
-  };
+  const { mockRepos, transactionManager } = makeMovieDeps();
   const useCase = new RateMovie(transactionManager as any);
 
   beforeEach(() => {

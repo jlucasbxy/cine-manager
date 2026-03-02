@@ -1,15 +1,10 @@
 import { RemoveMovieFromList } from "@/application/use-cases/movie-list/remove-movie-from-list.use-case";
 import { MovieListNotFoundError } from "@/domain/errors";
 import { Uuid } from "@/domain/value-objects";
+import { makeMovieListDeps } from "../../../factories";
 
 describe("RemoveMovieFromList", () => {
-  const repos = {
-    movieListRepository: { removeMovieByListIdAndMovieId: vi.fn() },
-    movieRepository: { hardDeleteIfSoftDeletedAndOrphan: vi.fn() }
-  };
-  const transactionManager = {
-    execute: vi.fn((fn: any) => fn(repos))
-  };
+  const { mockRepos: repos, transactionManager } = makeMovieListDeps();
   const useCase = new RemoveMovieFromList(transactionManager as any);
 
   beforeEach(() => {

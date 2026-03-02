@@ -1,36 +1,21 @@
 import { UpdateUser } from "@/application/use-cases/user/update-user.use-case";
 import { UserNotFoundError } from "@/domain/errors";
-import { Email, Password, Uuid } from "@/domain/value-objects";
-import { User } from "@/domain/entities/user.entity";
+import { Uuid } from "@/domain/value-objects";
+import { makeAuthDeps, makeUser as makeUserFactory } from "../../../factories";
 
 describe("UpdateUser", () => {
-  const mockRepos = {
-    userRepository: {
-      findByIdForUpdate: vi.fn(),
-      update: vi.fn()
-    },
-    outboxEventRepository: { create: vi.fn() }
-  };
-  const transactionManager = {
-    execute: vi.fn((fn: any) => fn(mockRepos))
-  };
-  const hashProvider = {
-    hash: vi.fn(),
-    compare: vi.fn()
-  };
+  const { mockRepos, transactionManager, hashProvider } = makeAuthDeps();
 
   const useCase = new UpdateUser(hashProvider, transactionManager as any);
   const userId = Uuid.generate();
 
-  function makeUser(avatarUrl?: string) {
-    return User.reconstitute({
+  function makeCurrentUser(avatarUrl?: string) {
+    return makeUserFactory({
       id: userId,
       name: "John",
-      email: Email.reconstitute("john@example.com"),
-      password: Password.reconstitute("hashed"),
+      email: "john@example.com",
+      password: "hashed",
       avatarUrl,
-      createdAt: new Date(),
-      updatedAt: new Date()
     });
   }
 
@@ -39,8 +24,8 @@ describe("UpdateUser", () => {
   });
 
   it("updates user name and returns DTO", async () => {
-    const current = makeUser();
-    const updated = makeUser();
+    const current = makeCurrentUser();
+    const updated = makeCurrentUser();
     mockRepos.userRepository.findByIdForUpdate.mockResolvedValue(current);
     mockRepos.userRepository.update.mockResolvedValue(updated);
 
@@ -51,8 +36,8 @@ describe("UpdateUser", () => {
   });
 
   it("hashes password when provided", async () => {
-    const current = makeUser();
-    const updated = makeUser();
+    const current = makeCurrentUser();
+    const updated = makeCurrentUser();
     hashProvider.hash.mockResolvedValue("new-hashed");
     mockRepos.userRepository.findByIdForUpdate.mockResolvedValue(current);
     mockRepos.userRepository.update.mockResolvedValue(updated);
@@ -63,8 +48,8 @@ describe("UpdateUser", () => {
   });
 
   it("creates outbox event when avatar changes and old avatar exists", async () => {
-    const current = makeUser("https://cdn.example.com/uploads/old-avatar.png");
-    const updated = makeUser("https://cdn.example.com/uploads/new-avatar.png");
+    const current = makeCurrentUser("https://cdn.example.com/uploads/old-avatar.png");
+    const updated = makeCurrentUser("https://cdn.example.com/uploads/new-avatar.png");
     mockRepos.userRepository.findByIdForUpdate.mockResolvedValue(current);
     mockRepos.userRepository.update.mockResolvedValue(updated);
     mockRepos.outboxEventRepository.create.mockResolvedValue(undefined);
@@ -85,7 +70,7 @@ describe("UpdateUser", () => {
   });
 
   it("throws UserNotFoundError when update returns null", async () => {
-    const current = makeUser();
+    const current = makeCurrentUser();
     mockRepos.userRepository.findByIdForUpdate.mockResolvedValue(current);
     mockRepos.userRepository.update.mockResolvedValue(null);
 

@@ -1,10 +1,11 @@
 import { UpdateMovieList } from "@/application/use-cases/movie-list/update-movie-list.use-case";
-import { MovieList } from "@/domain/entities/movie-list.entity";
 import { MovieListNotFoundError } from "@/domain/errors";
 import { Uuid } from "@/domain/value-objects";
+import { makeMovieList, makeMovieListDeps } from "../../../factories";
 
 describe("UpdateMovieList", () => {
-  const movieListRepository = { updateByIdAndUserId: vi.fn() };
+  const { mockRepos } = makeMovieListDeps();
+  const movieListRepository = mockRepos.movieListRepository;
   const useCase = new UpdateMovieList(movieListRepository as any);
 
   beforeEach(() => {
@@ -12,13 +13,7 @@ describe("UpdateMovieList", () => {
   });
 
   it("updates list name and returns DTO", async () => {
-    const list = MovieList.reconstitute({
-      id: Uuid.generate(),
-      name: "Updated",
-      userId: Uuid.generate(),
-      createdAt: new Date(),
-      updatedAt: new Date()
-    });
+    const list = makeMovieList({ name: "Updated", userId: Uuid.generate() });
     movieListRepository.updateByIdAndUserId.mockResolvedValue(list);
 
     const result = await useCase.execute(

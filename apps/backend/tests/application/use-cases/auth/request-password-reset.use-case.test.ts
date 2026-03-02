@@ -1,19 +1,9 @@
 import { RequestPasswordReset } from "@/application/use-cases/auth/request-password-reset.use-case";
 import { Uuid } from "@/domain/value-objects";
+import { makeAuthDeps } from "../../../factories";
 
 describe("RequestPasswordReset", () => {
-  const mockRepos = {
-    userRepository: { existsByEmail: vi.fn() },
-    passwordResetTokenRepository: {
-      deleteByUserId: vi.fn(),
-      create: vi.fn()
-    },
-    outboxEventRepository: { create: vi.fn() }
-  };
-  const transactionManager = {
-    execute: vi.fn((fn: any) => fn(mockRepos))
-  };
-  const config = { passwordResetTokenExpiresIn: "1h" as const };
+  const { mockRepos, transactionManager, config } = makeAuthDeps();
 
   const useCase = new RequestPasswordReset(transactionManager as any, config);
 

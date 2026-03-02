@@ -1,18 +1,10 @@
 import { DeleteMovie } from "@/application/use-cases/movie/delete-movie.use-case";
 import { MovieNotFoundError } from "@/domain/errors";
 import { Uuid } from "@/domain/value-objects";
+import { makeMovieDeps } from "../../../factories";
 
 describe("DeleteMovie", () => {
-  const mockRepos = {
-    movieRepository: {
-      deleteByIdAndUserId: vi.fn(),
-      hardDeleteIfSoftDeletedAndOrphan: vi.fn()
-    },
-    outboxEventRepository: { deletePendingByResourceId: vi.fn() }
-  };
-  const transactionManager = {
-    execute: vi.fn((fn: any) => fn(mockRepos))
-  };
+  const { mockRepos, transactionManager } = makeMovieDeps();
   const useCase = new DeleteMovie(transactionManager as any);
 
   beforeEach(() => {

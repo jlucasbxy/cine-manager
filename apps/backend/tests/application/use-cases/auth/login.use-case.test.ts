@@ -1,28 +1,10 @@
 import { Login } from "@/application/use-cases/auth/login.use-case";
 import { InvalidCredentialsError } from "@/domain/errors";
-import { Email, Password, Uuid } from "@/domain/value-objects";
-import { User } from "@/domain/entities/user.entity";
+import { makeAuthDeps, makeUser } from "../../../factories";
 
 describe("Login", () => {
-  const mockRepos = {
-    userRepository: { findByEmail: vi.fn() },
-    refreshTokenRepository: { create: vi.fn() }
-  };
-  const transactionManager = {
-    execute: vi.fn((fn: any) => fn(mockRepos))
-  };
-  const hashProvider = {
-    hash: vi.fn(),
-    compare: vi.fn()
-  };
-  const tokenProvider = {
-    generate: vi.fn(),
-    verify: vi.fn()
-  };
-  const config = {
-    accessTokenExpiresIn: "15m" as const,
-    refreshTokenExpiresIn: "7d" as const
-  };
+  const { mockRepos, transactionManager, hashProvider, tokenProvider, config } =
+    makeAuthDeps();
 
   const useCase = new Login(transactionManager as any, hashProvider, tokenProvider, config);
 
@@ -31,13 +13,9 @@ describe("Login", () => {
   });
 
   it("returns access token and refresh token on success", async () => {
-    const user = User.reconstitute({
-      id: Uuid.generate(),
-      name: "John",
-      email: Email.reconstitute("john@example.com"),
-      password: Password.reconstitute("hashed-password"),
-      createdAt: new Date(),
-      updatedAt: new Date()
+    const user = makeUser({
+      email: "john@example.com",
+      password: "hashed-password"
     });
 
     mockRepos.userRepository.findByEmail.mockResolvedValue(user);
@@ -69,14 +47,7 @@ describe("Login", () => {
   });
 
   it("throws InvalidCredentialsError when password is invalid", async () => {
-    const user = User.reconstitute({
-      id: Uuid.generate(),
-      name: "John",
-      email: Email.reconstitute("john@example.com"),
-      password: Password.reconstitute("hashed"),
-      createdAt: new Date(),
-      updatedAt: new Date()
-    });
+    const user = makeUser({ email: "john@example.com", password: "hashed" });
 
     mockRepos.userRepository.findByEmail.mockResolvedValue(user);
     hashProvider.compare.mockResolvedValue(false);

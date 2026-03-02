@@ -1,7 +1,7 @@
 import { GetUser } from "@/application/use-cases/user/get-user.use-case";
 import { UserNotFoundError } from "@/domain/errors";
-import { Email, Password, Uuid } from "@/domain/value-objects";
-import { User } from "@/domain/entities/user.entity";
+import { Uuid } from "@/domain/value-objects";
+import { makeUser } from "../../../factories";
 
 describe("GetUser", () => {
   const userRepository = {
@@ -15,13 +15,11 @@ describe("GetUser", () => {
   });
 
   it("returns user DTO when found", async () => {
-    const user = User.reconstitute({
+    const user = makeUser({
       id: userId,
       name: "John",
-      email: Email.reconstitute("john@example.com"),
-      password: Password.reconstitute("hashed"),
-      createdAt: new Date(),
-      updatedAt: new Date()
+      email: "john@example.com",
+      password: "hashed"
     });
     userRepository.findById.mockResolvedValue(user);
 
