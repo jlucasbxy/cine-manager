@@ -129,8 +129,8 @@ model Movie {
   ageRating     AgeRating
   languageId    String                @db.Uuid
   language      Language              @relation(fields: [languageId], references: [id])
-  budget        Float
-  revenue       Float
+  budget        Decimal               @db.Decimal(15, 2)
+  revenue       Decimal               @db.Decimal(15, 2)
   posterUrl     String
   backdropUrl   String
   trailerUrl    String
