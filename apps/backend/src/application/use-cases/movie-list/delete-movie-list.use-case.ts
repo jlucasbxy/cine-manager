@@ -1,5 +1,5 @@
 import type { MovieListRepository } from "@/application/interfaces/repositories";
-import { UnauthorizedError } from "@/domain/errors";
+import { MovieListNotFoundError } from "@/domain/errors";
 import { Uuid } from "@/domain/value-objects";
 
 export class DeleteMovieList {
@@ -12,6 +12,6 @@ export class DeleteMovieList {
     if (
       !(await this.movieListRepository.deleteByIdAndUserId(listUuid, userUuid))
     )
-      throw new UnauthorizedError();
+      throw new MovieListNotFoundError();
   }
 }

@@ -1,5 +1,5 @@
 import { DeleteMovieList } from "@/application/use-cases/movie-list/delete-movie-list.use-case";
-import { UnauthorizedError } from "@/domain/errors";
+import { MovieListNotFoundError } from "@/domain/errors";
 import { Uuid } from "@/domain/value-objects";
 
 describe("DeleteMovieList", () => {
@@ -18,11 +18,11 @@ describe("DeleteMovieList", () => {
     ).resolves.toBeUndefined();
   });
 
-  it("throws UnauthorizedError when list not found", async () => {
+  it("throws MovieListNotFoundError when list not found", async () => {
     movieListRepository.deleteByIdAndUserId.mockResolvedValue(false);
 
     await expect(
       useCase.execute(Uuid.generate().toString(), Uuid.generate().toString())
-    ).rejects.toThrow(UnauthorizedError);
+    ).rejects.toThrow(MovieListNotFoundError);
   });
 });
