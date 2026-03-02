@@ -6,6 +6,10 @@ import { Uuid } from "@/domain/value-objects";
 export class AddMovieToList {
   constructor(private readonly movieListRepository: MovieListRepository) {}
 
+  private assertUnreachable(value: never): never {
+    throw new Error(`Unhandled addMovie result: ${String(value)}`);
+  }
+
   async execute(
     listId: string,
     userId: string,
@@ -20,7 +24,15 @@ export class AddMovieToList {
       userUuid,
       movieUuid
     );
-    if (result === "list_not_found") throw new MovieListNotFoundError();
-    if (result === "movie_not_found") throw new MovieNotFoundError();
+    switch (result) {
+      case "ok":
+        return;
+      case "list_not_found":
+        throw new MovieListNotFoundError();
+      case "movie_not_found":
+        throw new MovieNotFoundError();
+      default:
+        return this.assertUnreachable(result);
+    }
   }
 }

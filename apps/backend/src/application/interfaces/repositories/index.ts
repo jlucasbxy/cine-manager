@@ -1,6 +1,7 @@
 export type { GenreRepository } from "./genre-repository";
 export type { LanguageRepository } from "./language-repository";
 export type {
+  AddMovieToListResult,
   MovieListRepository,
   MovieListWithMovies
 } from "./movie-list-repository";

@@ -1,4 +1,5 @@
 import type {
+  AddMovieToListResult,
   MovieListRepository,
   MovieListWithMovies
 } from "@/application/interfaces/repositories";
@@ -88,7 +89,7 @@ export class PrismaMovieListRepository implements MovieListRepository {
     listId: Uuid,
     userId: Uuid,
     movieId: Uuid
-  ): Promise<"ok" | "list_not_found" | "movie_not_found"> {
+  ): Promise<AddMovieToListResult> {
     try {
       await this.db.movieList.update({
         where: { id: listId.toString(), userId: userId.toString() },

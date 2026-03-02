@@ -6,6 +6,11 @@ export interface MovieListWithMovies extends MovieList {
   movies: Movie[];
 }
 
+export type AddMovieToListResult =
+  | "ok"
+  | "list_not_found"
+  | "movie_not_found";
+
 export interface MovieListRepository {
   create(list: MovieList): Promise<MovieList>;
   findByIdAndUserIdWithMovies(
@@ -23,7 +28,7 @@ export interface MovieListRepository {
     listId: Uuid,
     userId: Uuid,
     movieId: Uuid
-  ): Promise<"ok" | "list_not_found" | "movie_not_found">;
+  ): Promise<AddMovieToListResult>;
   removeMovieByListIdAndMovieId(
     listId: Uuid,
     userId: Uuid,
