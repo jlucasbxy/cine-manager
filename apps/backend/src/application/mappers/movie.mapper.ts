@@ -36,6 +36,7 @@ export class MovieMapper {
       isPublic: movie.isPublic,
       createdAt: movie.createdAt.toISOString(),
       updatedAt: movie.updatedAt.toISOString(),
+      deletedAt: movie.deletedAt?.toISOString() ?? null,
       userId: movie.userId.toString(),
       user
     };
@@ -63,6 +64,7 @@ export class MovieMapper {
       isPublic: data.isPublic,
       createdAt: new Date(data.createdAt),
       updatedAt: new Date(data.updatedAt),
+      deletedAt: data.deletedAt ? new Date(data.deletedAt) : null,
       userId: Uuid.reconstitute(data.userId)
     });
   }

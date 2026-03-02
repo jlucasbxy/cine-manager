@@ -139,6 +139,7 @@ model Movie {
   isPublic      Boolean               @default(true)
   createdAt     DateTime
   updatedAt     DateTime
+  deletedAt     DateTime?             @db.Timestamptz
   userId        String                @db.Uuid
   user          User                  @relation(fields: [userId], references: [id])
   ratings       Rating[]
@@ -149,6 +150,7 @@ model Movie {
   @@index([status])
   @@index([releaseDate])
   @@index([runtime])
+  @@index([deletedAt])
   @@index([title(ops: raw("gin_trgm_ops"))], type: Gin, map: "movie_title_trgm_idx")
 }
 

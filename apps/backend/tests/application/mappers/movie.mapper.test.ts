@@ -53,6 +53,7 @@ describe("MovieMapper", () => {
       expect(dto.score).toBe(8.5);
       expect(dto.isPublic).toBe(true);
       expect(dto.userId).toBe("user-id");
+      expect(dto.deletedAt).toBeNull();
       expect(dto.user).toBeUndefined();
     });
 
@@ -77,6 +78,18 @@ describe("MovieMapper", () => {
       expect(restored.votes.toNumber()).toBe(dto.votes);
       expect(restored.score.toNumber()).toBe(dto.score);
       expect(restored.isPublic).toBe(dto.isPublic);
+      expect(restored.deletedAt).toBeNull();
+    });
+
+    it("restores deletedAt when provided", () => {
+      const movie = makeMovie();
+      const dto = {
+        ...MovieMapper.toDTO(movie),
+        deletedAt: "2024-06-02T00:00:00.000Z"
+      };
+      const restored = MovieMapper.fromDto(dto);
+
+      expect(restored.deletedAt?.toISOString()).toBe("2024-06-02T00:00:00.000Z");
     });
   });
 });

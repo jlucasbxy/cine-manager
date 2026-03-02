@@ -17,4 +17,5 @@ export interface MovieRepository {
   update(id: Uuid, data: UpdateMovieData): Promise<Movie | null>;
   updateByIdAndUserId(id: Uuid, userId: Uuid, data: UpdateMovieData): Promise<Movie | null>;
   deleteByIdAndUserId(id: Uuid, userId: Uuid): Promise<boolean>;
+  hardDeleteIfSoftDeletedAndOrphan(id: Uuid): Promise<boolean>;
 }

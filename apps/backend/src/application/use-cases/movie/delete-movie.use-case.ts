@@ -19,6 +19,7 @@ export class DeleteMovie {
       if (!deleted) {
         throw new MovieNotFoundError();
       }
+      await repos.movieRepository.hardDeleteIfSoftDeletedAndOrphan(id);
     });
   }
 }

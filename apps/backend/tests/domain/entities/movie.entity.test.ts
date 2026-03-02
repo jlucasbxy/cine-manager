@@ -40,6 +40,7 @@ describe("Movie", () => {
       expect(movie.votes.toNumber()).toBe(0);
       expect(movie.score.toNumber()).toBe(0);
       expect(movie.isPublic).toBe(true);
+      expect(movie.deletedAt).toBeNull();
       expect(movie.createdAt).toBeInstanceOf(Date);
     });
 
@@ -68,6 +69,7 @@ describe("Movie", () => {
       expect(movie.votes.toNumber()).toBe(100);
       expect(movie.score.toNumber()).toBe(8.5);
       expect(movie.isPublic).toBe(false);
+      expect(movie.deletedAt).toBeNull();
     });
   });
 });

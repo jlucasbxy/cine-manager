@@ -6,6 +6,7 @@ import { MovieCard } from "@/components/movies/movie-card";
 import { ConfirmDialog } from "@/components/shared/confirm-dialog";
 import { EmptyState } from "@/components/shared/empty-state";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
@@ -129,7 +130,21 @@ export function ListDetailPage() {
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
           {movies.map((movie) => (
             <div key={movie.id} className="relative group">
-              <MovieCard movie={movie} />
+              {movie.deletedAt ? (
+                <Card className="overflow-hidden border-dashed">
+                  <div className="aspect-2/3 bg-muted" />
+                  <CardContent className="p-3">
+                    <h3 className="line-clamp-1 font-semibold text-sm">
+                      This item was deleted
+                    </h3>
+                    <p className="text-xs text-muted-foreground">
+                      Remove it from this list if you want
+                    </p>
+                  </CardContent>
+                </Card>
+              ) : (
+                <MovieCard movie={movie} />
+              )}
               <button
                 className="absolute top-2 left-2 rounded-full bg-background/80 p-1 opacity-0 group-hover:opacity-100 transition-opacity"
                 onClick={() => void handleRemoveMovie(movie.id)}

@@ -4,7 +4,10 @@ import { Uuid } from "@/domain/value-objects";
 
 describe("DeleteMovie", () => {
   const mockRepos = {
-    movieRepository: { deleteByIdAndUserId: vi.fn() },
+    movieRepository: {
+      deleteByIdAndUserId: vi.fn(),
+      hardDeleteIfSoftDeletedAndOrphan: vi.fn()
+    },
     outboxEventRepository: { deletePendingByResourceId: vi.fn() }
   };
   const transactionManager = {
@@ -19,6 +22,9 @@ describe("DeleteMovie", () => {
   it("deletes pending outbox events and movie successfully", async () => {
     mockRepos.outboxEventRepository.deletePendingByResourceId.mockResolvedValue(1);
     mockRepos.movieRepository.deleteByIdAndUserId.mockResolvedValue(true);
+    mockRepos.movieRepository.hardDeleteIfSoftDeletedAndOrphan.mockResolvedValue(
+      true
+    );
     const id = Uuid.generate().toString();
     const userId = Uuid.generate().toString();
 

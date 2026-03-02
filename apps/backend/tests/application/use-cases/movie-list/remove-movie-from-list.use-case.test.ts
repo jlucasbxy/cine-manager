@@ -3,15 +3,26 @@ import { MovieListNotFoundError } from "@/domain/errors";
 import { Uuid } from "@/domain/value-objects";
 
 describe("RemoveMovieFromList", () => {
-  const movieListRepository = { removeMovieByListIdAndMovieId: vi.fn() };
-  const useCase = new RemoveMovieFromList(movieListRepository as any);
+  const repos = {
+    movieListRepository: { removeMovieByListIdAndMovieId: vi.fn() },
+    movieRepository: { hardDeleteIfSoftDeletedAndOrphan: vi.fn() }
+  };
+  const transactionManager = {
+    execute: vi.fn((fn: any) => fn(repos))
+  };
+  const useCase = new RemoveMovieFromList(transactionManager as any);
 
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
   it("removes movie from list successfully", async () => {
-    movieListRepository.removeMovieByListIdAndMovieId.mockResolvedValue(true);
+    repos.movieListRepository.removeMovieByListIdAndMovieId.mockResolvedValue(
+      true
+    );
+    repos.movieRepository.hardDeleteIfSoftDeletedAndOrphan.mockResolvedValue(
+      true
+    );
 
     await expect(
       useCase.execute(
@@ -20,10 +31,16 @@ describe("RemoveMovieFromList", () => {
         Uuid.generate().toString()
       )
     ).resolves.toBeUndefined();
+
+    expect(
+      repos.movieRepository.hardDeleteIfSoftDeletedAndOrphan
+    ).toHaveBeenCalledTimes(1);
   });
 
   it("throws MovieListNotFoundError when not found", async () => {
-    movieListRepository.removeMovieByListIdAndMovieId.mockResolvedValue(false);
+    repos.movieListRepository.removeMovieByListIdAndMovieId.mockResolvedValue(
+      false
+    );
 
     await expect(
       useCase.execute(
@@ -32,5 +49,9 @@ describe("RemoveMovieFromList", () => {
         Uuid.generate().toString()
       )
     ).rejects.toThrow(MovieListNotFoundError);
+
+    expect(
+      repos.movieRepository.hardDeleteIfSoftDeletedAndOrphan
+    ).not.toHaveBeenCalled();
   });
 });

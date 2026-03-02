@@ -1,9 +1,9 @@
-import type { MovieListRepository } from "@/application/interfaces/repositories";
+import type { TransactionManager } from "@/application/interfaces/providers";
 import { MovieListNotFoundError } from "@/domain/errors";
 import { Uuid } from "@/domain/value-objects";
 
 export class RemoveMovieFromList {
-  constructor(private readonly movieListRepository: MovieListRepository) {}
+  constructor(private readonly transactionManager: TransactionManager) {}
 
   async execute(
     listId: string,
@@ -14,11 +14,15 @@ export class RemoveMovieFromList {
     const userUuid = Uuid.create(userId);
     const movieUuid = Uuid.create(movieId);
 
-    const found = await this.movieListRepository.removeMovieByListIdAndMovieId(
-      listUuid,
-      userUuid,
-      movieUuid
-    );
-    if (!found) throw new MovieListNotFoundError();
+    await this.transactionManager.execute(async (repos) => {
+      const found = await repos.movieListRepository.removeMovieByListIdAndMovieId(
+        listUuid,
+        userUuid,
+        movieUuid
+      );
+      if (!found) throw new MovieListNotFoundError();
+
+      await repos.movieRepository.hardDeleteIfSoftDeletedAndOrphan(movieUuid);
+    });
   }
 }

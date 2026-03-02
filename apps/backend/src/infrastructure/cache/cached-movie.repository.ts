@@ -31,6 +31,7 @@ const cachedMovieSchema = z.object({
   isPublic: z.boolean(),
   createdAt: z.string(),
   updatedAt: z.string(),
+  deletedAt: z.string().nullable().optional(),
   userId: z.string()
 });
 
@@ -145,6 +146,14 @@ export class CachedMovieRepository implements MovieRepository {
 
   async deleteByIdAndUserId(id: Uuid, userId: Uuid): Promise<boolean> {
     const result = await this.inner.deleteByIdAndUserId(id, userId);
+    if (result) {
+      await this.cache.delete(`movie:${id}`, MOVIES_LIST_KEY);
+    }
+    return result;
+  }
+
+  async hardDeleteIfSoftDeletedAndOrphan(id: Uuid): Promise<boolean> {
+    const result = await this.inner.hardDeleteIfSoftDeletedAndOrphan(id);
     if (result) {
       await this.cache.delete(`movie:${id}`, MOVIES_LIST_KEY);
     }

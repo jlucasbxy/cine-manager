@@ -24,8 +24,8 @@ export class PrismaMovieMapper {
       status: MovieStatus.reconstitute(raw.status as MovieStatusEnum),
       ageRating: AgeRating.reconstitute(raw.ageRating as AgeRatingEnum),
       languageId: Uuid.reconstitute(raw.languageId),
-      budget: NonNegativeNumber.reconstitute(raw.budget),
-      revenue: NonNegativeNumber.reconstitute(raw.revenue),
+      budget: NonNegativeNumber.reconstitute(Number(raw.budget)),
+      revenue: NonNegativeNumber.reconstitute(Number(raw.revenue)),
       posterUrl: Url.reconstitute(raw.posterUrl),
       backdropUrl: Url.reconstitute(raw.backdropUrl),
       trailerUrl: Url.reconstitute(raw.trailerUrl),
@@ -34,6 +34,7 @@ export class PrismaMovieMapper {
       isPublic: raw.isPublic,
       createdAt: raw.createdAt,
       updatedAt: raw.updatedAt,
+      deletedAt: raw.deletedAt,
       userId: Uuid.reconstitute(raw.userId)
     });
   }

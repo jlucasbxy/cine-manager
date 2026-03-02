@@ -33,6 +33,7 @@ interface ReconstituteMovieProps extends CreateMovieProps {
   createdAt: Date;
   updatedAt: Date;
   isPublic: boolean;
+  deletedAt?: Date | null;
 }
 
 export class Movie {
@@ -56,6 +57,7 @@ export class Movie {
   readonly isPublic: boolean;
   readonly createdAt: Date;
   readonly updatedAt: Date;
+  readonly deletedAt: Date | null;
   readonly userId: Uuid;
 
   private constructor(data: ReconstituteMovieProps) {
@@ -79,6 +81,7 @@ export class Movie {
     this.isPublic = data.isPublic;
     this.createdAt = data.createdAt;
     this.updatedAt = data.updatedAt;
+    this.deletedAt = data.deletedAt ?? null;
     this.userId = data.userId;
   }
 
@@ -105,6 +108,7 @@ export class Movie {
       isPublic: props.isPublic ?? true,
       createdAt: now,
       updatedAt: now,
+      deletedAt: null,
       userId: props.userId
     });
   }
@@ -131,6 +135,7 @@ export class Movie {
       isPublic: props.isPublic,
       createdAt: props.createdAt,
       updatedAt: props.updatedAt,
+      deletedAt: props.deletedAt,
       userId: props.userId
     });
   }

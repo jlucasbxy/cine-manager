@@ -22,9 +22,10 @@ export class PrismaMovieRepository implements MovieRepository {
       SELECT id, title, "originalTitle", tagline, synopsis, "releaseDate",
              runtime, status, "ageRating", "languageId", budget, revenue,
              "posterUrl", "backdropUrl", "trailerUrl", votes, score,
-             "isPublic", "userId", "createdAt", "updatedAt"
+             "isPublic", "userId", "createdAt", "updatedAt", "deletedAt"
       FROM "Movie"
       WHERE id = ${id.toString()}::uuid
+        AND "deletedAt" IS NULL
       FOR UPDATE
     `;
     if (!results[0]) return null;
@@ -54,7 +55,8 @@ export class PrismaMovieRepository implements MovieRepository {
         isPublic: movie.isPublic,
         userId: movie.userId.toString(),
         createdAt: movie.createdAt,
-        updatedAt: movie.updatedAt
+        updatedAt: movie.updatedAt,
+        deletedAt: movie.deletedAt
       }
     });
     return PrismaMovieMapper.toDomain(raw);
@@ -67,6 +69,7 @@ export class PrismaMovieRepository implements MovieRepository {
     const raw = await this.db.movie.findFirst({
       where: {
         id: id.toString(),
+        deletedAt: null,
         OR: [{ isPublic: true }, { userId: userId.toString() }]
       },
       include: {
@@ -81,7 +84,7 @@ export class PrismaMovieRepository implements MovieRepository {
   }
 
   async findAll(query: MovieQuery): Promise<PaginatedResult<Movie>> {
-    const where: Record<string, unknown> = {};
+    const where: Record<string, unknown> = { deletedAt: null };
 
     if (query.runtime !== undefined) {
       where.runtime = { lte: query.runtime.toNumber() };
@@ -101,8 +104,11 @@ export class PrismaMovieRepository implements MovieRepository {
     if (query.search !== undefined) {
       const matchingIds = await this.db.$queryRaw<Array<{ id: string }>>`
         SELECT id FROM "Movie"
-        WHERE ${query.search} <% title
-           OR title ILIKE ${"%" + query.search + "%"}
+        WHERE (
+          ${query.search} <% title
+          OR title ILIKE ${"%" + query.search + "%"}
+        )
+          AND "deletedAt" IS NULL
       `;
       if (matchingIds.length === 0) {
         return PaginatedResult.create([], null, false);
@@ -115,9 +121,7 @@ export class PrismaMovieRepository implements MovieRepository {
     if (query.genreIds !== undefined && query.genreIds.length > 0) {
       where.genres = { some: { id: { in: query.genreIds } } };
     }
-    where.AND = [
-      { OR: [{ isPublic: true }, { userId: query.currentUserId.toString() }] }
-    ];
+    where.AND = [{ OR: [{ isPublic: true }, { userId: query.currentUserId.toString() }] }];
 
     const limit = query.limit.toNumber();
     const findManyArgs: Parameters<typeof this.db.movie.findMany>[0] = {
@@ -152,15 +156,18 @@ export class PrismaMovieRepository implements MovieRepository {
   }
 
   async update(id: Uuid, data: UpdateMovieData): Promise<Movie | null> {
-    return this.updateWithWhere({ id: id.toString() }, data);
+    return this.updateWithWhere({ id: id.toString(), deletedAt: null }, data);
   }
 
   async updateByIdAndUserId(id: Uuid, userId: Uuid, data: UpdateMovieData): Promise<Movie | null> {
-    return this.updateWithWhere({ id: id.toString(), userId: userId.toString() }, data);
+    return this.updateWithWhere(
+      { id: id.toString(), userId: userId.toString(), deletedAt: null },
+      data
+    );
   }
 
   private async updateWithWhere(
-    where: { id: string; userId?: string },
+    where: { id: string; userId?: string; deletedAt?: null },
     data: UpdateMovieData
   ): Promise<Movie | null> {
     const prismaData: Record<string, unknown> = {
@@ -193,27 +200,33 @@ export class PrismaMovieRepository implements MovieRepository {
     if (data.score !== undefined) prismaData.score = data.score.toNumber();
     if (data.isPublic !== undefined) prismaData.isPublic = data.isPublic;
 
-    try {
-      const raw = await this.db.movie.update({
-        where,
-        data: prismaData
-      });
-      return PrismaMovieMapper.toDomain(raw);
-    } catch (error: unknown) {
-      if (
-        error instanceof Error &&
-        "code" in error &&
-        (error as { code: string }).code === "P2025"
-      ) {
-        return null;
-      }
-      throw error;
+    const { count } = await this.db.movie.updateMany({
+      where,
+      data: prismaData
+    });
+    if (count === 0) {
+      return null;
     }
+    const raw = await this.db.movie.findUnique({ where: { id: where.id } });
+    if (!raw) return null;
+    return PrismaMovieMapper.toDomain(raw);
   }
 
   async deleteByIdAndUserId(id: Uuid, userId: Uuid): Promise<boolean> {
+    const { count } = await this.db.movie.updateMany({
+      where: { id: id.toString(), userId: userId.toString(), deletedAt: null },
+      data: { deletedAt: new Date(), updatedAt: new Date() }
+    });
+    return count > 0;
+  }
+
+  async hardDeleteIfSoftDeletedAndOrphan(id: Uuid): Promise<boolean> {
     const { count } = await this.db.movie.deleteMany({
-      where: { id: id.toString(), userId: userId.toString() }
+      where: {
+        id: id.toString(),
+        deletedAt: { not: null },
+        lists: { none: {} }
+      }
     });
     return count > 0;
   }

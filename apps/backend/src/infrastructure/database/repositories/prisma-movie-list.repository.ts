@@ -90,6 +90,20 @@ export class PrismaMovieListRepository implements MovieListRepository {
     userId: Uuid,
     movieId: Uuid
   ): Promise<AddMovieToListResult> {
+    const [list, movie] = await Promise.all([
+      this.db.movieList.findFirst({
+        where: { id: listId.toString(), userId: userId.toString() },
+        select: { id: true }
+      }),
+      this.db.movie.findFirst({
+        where: { id: movieId.toString(), deletedAt: null },
+        select: { id: true }
+      })
+    ]);
+
+    if (!list) return "list_not_found";
+    if (!movie) return "movie_not_found";
+
     try {
       await this.db.movieList.update({
         where: { id: listId.toString(), userId: userId.toString() },
@@ -105,12 +119,7 @@ export class PrismaMovieListRepository implements MovieListRepository {
         "code" in error &&
         (error as { code: string }).code === "P2025"
       ) {
-        const meta = (error as { meta?: { cause?: string } }).meta;
-        const cause = meta?.cause ?? "";
-        if (cause.toLowerCase().includes("record to update not found")) {
-          return "list_not_found";
-        }
-        return "movie_not_found";
+        return "list_not_found";
       }
       throw error;
     }

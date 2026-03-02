@@ -19,6 +19,7 @@ export interface MovieDTO {
   isPublic: boolean;
   createdAt: string;
   updatedAt: string;
+  deletedAt?: string | null;
   userId: string;
   user?: {
     id: string;
