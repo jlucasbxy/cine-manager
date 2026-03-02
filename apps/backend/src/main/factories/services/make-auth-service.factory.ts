@@ -5,8 +5,7 @@ import {
   makeLogout,
   makeRefreshTokens,
   makeRequestPasswordReset,
-  makeResetPassword,
-  makeValidateToken
+  makeResetPassword
 } from "@/main/factories/use-cases/auth";
 
 export const makeAuthService = singleton(
@@ -16,7 +15,6 @@ export const makeAuthService = singleton(
       makeLogout(),
       makeRefreshTokens(),
       makeRequestPasswordReset(),
-      makeResetPassword(),
-      makeValidateToken()
+      makeResetPassword()
     )
 );

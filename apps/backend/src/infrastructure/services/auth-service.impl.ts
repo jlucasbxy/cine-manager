@@ -25,8 +25,7 @@ export class AuthServiceImpl implements AuthService {
     private readonly logoutUseCase: Logout,
     private readonly refreshTokensUseCase: RefreshTokens,
     private readonly requestPasswordResetUseCase: RequestPasswordReset,
-    private readonly resetPasswordUseCase: ResetPassword,
-    private readonly validateTokenUseCase: ValidateToken
+    private readonly resetPasswordUseCase: ResetPassword
   ) {}
 
   async login(input: LoginDTO): Promise<LoginResultDTO> {
@@ -49,11 +48,5 @@ export class AuthServiceImpl implements AuthService {
 
   async resetPassword(input: ResetPasswordDTO): Promise<void> {
     return this.resetPasswordUseCase.execute(input);
-  }
-
-  async validateToken(
-    input: ValidateTokenDTO
-  ): Promise<ValidateTokenResultDTO> {
-    return this.validateTokenUseCase.execute(input);
   }
 }

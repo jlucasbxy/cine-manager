@@ -5,9 +5,7 @@ import type {
   RefreshTokensDTO,
   RefreshTokensResultDTO,
   RequestPasswordResetDTO,
-  ResetPasswordDTO,
-  ValidateTokenDTO,
-  ValidateTokenResultDTO
+  ResetPasswordDTO
 } from "@repo/dtos";
 
 export interface AuthService {
@@ -16,5 +14,4 @@ export interface AuthService {
   refreshTokens(input: RefreshTokensDTO): Promise<RefreshTokensResultDTO>;
   requestPasswordReset(input: RequestPasswordResetDTO): Promise<void>;
   resetPassword(input: ResetPasswordDTO): Promise<void>;
-  validateToken(input: ValidateTokenDTO): Promise<ValidateTokenResultDTO>;
 }
