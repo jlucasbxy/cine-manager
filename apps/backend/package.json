@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development tsx watch src/main/index.ts server",
     "dev:worker": "cross-env NODE_ENV=development tsx watch src/main/index.ts worker",
-    "build": "node esbuild.config.js",
+    "build": "npx prisma generate && node esbuild.config.js",
     "start": "cross-env NODE_ENV=production node dist/index.js server",
     "start:worker": "cross-env NODE_ENV=production node dist/index.js worker",
     "seed": "cross-env NODE_ENV=production tsx src/main/index.ts seed",
