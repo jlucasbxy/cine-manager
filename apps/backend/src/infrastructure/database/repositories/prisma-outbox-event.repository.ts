@@ -2,6 +2,7 @@ import type { InputJsonValue } from "@prisma/client/runtime/client";
 import type { OutboxEventRepository } from "@/application/interfaces/repositories";
 import type { OutboxEvent } from "@/domain/entities";
 import { OutboxEventStatusEnum } from "@/domain/enums";
+import type { Uuid } from "@/domain/value-objects";
 import { PrismaOutboxEventMapper } from "@/infrastructure/database/mappers";
 import type { PrismaDatabase } from "@/infrastructure/database/prisma";
 import type { OutboxEventModel } from "@/infrastructure/database/prisma/generated/prisma/models/OutboxEvent";
@@ -68,5 +69,15 @@ export class PrismaOutboxEventRepository implements OutboxEventRepository {
       }
       throw error;
     }
+  }
+
+  async deletePendingByResourceId(resourceId: Uuid): Promise<number> {
+    const result = await this.db.outboxEvent.deleteMany({
+      where: {
+        resourceId: resourceId.toString(),
+        status: OutboxEventStatusEnum.PENDING
+      }
+    });
+    return result.count;
   }
 }
