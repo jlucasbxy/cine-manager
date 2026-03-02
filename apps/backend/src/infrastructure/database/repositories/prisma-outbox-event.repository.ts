@@ -25,7 +25,7 @@ export class PrismaOutboxEventRepository implements OutboxEventRepository {
         createdAt: entry.createdAt,
         scheduledFor: entry.scheduledFor,
         processedAt: entry.processedAt,
-        movieId: entry.movieId?.toString() ?? null
+        resourceId: entry.resourceId?.toString() ?? null
       }
     });
   }
@@ -34,7 +34,7 @@ export class PrismaOutboxEventRepository implements OutboxEventRepository {
     const now = new Date();
     const rows = await this.db.$queryRaw<OutboxEventModel[]>`
       SELECT id, type, payload, status, "retryCount", error,
-             "createdAt", "scheduledFor", "processedAt", "movieId"
+             "createdAt", "scheduledFor", "processedAt", "resourceId"
       FROM "OutboxEvent"
       WHERE status = ${OutboxEventStatusEnum.PENDING}
         AND ("scheduledFor" IS NULL OR "scheduledFor" <= ${now})

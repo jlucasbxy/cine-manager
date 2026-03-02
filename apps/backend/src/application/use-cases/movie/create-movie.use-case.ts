@@ -50,7 +50,7 @@ export class CreateMovie {
               movieTitle: movie.title,
               releaseDate: movie.releaseDate.toISOString()
             },
-            movieId: movie.id,
+            resourceId: movie.id,
             scheduledFor: movie.releaseDate
           });
           await repos.outboxEventRepository.create(outboxEntry);

@@ -18,7 +18,7 @@ export class PrismaOutboxEventMapper {
       createdAt: raw.createdAt,
       scheduledFor: raw.scheduledFor,
       processedAt: raw.processedAt,
-      movieId: raw.movieId ? Uuid.reconstitute(raw.movieId) : null
+      resourceId: raw.resourceId ? Uuid.reconstitute(raw.resourceId) : null
     });
   }
 }

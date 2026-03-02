@@ -19,7 +19,7 @@ function makeEvent(
     createdAt: new Date(),
     scheduledFor: null,
     processedAt: null,
-    movieId: null
+    resourceId: null
   });
 }
 

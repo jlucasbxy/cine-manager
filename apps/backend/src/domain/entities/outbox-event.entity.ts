@@ -7,7 +7,7 @@ import { Uuid } from "@/domain/value-objects";
 interface CreateOutboxEventProps {
   type: OutboxEventTypeEnum;
   payload: Record<string, unknown>;
-  movieId?: Uuid | null;
+  resourceId?: Uuid | null;
   scheduledFor?: Date | null;
 }
 
@@ -21,7 +21,7 @@ interface ReconstituteOutboxEventProps {
   createdAt: Date;
   scheduledFor: Date | null;
   processedAt: Date | null;
-  movieId: Uuid | null;
+  resourceId: Uuid | null;
 }
 
 export class OutboxEvent {
@@ -34,7 +34,7 @@ export class OutboxEvent {
   readonly createdAt: Date;
   readonly scheduledFor: Date | null;
   readonly processedAt: Date | null;
-  readonly movieId: Uuid | null;
+  readonly resourceId: Uuid | null;
 
   private constructor(data: {
     id: Uuid;
@@ -46,7 +46,7 @@ export class OutboxEvent {
     createdAt: Date;
     scheduledFor: Date | null;
     processedAt: Date | null;
-    movieId: Uuid | null;
+    resourceId: Uuid | null;
   }) {
     this.id = data.id;
     this.type = data.type;
@@ -57,7 +57,7 @@ export class OutboxEvent {
     this.createdAt = data.createdAt;
     this.scheduledFor = data.scheduledFor;
     this.processedAt = data.processedAt;
-    this.movieId = data.movieId;
+    this.resourceId = data.resourceId;
   }
 
   static create(props: CreateOutboxEventProps): OutboxEvent {
@@ -71,7 +71,7 @@ export class OutboxEvent {
       createdAt: new Date(),
       scheduledFor: props.scheduledFor ?? null,
       processedAt: null,
-      movieId: props.movieId ?? null
+      resourceId: props.resourceId ?? null
     });
   }
 
@@ -86,7 +86,7 @@ export class OutboxEvent {
       createdAt: props.createdAt,
       scheduledFor: props.scheduledFor,
       processedAt: props.processedAt,
-      movieId: props.movieId
+      resourceId: props.resourceId
     });
   }
 
@@ -101,7 +101,7 @@ export class OutboxEvent {
       createdAt: this.createdAt,
       scheduledFor: this.scheduledFor,
       processedAt: new Date(),
-      movieId: this.movieId
+      resourceId: this.resourceId
     });
   }
 
@@ -116,7 +116,7 @@ export class OutboxEvent {
       createdAt: this.createdAt,
       scheduledFor: this.scheduledFor,
       processedAt: this.processedAt,
-      movieId: this.movieId
+      resourceId: this.resourceId
     });
   }
 
@@ -131,7 +131,7 @@ export class OutboxEvent {
       createdAt: this.createdAt,
       scheduledFor: this.scheduledFor,
       processedAt: this.processedAt,
-      movieId: this.movieId
+      resourceId: this.resourceId
     });
   }
 }

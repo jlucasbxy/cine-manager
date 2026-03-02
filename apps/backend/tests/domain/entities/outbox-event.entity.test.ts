@@ -19,20 +19,20 @@ describe("OutboxEvent", () => {
       expect(event.error).toBeNull();
       expect(event.processedAt).toBeNull();
       expect(event.scheduledFor).toBeNull();
-      expect(event.movieId).toBeNull();
+      expect(event.resourceId).toBeNull();
     });
 
-    it("accepts optional scheduledFor and movieId", () => {
-      const movieId = Uuid.generate();
+    it("accepts optional scheduledFor and resourceId", () => {
+      const resourceId = Uuid.generate();
       const scheduledFor = new Date("2025-01-01");
       const event = OutboxEvent.create({
         type: OutboxEventTypeEnum.MOVIE_RELEASE_DATE,
         payload: { to: "test@example.com" },
-        movieId,
+        resourceId,
         scheduledFor
       });
 
-      expect(event.movieId).toBe(movieId);
+      expect(event.resourceId).toBe(resourceId);
       expect(event.scheduledFor).toBe(scheduledFor);
     });
   });
@@ -51,7 +51,7 @@ describe("OutboxEvent", () => {
         createdAt: now,
         scheduledFor: null,
         processedAt: now,
-        movieId: null
+        resourceId: null
       });
 
       expect(event.id).toBe(id);

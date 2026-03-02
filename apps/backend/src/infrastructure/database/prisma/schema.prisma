@@ -110,8 +110,7 @@ model OutboxEvent {
   createdAt    DateTime
   scheduledFor DateTime?         @db.Timestamptz
   processedAt  DateTime?         @db.Timestamptz
-  movieId      String?           @db.Uuid
-  movie        Movie?            @relation(fields: [movieId], references: [id], onDelete: Cascade)
+  resourceId   String?           @db.Uuid
 
   @@index([status, createdAt])
   @@index([status, scheduledFor])
@@ -142,7 +141,6 @@ model Movie {
   updatedAt     DateTime
   userId        String                @db.Uuid
   user          User                  @relation(fields: [userId], references: [id])
-  outboxEvents  OutboxEvent[]
   ratings       Rating[]
   lists         MovieList[]  @relation("MovieListMovies")
 
