@@ -75,7 +75,7 @@ describe("CreateMovie", () => {
   });
 
   it("creates outbox event when release date is in the future", async () => {
-    const futureInput = { ...input, releaseDate: new Date("2030-01-01") };
+    const futureInput = { ...input, releaseDate: new Date("4000-01-01") };
     const movie = Movie.reconstitute({
       id: Uuid.generate(),
       ...futureInput,
