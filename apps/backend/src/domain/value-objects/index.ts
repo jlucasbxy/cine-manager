@@ -1,6 +1,7 @@
 export { AgeRating } from "./age-rating.value-object";
 export { Email } from "./email.value-object";
 export { ImageMimeType } from "./image-mime-type.value-object";
+export { Money } from "./money.value-object";
 export { MovieQuery } from "./movie-query.value-object";
 export { MovieStatus } from "./movie-status.value-object";
 export { NonNegativeInt } from "./non-negative-int.value-object";

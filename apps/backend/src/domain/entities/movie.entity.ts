@@ -1,5 +1,6 @@
 import {
   type AgeRating,
+  Money,
   type MovieStatus,
   NonNegativeInt,
   NonNegativeNumber,
@@ -17,8 +18,8 @@ interface CreateMovieProps {
   status: MovieStatus;
   ageRating: AgeRating;
   languageId: Uuid;
-  budget: NonNegativeNumber;
-  revenue: NonNegativeNumber;
+  budget: Money;
+  revenue: Money;
   posterUrl: Url;
   backdropUrl: Url;
   trailerUrl: Url;
@@ -47,8 +48,8 @@ export class Movie {
   readonly status: MovieStatus;
   readonly ageRating: AgeRating;
   readonly languageId: Uuid;
-  readonly budget: NonNegativeNumber;
-  readonly revenue: NonNegativeNumber;
+  readonly budget: Money;
+  readonly revenue: Money;
   readonly posterUrl: Url;
   readonly backdropUrl: Url;
   readonly trailerUrl: Url;

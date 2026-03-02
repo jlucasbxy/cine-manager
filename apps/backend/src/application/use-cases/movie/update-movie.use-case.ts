@@ -4,9 +4,9 @@ import { MovieMapper } from "@/application/mappers";
 import { MovieNotFoundError } from "@/domain/errors";
 import {
   AgeRating,
+  Money,
   MovieStatus,
   NonNegativeInt,
-  NonNegativeNumber,
   Url,
   Uuid
 } from "@/domain/value-objects";
@@ -41,10 +41,10 @@ export class UpdateMovie {
         languageId: Uuid.create(input.languageId)
       }),
       ...(input.budget !== undefined && {
-        budget: NonNegativeNumber.create(input.budget)
+        budget: Money.create(input.budget)
       }),
       ...(input.revenue !== undefined && {
-        revenue: NonNegativeNumber.create(input.revenue)
+        revenue: Money.create(input.revenue)
       }),
       ...(input.posterUrl !== undefined && {
         posterUrl: Url.create(input.posterUrl)

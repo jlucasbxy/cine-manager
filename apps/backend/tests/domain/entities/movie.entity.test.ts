@@ -3,6 +3,7 @@ import { AgeRatingEnum } from "@/domain/enums/age-rating.enum";
 import { MovieStatusEnum } from "@/domain/enums/movie-status.enum";
 import {
   AgeRating,
+  Money,
   MovieStatus,
   NonNegativeInt,
   NonNegativeNumber,
@@ -21,8 +22,8 @@ function makeMovieProps() {
     status: MovieStatus.create(MovieStatusEnum.RELEASED),
     ageRating: AgeRating.create(AgeRatingEnum.L),
     languageId: Uuid.generate(),
-    budget: NonNegativeNumber.create(1000000),
-    revenue: NonNegativeNumber.create(5000000),
+    budget: Money.create(1000000),
+    revenue: Money.create(5000000),
     posterUrl: Url.create("https://example.com/poster.jpg"),
     backdropUrl: Url.create("https://example.com/backdrop.jpg"),
     trailerUrl: Url.create("https://example.com/trailer.mp4"),

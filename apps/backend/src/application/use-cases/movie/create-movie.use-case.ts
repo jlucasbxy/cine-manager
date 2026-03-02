@@ -5,9 +5,9 @@ import { Movie, OutboxEvent } from "@/domain/entities";
 import { OutboxEventTypeEnum } from "@/domain/enums";
 import {
   AgeRating,
+  Money,
   MovieStatus,
   NonNegativeInt,
-  NonNegativeNumber,
   Url,
   Uuid
 } from "@/domain/value-objects";
@@ -28,8 +28,8 @@ export class CreateMovie {
       status: MovieStatus.create(input.status),
       ageRating: AgeRating.create(input.ageRating),
       languageId: Uuid.create(input.languageId),
-      budget: NonNegativeNumber.create(input.budget),
-      revenue: NonNegativeNumber.create(input.revenue),
+      budget: Money.create(input.budget),
+      revenue: Money.create(input.revenue),
       posterUrl: Url.create(input.posterUrl),
       backdropUrl: Url.create(input.backdropUrl),
       trailerUrl: Url.create(input.trailerUrl),

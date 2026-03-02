@@ -4,6 +4,7 @@ import type { AgeRatingEnum } from "@/domain/enums/age-rating.enum";
 import type { MovieStatusEnum } from "@/domain/enums/movie-status.enum";
 import {
   AgeRating,
+  Money,
   MovieStatus,
   NonNegativeInt,
   NonNegativeNumber,
@@ -54,8 +55,8 @@ export class MovieMapper {
       status: MovieStatus.reconstitute(data.status as MovieStatusEnum),
       ageRating: AgeRating.reconstitute(data.ageRating as AgeRatingEnum),
       languageId: Uuid.reconstitute(data.languageId),
-      budget: NonNegativeNumber.reconstitute(data.budget),
-      revenue: NonNegativeNumber.reconstitute(data.revenue),
+      budget: Money.reconstitute(data.budget),
+      revenue: Money.reconstitute(data.revenue),
       posterUrl: Url.reconstitute(data.posterUrl),
       backdropUrl: Url.reconstitute(data.backdropUrl),
       trailerUrl: Url.reconstitute(data.trailerUrl),

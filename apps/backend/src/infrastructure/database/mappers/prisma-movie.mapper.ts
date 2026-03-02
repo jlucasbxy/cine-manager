@@ -3,6 +3,7 @@ import type { AgeRatingEnum } from "@/domain/enums/age-rating.enum";
 import type { MovieStatusEnum } from "@/domain/enums/movie-status.enum";
 import {
   AgeRating,
+  Money,
   MovieStatus,
   NonNegativeInt,
   NonNegativeNumber,
@@ -24,8 +25,8 @@ export class PrismaMovieMapper {
       status: MovieStatus.reconstitute(raw.status as MovieStatusEnum),
       ageRating: AgeRating.reconstitute(raw.ageRating as AgeRatingEnum),
       languageId: Uuid.reconstitute(raw.languageId),
-      budget: NonNegativeNumber.reconstitute(Number(raw.budget)),
-      revenue: NonNegativeNumber.reconstitute(Number(raw.revenue)),
+      budget: Money.reconstitute(Number(raw.budget)),
+      revenue: Money.reconstitute(Number(raw.revenue)),
       posterUrl: Url.reconstitute(raw.posterUrl),
       backdropUrl: Url.reconstitute(raw.backdropUrl),
       trailerUrl: Url.reconstitute(raw.trailerUrl),
