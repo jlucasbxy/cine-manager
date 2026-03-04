@@ -1,4 +1,4 @@
-import { InvalidNonNegativeNumberError } from "@/domain/errors";
+import { InvalidNonNegativeDecimalError } from "@/domain/errors";
 
 const MAX_MONEY_AMOUNT = 9_999_999_999_999.99; // Decimal(15, 2)
 const DECIMAL_TOLERANCE = 1e-8;
@@ -12,14 +12,14 @@ export class Money {
 
   static create(value: number): Money {
     if (!Number.isFinite(value) || value < 0 || value > MAX_MONEY_AMOUNT) {
-      throw new InvalidNonNegativeNumberError();
+      throw new InvalidNonNegativeDecimalError();
     }
 
     const scaled = value * 100;
     const rounded = Math.round(scaled);
 
     if (Math.abs(scaled - rounded) > DECIMAL_TOLERANCE) {
-      throw new InvalidNonNegativeNumberError();
+      throw new InvalidNonNegativeDecimalError();
     }
 
     return new Money(rounded);

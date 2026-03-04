@@ -5,7 +5,7 @@ import { Rating } from "@/domain/entities";
 import { MovieNotFoundError } from "@/domain/errors";
 import {
   NonNegativeInt,
-  NonNegativeNumber,
+  NonNegativeDecimal,
   RatingValue,
   Uuid
 } from "@/domain/value-objects";
@@ -40,7 +40,7 @@ export class RateMovie {
 
       return repos.movieRepository.update(movieUuid, {
         votes: NonNegativeInt.create(count),
-        score: NonNegativeNumber.create(Math.round(average * 10) / 10)
+        score: NonNegativeDecimal.create(Math.round(average * 10) / 10)
       });
     });
 

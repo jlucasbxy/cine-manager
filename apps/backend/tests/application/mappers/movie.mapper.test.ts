@@ -7,7 +7,7 @@ import {
   Money,
   MovieStatus,
   NonNegativeInt,
-  NonNegativeNumber,
+  NonNegativeDecimal,
   Url,
   Uuid
 } from "@/domain/value-objects";
@@ -31,7 +31,7 @@ function makeMovie() {
     backdropUrl: Url.reconstitute("https://example.com/backdrop.jpg"),
     trailerUrl: Url.reconstitute("https://example.com/trailer.mp4"),
     votes: NonNegativeInt.reconstitute(100),
-    score: NonNegativeNumber.reconstitute(8.5),
+    score: NonNegativeDecimal.reconstitute(8.5),
     isPublic: true,
     createdAt: now,
     updatedAt: now,

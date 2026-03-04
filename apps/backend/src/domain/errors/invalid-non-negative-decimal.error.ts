@@ -1,7 +1,7 @@
 import { ErrorCode } from "@repo/dtos";
 import { DomainError } from "@/domain/errors/domain.error";
 
-export class InvalidNonNegativeNumberError extends DomainError {
+export class InvalidNonNegativeDecimalError extends DomainError {
   constructor() {
     super(
       ErrorCode.INVALID_NON_NEGATIVE_NUMBER,

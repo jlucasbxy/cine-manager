@@ -7,7 +7,7 @@ import {
   Money,
   MovieStatus,
   NonNegativeInt,
-  NonNegativeNumber,
+  NonNegativeDecimal,
   Url,
   Uuid
 } from "@/domain/value-objects";
@@ -61,7 +61,7 @@ export class MovieMapper {
       backdropUrl: Url.reconstitute(data.backdropUrl),
       trailerUrl: Url.reconstitute(data.trailerUrl),
       votes: NonNegativeInt.reconstitute(data.votes),
-      score: NonNegativeNumber.reconstitute(data.score),
+      score: NonNegativeDecimal.reconstitute(data.score),
       isPublic: data.isPublic,
       createdAt: new Date(data.createdAt),
       updatedAt: new Date(data.updatedAt),

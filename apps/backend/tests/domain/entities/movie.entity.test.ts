@@ -6,7 +6,7 @@ import {
   Money,
   MovieStatus,
   NonNegativeInt,
-  NonNegativeNumber,
+  NonNegativeDecimal,
   Url,
   Uuid
 } from "@/domain/value-objects";
@@ -59,7 +59,7 @@ describe("Movie", () => {
         ...makeMovieProps(),
         id,
         votes: NonNegativeInt.create(100),
-        score: NonNegativeNumber.create(8.5),
+        score: NonNegativeDecimal.create(8.5),
         isPublic: false,
         createdAt: now,
         updatedAt: now

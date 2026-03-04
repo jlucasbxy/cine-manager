@@ -3,7 +3,7 @@ import {
   Money,
   type MovieStatus,
   NonNegativeInt,
-  NonNegativeNumber,
+  NonNegativeDecimal,
   type Url,
   Uuid
 } from "@/domain/value-objects";
@@ -30,7 +30,7 @@ interface CreateMovieProps {
 interface ReconstituteMovieProps extends CreateMovieProps {
   id: Uuid;
   votes: NonNegativeInt;
-  score: NonNegativeNumber;
+  score: NonNegativeDecimal;
   createdAt: Date;
   updatedAt: Date;
   isPublic: boolean;
@@ -54,7 +54,7 @@ export class Movie {
   readonly backdropUrl: Url;
   readonly trailerUrl: Url;
   readonly votes: NonNegativeInt;
-  readonly score: NonNegativeNumber;
+  readonly score: NonNegativeDecimal;
   readonly isPublic: boolean;
   readonly createdAt: Date;
   readonly updatedAt: Date;
@@ -105,7 +105,7 @@ export class Movie {
       backdropUrl: props.backdropUrl,
       trailerUrl: props.trailerUrl,
       votes: NonNegativeInt.create(0),
-      score: NonNegativeNumber.create(0),
+      score: NonNegativeDecimal.create(0),
       isPublic: props.isPublic ?? true,
       createdAt: now,
       updatedAt: now,

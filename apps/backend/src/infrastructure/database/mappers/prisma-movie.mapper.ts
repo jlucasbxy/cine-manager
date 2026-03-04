@@ -6,7 +6,7 @@ import {
   Money,
   MovieStatus,
   NonNegativeInt,
-  NonNegativeNumber,
+  NonNegativeDecimal,
   Url,
   Uuid
 } from "@/domain/value-objects";
@@ -31,7 +31,7 @@ export class PrismaMovieMapper {
       backdropUrl: Url.reconstitute(raw.backdropUrl),
       trailerUrl: Url.reconstitute(raw.trailerUrl),
       votes: NonNegativeInt.reconstitute(raw.votes),
-      score: NonNegativeNumber.reconstitute(raw.score),
+      score: NonNegativeDecimal.reconstitute(raw.score),
       isPublic: raw.isPublic,
       createdAt: raw.createdAt,
       updatedAt: raw.updatedAt,

@@ -6,7 +6,7 @@ import {
   Money,
   MovieStatus,
   NonNegativeInt,
-  NonNegativeNumber,
+  NonNegativeDecimal,
   Url,
   Uuid
 } from "@/domain/value-objects";
@@ -60,7 +60,7 @@ export function makeMovie(overrides: MovieOverrides = {}): Movie {
       overrides.trailerUrl ?? "https://example.com/trailer.mp4"
     ),
     votes: NonNegativeInt.reconstitute(overrides.votes ?? 0),
-    score: NonNegativeNumber.reconstitute(overrides.score ?? 0),
+    score: NonNegativeDecimal.reconstitute(overrides.score ?? 0),
     isPublic: overrides.isPublic ?? true,
     createdAt: overrides.createdAt ?? new Date("2024-01-01T00:00:00.000Z"),
     updatedAt: overrides.updatedAt ?? new Date("2024-01-01T00:00:00.000Z"),

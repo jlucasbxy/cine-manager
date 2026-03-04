@@ -5,7 +5,7 @@ export { Money } from "./money.value-object";
 export { MovieQuery } from "./movie-query.value-object";
 export { MovieStatus } from "./movie-status.value-object";
 export { NonNegativeInt } from "./non-negative-int.value-object";
-export { NonNegativeNumber } from "./non-negative-number.value-object";
+export { NonNegativeDecimal } from "./non-negative-decimal.value-object";
 export { PaginatedResult } from "./paginated-result.value-object";
 export { Password } from "./password.value-object";
 export { RatingValue } from "./rating-value.value-object";

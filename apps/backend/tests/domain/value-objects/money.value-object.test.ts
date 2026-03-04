@@ -1,4 +1,4 @@
-import { InvalidNonNegativeNumberError } from "@/domain/errors";
+import { InvalidNonNegativeDecimalError } from "@/domain/errors";
 import { Money } from "@/domain/value-objects/money.value-object";
 
 describe("Money", () => {
@@ -18,16 +18,16 @@ describe("Money", () => {
   });
 
   it("throws for negative value", () => {
-    expect(() => Money.create(-0.1)).toThrow(InvalidNonNegativeNumberError);
+    expect(() => Money.create(-0.1)).toThrow(InvalidNonNegativeDecimalError);
   });
 
   it("throws for more than two decimal places", () => {
-    expect(() => Money.create(1.999)).toThrow(InvalidNonNegativeNumberError);
+    expect(() => Money.create(1.999)).toThrow(InvalidNonNegativeDecimalError);
   });
 
   it("throws for values above Decimal(15,2) max", () => {
     expect(() => Money.create(10_000_000_000_000)).toThrow(
-      InvalidNonNegativeNumberError
+      InvalidNonNegativeDecimalError
     );
   });
 

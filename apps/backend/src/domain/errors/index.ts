@@ -7,7 +7,7 @@ export { InvalidImageMimeTypeError } from "./invalid-image-mime-type.error";
 export { InvalidMovieQueryError } from "./invalid-movie-query.error";
 export { InvalidMovieStatusError } from "./invalid-movie-status.error";
 export { InvalidNonNegativeIntError } from "./invalid-non-negative-int.error";
-export { InvalidNonNegativeNumberError } from "./invalid-non-negative-number.error";
+export { InvalidNonNegativeDecimalError } from "./invalid-non-negative-decimal.error";
 export { InvalidPasswordError } from "./invalid-password.error";
 export { InvalidRatingError } from "./invalid-rating.error";
 export { InvalidUrlError } from "./invalid-url.error";
