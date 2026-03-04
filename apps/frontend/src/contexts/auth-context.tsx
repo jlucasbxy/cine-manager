@@ -20,6 +20,8 @@ interface AuthContextValue {
 
 export const AuthContext = createContext<AuthContextValue | null>(null);
 
+let restoreSessionPromise: Promise<UserDTO | null> | null = null;
+
 function getStoredUser(): UserDTO | null {
   const stored = localStorage.getItem("user");
   if (!stored) return null;
@@ -28,6 +30,27 @@ function getStoredUser(): UserDTO | null {
   } catch {
     return null;
   }
+}
+
+async function restoreAuthSession(): Promise<UserDTO | null> {
+  if (restoreSessionPromise) {
+    return restoreSessionPromise;
+  }
+
+  restoreSessionPromise = (async () => {
+    try {
+      const result = await authService.refreshTokens();
+      setAccessToken(result.accessToken, result.expiresIn);
+      return await authService.getMe();
+    } catch {
+      clearAccessToken();
+      return null;
+    } finally {
+      restoreSessionPromise = null;
+    }
+  })();
+
+  return restoreSessionPromise;
 }
 
 export function AuthProvider({ children }: { children: ReactNode }) {
@@ -44,29 +67,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
-    let cancelled = false;
-    async function restoreSession() {
-      try {
-        const result = await authService.refreshTokens();
-        if (!cancelled) {
-          setAccessToken(result.accessToken, result.expiresIn);
-          const userData = await authService.getMe();
-          saveUser(userData);
-        }
-      } catch {
-        if (!cancelled) {
-          clearAccessToken();
-          saveUser(null);
-        }
-      } finally {
-        if (!cancelled) {
-          setIsLoading(false);
-        }
-      }
+    let isActive = true;
+    async function initializeAuth() {
+      const restoredUser = await restoreAuthSession();
+      if (!isActive) return;
+      saveUser(restoredUser);
+      setIsLoading(false);
     }
-    restoreSession();
+    void initializeAuth();
     return () => {
-      cancelled = true;
+      isActive = false;
     };
   }, [saveUser]);
 
