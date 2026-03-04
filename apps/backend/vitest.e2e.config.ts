@@ -9,8 +9,10 @@ export default defineConfig({
   },
   test: {
     globals: true,
+    include: ["tests/e2e/**/*.e2e.test.ts"],
     passWithNoTests: true,
-    include: ["tests/unit/**/*.test.ts"],
-    exclude: ["tests/integration/**", "tests/e2e/**"]
+    fileParallelism: false,
+    testTimeout: 30_000,
+    hookTimeout: 60_000
   }
 });
