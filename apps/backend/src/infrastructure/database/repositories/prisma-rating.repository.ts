@@ -47,8 +47,7 @@ export class PrismaRatingRepository implements RatingRepository {
         "code" in error &&
         (error as { code: string }).code === "P2003"
       ) {
-        const meta = (error as { meta?: { field_name?: string } }).meta;
-        if (meta?.field_name?.toLowerCase().includes("movieid")) return null;
+        return null;
       }
       throw error;
     }
