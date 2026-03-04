@@ -5,7 +5,7 @@ import {
   ResetTokenInvalidError
 } from "@/domain/errors";
 import { Token, Uuid } from "@/domain/value-objects";
-import { makeAuthDeps } from "../../../factories";
+import { daysAgo, daysFromNow, makeAuthDeps } from "../../../factories";
 
 describe("ResetPassword", () => {
   const validHex = "a".repeat(64);
@@ -23,7 +23,7 @@ describe("ResetPassword", () => {
       id: Uuid.generate(),
       token: Token.create(validHex),
       userId,
-      expiresAt: new Date("2030-01-01"),
+      expiresAt: daysFromNow(1),
       usedAt: null,
       createdAt: new Date()
     });
@@ -57,7 +57,7 @@ describe("ResetPassword", () => {
       id: Uuid.generate(),
       token: Token.create(validHex),
       userId: Uuid.generate(),
-      expiresAt: new Date("2030-01-01"),
+      expiresAt: daysFromNow(1),
       usedAt: new Date(),
       createdAt: new Date()
     });
@@ -73,7 +73,7 @@ describe("ResetPassword", () => {
       id: Uuid.generate(),
       token: Token.create(validHex),
       userId: Uuid.generate(),
-      expiresAt: new Date("2020-01-01"),
+      expiresAt: daysAgo(1),
       usedAt: null,
       createdAt: new Date()
     });

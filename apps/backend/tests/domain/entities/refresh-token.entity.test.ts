@@ -1,5 +1,6 @@
 import { RefreshToken } from "@/domain/entities/refresh-token.entity";
 import { Token, Uuid } from "@/domain/value-objects";
+import { daysAgo, daysFromNow } from "../../factories/utils/date.factory";
 
 describe("RefreshToken", () => {
   describe("create", () => {
@@ -22,7 +23,7 @@ describe("RefreshToken", () => {
         id: Uuid.generate(),
         token: Token.generate(),
         userId: Uuid.generate(),
-        expiresAt: new Date("2030-01-01"),
+        expiresAt: daysFromNow(1),
         revokedAt: null,
         createdAt: new Date()
       };
@@ -47,9 +48,9 @@ describe("RefreshToken", () => {
         id: Uuid.generate(),
         token: Token.generate(),
         userId: Uuid.generate(),
-        expiresAt: new Date("2020-01-01"),
+        expiresAt: daysAgo(1),
         revokedAt: null,
-        createdAt: new Date("2020-01-01")
+        createdAt: daysAgo(2)
       });
       expect(token.isExpired()).toBe(true);
     });
@@ -69,7 +70,7 @@ describe("RefreshToken", () => {
         id: Uuid.generate(),
         token: Token.generate(),
         userId: Uuid.generate(),
-        expiresAt: new Date("2030-01-01"),
+        expiresAt: daysFromNow(1),
         revokedAt: new Date(),
         createdAt: new Date()
       });
@@ -91,7 +92,7 @@ describe("RefreshToken", () => {
         id: Uuid.generate(),
         token: Token.generate(),
         userId: Uuid.generate(),
-        expiresAt: new Date("2020-01-01"),
+        expiresAt: daysAgo(1),
         revokedAt: null,
         createdAt: new Date()
       });
@@ -103,7 +104,7 @@ describe("RefreshToken", () => {
         id: Uuid.generate(),
         token: Token.generate(),
         userId: Uuid.generate(),
-        expiresAt: new Date("2030-01-01"),
+        expiresAt: daysFromNow(1),
         revokedAt: new Date(),
         createdAt: new Date()
       });

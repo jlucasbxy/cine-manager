@@ -1,7 +1,7 @@
 import { RefreshTokens } from "@/application/use-cases/auth/refresh-tokens.use-case";
 import { TokenInvalidError } from "@/domain/errors";
 import { Uuid } from "@/domain/value-objects";
-import { makeAuthDeps, makeRefreshToken } from "../../../factories";
+import { daysAgo, makeAuthDeps, makeRefreshToken } from "../../../factories";
 
 describe("RefreshTokens", () => {
   const { mockRepos, transactionManager, tokenProvider, config } = makeAuthDeps();
@@ -51,7 +51,7 @@ describe("RefreshTokens", () => {
   });
 
   it("throws TokenInvalidError when token is expired", async () => {
-    const rt = makeRefreshToken({ token: validHex, expiresAt: new Date("2020-01-01") });
+    const rt = makeRefreshToken({ token: validHex, expiresAt: daysAgo(1) });
     mockRepos.refreshTokenRepository.findByTokenForUpdate.mockResolvedValue(rt);
 
     await expect(

@@ -1,6 +1,12 @@
 import { CreateMovie } from "@/application/use-cases/movie/create-movie.use-case";
 import { Uuid } from "@/domain/value-objects";
-import { makeMovie, makeMovieDeps, makeMovieInput, makeUser } from "../../../factories";
+import {
+  daysFromNow,
+  makeMovie,
+  makeMovieDeps,
+  makeMovieInput,
+  makeUser
+} from "../../../factories";
 
 describe("CreateMovie", () => {
   const { mockRepos, transactionManager } = makeMovieDeps();
@@ -40,7 +46,7 @@ describe("CreateMovie", () => {
   });
 
   it("creates outbox event when release date is in the future", async () => {
-    const futureInput = { ...input, releaseDate: new Date("4000-01-01") };
+    const futureInput = { ...input, releaseDate: daysFromNow(30) };
     const movie = makeMovie({
       title: futureInput.title,
       originalTitle: futureInput.originalTitle,

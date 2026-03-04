@@ -1,5 +1,6 @@
 import { RefreshToken } from "@/domain/entities/refresh-token.entity";
 import { Token, Uuid } from "@/domain/value-objects";
+import { daysFromNow } from "../utils/date.factory";
 
 type RefreshTokenOverrides = Partial<{
   id: Uuid;
@@ -19,7 +20,7 @@ export function makeRefreshToken(
     id: overrides.id ?? Uuid.generate(),
     token: Token.create(overrides.token ?? defaultToken),
     userId: overrides.userId ?? Uuid.generate(),
-    expiresAt: overrides.expiresAt ?? new Date("2030-01-01T00:00:00.000Z"),
+    expiresAt: overrides.expiresAt ?? daysFromNow(30),
     revokedAt: overrides.revokedAt ?? null,
     createdAt: overrides.createdAt ?? new Date("2024-01-01T00:00:00.000Z")
   });

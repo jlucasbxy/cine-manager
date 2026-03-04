@@ -1,5 +1,6 @@
 import { PasswordResetToken } from "@/domain/entities/password-reset-token.entity";
 import { Token, Uuid } from "@/domain/value-objects";
+import { daysAgo, daysFromNow } from "../../factories/utils/date.factory";
 
 describe("PasswordResetToken", () => {
   describe("create", () => {
@@ -21,7 +22,7 @@ describe("PasswordResetToken", () => {
         id: Uuid.generate(),
         token: Token.generate(),
         userId: Uuid.generate(),
-        expiresAt: new Date("2030-01-01"),
+        expiresAt: daysFromNow(1),
         usedAt: null,
         createdAt: new Date()
       };
@@ -45,7 +46,7 @@ describe("PasswordResetToken", () => {
         id: Uuid.generate(),
         token: Token.generate(),
         userId: Uuid.generate(),
-        expiresAt: new Date("2020-01-01"),
+        expiresAt: daysAgo(1),
         usedAt: null,
         createdAt: new Date()
       });
@@ -67,7 +68,7 @@ describe("PasswordResetToken", () => {
         id: Uuid.generate(),
         token: Token.generate(),
         userId: Uuid.generate(),
-        expiresAt: new Date("2030-01-01"),
+        expiresAt: daysFromNow(1),
         usedAt: new Date(),
         createdAt: new Date()
       });
@@ -89,7 +90,7 @@ describe("PasswordResetToken", () => {
         id: Uuid.generate(),
         token: Token.generate(),
         userId: Uuid.generate(),
-        expiresAt: new Date("2020-01-01"),
+        expiresAt: daysAgo(1),
         usedAt: null,
         createdAt: new Date()
       });
@@ -101,7 +102,7 @@ describe("PasswordResetToken", () => {
         id: Uuid.generate(),
         token: Token.generate(),
         userId: Uuid.generate(),
-        expiresAt: new Date("2030-01-01"),
+        expiresAt: daysFromNow(1),
         usedAt: new Date(),
         createdAt: new Date()
       });
