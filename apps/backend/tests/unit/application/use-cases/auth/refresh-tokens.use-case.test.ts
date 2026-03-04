@@ -1,7 +1,7 @@
 import { RefreshTokens } from "@/application/use-cases/auth/refresh-tokens.use-case";
 import { TokenInvalidError } from "@/domain/errors";
 import { Uuid } from "@/domain/value-objects";
-import { daysAgo, makeAuthDeps, makeRefreshToken } from "../../../factories";
+import { daysAgo, makeAuthDeps, makeRefreshToken } from "../../../../factories";
 
 describe("RefreshTokens", () => {
   const { mockRepos, transactionManager, tokenProvider, config } = makeAuthDeps();

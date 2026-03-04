@@ -3,7 +3,7 @@ import { MovieNotFoundError } from "@/domain/errors";
 import { Uuid } from "@/domain/value-objects";
 import { Rating } from "@/domain/entities/rating.entity";
 import { RatingValue } from "@/domain/value-objects/rating-value.value-object";
-import { makeMovie as makeMovieFactory, makeMovieDeps } from "../../../factories";
+import { makeMovie as makeMovieFactory, makeMovieDeps } from "../../../../factories";
 
 function makeMovie(id?: Uuid) {
   return makeMovieFactory({

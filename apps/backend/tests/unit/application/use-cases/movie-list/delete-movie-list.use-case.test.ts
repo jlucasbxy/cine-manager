@@ -1,7 +1,7 @@
 import { DeleteMovieList } from "@/application/use-cases/movie-list/delete-movie-list.use-case";
 import { MovieListNotFoundError } from "@/domain/errors";
 import { Uuid } from "@/domain/value-objects";
-import { makeMovieListDeps } from "../../../factories";
+import { makeMovieListDeps } from "../../../../factories";
 
 describe("DeleteMovieList", () => {
   const { mockRepos } = makeMovieListDeps();

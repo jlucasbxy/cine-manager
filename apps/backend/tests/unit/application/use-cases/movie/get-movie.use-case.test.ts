@@ -1,7 +1,7 @@
 import { GetMovie } from "@/application/use-cases/movie/get-movie.use-case";
 import { MovieNotFoundError } from "@/domain/errors";
 import { Uuid } from "@/domain/value-objects";
-import { makeMovie } from "../../../factories";
+import { makeMovie } from "../../../../factories";
 
 describe("GetMovie", () => {
   const movieRepository = {

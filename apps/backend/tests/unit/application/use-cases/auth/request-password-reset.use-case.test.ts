@@ -1,6 +1,6 @@
 import { RequestPasswordReset } from "@/application/use-cases/auth/request-password-reset.use-case";
 import { Uuid } from "@/domain/value-objects";
-import { makeAuthDeps } from "../../../factories";
+import { makeAuthDeps } from "../../../../factories";
 
 describe("RequestPasswordReset", () => {
   const { mockRepos, transactionManager, config } = makeAuthDeps();

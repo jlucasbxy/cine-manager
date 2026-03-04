@@ -1,6 +1,6 @@
 import { CreateUser } from "@/application/use-cases/user/create-user.use-case";
 import { EmailAlreadyInUseError } from "@/domain/errors";
-import { makeAuthDeps, makeUser } from "../../../factories";
+import { makeAuthDeps, makeUser } from "../../../../factories";
 
 describe("CreateUser", () => {
   const { mockRepos, transactionManager, hashProvider } = makeAuthDeps();

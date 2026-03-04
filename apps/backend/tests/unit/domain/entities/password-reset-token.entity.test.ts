@@ -1,6 +1,6 @@
 import { PasswordResetToken } from "@/domain/entities/password-reset-token.entity";
 import { Token, Uuid } from "@/domain/value-objects";
-import { daysAgo, daysFromNow } from "../../factories/utils/date.factory";
+import { daysAgo, daysFromNow } from "../../../factories/utils/date.factory";
 
 describe("PasswordResetToken", () => {
   describe("create", () => {

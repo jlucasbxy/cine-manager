@@ -1,7 +1,7 @@
 import { UpdateMovie } from "@/application/use-cases/movie/update-movie.use-case";
 import { MovieNotFoundError } from "@/domain/errors";
 import { Uuid } from "@/domain/value-objects";
-import { makeMovie as makeMovieFactory } from "../../../factories";
+import { makeMovie as makeMovieFactory } from "../../../../factories";
 
 function makeMovie() {
   return makeMovieFactory({ title: "Test" });

@@ -6,7 +6,7 @@ import {
   makeMovieDeps,
   makeMovieInput,
   makeUser
-} from "../../../factories";
+} from "../../../../factories";
 
 describe("CreateMovie", () => {
   const { mockRepos, transactionManager } = makeMovieDeps();

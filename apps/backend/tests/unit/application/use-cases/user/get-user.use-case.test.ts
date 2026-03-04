@@ -1,7 +1,7 @@
 import { GetUser } from "@/application/use-cases/user/get-user.use-case";
 import { UserNotFoundError } from "@/domain/errors";
 import { Uuid } from "@/domain/value-objects";
-import { makeUser } from "../../../factories";
+import { makeUser } from "../../../../factories";
 
 describe("GetUser", () => {
   const userRepository = {

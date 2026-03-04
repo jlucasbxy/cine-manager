@@ -1,7 +1,7 @@
 import { ListMovies } from "@/application/use-cases/movie/list-movies.use-case";
 import { Uuid } from "@/domain/value-objects";
 import { PaginatedResult } from "@/domain/value-objects/paginated-result.value-object";
-import { makeMovie } from "../../../factories";
+import { makeMovie } from "../../../../factories";
 
 describe("ListMovies", () => {
   const movieRepository = { findAll: vi.fn() };

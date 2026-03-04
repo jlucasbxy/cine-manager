@@ -5,7 +5,7 @@ import {
   ResetTokenInvalidError
 } from "@/domain/errors";
 import { Token, Uuid } from "@/domain/value-objects";
-import { daysAgo, daysFromNow, makeAuthDeps } from "../../../factories";
+import { daysAgo, daysFromNow, makeAuthDeps } from "../../../../factories";
 
 describe("ResetPassword", () => {
   const validHex = "a".repeat(64);

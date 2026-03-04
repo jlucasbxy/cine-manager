@@ -1,7 +1,7 @@
 import { DeleteMovie } from "@/application/use-cases/movie/delete-movie.use-case";
 import { MovieNotFoundError } from "@/domain/errors";
 import { Uuid } from "@/domain/value-objects";
-import { makeMovieDeps } from "../../../factories";
+import { makeMovieDeps } from "../../../../factories";
 
 describe("DeleteMovie", () => {
   const { mockRepos, transactionManager } = makeMovieDeps();

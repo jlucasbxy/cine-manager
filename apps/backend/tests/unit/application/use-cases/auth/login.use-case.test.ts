@@ -1,6 +1,6 @@
 import { Login } from "@/application/use-cases/auth/login.use-case";
 import { InvalidCredentialsError } from "@/domain/errors";
-import { makeAuthDeps, makeUser } from "../../../factories";
+import { makeAuthDeps, makeUser } from "../../../../factories";
 
 describe("Login", () => {
   const { mockRepos, transactionManager, hashProvider, tokenProvider, config } =

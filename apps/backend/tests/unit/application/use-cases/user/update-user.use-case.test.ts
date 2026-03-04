@@ -1,7 +1,7 @@
 import { UpdateUser } from "@/application/use-cases/user/update-user.use-case";
 import { UserNotFoundError } from "@/domain/errors";
 import { Uuid } from "@/domain/value-objects";
-import { makeAuthDeps, makeUser as makeUserFactory } from "../../../factories";
+import { makeAuthDeps, makeUser as makeUserFactory } from "../../../../factories";
 
 describe("UpdateUser", () => {
   const { mockRepos, transactionManager, hashProvider } = makeAuthDeps();

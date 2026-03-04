@@ -1,7 +1,7 @@
 import { AddMovieToList } from "@/application/use-cases/movie-list/add-movie-to-list.use-case";
 import { MovieListNotFoundError, MovieNotFoundError } from "@/domain/errors";
 import { Uuid } from "@/domain/value-objects";
-import { makeMovieListDeps } from "../../../factories";
+import { makeMovieListDeps } from "../../../../factories";
 
 describe("AddMovieToList", () => {
   const { mockRepos } = makeMovieListDeps();

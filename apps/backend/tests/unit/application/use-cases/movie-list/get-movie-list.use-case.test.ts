@@ -1,7 +1,7 @@
 import { GetMovieList } from "@/application/use-cases/movie-list/get-movie-list.use-case";
 import { UnauthorizedError } from "@/domain/errors";
 import { Uuid } from "@/domain/value-objects";
-import { makeMovieList, makeMovieListDeps } from "../../../factories";
+import { makeMovieList, makeMovieListDeps } from "../../../../factories";
 
 describe("GetMovieList", () => {
   const { mockRepos } = makeMovieListDeps();
