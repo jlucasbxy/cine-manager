@@ -1,6 +1,7 @@
 import { execFileSync } from "node:child_process";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { CreateBucketCommand, S3Client } from "@aws-sdk/client-s3";
 import { GenericContainer, type StartedTestContainer } from "testcontainers";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -44,6 +45,7 @@ export default async function globalSetup() {
 
   let postgres: StartedTestContainer;
   let redis: StartedTestContainer;
+  let minio: StartedTestContainer;
 
   try {
     postgres = await new GenericContainer("postgres:18-alpine")
@@ -58,9 +60,18 @@ export default async function globalSetup() {
     redis = await new GenericContainer("redis:7-alpine")
       .withExposedPorts(6379)
       .start();
+
+    minio = await new GenericContainer("minio/minio:latest")
+      .withEnvironment({
+        MINIO_ROOT_USER: "minioadmin",
+        MINIO_ROOT_PASSWORD: "minioadmin"
+      })
+      .withCommand(["server", "/data", "--console-address", ":9001"])
+      .withExposedPorts(9000)
+      .start();
   } catch (error) {
     throw new Error(
-      "Integration tests require a working Docker/OCI runtime. Start Docker (or Podman) and rerun `npm run test:integration --workspace=backend`.",
+      "Integration tests require a working Docker/OCI runtime (Postgres, Redis, MinIO). Start Docker (or Podman) and rerun `npm run test:integration --workspace=backend`.",
       { cause: error as Error }
     );
   }
@@ -72,13 +83,44 @@ export default async function globalSetup() {
   process.env.INTEGRATION_DATABASE_URL = databaseUrl;
   process.env.REDIS_URL = redisUrl;
   process.env.INTEGRATION_REDIS_URL = redisUrl;
+  process.env.S3_ENDPOINT = `http://${minio.getHost()}:${minio.getMappedPort(9000)}`;
+  process.env.S3_FORCE_PATH_STYLE = "true";
+  process.env.S3_ACCESS_KEY_ID = "minioadmin";
+  process.env.S3_SECRET_ACCESS_KEY = "minioadmin";
 
   setupSchema(databaseUrl);
+  await ensureBucket();
 
   return async () => {
+    await stopContainer(minio);
     await stopContainer(redis);
     await stopContainer(postgres);
   };
+}
+
+async function ensureBucket(): Promise<void> {
+  const endpoint = process.env.S3_ENDPOINT;
+  const region = process.env.S3_REGION;
+  const accessKeyId = process.env.S3_ACCESS_KEY_ID;
+  const secretAccessKey = process.env.S3_SECRET_ACCESS_KEY;
+  const bucket = process.env.S3_BUCKET;
+
+  if (!endpoint || !region || !accessKeyId || !secretAccessKey || !bucket) {
+    throw new Error("S3 environment variables are required for integration tests");
+  }
+
+  const client = new S3Client({
+    endpoint,
+    region,
+    forcePathStyle: true,
+    credentials: { accessKeyId, secretAccessKey }
+  });
+
+  try {
+    await client.send(new CreateBucketCommand({ Bucket: bucket }));
+  } finally {
+    await client.destroy();
+  }
 }
 
 async function stopContainer(container: StartedTestContainer): Promise<void> {
