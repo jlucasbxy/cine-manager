@@ -10,6 +10,8 @@ export default defineConfig({
   test: {
     globals: true,
     include: ["tests/e2e/**/*.e2e.test.ts"],
+    globalSetup: ["./tests/e2e/global-setup.ts"],
+    setupFiles: ["./tests/e2e/setup.ts"],
     passWithNoTests: true,
     fileParallelism: false,
     testTimeout: 30_000,
