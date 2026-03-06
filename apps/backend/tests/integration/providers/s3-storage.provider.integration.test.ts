@@ -1,51 +1,26 @@
 import {
   GetObjectCommand,
-  HeadObjectCommand,
-  S3Client
+  HeadObjectCommand
 } from "@aws-sdk/client-s3";
 import { UploadKey } from "@/domain/value-objects/upload-key.value-object";
 import { ImageMimeType, Uuid } from "@/domain/value-objects";
 import { S3StorageProvider } from "@/infrastructure/providers";
-
-const requiredEnv = (
-  name:
-    | "S3_BUCKET"
-    | "S3_REGION"
-    | "S3_ENDPOINT"
-    | "S3_ACCESS_KEY_ID"
-    | "S3_SECRET_ACCESS_KEY"
-): string => {
-  const value = process.env[name];
-  if (!value) {
-    throw new Error(`${name} is required for integration tests`);
-  }
-  return value;
-};
+import {
+  getIntegrationS3Client,
+  getIntegrationS3Config
+} from "../helpers/integration-context";
 
 describe("S3StorageProvider integration", () => {
-  const bucket = requiredEnv("S3_BUCKET");
-  const region = requiredEnv("S3_REGION");
-  const endpoint = requiredEnv("S3_ENDPOINT");
-  const accessKeyId = requiredEnv("S3_ACCESS_KEY_ID");
-  const secretAccessKey = requiredEnv("S3_SECRET_ACCESS_KEY");
-
-  const client = new S3Client({
-    endpoint,
-    region,
-    forcePathStyle: true,
-    credentials: { accessKeyId, secretAccessKey }
-  });
+  const s3Config = getIntegrationS3Config();
+  const client = getIntegrationS3Client();
+  const bucket = s3Config.bucket;
 
   const provider = new S3StorageProvider(client, {
-    bucket,
-    region,
-    endpoint,
-    forcePathStyle: true,
+    bucket: s3Config.bucket,
+    region: s3Config.region,
+    endpoint: s3Config.endpoint,
+    forcePathStyle: s3Config.forcePathStyle,
     uploadUrlExpiresIn: 900
-  });
-
-  afterAll(() => {
-    client.destroy();
   });
 
   it("generates a signed upload URL and stores bytes via HTTP PUT", async () => {
