@@ -40,16 +40,18 @@ declare module "fastify" {
   }
 }
 
-export async function start() {
+export async function createApp() {
   const app = Fastify({
-    logger: env.IS_DEVELOPMENT
-      ? {
-          transport: {
-            target: "pino-pretty",
-            options: { translateTime: "HH:MM:ss", ignore: "pid,hostname" }
+    logger: env.IS_TEST
+      ? false
+      : env.IS_DEVELOPMENT
+        ? {
+            transport: {
+              target: "pino-pretty",
+              options: { translateTime: "HH:MM:ss", ignore: "pid,hostname" }
+            }
           }
-        }
-      : true
+        : true
   });
 
   if (!env.IS_PRODUCTION && env.ENABLE_DOCS) {
@@ -149,6 +151,13 @@ export async function start() {
     },
     { prefix: "/api/v1" }
   );
+
+  await app.ready();
+  return app;
+}
+
+export async function start() {
+  const app = await createApp();
 
   try {
     await app.listen({ port: env.PORT, host: env.HOST });
