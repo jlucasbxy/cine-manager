@@ -10,7 +10,7 @@ export default defineConfig({
   test: {
     globals: true,
     passWithNoTests: true,
-    include: ["tests/unit/**/*.test.ts"],
+    include: ["tests/unit/**/*.unit.test.ts"],
     exclude: ["tests/integration/**", "tests/e2e/**"]
   }
 });
