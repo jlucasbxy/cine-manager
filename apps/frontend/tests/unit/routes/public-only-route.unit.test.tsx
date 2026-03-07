@@ -1,38 +1,14 @@
 import { render, screen } from "@testing-library/react";
-import type { UserDTO } from "@repo/dtos";
 import React from "react";
 import { createMemoryRouter, RouterProvider } from "react-router";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { useAuth } from "@/hooks/use-auth";
 import { PublicOnlyRoute } from "@/routes/public-only-route";
+import { createAuthState, defaultUser } from "../../utils/auth-helpers";
 
 vi.mock("@/hooks/use-auth", () => ({
   useAuth: vi.fn()
 }));
-
-type AuthState = ReturnType<typeof useAuth>;
-
-const defaultUser: UserDTO = {
-  id: "user-1",
-  name: "Jane Doe",
-  email: "jane@example.com",
-  avatarUrl: null,
-  createdAt: "2026-01-01T00:00:00.000Z",
-  updatedAt: "2026-01-01T00:00:00.000Z"
-};
-
-function createAuthState(overrides: Partial<AuthState> = {}): AuthState {
-  return {
-    user: null,
-    isAuthenticated: false,
-    isLoading: false,
-    login: vi.fn(async () => undefined),
-    register: vi.fn(async () => undefined),
-    logout: vi.fn(async () => undefined),
-    updateUser: vi.fn(async () => undefined),
-    ...overrides
-  };
-}
 
 function renderPublicOnlyRoute() {
   const router = createMemoryRouter(
@@ -79,7 +55,7 @@ describe("PublicOnlyRoute", () => {
 
     renderPublicOnlyRoute();
 
-    expect(await screen.findByText("Movies Page")).toBeTruthy();
+    await screen.findByText("Movies Page");
     expect(screen.queryByText("Public Content")).toBeNull();
   });
 
@@ -88,7 +64,7 @@ describe("PublicOnlyRoute", () => {
 
     renderPublicOnlyRoute();
 
-    expect(await screen.findByText("Public Content")).toBeTruthy();
+    await screen.findByText("Public Content");
     expect(screen.queryByText("Movies Page")).toBeNull();
   });
 });
