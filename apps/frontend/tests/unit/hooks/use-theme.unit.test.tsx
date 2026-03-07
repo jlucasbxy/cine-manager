@@ -31,12 +31,10 @@ describe("useTheme", () => {
       );
     }
 
-    const { result, unmount } = renderHook(() => useTheme(), {
+    const { result } = renderHook(() => useTheme(), {
       wrapper: Wrapper
     });
 
     expect(result.current).toBe(contextValue);
-
-    unmount();
   });
 });
