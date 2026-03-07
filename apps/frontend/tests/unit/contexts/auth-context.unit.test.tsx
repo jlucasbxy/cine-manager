@@ -6,6 +6,7 @@ import { AuthProvider } from "@/contexts/auth-context";
 import { useAuth } from "@/hooks/use-auth";
 import { clearAccessToken, setAccessToken } from "@/lib/api-client";
 import * as authService from "@/services/auth.service";
+import { defaultUser } from "../../utils/auth-helpers";
 
 vi.mock("@/services/auth.service", () => ({
   login: vi.fn(),
@@ -22,15 +23,6 @@ vi.mock("@/lib/api-client", () => ({
   clearAccessToken: vi.fn(),
   setAccessToken: vi.fn()
 }));
-
-const defaultUser: UserDTO = {
-  id: "user-1",
-  name: "Jane Doe",
-  email: "jane@example.com",
-  avatarUrl: null,
-  createdAt: "2026-01-01T00:00:00.000Z",
-  updatedAt: "2026-01-01T00:00:00.000Z"
-};
 
 function Wrapper({ children }: { children: ReactNode }) {
   return <AuthProvider>{children}</AuthProvider>;
@@ -76,7 +68,7 @@ describe("AuthProvider", () => {
     });
     vi.mocked(authService.getMe).mockResolvedValue(restoredUser);
 
-    const { result, unmount } = renderHook(() => useAuth(), {
+    const { result } = renderHook(() => useAuth(), {
       wrapper: Wrapper
     });
 
@@ -92,14 +84,12 @@ describe("AuthProvider", () => {
     expect(result.current.isAuthenticated).toBe(true);
     expect(setAccessToken).toHaveBeenCalledWith("restored-token", 3600);
     expect(getStoredUser()).toEqual(restoredUser);
-
-    unmount();
   });
 
   it("clears user and token when session restoration fails", async () => {
     localStorage.setItem("user", JSON.stringify(defaultUser));
 
-    const { result, unmount } = renderHook(() => useAuth(), {
+    const { result } = renderHook(() => useAuth(), {
       wrapper: Wrapper
     });
 
@@ -111,8 +101,6 @@ describe("AuthProvider", () => {
     expect(result.current.user).toBeNull();
     expect(result.current.isAuthenticated).toBe(false);
     expect(localStorage.getItem("user")).toBeNull();
-
-    unmount();
   });
 
   it("logs in and stores the authenticated user", async () => {
@@ -126,7 +114,7 @@ describe("AuthProvider", () => {
     });
     vi.mocked(authService.getMe).mockResolvedValue(loggedInUser);
 
-    const { result, unmount } = renderHook(() => useAuth(), {
+    const { result } = renderHook(() => useAuth(), {
       wrapper: Wrapper
     });
 
@@ -143,8 +131,6 @@ describe("AuthProvider", () => {
     expect(result.current.user).toEqual(loggedInUser);
     expect(result.current.isAuthenticated).toBe(true);
     expect(getStoredUser()).toEqual(loggedInUser);
-
-    unmount();
   });
 
   it("registers the user, logs in, and stores auth state", async () => {
@@ -159,7 +145,7 @@ describe("AuthProvider", () => {
       expiresIn: 1200
     });
 
-    const { result, unmount } = renderHook(() => useAuth(), {
+    const { result } = renderHook(() => useAuth(), {
       wrapper: Wrapper
     });
 
@@ -180,8 +166,6 @@ describe("AuthProvider", () => {
     expect(setAccessToken).toHaveBeenLastCalledWith("registered-token", 1200);
     expect(result.current.user).toEqual(registeredUser);
     expect(getStoredUser()).toEqual(registeredUser);
-
-    unmount();
   });
 
   it("logs out even when the logout request fails", async () => {
@@ -192,7 +176,7 @@ describe("AuthProvider", () => {
     vi.mocked(authService.getMe).mockResolvedValue(defaultUser);
     vi.mocked(authService.logout).mockRejectedValue(new Error("logout failed"));
 
-    const { result, unmount } = renderHook(() => useAuth(), {
+    const { result } = renderHook(() => useAuth(), {
       wrapper: Wrapper
     });
 
@@ -209,8 +193,6 @@ describe("AuthProvider", () => {
     expect(result.current.user).toBeNull();
     expect(result.current.isAuthenticated).toBe(false);
     expect(localStorage.getItem("user")).toBeNull();
-
-    unmount();
   });
 
   it("updates the current user and syncs localStorage", async () => {
@@ -227,7 +209,7 @@ describe("AuthProvider", () => {
     };
     vi.mocked(authService.updateUser).mockResolvedValue(updatedUser);
 
-    const { result, unmount } = renderHook(() => useAuth(), {
+    const { result } = renderHook(() => useAuth(), {
       wrapper: Wrapper
     });
 
@@ -248,7 +230,5 @@ describe("AuthProvider", () => {
     });
     expect(result.current.user).toEqual(updatedUser);
     expect(getStoredUser()).toEqual(updatedUser);
-
-    unmount();
   });
 });
