@@ -58,6 +58,8 @@ cp apps/frontend/.env.example apps/frontend/.env
 4. Update `apps/backend/.env` with your values.
 
 Required backend variables:
+- `HOST`
+- `PORT`
 - `DATABASE_URL`
 - `REDIS_URL` (required by runtime validation)
 - `ACCESS_TOKEN_SECRET` (minimum 32 characters)
@@ -69,11 +71,11 @@ Required backend variables:
 Example local `REDIS_URL`:
 
 ```env
-REDIS_URL="redis://localhost:6379"
+REDIS_URL="redis://<REDIS_HOST>:<REDIS_PORT>"
 ```
 
 Frontend environment:
-- `VITE_API_URL` (default local value is `http://localhost:3000`)
+- `VITE_API_URL` (should point to backend origin, e.g. `http://<BACKEND_HOST>:<BACKEND_PORT>`)
 
 5. Run database migrations:
 
@@ -100,14 +102,14 @@ This starts:
 - Backend outbox worker
 - Frontend app
 
-## Local URLs
+## Local URLs (Environment-Driven)
 
-- Frontend: `http://localhost:5173`
-- API base: `http://localhost:3000/api/v1`
-- Health check: `http://localhost:3000/health`
-- API docs (non-production + `ENABLE_DOCS=true`): `http://localhost:3000/docs`
-- MinIO API: `http://localhost:9000`
-- MinIO console: `http://localhost:9001`
+- Frontend: `http://<FRONTEND_HOST>:<FRONTEND_PORT>`
+- API base: `http://<HOST>:<PORT>/api/v1`
+- Health check: `http://<HOST>:<PORT>/health`
+- API docs (non-production + `ENABLE_DOCS=true`): `http://<HOST>:<PORT>/docs`
+- MinIO API: `http://<S3_HOST>:<S3_PORT>`
+- MinIO console: `http://<MINIO_CONSOLE_HOST>:<MINIO_CONSOLE_PORT>`
 
 ## Authentication Model
 
