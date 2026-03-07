@@ -27,20 +27,18 @@ describe("usePasswordStrength", () => {
   });
 
   it("returns an empty result for empty password", () => {
-    const { result, unmount } = renderHook(() => usePasswordStrength(""));
+    const { result } = renderHook(() => usePasswordStrength(""));
 
     expect(result.current).toEqual({
       score: 0,
       feedback: { warning: "", suggestions: [] },
       isLoading: false
     });
-
-    unmount();
   });
 
   it("evaluates password after debounce delay", () => {
     let password = "";
-    const { result, rerender, unmount } = renderHook(() =>
+    const { result, rerender } = renderHook(() =>
       usePasswordStrength(password)
     );
 
@@ -58,7 +56,5 @@ describe("usePasswordStrength", () => {
     });
 
     expect(result.current).toEqual(getExpectedResult(password));
-
-    unmount();
   });
 });
