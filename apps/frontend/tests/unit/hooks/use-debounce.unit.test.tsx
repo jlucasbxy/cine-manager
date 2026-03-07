@@ -12,16 +12,14 @@ describe("useDebounce", () => {
   });
 
   it("returns the initial value immediately", () => {
-    const { result, unmount } = renderHook(() => useDebounce("initial", 300));
+    const { result } = renderHook(() => useDebounce("initial", 300));
 
     expect(result.current).toBe("initial");
-
-    unmount();
   });
 
   it("updates only after the configured delay", () => {
     let value = "a";
-    const { result, rerender, unmount } = renderHook(() =>
+    const { result, rerender } = renderHook(() =>
       useDebounce(value, 300)
     );
 
@@ -39,13 +37,11 @@ describe("useDebounce", () => {
       vi.advanceTimersByTime(1);
     });
     expect(result.current).toBe("ab");
-
-    unmount();
   });
 
   it("resets the pending timer when value changes quickly", () => {
     let value = "first";
-    const { result, rerender, unmount } = renderHook(() =>
+    const { result, rerender } = renderHook(() =>
       useDebounce(value, 300)
     );
 
@@ -68,7 +64,5 @@ describe("useDebounce", () => {
       vi.advanceTimersByTime(1);
     });
     expect(result.current).toBe("third");
-
-    unmount();
   });
 });
