@@ -10,7 +10,7 @@
     "lint": "biome lint .",
     "format": "biome format --write .",
     "format:check": "biome format .",
-    "check": "biome check .",
+    "check": "biome check . --max-diagnostics 1000",
     "check:fix": "biome check --write ."
   },
   "workspaces": [
