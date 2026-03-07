@@ -36,12 +36,10 @@ describe("useAuth", () => {
       );
     }
 
-    const { result, unmount } = renderHook(() => useAuth(), {
+    const { result } = renderHook(() => useAuth(), {
       wrapper: Wrapper
     });
 
     expect(result.current).toBe(contextValue);
-
-    unmount();
   });
 });
