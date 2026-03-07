@@ -58,15 +58,42 @@ cp apps/frontend/.env.example apps/frontend/.env
 4. Update `apps/backend/.env` with your values.
 
 Required backend variables:
-- `HOST`
-- `PORT`
 - `DATABASE_URL`
 - `REDIS_URL` (required by runtime validation)
 - `ACCESS_TOKEN_SECRET` (minimum 32 characters)
 - `FRONTEND_URL`
 - `RESEND_API_KEY`
 - `EMAIL_FROM`
-- S3 variables (`S3_BUCKET`, `S3_REGION`, `S3_ENDPOINT`, `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY`)
+- `S3_BUCKET`
+- `S3_ACCESS_KEY_ID`
+- `S3_SECRET_ACCESS_KEY`
+
+Optional backend variables (with defaults):
+- `NODE_ENV=production`
+- `HOST=0.0.0.0`
+- `PORT=3000`
+- `ACCESS_TOKEN_EXPIRES_IN=15m`
+- `REFRESH_TOKEN_EXPIRES_IN=7d`
+- `PASSWORD_RESET_TOKEN_EXPIRES_IN=1h`
+- `ENABLE_DOCS=false`
+- `S3_REGION=us-east-1`
+- `S3_ENDPOINT` (unset by default)
+- `S3_FORCE_PATH_STYLE=false`
+- `UPLOAD_URL_EXPIRES_IN=900`
+- `RATE_LIMIT_LOGIN_MAX=5`
+- `RATE_LIMIT_LOGIN_WINDOW="1 minute"`
+- `RATE_LIMIT_PASSWORD_RESET_REQUEST_MAX=3`
+- `RATE_LIMIT_PASSWORD_RESET_REQUEST_WINDOW="1 minute"`
+- `RATE_LIMIT_PASSWORD_RESET_EXECUTE_MAX=5`
+- `RATE_LIMIT_PASSWORD_RESET_EXECUTE_WINDOW="1 minute"`
+- `RATE_LIMIT_REFRESH_MAX=10`
+- `RATE_LIMIT_REFRESH_WINDOW="1 minute"`
+- `RATE_LIMIT_LOGOUT_MAX=10`
+- `RATE_LIMIT_LOGOUT_WINDOW="1 minute"`
+- `RATE_LIMIT_REGISTRATION_MAX=10`
+- `RATE_LIMIT_REGISTRATION_WINDOW="1 minute"`
+- `RATE_LIMIT_UPLOAD_URL_MAX=10`
+- `RATE_LIMIT_UPLOAD_URL_WINDOW="1 day"`
 
 Example local `REDIS_URL`:
 
@@ -75,7 +102,7 @@ REDIS_URL="redis://<REDIS_HOST>:<REDIS_PORT>"
 ```
 
 Frontend environment:
-- `VITE_API_URL` (should point to backend origin, e.g. `http://<BACKEND_HOST>:<BACKEND_PORT>`)
+- Required: `VITE_API_URL` (should point to backend origin, e.g. `http://<BACKEND_HOST>:<BACKEND_PORT>`)
 
 5. Run database migrations:
 
