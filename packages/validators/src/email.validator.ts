@@ -1,12 +1,8 @@
-import z from "zod";
+import { emailSchema } from "./email.schema";
 import type { Validator } from "./validator";
 
 export class EmailValidator implements Validator<{ email: string }> {
-  private readonly emailSchema = z.object({
-    email: z.email()
-  });
-
   parse(data: unknown) {
-    return this.emailSchema.parse(data);
+    return emailSchema.parse(data);
   }
 }
