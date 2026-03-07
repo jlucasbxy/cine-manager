@@ -3,8 +3,8 @@ import type { MovieListWithMovies } from "@/application/interfaces/repositories"
 import { MovieMapper } from "@/application/mappers/movie.mapper";
 import type { MovieList } from "@/domain/entities";
 
-export class MovieListMapper {
-  static toDTO(list: MovieList): MovieListDTO {
+export const MovieListMapper = {
+  toDTO(list: MovieList): MovieListDTO {
     return {
       id: list.id.toString(),
       name: list.name,
@@ -12,9 +12,9 @@ export class MovieListMapper {
       createdAt: list.createdAt.toISOString(),
       updatedAt: list.updatedAt.toISOString()
     };
-  }
+  },
 
-  static toDTOWithMovies(list: MovieListWithMovies): MovieListDTO {
+  toDTOWithMovies(list: MovieListWithMovies): MovieListDTO {
     return {
       id: list.id.toString(),
       name: list.name,
@@ -24,4 +24,4 @@ export class MovieListMapper {
       movies: list.movies.map((m) => MovieMapper.toDTO(m))
     };
   }
-}
+};

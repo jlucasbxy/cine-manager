@@ -1,8 +1,8 @@
 import type { UserDTO } from "@repo/dtos";
 import type { User } from "@/domain/entities";
 
-export class UserMapper {
-  static toDTO(user: User): UserDTO {
+export const UserMapper = {
+  toDTO(user: User): UserDTO {
     return {
       id: user.id.toString(),
       name: user.name,
@@ -12,4 +12,4 @@ export class UserMapper {
       updatedAt: user.updatedAt.toISOString()
     };
   }
-}
+};

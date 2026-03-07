@@ -12,8 +12,8 @@ import {
 } from "@/domain/value-objects";
 import type { MovieModel } from "@/infrastructure/database/prisma/generated/prisma/models/Movie";
 
-export class PrismaMovieMapper {
-  static toDomain(raw: MovieModel): Movie {
+export const PrismaMovieMapper = {
+  toDomain(raw: MovieModel): Movie {
     return Movie.reconstitute({
       id: Uuid.reconstitute(raw.id),
       title: raw.title,
@@ -39,4 +39,4 @@ export class PrismaMovieMapper {
       userId: Uuid.reconstitute(raw.userId)
     });
   }
-}
+};

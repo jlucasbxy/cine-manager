@@ -14,8 +14,8 @@ import {
 
 type MovieUserInfo = { id: string; name: string; avatarUrl: string | null };
 
-export class MovieMapper {
-  static toDTO(movie: Movie, user?: MovieUserInfo): MovieDTO {
+export const MovieMapper = {
+  toDTO(movie: Movie, user?: MovieUserInfo): MovieDTO {
     return {
       id: movie.id.toString(),
       title: movie.title,
@@ -41,9 +41,9 @@ export class MovieMapper {
       userId: movie.userId.toString(),
       user
     };
-  }
+  },
 
-  static fromDto(data: MovieDTO) {
+  fromDto(data: MovieDTO) {
     return Movie.reconstitute({
       id: Uuid.reconstitute(data.id),
       title: data.title,
@@ -69,4 +69,4 @@ export class MovieMapper {
       userId: Uuid.reconstitute(data.userId)
     });
   }
-}
+};

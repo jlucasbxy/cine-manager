@@ -6,8 +6,8 @@ import type {
 import { Uuid } from "@/domain/value-objects";
 import type { OutboxEventModel } from "@/infrastructure/database/prisma/generated/prisma/models/OutboxEvent";
 
-export class PrismaOutboxEventMapper {
-  static toDomain(raw: OutboxEventModel): OutboxEvent {
+export const PrismaOutboxEventMapper = {
+  toDomain(raw: OutboxEventModel): OutboxEvent {
     return OutboxEvent.reconstitute({
       id: Uuid.reconstitute(raw.id),
       type: raw.type as OutboxEventTypeEnum,
@@ -21,4 +21,4 @@ export class PrismaOutboxEventMapper {
       resourceId: raw.resourceId ? Uuid.reconstitute(raw.resourceId) : null
     });
   }
-}
+};

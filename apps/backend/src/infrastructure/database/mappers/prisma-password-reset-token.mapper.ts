@@ -2,8 +2,8 @@ import { PasswordResetToken } from "@/domain/entities";
 import { Token, Uuid } from "@/domain/value-objects";
 import type { PasswordResetTokenModel } from "@/infrastructure/database/prisma/generated/prisma/models/PasswordResetToken";
 
-export class PrismaPasswordResetTokenMapper {
-  static toDomain(raw: PasswordResetTokenModel): PasswordResetToken {
+export const PrismaPasswordResetTokenMapper = {
+  toDomain(raw: PasswordResetTokenModel): PasswordResetToken {
     return PasswordResetToken.reconstitute({
       id: Uuid.reconstitute(raw.id),
       token: Token.reconstitute(raw.token),
@@ -13,4 +13,4 @@ export class PrismaPasswordResetTokenMapper {
       createdAt: raw.createdAt
     });
   }
-}
+};

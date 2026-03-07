@@ -27,15 +27,15 @@ const STATUS_MAP: Record<ErrorCode, number> = {
   [ErrorCode.INTERNAL_SERVER_ERROR]: 500
 };
 
-export class ErrorPresenter {
-  static httpStatusFor(code: ErrorCode): number {
+export const ErrorPresenter = {
+  httpStatusFor(code: ErrorCode): number {
     return STATUS_MAP[code];
-  }
+  },
 
-  static toResponse(code: ErrorCode, message: string | string[]) {
+  toResponse(code: ErrorCode, message: string | string[]) {
     return {
       code,
       message
     };
   }
-}
+};
