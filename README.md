@@ -1,116 +1,217 @@
 # Cine Manager
 
-Aplicacao web fullstack para gerenciamento de filmes com autenticacao de usuarios.
+Full-stack movie management platform with authentication, movie catalog CRUD, custom lists, ratings, and media upload support.
 
-## Estrutura do Projeto
+## Project Structure
 
-Monorepo com [Turborepo](https://turbo.build/):
+This repository is a monorepo managed with [Turborepo](https://turbo.build/):
 
-```
+```text
 apps/
-  backend/    # API REST com Fastify + Prisma + PostgreSQL
-  frontend/   # SPA com React + TypeScript
+  backend/    Fastify + Prisma REST API and background worker
+  frontend/   React + Vite single-page application
 packages/
-  dtos/       # DTOs compartilhados entre frontend e backend
+  dtos/       Shared DTOs and error codes
+  validators/ Shared Zod validators
 ```
 
-## Pre-requisitos
+## Tech Stack
 
-- Node.js 20+
+- Backend: Fastify, Prisma, PostgreSQL, Redis, JWT, Argon2, S3/MinIO, Resend
+- Frontend: React 19, React Router 7, React Query, Vite, Tailwind CSS
+- Tooling: Turborepo, Vitest, Biome, TypeScript
+
+## Prerequisites
+
+- Node.js 24.x
+- npm 11.x (project uses `npm@11.7.0`)
+- Docker + Docker Compose (recommended for local infra)
+
+You can also run with local services instead of Docker:
 - PostgreSQL
 - Redis
+- S3-compatible object storage (MinIO or AWS S3)
 
-## Configuracao
+## Quick Start (Local Development)
 
-1. Instale as dependencias:
+1. Install dependencies:
 
 ```bash
 npm install
 ```
 
-2. Configure as variaveis de ambiente no `apps/backend/.env`
+2. Start local infrastructure (Postgres, Redis, MinIO):
 
-3. Execute as migrations:
+```bash
+cd apps/backend
+docker compose up -d
+cd ../..
+```
+
+3. Create environment files:
+
+```bash
+cp apps/backend/.env.example apps/backend/.env
+cp apps/frontend/.env.example apps/frontend/.env
+```
+
+4. Update `apps/backend/.env` with your values.
+
+Required backend variables:
+- `DATABASE_URL`
+- `REDIS_URL` (required by runtime validation)
+- `ACCESS_TOKEN_SECRET` (minimum 32 characters)
+- `FRONTEND_URL`
+- `RESEND_API_KEY`
+- `EMAIL_FROM`
+- S3 variables (`S3_BUCKET`, `S3_REGION`, `S3_ENDPOINT`, `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY`)
+
+Example local `REDIS_URL`:
+
+```env
+REDIS_URL="redis://localhost:6379"
+```
+
+Frontend environment:
+- `VITE_API_URL` (default local value is `http://localhost:3000`)
+
+5. Run database migrations:
 
 ```bash
 cd apps/backend
 npx prisma migrate deploy
+cd ../..
 ```
 
-4. Execute os seeds obrigatorios (generos e idiomas):
+6. Seed required reference data (genres and languages):
 
 ```bash
 npm run seed --workspace=backend
 ```
 
-## Seeds
-
-O projeto possui dois comandos de seed:
-
-### `npm run seed` (producao)
-
-Popula os dados obrigatorios para o funcionamento do sistema:
-
-- **Generos** - 19 generos de filmes baseados no TMDb (Action, Comedy, Drama, etc.)
-- **Idiomas** - 30 idiomas comuns baseados no TMDb (English, Portuguese, Japanese, etc.)
-
-Esses dados sao necessarios para o sistema funcionar corretamente. O comando e idempotente (`skipDuplicates`), podendo ser executado multiplas vezes sem duplicar dados.
-
-### `npm run seed:dev` (desenvolvimento)
-
-Executa os seeds de producao **e adicionalmente** popula dados de exemplo para desenvolvimento:
-
-- **Usuarios** - 5 usuarios de teste:
-  | Nome              | Email                  | Senha         |
-  |-------------------|------------------------|---------------|
-  | Alice Silva       | alice@example.com      | password123   |
-  | Bob Santos        | bob@example.com        | password123   |
-  | Charlie Johnson   | charlie@example.com    | password123   |
-  | Diana Rodriguez   | diana@example.com      | password123   |
-  | Eduardo Ferreira  | eduardo@example.com    | password123   |
-
-- **Filmes** - 25 filmes de exemplo com generos, idiomas e poster/backdrop do TMDb:
-  - The Matrix (en, Action/Sci-Fi)
-  - Cidade de Deus (pt, Drama/Crime)
-  - A Viagem de Chihiro (ja, Animation/Family/Fantasy)
-  - Parasita (ko, Comedy/Thriller/Drama)
-  - Interestelar (en, Adventure/Drama/Sci-Fi)
-  - Um Sonho de Liberdade (en, Drama/Crime)
-  - O Poderoso Chefão (en, Drama/Crime)
-  - Batman: O Cavaleiro das Trevas (en, Action/Crime/Drama/Thriller)
-  - Pulp Fiction (en, Thriller/Crime)
-  - A Lista de Schindler (en, Drama/History/War)
-  - A Origem (en, Action/Sci-Fi/Adventure)
-  - Forrest Gump (en, Comedy/Drama/Romance)
-  - Clube da Luta (en, Drama/Thriller)
-  - O Silêncio dos Inocentes (en, Crime/Drama/Thriller)
-  - O Senhor dos Anéis: A Sociedade do Anel (en, Adventure/Fantasy/Action)
-  - Titanic (en, Drama/Romance)
-  - Os Bons Companheiros (en, Crime/Drama)
-  - Avatar (en, Action/Adventure/Sci-Fi)
-  - Jurassic Park (en, Adventure/Sci-Fi)
-  - De Volta para o Futuro (en, Adventure/Comedy/Sci-Fi)
-  - Blade Runner 2049 (en, Sci-Fi/Drama/Mystery)
-  - La La Land (en, Drama/Music/Romance)
-  - Oppenheimer (en, Drama/History)
-  - Tudo em Todo o Lugar ao Mesmo Tempo (en, Action/Adventure/Sci-Fi/Comedy)
-  - O Fabuloso Destino de Amélie Poulain (fr, Comedy/Romance)
-  - Os Sete Samurais (ja, Action/Adventure/Drama)
-  - O Labirinto do Fauno (es, Drama/Fantasy/Thriller)
-
-## Executando
-
-### Desenvolvimento
+7. Start everything in development mode:
 
 ```bash
 npm run dev
 ```
 
-Inicia o backend (API + worker) e o frontend simultaneamente via Turborepo.
+This starts:
+- Backend API
+- Backend outbox worker
+- Frontend app
 
-### Producao
+## Local URLs
+
+- Frontend: `http://localhost:5173`
+- API base: `http://localhost:3000/api/v1`
+- Health check: `http://localhost:3000/health`
+- API docs (non-production + `ENABLE_DOCS=true`): `http://localhost:3000/docs`
+- MinIO API: `http://localhost:9000`
+- MinIO console: `http://localhost:9001`
+
+## Authentication Model
+
+- `POST /api/v1/auth/login` returns an access token in the response body.
+- A refresh token is stored in an `httpOnly` cookie (`refreshToken`).
+- Protected routes require `Authorization: Bearer <accessToken>`.
+- `POST /api/v1/auth/refresh` rotates tokens using the cookie.
+
+## API Route Groups
+
+Base path: `/api/v1`
+
+- Auth: `/auth/*`
+- Users: `/users/*`
+- Movies: `/movies/*`
+- Movie Lists: `/lists/*`
+- Genres: `/genres`
+- Languages: `/languages`
+- Uploads: `/uploads/signed-url`
+
+Public route outside `/api/v1`:
+- `GET /health`
+
+## Seed Commands
+
+- `npm run seed --workspace=backend`
+Creates required reference data only:
+  - 19 movie genres
+  - 30 languages
+
+- `npm run seed:dev --workspace=backend`
+Runs `seed` plus development fixtures:
+  - 5 test users (all with password `password123`)
+  - 27 sample movies
+  - generated ratings
+
+Test users:
+
+| Name | Email | Password |
+| --- | --- | --- |
+| Alice Silva | alice@example.com | password123 |
+| Bob Santos | bob@example.com | password123 |
+| Charlie Johnson | charlie@example.com | password123 |
+| Diana Rodriguez | diana@example.com | password123 |
+| Eduardo Ferreira | eduardo@example.com | password123 |
+
+## Scripts
+
+Root:
+- `npm run dev` - run frontend + backend + worker
+- `npm run build` - build all workspaces
+- `npm run test` - run tests in all workspaces
+- `npm run typecheck` - run TypeScript checks
+- `npm run lint` - run Biome lint
+- `npm run format` - format repository with Biome
+- `npm run check` - Biome check
+
+Backend (`--workspace=backend`):
+- `npm run dev`
+- `npm run dev:worker`
+- `npm run build`
+- `npm run start`
+- `npm run start:worker`
+- `npm run test`
+- `npm run test:integration`
+- `npm run test:e2e`
+- `npm run seed`
+- `npm run seed:dev`
+
+Frontend (`--workspace=frontend`):
+- `npm run dev`
+- `npm run build`
+- `npm run preview`
+- `npm run test`
+
+## Testing
+
+Run all tests:
+
+```bash
+npm run test
+```
+
+Run backend suites individually:
+
+```bash
+npm run test --workspace=backend
+npm run test:integration --workspace=backend
+npm run test:e2e --workspace=backend
+```
+
+## Production Notes
+
+Build everything:
 
 ```bash
 npm run build
-npm run start --workspace=backend
 ```
+
+Run backend API and worker:
+
+```bash
+npm run start --workspace=backend
+npm run start:worker --workspace=backend
+```
+
+The frontend build output is generated in `apps/frontend/dist` and should be served by your preferred static hosting solution.
