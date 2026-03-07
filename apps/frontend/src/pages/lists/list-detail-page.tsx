@@ -146,6 +146,7 @@ export function ListDetailPage() {
                 <MovieCard movie={movie} />
               )}
               <button
+                type="button"
                 className="absolute top-2 left-2 rounded-full bg-background/80 p-1 opacity-0 group-hover:opacity-100 transition-opacity"
                 onClick={() => void handleRemoveMovie(movie.id)}
                 title="Remove from list"

@@ -14,9 +14,8 @@ export class RedisCacheProvider implements CacheProvider {
       if (value === null) return null;
       return JSON.parse(value) as T;
     } catch (err) {
-      console.warn(
-        "[RedisCacheProvider] hget failed, treating as cache miss:",
-        err
+      process.stderr.write(
+        `[RedisCacheProvider] hget failed, treating as cache miss: ${String(err)}\n`
       );
       return null;
     }
@@ -39,7 +38,9 @@ export class RedisCacheProvider implements CacheProvider {
         await this.redis.hset(key, field, JSON.stringify(value));
       }
     } catch (err) {
-      console.warn("[RedisCacheProvider] hset failed:", err);
+      process.stderr.write(
+        `[RedisCacheProvider] hset failed: ${String(err)}\n`
+      );
     }
   }
 
@@ -47,7 +48,9 @@ export class RedisCacheProvider implements CacheProvider {
     try {
       await this.redis.del(...keys);
     } catch (err) {
-      console.warn("[RedisCacheProvider] delete failed:", err);
+      process.stderr.write(
+        `[RedisCacheProvider] delete failed: ${String(err)}\n`
+      );
     }
   }
 }

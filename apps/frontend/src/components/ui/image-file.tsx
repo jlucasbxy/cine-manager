@@ -4,7 +4,7 @@ interface ImageFileProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   file: File;
 }
 
-export function ImageFile({ file, ...props }: ImageFileProps) {
+export function ImageFile({ file, alt = "", ...props }: ImageFileProps) {
   const [src, setSrc] = useState("");
 
   useEffect(() => {
@@ -14,5 +14,5 @@ export function ImageFile({ file, ...props }: ImageFileProps) {
   }, [file]);
 
   if (!src) return null;
-  return <img src={src} {...props} />;
+  return <img src={src} alt={alt} {...props} />;
 }

@@ -648,7 +648,7 @@ export async function seedDev() {
     userIds.push(user!.id);
   }
 
-  console.log(`Seeded ${DEV_USERS.length} dev users`);
+  process.stdout.write(`Seeded ${DEV_USERS.length} dev users\n`);
 
   // Seed movies
   let movieCount = 0;
@@ -668,8 +668,8 @@ export async function seedDev() {
       where: { code: languageCode }
     });
     if (!language) {
-      console.warn(
-        `Language "${languageCode}" not found, skipping movie "${movie.title}"`
+      process.stderr.write(
+        `Language "${languageCode}" not found, skipping movie "${movie.title}"\n`
       );
       continue;
     }
@@ -696,9 +696,9 @@ export async function seedDev() {
   }
 
   if (skippedCount > 0) {
-    console.log(`Skipped ${skippedCount} already existing movies`);
+    process.stdout.write(`Skipped ${skippedCount} already existing movies\n`);
   }
-  console.log(`Seeded ${movieCount} dev movies`);
+  process.stdout.write(`Seeded ${movieCount} dev movies\n`);
 
   // Seed ratings — one per user per movie
   const movies = await prisma.movie.findMany({ select: { id: true } });
@@ -745,7 +745,7 @@ export async function seedDev() {
     }
   }
 
-  console.log(`Seeded ${ratingCount} dev ratings`);
+  process.stdout.write(`Seeded ${ratingCount} dev ratings\n`);
 
   await prisma.$disconnect();
 }

@@ -1,6 +1,6 @@
 import type { AgeRating, MovieStatus } from "@repo/dtos";
 import { Film, Plus } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router";
 import {
   MovieFilters,
@@ -46,22 +46,25 @@ export function MovieListPage() {
     setSearchInput(urlSearch);
   }, [urlSearch]);
 
-  const updateParams = (
-    updates: Record<string, string | undefined>,
-    options: { replace?: boolean } = {}
-  ) => {
-    setSearchParams((prev) => {
-      const next = new URLSearchParams(prev);
-      for (const [key, value] of Object.entries(updates)) {
-        if (value !== undefined && value !== "") {
-          next.set(key, value);
-        } else {
-          next.delete(key);
+  const updateParams = useCallback(
+    (
+      updates: Record<string, string | undefined>,
+      options: { replace?: boolean } = {}
+    ) => {
+      setSearchParams((prev) => {
+        const next = new URLSearchParams(prev);
+        for (const [key, value] of Object.entries(updates)) {
+          if (value !== undefined && value !== "") {
+            next.set(key, value);
+          } else {
+            next.delete(key);
+          }
         }
-      }
-      return next;
-    }, options);
-  };
+        return next;
+      }, options);
+    },
+    [setSearchParams]
+  );
 
   useEffect(() => {
     if (debouncedSearch !== urlSearch) {
@@ -71,7 +74,7 @@ export function MovieListPage() {
         { replace: true }
       );
     }
-  }, [debouncedSearch, urlSearch]);
+  }, [debouncedSearch, urlSearch, updateParams]);
 
   const handleSearchChange = (value: string) => {
     setSearchInput(value);

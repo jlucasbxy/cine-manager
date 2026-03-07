@@ -42,7 +42,7 @@ export async function seedLanguages() {
     data: TMDB_LANGUAGES.map(({ code, name }) => ({ id: uuidv7(), code, name }))
   });
 
-  console.log(`Seeded ${result.count} languages`);
+  process.stdout.write(`Seeded ${result.count} languages\n`);
 
   await prisma.$disconnect();
 }

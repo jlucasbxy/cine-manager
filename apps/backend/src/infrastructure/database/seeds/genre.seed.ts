@@ -31,7 +31,7 @@ export async function seedGenres() {
     data: TMDB_GENRES.map((name) => ({ id: uuidv7(), name }))
   });
 
-  console.log(`Seeded ${result.count} genres`);
+  process.stdout.write(`Seeded ${result.count} genres\n`);
 
   await prisma.$disconnect();
 }

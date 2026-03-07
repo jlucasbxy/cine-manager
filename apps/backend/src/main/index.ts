@@ -42,7 +42,6 @@ if (run) {
   await run();
 } else {
   const available = Object.keys(commands).join("|");
-  // eslint-disable-next-line no-console
-  console.error(`Usage: ${process.argv[1]} <${available}>`);
+  process.stderr.write(`Usage: ${process.argv[1]} <${available}>\n`);
   process.exit(1);
 }

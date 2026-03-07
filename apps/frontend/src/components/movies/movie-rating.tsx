@@ -27,10 +27,11 @@ export function MovieRating({ movieId, score, votes }: MovieRatingProps) {
 
   return (
     <div className="space-y-1">
-      <div
-        className="flex items-center gap-0.5"
+      <fieldset
+        className="m-0 flex min-w-0 items-center gap-0.5 border-0 p-0"
         onMouseLeave={() => setHovered(null)}
       >
+        <legend className="sr-only">Rate this movie</legend>
         {Array.from({ length: 10 }, (_, i) => i + 1).map((star) => (
           <button
             key={star}
@@ -51,7 +52,7 @@ export function MovieRating({ movieId, score, votes }: MovieRatingProps) {
             />
           </button>
         ))}
-      </div>
+      </fieldset>
       <p className="text-sm text-muted-foreground">
         {score.toFixed(1)}/10 · {votes} votes
       </p>

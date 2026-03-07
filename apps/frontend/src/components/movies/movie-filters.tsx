@@ -42,7 +42,7 @@ export function MovieFilters({ filters, onFiltersChange }: MovieFiltersProps) {
 
   useEffect(() => {
     if (open) setLocal(filters);
-  }, [open]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [open, filters]);
 
   const handleApply = () => {
     onFiltersChange(local);
