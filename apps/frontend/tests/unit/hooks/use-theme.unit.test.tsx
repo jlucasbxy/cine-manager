@@ -1,5 +1,5 @@
 import { renderHook } from "@testing-library/react";
-import React, { type ContextType, type ReactNode } from "react";
+import type { ContextType, ReactNode } from "react";
 import { describe, expect, it, vi } from "vitest";
 import { ThemeContext } from "@/contexts/theme-context";
 import { useTheme } from "@/hooks/use-theme";

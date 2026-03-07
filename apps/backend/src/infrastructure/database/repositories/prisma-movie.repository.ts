@@ -106,7 +106,7 @@ export class PrismaMovieRepository implements MovieRepository {
         SELECT id FROM "Movie"
         WHERE (
           ${query.search} <% title
-          OR title ILIKE ${"%" + query.search + "%"}
+          OR title ILIKE ${`%${query.search}%`}
         )
           AND "deletedAt" IS NULL
       `;

@@ -5,9 +5,7 @@ import type {
   RefreshTokensDTO,
   RefreshTokensResultDTO,
   RequestPasswordResetDTO,
-  ResetPasswordDTO,
-  ValidateTokenDTO,
-  ValidateTokenResultDTO
+  ResetPasswordDTO
 } from "@repo/dtos";
 import type { AuthService } from "@/application/interfaces/services";
 import type {
@@ -15,8 +13,7 @@ import type {
   Logout,
   RefreshTokens,
   RequestPasswordReset,
-  ResetPassword,
-  ValidateToken
+  ResetPassword
 } from "@/application/use-cases/auth";
 
 export class AuthServiceImpl implements AuthService {

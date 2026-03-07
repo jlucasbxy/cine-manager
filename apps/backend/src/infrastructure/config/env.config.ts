@@ -5,7 +5,7 @@ import z from "zod";
 const NODE_ENV = z
   .enum(["development", "production", "test"])
   .default("production")
-  .parse(process.env["NODE_ENV"]);
+  .parse(process.env.NODE_ENV);
 
 const durationString = z
   .string()

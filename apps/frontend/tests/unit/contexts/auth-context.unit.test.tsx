@@ -1,6 +1,6 @@
 import type { UserDTO } from "@repo/dtos";
 import { act, renderHook, waitFor } from "@testing-library/react";
-import React, { type ReactNode } from "react";
+import type { ReactNode } from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { AuthProvider } from "@/contexts/auth-context";
 import { useAuth } from "@/hooks/use-auth";

@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { getApp } from "../helpers/app-context";
 import { authHeaders, registerUser } from "../helpers/auth-helper";
 import { getE2ePrismaClient } from "../helpers/e2e-context";
-import { insertGenre, insertLanguage } from "../helpers/fixtures";
+import { insertLanguage } from "../helpers/fixtures";
 
 const makeMoviePayload = (languageId: string, genreIds?: string[]) => ({
   title: "Test Movie",

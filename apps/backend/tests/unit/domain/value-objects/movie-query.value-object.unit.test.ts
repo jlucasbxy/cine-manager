@@ -25,7 +25,7 @@ describe("MovieQuery", () => {
       userId,
       genreIds: ["1", "2"]
     });
-    expect(query.runtime!.toNumber()).toBe(120);
+    expect(query.runtime?.toNumber()).toBe(120);
     expect(query.status).toBe("RELEASED");
     expect(query.ageRating).toBe("L");
     expect(query.search).toBe("test");

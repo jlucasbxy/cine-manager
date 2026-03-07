@@ -76,7 +76,7 @@ describe("MovieListMapper", () => {
 
       expect(dto.id).toBe("list-id");
       expect(dto.movies).toHaveLength(1);
-      expect(dto.movies![0].id).toBe("movie-id");
+      expect(dto.movies?.[0].id).toBe("movie-id");
     });
 
     it("maps empty movies array", () => {

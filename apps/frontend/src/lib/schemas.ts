@@ -1,9 +1,7 @@
 import {
-  createUserSchema,
   emailSchema,
   type loginSchema,
-  passwordZodSchema,
-  resetPasswordSchema
+  passwordZodSchema
 } from "@repo/validators";
 import { z } from "zod";
 

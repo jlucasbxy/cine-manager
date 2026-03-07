@@ -1,3 +1,4 @@
+import path from "node:path";
 import cookie from "@fastify/cookie";
 import cors from "@fastify/cors";
 import helmet from "@fastify/helmet";
@@ -6,7 +7,6 @@ import swagger from "@fastify/swagger";
 import swaggerUi from "@fastify/swagger-ui";
 import { ErrorCode } from "@repo/dtos";
 import Fastify from "fastify";
-import path from "path";
 import type { LogProvider } from "@/application/interfaces/providers";
 import { env } from "@/infrastructure/config/env.config";
 import { ROUTE_PREFIXES } from "@/infrastructure/config/routes.config";

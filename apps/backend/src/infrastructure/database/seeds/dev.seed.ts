@@ -645,7 +645,7 @@ export async function seedDev() {
       }
     });
     const user = await prisma.user.findUnique({ where: { email } });
-    userIds.push(user!.id);
+    userIds.push(user?.id);
   }
 
   process.stdout.write(`Seeded ${DEV_USERS.length} dev users\n`);
