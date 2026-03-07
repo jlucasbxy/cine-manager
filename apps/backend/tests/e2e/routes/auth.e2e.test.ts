@@ -105,5 +105,7 @@ describe("Auth routes", () => {
 });
 
 function extractCookieHeader(setCookieHeader: string): string {
-  return setCookieHeader.split(";")[0]!;
+  const [cookieHeader] = setCookieHeader.split(";");
+  if (!cookieHeader) throw new Error("Invalid Set-Cookie header");
+  return cookieHeader;
 }

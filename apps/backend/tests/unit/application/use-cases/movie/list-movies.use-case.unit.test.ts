@@ -5,7 +5,9 @@ import { makeMovie } from "../../../../factories";
 
 describe("ListMovies", () => {
   const movieRepository = { findAll: vi.fn() };
-  const useCase = new ListMovies(movieRepository as any);
+  const useCase = new ListMovies(
+    movieRepository as unknown as ConstructorParameters<typeof ListMovies>[0]
+  );
   const userId = Uuid.generate().toString();
 
   beforeEach(() => {

@@ -5,7 +5,11 @@ import { ImageMimeType, UploadKey, Url, Uuid } from "@/domain/value-objects";
 
 describe("GenerateUploadUrl", () => {
   const storageProvider = { generateUploadUrl: vi.fn(), deleteFile: vi.fn() };
-  const useCase = new GenerateUploadUrl(storageProvider as any);
+  const useCase = new GenerateUploadUrl(
+    storageProvider as unknown as ConstructorParameters<
+      typeof GenerateUploadUrl
+    >[0]
+  );
 
   beforeEach(() => {
     vi.clearAllMocks();

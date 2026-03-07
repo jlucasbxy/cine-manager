@@ -6,7 +6,11 @@ import { makeMovieListDeps } from "../../../../factories";
 describe("DeleteMovieList", () => {
   const { mockRepos } = makeMovieListDeps();
   const movieListRepository = mockRepos.movieListRepository;
-  const useCase = new DeleteMovieList(movieListRepository as any);
+  const useCase = new DeleteMovieList(
+    movieListRepository as unknown as ConstructorParameters<
+      typeof DeleteMovieList
+    >[0]
+  );
 
   beforeEach(() => {
     vi.clearAllMocks();

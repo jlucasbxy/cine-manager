@@ -9,7 +9,10 @@ import {
 describe("UpdateUser", () => {
   const { mockRepos, transactionManager, hashProvider } = makeAuthDeps();
 
-  const useCase = new UpdateUser(hashProvider, transactionManager as any);
+  const useCase = new UpdateUser(
+    hashProvider,
+    transactionManager as unknown as ConstructorParameters<typeof UpdateUser>[1]
+  );
   const userId = Uuid.generate();
 
   function makeCurrentUser(avatarUrl?: string) {

@@ -31,7 +31,9 @@ describe("ProcessOutboxEvents", () => {
     }
   };
   const transactionManager = {
-    execute: vi.fn((fn: any) => fn(mockRepos))
+    execute: vi.fn((fn: (repos: typeof mockRepos) => Promise<unknown>) =>
+      fn(mockRepos)
+    )
   };
   const notificationService = {
     sendPasswordResetEmail: vi.fn(),
@@ -45,9 +47,13 @@ describe("ProcessOutboxEvents", () => {
   const config = { batchSize: 10, maxRetries: 3 };
 
   const useCase = new ProcessOutboxEvents(
-    transactionManager as any,
+    transactionManager as unknown as ConstructorParameters<
+      typeof ProcessOutboxEvents
+    >[0],
     notificationService,
-    storageProvider as any,
+    storageProvider as unknown as ConstructorParameters<
+      typeof ProcessOutboxEvents
+    >[2],
     config
   );
 

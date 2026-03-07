@@ -2,7 +2,11 @@ import { SendWelcomeEmail } from "@/application/use-cases/notification/send-welc
 
 describe("SendWelcomeEmail", () => {
   const emailProvider = { send: vi.fn() };
-  const useCase = new SendWelcomeEmail(emailProvider as any);
+  const useCase = new SendWelcomeEmail(
+    emailProvider as unknown as ConstructorParameters<
+      typeof SendWelcomeEmail
+    >[0]
+  );
 
   beforeEach(() => {
     vi.clearAllMocks();

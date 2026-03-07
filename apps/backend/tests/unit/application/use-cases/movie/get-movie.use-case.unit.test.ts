@@ -7,7 +7,9 @@ describe("GetMovie", () => {
   const movieRepository = {
     findPublicOrOwnedByIdWithCreator: vi.fn()
   };
-  const useCase = new GetMovie(movieRepository as any);
+  const useCase = new GetMovie(
+    movieRepository as unknown as ConstructorParameters<typeof GetMovie>[0]
+  );
 
   beforeEach(() => {
     vi.clearAllMocks();

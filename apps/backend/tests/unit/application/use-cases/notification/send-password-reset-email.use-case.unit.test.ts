@@ -6,7 +6,11 @@ vi.mock("@/infrastructure/config/env.config", () => ({
 
 describe("SendPasswordResetEmail", () => {
   const emailProvider = { send: vi.fn() };
-  const useCase = new SendPasswordResetEmail(emailProvider as any);
+  const useCase = new SendPasswordResetEmail(
+    emailProvider as unknown as ConstructorParameters<
+      typeof SendPasswordResetEmail
+    >[0]
+  );
 
   beforeEach(() => {
     vi.clearAllMocks();

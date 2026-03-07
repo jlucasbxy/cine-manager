@@ -2,7 +2,11 @@ import { SendMovieReleaseDateEmail } from "@/application/use-cases/notification/
 
 describe("SendMovieReleaseDateEmail", () => {
   const emailProvider = { send: vi.fn() };
-  const useCase = new SendMovieReleaseDateEmail(emailProvider as any);
+  const useCase = new SendMovieReleaseDateEmail(
+    emailProvider as unknown as ConstructorParameters<
+      typeof SendMovieReleaseDateEmail
+    >[0]
+  );
 
   beforeEach(() => {
     vi.clearAllMocks();

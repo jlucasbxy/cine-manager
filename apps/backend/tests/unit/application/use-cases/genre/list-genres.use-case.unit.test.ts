@@ -2,7 +2,9 @@ import { ListGenres } from "@/application/use-cases/genre/list-genres.use-case";
 
 describe("ListGenres", () => {
   const genreRepository = { findAll: vi.fn() };
-  const useCase = new ListGenres(genreRepository as any);
+  const useCase = new ListGenres(
+    genreRepository as unknown as ConstructorParameters<typeof ListGenres>[0]
+  );
 
   beforeEach(() => {
     vi.clearAllMocks();

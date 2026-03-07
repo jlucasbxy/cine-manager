@@ -10,7 +10,11 @@ import {
 
 describe("CreateMovie", () => {
   const { mockRepos, transactionManager } = makeMovieDeps();
-  const useCase = new CreateMovie(transactionManager as any);
+  const useCase = new CreateMovie(
+    transactionManager as unknown as ConstructorParameters<
+      typeof CreateMovie
+    >[0]
+  );
   const userId = Uuid.generate();
 
   const input = makeMovieInput();

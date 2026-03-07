@@ -5,7 +5,10 @@ import { makeAuthDeps, makeUser } from "../../../../factories";
 describe("CreateUser", () => {
   const { mockRepos, transactionManager, hashProvider } = makeAuthDeps();
 
-  const useCase = new CreateUser(hashProvider, transactionManager as any);
+  const useCase = new CreateUser(
+    hashProvider,
+    transactionManager as unknown as ConstructorParameters<typeof CreateUser>[1]
+  );
 
   beforeEach(() => {
     vi.clearAllMocks();

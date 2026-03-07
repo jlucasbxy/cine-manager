@@ -9,7 +9,9 @@ function makeMovie() {
 
 describe("UpdateMovie", () => {
   const movieRepository = { updateByIdAndUserId: vi.fn() };
-  const useCase = new UpdateMovie(movieRepository as any);
+  const useCase = new UpdateMovie(
+    movieRepository as unknown as ConstructorParameters<typeof UpdateMovie>[0]
+  );
 
   beforeEach(() => {
     vi.clearAllMocks();

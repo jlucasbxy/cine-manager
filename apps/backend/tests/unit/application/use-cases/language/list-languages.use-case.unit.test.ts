@@ -2,7 +2,11 @@ import { ListLanguages } from "@/application/use-cases/language/list-languages.u
 
 describe("ListLanguages", () => {
   const languageRepository = { findAll: vi.fn() };
-  const useCase = new ListLanguages(languageRepository as any);
+  const useCase = new ListLanguages(
+    languageRepository as unknown as ConstructorParameters<
+      typeof ListLanguages
+    >[0]
+  );
 
   beforeEach(() => {
     vi.clearAllMocks();

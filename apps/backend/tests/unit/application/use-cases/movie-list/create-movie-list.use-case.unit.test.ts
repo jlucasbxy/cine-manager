@@ -5,7 +5,11 @@ import { makeMovieList, makeMovieListDeps } from "../../../../factories";
 describe("CreateMovieList", () => {
   const { mockRepos } = makeMovieListDeps();
   const movieListRepository = mockRepos.movieListRepository;
-  const useCase = new CreateMovieList(movieListRepository as any);
+  const useCase = new CreateMovieList(
+    movieListRepository as unknown as ConstructorParameters<
+      typeof CreateMovieList
+    >[0]
+  );
   const userId = Uuid.generate();
 
   beforeEach(() => {

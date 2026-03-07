@@ -7,7 +7,7 @@ describe("Login", () => {
     makeAuthDeps();
 
   const useCase = new Login(
-    transactionManager as any,
+    transactionManager as unknown as ConstructorParameters<typeof Login>[0],
     hashProvider,
     tokenProvider,
     config

@@ -4,7 +4,9 @@ describe("Logout", () => {
   const refreshTokenRepository = {
     updateByToken: vi.fn()
   };
-  const useCase = new Logout(refreshTokenRepository as any);
+  const useCase = new Logout(
+    refreshTokenRepository as unknown as ConstructorParameters<typeof Logout>[0]
+  );
 
   beforeEach(() => {
     vi.clearAllMocks();

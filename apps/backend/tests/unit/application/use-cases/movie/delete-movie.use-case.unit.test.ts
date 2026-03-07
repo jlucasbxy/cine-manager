@@ -5,7 +5,11 @@ import { makeMovieDeps } from "../../../../factories";
 
 describe("DeleteMovie", () => {
   const { mockRepos, transactionManager } = makeMovieDeps();
-  const useCase = new DeleteMovie(transactionManager as any);
+  const useCase = new DeleteMovie(
+    transactionManager as unknown as ConstructorParameters<
+      typeof DeleteMovie
+    >[0]
+  );
 
   beforeEach(() => {
     vi.clearAllMocks();

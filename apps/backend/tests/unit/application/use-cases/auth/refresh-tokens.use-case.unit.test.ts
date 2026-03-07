@@ -9,7 +9,9 @@ describe("RefreshTokens", () => {
 
   const useCase = new RefreshTokens(
     tokenProvider,
-    transactionManager as any,
+    transactionManager as unknown as ConstructorParameters<
+      typeof RefreshTokens
+    >[1],
     config
   );
   const validHex = "a".repeat(64);

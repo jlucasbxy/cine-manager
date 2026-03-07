@@ -5,7 +5,12 @@ import { makeAuthDeps } from "../../../../factories";
 describe("RequestPasswordReset", () => {
   const { mockRepos, transactionManager, config } = makeAuthDeps();
 
-  const useCase = new RequestPasswordReset(transactionManager as any, config);
+  const useCase = new RequestPasswordReset(
+    transactionManager as unknown as ConstructorParameters<
+      typeof RequestPasswordReset
+    >[0],
+    config
+  );
 
   beforeEach(() => {
     vi.clearAllMocks();

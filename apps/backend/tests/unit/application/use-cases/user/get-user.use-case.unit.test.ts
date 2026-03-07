@@ -7,7 +7,9 @@ describe("GetUser", () => {
   const userRepository = {
     findById: vi.fn()
   };
-  const useCase = new GetUser(userRepository as any);
+  const useCase = new GetUser(
+    userRepository as unknown as ConstructorParameters<typeof GetUser>[0]
+  );
   const userId = Uuid.generate();
 
   beforeEach(() => {

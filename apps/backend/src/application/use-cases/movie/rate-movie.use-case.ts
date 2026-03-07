@@ -44,6 +44,8 @@ export class RateMovie {
       });
     });
 
-    return MovieMapper.toDTO(updated!);
+    if (!updated) throw new MovieNotFoundError();
+
+    return MovieMapper.toDTO(updated);
   }
 }

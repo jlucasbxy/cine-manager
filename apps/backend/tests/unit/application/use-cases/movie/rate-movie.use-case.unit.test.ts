@@ -19,7 +19,9 @@ function makeMovie(id?: Uuid) {
 
 describe("RateMovie", () => {
   const { mockRepos, transactionManager } = makeMovieDeps();
-  const useCase = new RateMovie(transactionManager as any);
+  const useCase = new RateMovie(
+    transactionManager as unknown as ConstructorParameters<typeof RateMovie>[0]
+  );
 
   beforeEach(() => {
     vi.clearAllMocks();

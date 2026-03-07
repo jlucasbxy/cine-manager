@@ -11,7 +11,12 @@ describe("ResetPassword", () => {
   const validHex = "a".repeat(64);
   const { mockRepos, transactionManager, hashProvider } = makeAuthDeps();
 
-  const useCase = new ResetPassword(hashProvider, transactionManager as any);
+  const useCase = new ResetPassword(
+    hashProvider,
+    transactionManager as unknown as ConstructorParameters<
+      typeof ResetPassword
+    >[1]
+  );
 
   beforeEach(() => {
     vi.clearAllMocks();
