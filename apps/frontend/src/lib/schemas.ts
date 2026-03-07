@@ -1,13 +1,17 @@
 import {
+  createUserSchema,
   emailSchema,
-  type loginSchema,
-  passwordZodSchema
+  loginSchema,
+  passwordZodSchema,
+  resetPasswordSchema as basePasswordResetSchema
 } from "@repo/validators";
 import { z } from "zod";
 
 export type LoginFormData = z.infer<typeof loginSchema>;
 
-export const registerSchema = z
+export { loginSchema };
+
+export const registerSchema = createUserSchema
   .extend({
     confirmPassword: z.string().min(1, "Confirm your password")
   })
@@ -24,7 +28,7 @@ export type PasswordResetRequestFormData = z.infer<
   typeof passwordResetRequestSchema
 >;
 
-export const passwordResetSchema = z
+export const passwordResetSchema = basePasswordResetSchema
   .extend({
     confirmPassword: z.string().min(1, "Confirm your password")
   })
@@ -35,7 +39,7 @@ export const passwordResetSchema = z
 
 export type PasswordResetFormData = z.infer<typeof passwordResetSchema>;
 
-export const profileSchema = z
+export const profileSchema = createUserSchema
   .pick({
     name: true
   })
