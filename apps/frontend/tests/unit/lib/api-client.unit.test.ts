@@ -36,15 +36,7 @@ function rejectWithStatus(config: InternalAxiosRequestConfig, status: number) {
 }
 
 function getAuthorizationHeader(config: InternalAxiosRequestConfig) {
-  const headers = config.headers as
-    | { Authorization?: string; get?: (name: string) => string | undefined }
-    | undefined;
-
-  if (!headers) return undefined;
-  if (typeof headers.get === "function") {
-    return headers.get("Authorization");
-  }
-  return headers.Authorization;
+  return config.headers.get("Authorization") as string | undefined;
 }
 
 describe("api-client auth behavior", () => {
@@ -55,7 +47,6 @@ describe("api-client auth behavior", () => {
   });
 
   afterEach(() => {
-    clearAccessToken();
     apiClient.defaults.adapter = initialAdapter;
     vi.useRealTimers();
   });
