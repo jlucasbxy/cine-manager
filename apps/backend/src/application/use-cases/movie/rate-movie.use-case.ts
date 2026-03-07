@@ -4,8 +4,8 @@ import { MovieMapper } from "@/application/mappers";
 import { Rating } from "@/domain/entities";
 import { MovieNotFoundError } from "@/domain/errors";
 import {
-  NonNegativeInt,
   NonNegativeDecimal,
+  NonNegativeInt,
   RatingValue,
   Uuid
 } from "@/domain/value-objects";

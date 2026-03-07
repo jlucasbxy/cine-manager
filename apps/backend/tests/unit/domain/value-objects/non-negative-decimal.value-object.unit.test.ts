@@ -1,5 +1,5 @@
-import { NonNegativeDecimal } from "@/domain/value-objects/non-negative-decimal.value-object";
 import { InvalidNonNegativeDecimalError } from "@/domain/errors";
+import { NonNegativeDecimal } from "@/domain/value-objects/non-negative-decimal.value-object";
 
 describe("NonNegativeDecimal", () => {
   it("creates with 0", () => {

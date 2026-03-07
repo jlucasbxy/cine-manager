@@ -14,7 +14,10 @@ export class RedisCacheProvider implements CacheProvider {
       if (value === null) return null;
       return JSON.parse(value) as T;
     } catch (err) {
-      console.warn("[RedisCacheProvider] hget failed, treating as cache miss:", err);
+      console.warn(
+        "[RedisCacheProvider] hget failed, treating as cache miss:",
+        err
+      );
       return null;
     }
   }

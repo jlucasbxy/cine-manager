@@ -1,9 +1,12 @@
 import { RateMovie } from "@/application/use-cases/movie/rate-movie.use-case";
+import { Rating } from "@/domain/entities/rating.entity";
 import { MovieNotFoundError } from "@/domain/errors";
 import { Uuid } from "@/domain/value-objects";
-import { Rating } from "@/domain/entities/rating.entity";
 import { RatingValue } from "@/domain/value-objects/rating-value.value-object";
-import { makeMovie as makeMovieFactory, makeMovieDeps } from "../../../../factories";
+import {
+  makeMovieDeps,
+  makeMovie as makeMovieFactory
+} from "../../../../factories";
 
 function makeMovie(id?: Uuid) {
   return makeMovieFactory({
@@ -52,11 +55,9 @@ describe("RateMovie", () => {
     mockRepos.movieRepository.findByIdForUpdate.mockResolvedValue(null);
 
     await expect(
-      useCase.execute(
-        Uuid.generate().toString(),
-        Uuid.generate().toString(),
-        { value: 8 }
-      )
+      useCase.execute(Uuid.generate().toString(), Uuid.generate().toString(), {
+        value: 8
+      })
     ).rejects.toThrow(MovieNotFoundError);
   });
 
@@ -66,11 +67,9 @@ describe("RateMovie", () => {
     mockRepos.ratingRepository.upsert.mockResolvedValue(null);
 
     await expect(
-      useCase.execute(
-        movie.id.toString(),
-        Uuid.generate().toString(),
-        { value: 8 }
-      )
+      useCase.execute(movie.id.toString(), Uuid.generate().toString(), {
+        value: 8
+      })
     ).rejects.toThrow(MovieNotFoundError);
   });
 });

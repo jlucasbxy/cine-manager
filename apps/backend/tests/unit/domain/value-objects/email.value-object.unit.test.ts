@@ -1,5 +1,5 @@
-import { Email } from "@/domain/value-objects/email.value-object";
 import { InvalidEmailError } from "@/domain/errors";
+import { Email } from "@/domain/value-objects/email.value-object";
 
 describe("Email", () => {
   it("creates with valid email", () => {

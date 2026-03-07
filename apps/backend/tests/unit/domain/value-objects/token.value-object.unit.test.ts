@@ -1,5 +1,5 @@
-import { Token } from "@/domain/value-objects/token.value-object";
 import { TokenInvalidError } from "@/domain/errors";
+import { Token } from "@/domain/value-objects/token.value-object";
 
 describe("Token", () => {
   const validHex = "a".repeat(64);

@@ -54,7 +54,9 @@ export class RefreshTokens {
         revokedAt: revokedRefreshToken.revokedAt
       });
       await repos.refreshTokenRepository.create(newRefreshToken);
-      await repos.refreshTokenRepository.deleteExpiredByUserId(refreshToken.userId);
+      await repos.refreshTokenRepository.deleteExpiredByUserId(
+        refreshToken.userId
+      );
 
       return {
         accessToken,

@@ -1,5 +1,5 @@
-import { Password } from "@/domain/value-objects/password.value-object";
 import { InvalidPasswordError, WeakPasswordError } from "@/domain/errors";
+import { Password } from "@/domain/value-objects/password.value-object";
 
 describe("Password", () => {
   it("creates with valid strong password", () => {

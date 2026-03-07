@@ -16,7 +16,9 @@ describe("ImageUpload", () => {
       expect(upload.key).toBe(uploadKey);
       expect(upload.contentType.getValue()).toBe(ImageMimeTypeEnum.PNG);
       expect(upload.uploadUrl.toString()).toBe("https://s3.example.com/upload");
-      expect(upload.fileUrl.toString()).toBe("https://cdn.example.com/file.png");
+      expect(upload.fileUrl.toString()).toBe(
+        "https://cdn.example.com/file.png"
+      );
     });
   });
 });

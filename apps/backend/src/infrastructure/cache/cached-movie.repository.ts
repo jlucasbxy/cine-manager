@@ -1,14 +1,18 @@
+import { ageRatingSchema, movieStatusSchema } from "@repo/validators";
 import z from "zod";
 import type { CacheProvider } from "@/application/interfaces/providers/cache-provider";
 import type {
   MovieRepository,
   UpdateMovieData
 } from "@/application/interfaces/repositories/movie-repository";
-import type { MovieWithUser } from "@/application/read-models";
-import { Movie } from "@/domain/entities";
-import { type MovieQuery, PaginatedResult, Uuid } from "@/domain/value-objects";
 import { MovieMapper } from "@/application/mappers";
-import { ageRatingSchema, movieStatusSchema } from "@repo/validators";
+import type { MovieWithUser } from "@/application/read-models";
+import type { Movie } from "@/domain/entities";
+import {
+  type MovieQuery,
+  PaginatedResult,
+  type Uuid
+} from "@/domain/value-objects";
 
 const cachedMovieSchema = z.object({
   id: z.string(),
@@ -136,7 +140,11 @@ export class CachedMovieRepository implements MovieRepository {
     return result;
   }
 
-  async updateByIdAndUserId(id: Uuid, userId: Uuid, data: UpdateMovieData): Promise<Movie | null> {
+  async updateByIdAndUserId(
+    id: Uuid,
+    userId: Uuid,
+    data: UpdateMovieData
+  ): Promise<Movie | null> {
     const result = await this.inner.updateByIdAndUserId(id, userId, data);
     if (result) {
       await this.cache.delete(`movie:${id}`, MOVIES_LIST_KEY);

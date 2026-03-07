@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 import { getApp } from "../helpers/app-context";
 import { authHeaders, registerUser } from "../helpers/auth-helper";
 import { getE2ePrismaClient } from "../helpers/e2e-context";

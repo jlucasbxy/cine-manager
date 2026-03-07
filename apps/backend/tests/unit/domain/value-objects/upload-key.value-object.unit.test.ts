@@ -1,7 +1,7 @@
-import { UploadKey } from "@/domain/value-objects/upload-key.value-object";
-import { ImageMimeType } from "@/domain/value-objects/image-mime-type.value-object";
-import { Uuid } from "@/domain/value-objects/uuid.value-object";
 import { ImageMimeTypeEnum } from "@/domain/enums/image-mime-type.enum";
+import { ImageMimeType } from "@/domain/value-objects/image-mime-type.value-object";
+import { UploadKey } from "@/domain/value-objects/upload-key.value-object";
+import { Uuid } from "@/domain/value-objects/uuid.value-object";
 
 describe("UploadKey", () => {
   it("creates a key with correct format", () => {

@@ -60,8 +60,6 @@ export const registerUser = async (
   };
 };
 
-export const authHeaders = (
-  token: string
-): Record<string, string> => ({
+export const authHeaders = (token: string): Record<string, string> => ({
   authorization: `Bearer ${token}`
 });

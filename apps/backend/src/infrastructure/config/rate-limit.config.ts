@@ -4,9 +4,17 @@ import z from "zod";
 const rateLimitEnvSchema = z.object({
   RATE_LIMIT_LOGIN_MAX: z.coerce.number().int().positive().default(5),
   RATE_LIMIT_LOGIN_WINDOW: z.string().default("1 minute"),
-  RATE_LIMIT_PASSWORD_RESET_REQUEST_MAX: z.coerce.number().int().positive().default(3),
+  RATE_LIMIT_PASSWORD_RESET_REQUEST_MAX: z.coerce
+    .number()
+    .int()
+    .positive()
+    .default(3),
   RATE_LIMIT_PASSWORD_RESET_REQUEST_WINDOW: z.string().default("1 minute"),
-  RATE_LIMIT_PASSWORD_RESET_EXECUTE_MAX: z.coerce.number().int().positive().default(5),
+  RATE_LIMIT_PASSWORD_RESET_EXECUTE_MAX: z.coerce
+    .number()
+    .int()
+    .positive()
+    .default(5),
   RATE_LIMIT_PASSWORD_RESET_EXECUTE_WINDOW: z.string().default("1 minute"),
   RATE_LIMIT_REFRESH_MAX: z.coerce.number().int().positive().default(10),
   RATE_LIMIT_REFRESH_WINDOW: z.string().default("1 minute"),

@@ -15,11 +15,12 @@ export class RemoveMovieFromList {
     const movieUuid = Uuid.create(movieId);
 
     await this.transactionManager.execute(async (repos) => {
-      const found = await repos.movieListRepository.removeMovieByListIdAndMovieId(
-        listUuid,
-        userUuid,
-        movieUuid
-      );
+      const found =
+        await repos.movieListRepository.removeMovieByListIdAndMovieId(
+          listUuid,
+          userUuid,
+          movieUuid
+        );
       if (!found) throw new MovieListNotFoundError();
 
       await repos.movieRepository.hardDeleteIfSoftDeletedAndOrphan(movieUuid);

@@ -1,4 +1,3 @@
-import path from "path";
 import cookie from "@fastify/cookie";
 import cors from "@fastify/cors";
 import helmet from "@fastify/helmet";
@@ -7,11 +6,11 @@ import swagger from "@fastify/swagger";
 import swaggerUi from "@fastify/swagger-ui";
 import { ErrorCode } from "@repo/dtos";
 import Fastify from "fastify";
+import path from "path";
 import type { LogProvider } from "@/application/interfaces/providers";
 import { env } from "@/infrastructure/config/env.config";
 import { ROUTE_PREFIXES } from "@/infrastructure/config/routes.config";
 import { errorHandler } from "@/infrastructure/http/middlewares";
-import { PinoLogProvider } from "@/infrastructure/providers";
 import {
   authRoutes,
   genreRoutes,
@@ -22,6 +21,7 @@ import {
   uploadRoutes,
   userRoutes
 } from "@/infrastructure/http/routes";
+import { PinoLogProvider } from "@/infrastructure/providers";
 import {
   makeAuthController,
   makeGenreController,

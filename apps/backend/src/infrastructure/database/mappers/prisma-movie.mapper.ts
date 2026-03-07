@@ -5,8 +5,8 @@ import {
   AgeRating,
   Money,
   MovieStatus,
-  NonNegativeInt,
   NonNegativeDecimal,
+  NonNegativeInt,
   Url,
   Uuid
 } from "@/domain/value-objects";

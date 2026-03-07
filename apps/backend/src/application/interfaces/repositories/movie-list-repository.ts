@@ -6,10 +6,7 @@ export interface MovieListWithMovies extends MovieList {
   movies: Movie[];
 }
 
-export type AddMovieToListResult =
-  | "ok"
-  | "list_not_found"
-  | "movie_not_found";
+export type AddMovieToListResult = "ok" | "list_not_found" | "movie_not_found";
 
 export interface MovieListRepository {
   create(list: MovieList): Promise<MovieList>;

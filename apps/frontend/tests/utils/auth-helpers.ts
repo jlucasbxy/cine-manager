@@ -13,9 +13,7 @@ export const defaultUser: UserDTO = {
   updatedAt: "2026-01-01T00:00:00.000Z"
 };
 
-export function createAuthState(
-  overrides: Partial<AuthState> = {}
-): AuthState {
+export function createAuthState(overrides: Partial<AuthState> = {}): AuthState {
   return {
     user: null,
     isAuthenticated: false,

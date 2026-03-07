@@ -14,7 +14,9 @@ describe("RequestPasswordReset", () => {
   it("creates reset token and outbox event when user exists", async () => {
     const userId = Uuid.generate();
     mockRepos.userRepository.existsByEmail.mockResolvedValue(userId);
-    mockRepos.passwordResetTokenRepository.deleteByUserId.mockResolvedValue(undefined);
+    mockRepos.passwordResetTokenRepository.deleteByUserId.mockResolvedValue(
+      undefined
+    );
     mockRepos.passwordResetTokenRepository.create.mockResolvedValue(null);
     mockRepos.outboxEventRepository.create.mockResolvedValue(undefined);
 
@@ -29,7 +31,9 @@ describe("RequestPasswordReset", () => {
 
     await useCase.execute({ email: "nobody@example.com" });
 
-    expect(mockRepos.passwordResetTokenRepository.create).not.toHaveBeenCalled();
+    expect(
+      mockRepos.passwordResetTokenRepository.create
+    ).not.toHaveBeenCalled();
     expect(mockRepos.outboxEventRepository.create).not.toHaveBeenCalled();
   });
 });

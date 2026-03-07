@@ -1,6 +1,6 @@
-import { MovieStatus } from "@/domain/value-objects/movie-status.value-object";
 import { MovieStatusEnum } from "@/domain/enums/movie-status.enum";
 import { InvalidMovieStatusError } from "@/domain/errors";
+import { MovieStatus } from "@/domain/value-objects/movie-status.value-object";
 
 describe("MovieStatus", () => {
   it("creates with valid status", () => {

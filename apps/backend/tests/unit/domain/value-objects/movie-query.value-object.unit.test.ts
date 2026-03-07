@@ -1,5 +1,5 @@
-import { MovieQuery } from "@/domain/value-objects/movie-query.value-object";
 import { InvalidMovieQueryError } from "@/domain/errors";
+import { MovieQuery } from "@/domain/value-objects/movie-query.value-object";
 import { Uuid } from "@/domain/value-objects/uuid.value-object";
 
 describe("MovieQuery", () => {
@@ -50,8 +50,8 @@ describe("MovieQuery", () => {
   });
 
   it("throws for invalid currentUserId", () => {
-    expect(() => MovieQuery.create({ limit: 10, currentUserId: "bad" })).toThrow(
-      InvalidMovieQueryError
-    );
+    expect(() =>
+      MovieQuery.create({ limit: 10, currentUserId: "bad" })
+    ).toThrow(InvalidMovieQueryError);
   });
 });

@@ -1,5 +1,5 @@
-import { Uuid } from "@/domain/value-objects/uuid.value-object";
 import { InvalidUuidError } from "@/domain/errors";
+import { Uuid } from "@/domain/value-objects/uuid.value-object";
 
 describe("Uuid", () => {
   it("creates with valid UUIDv7", () => {

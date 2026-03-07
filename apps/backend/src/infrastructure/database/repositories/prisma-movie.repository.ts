@@ -121,7 +121,9 @@ export class PrismaMovieRepository implements MovieRepository {
     if (query.genreIds !== undefined && query.genreIds.length > 0) {
       where.genres = { some: { id: { in: query.genreIds } } };
     }
-    where.AND = [{ OR: [{ isPublic: true }, { userId: query.currentUserId.toString() }] }];
+    where.AND = [
+      { OR: [{ isPublic: true }, { userId: query.currentUserId.toString() }] }
+    ];
 
     const limit = query.limit.toNumber();
     const findManyArgs: Parameters<typeof this.db.movie.findMany>[0] = {
@@ -159,7 +161,11 @@ export class PrismaMovieRepository implements MovieRepository {
     return this.updateWithWhere({ id: id.toString(), deletedAt: null }, data);
   }
 
-  async updateByIdAndUserId(id: Uuid, userId: Uuid, data: UpdateMovieData): Promise<Movie | null> {
+  async updateByIdAndUserId(
+    id: Uuid,
+    userId: Uuid,
+    data: UpdateMovieData
+  ): Promise<Movie | null> {
     return this.updateWithWhere(
       { id: id.toString(), userId: userId.toString(), deletedAt: null },
       data

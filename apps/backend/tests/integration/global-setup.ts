@@ -106,7 +106,9 @@ async function ensureBucket(): Promise<void> {
   const bucket = process.env.S3_BUCKET;
 
   if (!endpoint || !region || !accessKeyId || !secretAccessKey || !bucket) {
-    throw new Error("S3 environment variables are required for integration tests");
+    throw new Error(
+      "S3 environment variables are required for integration tests"
+    );
   }
 
   const client = new S3Client({

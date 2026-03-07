@@ -27,7 +27,9 @@ describe("useTheme", () => {
 
     function Wrapper({ children }: { children: ReactNode }) {
       return (
-        <ThemeContext.Provider value={contextValue}>{children}</ThemeContext.Provider>
+        <ThemeContext.Provider value={contextValue}>
+          {children}
+        </ThemeContext.Provider>
       );
     }
 

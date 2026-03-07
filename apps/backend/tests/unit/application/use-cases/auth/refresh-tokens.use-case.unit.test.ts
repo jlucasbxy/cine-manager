@@ -4,9 +4,14 @@ import { Uuid } from "@/domain/value-objects";
 import { daysAgo, makeAuthDeps, makeRefreshToken } from "../../../../factories";
 
 describe("RefreshTokens", () => {
-  const { mockRepos, transactionManager, tokenProvider, config } = makeAuthDeps();
+  const { mockRepos, transactionManager, tokenProvider, config } =
+    makeAuthDeps();
 
-  const useCase = new RefreshTokens(tokenProvider, transactionManager as any, config);
+  const useCase = new RefreshTokens(
+    tokenProvider,
+    transactionManager as any,
+    config
+  );
   const validHex = "a".repeat(64);
 
   beforeEach(() => {
@@ -20,7 +25,9 @@ describe("RefreshTokens", () => {
     mockRepos.refreshTokenRepository.findByTokenForUpdate.mockResolvedValue(rt);
     mockRepos.refreshTokenRepository.updateByToken.mockResolvedValue(null);
     mockRepos.refreshTokenRepository.create.mockResolvedValue(null);
-    mockRepos.refreshTokenRepository.deleteExpiredByUserId.mockResolvedValue(undefined);
+    mockRepos.refreshTokenRepository.deleteExpiredByUserId.mockResolvedValue(
+      undefined
+    );
     tokenProvider.generate.mockResolvedValue("new-access-token");
 
     const result = await useCase.execute({ refreshToken: validHex });
@@ -31,11 +38,13 @@ describe("RefreshTokens", () => {
   });
 
   it("throws TokenInvalidError when token not found", async () => {
-    mockRepos.refreshTokenRepository.findByTokenForUpdate.mockResolvedValue(null);
+    mockRepos.refreshTokenRepository.findByTokenForUpdate.mockResolvedValue(
+      null
+    );
 
-    await expect(
-      useCase.execute({ refreshToken: validHex })
-    ).rejects.toThrow(TokenInvalidError);
+    await expect(useCase.execute({ refreshToken: validHex })).rejects.toThrow(
+      TokenInvalidError
+    );
   });
 
   it("throws TokenInvalidError when token is revoked", async () => {
@@ -45,17 +54,17 @@ describe("RefreshTokens", () => {
     });
     mockRepos.refreshTokenRepository.findByTokenForUpdate.mockResolvedValue(rt);
 
-    await expect(
-      useCase.execute({ refreshToken: validHex })
-    ).rejects.toThrow(TokenInvalidError);
+    await expect(useCase.execute({ refreshToken: validHex })).rejects.toThrow(
+      TokenInvalidError
+    );
   });
 
   it("throws TokenInvalidError when token is expired", async () => {
     const rt = makeRefreshToken({ token: validHex, expiresAt: daysAgo(1) });
     mockRepos.refreshTokenRepository.findByTokenForUpdate.mockResolvedValue(rt);
 
-    await expect(
-      useCase.execute({ refreshToken: validHex })
-    ).rejects.toThrow(TokenInvalidError);
+    await expect(useCase.execute({ refreshToken: validHex })).rejects.toThrow(
+      TokenInvalidError
+    );
   });
 });

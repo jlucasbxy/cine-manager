@@ -25,9 +25,7 @@ export function PasswordStrengthIndicator({
   return (
     <div className="space-y-1.5">
       <div className="flex items-center justify-between">
-        <span className="text-xs text-muted-foreground">
-          Password strength
-        </span>
+        <span className="text-xs text-muted-foreground">Password strength</span>
         <span className="text-xs font-medium text-muted-foreground">
           {config.label}
         </span>

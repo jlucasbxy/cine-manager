@@ -6,7 +6,12 @@ describe("Login", () => {
   const { mockRepos, transactionManager, hashProvider, tokenProvider, config } =
     makeAuthDeps();
 
-  const useCase = new Login(transactionManager as any, hashProvider, tokenProvider, config);
+  const useCase = new Login(
+    transactionManager as any,
+    hashProvider,
+    tokenProvider,
+    config
+  );
 
   beforeEach(() => {
     vi.clearAllMocks();

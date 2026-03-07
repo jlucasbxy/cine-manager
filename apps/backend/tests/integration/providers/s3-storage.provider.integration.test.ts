@@ -1,9 +1,6 @@
-import {
-  GetObjectCommand,
-  HeadObjectCommand
-} from "@aws-sdk/client-s3";
-import { UploadKey } from "@/domain/value-objects/upload-key.value-object";
+import { GetObjectCommand, HeadObjectCommand } from "@aws-sdk/client-s3";
 import { ImageMimeType, Uuid } from "@/domain/value-objects";
+import { UploadKey } from "@/domain/value-objects/upload-key.value-object";
 import { S3StorageProvider } from "@/infrastructure/providers";
 import {
   getIntegrationS3Client,

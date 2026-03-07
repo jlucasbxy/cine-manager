@@ -5,7 +5,7 @@ const pkg = JSON.parse(readFileSync("package.json", "utf-8"));
 
 const external = Object.keys({
   ...pkg.dependencies,
-  ...pkg.devDependencies,
+  ...pkg.devDependencies
 }).filter((dep) => !dep.startsWith("@repo/"));
 
 await build({
@@ -18,5 +18,5 @@ await build({
   alias: { "@/*": "./src/*" },
   sourcemap: true,
   splitting: true,
-  bundle: true,
+  bundle: true
 });

@@ -28,7 +28,9 @@ describe("ResetPassword", () => {
       createdAt: new Date()
     });
 
-    mockRepos.passwordResetTokenRepository.findByTokenForUpdate.mockResolvedValue(prt);
+    mockRepos.passwordResetTokenRepository.findByTokenForUpdate.mockResolvedValue(
+      prt
+    );
     hashProvider.hash.mockResolvedValue("new-hashed-password");
     mockRepos.userRepository.update.mockResolvedValue(null);
     mockRepos.passwordResetTokenRepository.update.mockResolvedValue(undefined);
@@ -41,11 +43,15 @@ describe("ResetPassword", () => {
       userId,
       expect.objectContaining({ password: expect.anything() })
     );
-    expect(mockRepos.refreshTokenRepository.updateManyByUserId).toHaveBeenCalled();
+    expect(
+      mockRepos.refreshTokenRepository.updateManyByUserId
+    ).toHaveBeenCalled();
   });
 
   it("throws ResetTokenInvalidError when token not found", async () => {
-    mockRepos.passwordResetTokenRepository.findByTokenForUpdate.mockResolvedValue(null);
+    mockRepos.passwordResetTokenRepository.findByTokenForUpdate.mockResolvedValue(
+      null
+    );
 
     await expect(
       useCase.execute({ token: validHex, newPassword: "NewValidPass1" })
@@ -61,7 +67,9 @@ describe("ResetPassword", () => {
       usedAt: new Date(),
       createdAt: new Date()
     });
-    mockRepos.passwordResetTokenRepository.findByTokenForUpdate.mockResolvedValue(prt);
+    mockRepos.passwordResetTokenRepository.findByTokenForUpdate.mockResolvedValue(
+      prt
+    );
 
     await expect(
       useCase.execute({ token: validHex, newPassword: "NewValidPass1" })
@@ -77,7 +85,9 @@ describe("ResetPassword", () => {
       usedAt: null,
       createdAt: new Date()
     });
-    mockRepos.passwordResetTokenRepository.findByTokenForUpdate.mockResolvedValue(prt);
+    mockRepos.passwordResetTokenRepository.findByTokenForUpdate.mockResolvedValue(
+      prt
+    );
 
     await expect(
       useCase.execute({ token: validHex, newPassword: "NewValidPass1" })

@@ -1,14 +1,14 @@
 import { MovieListMapper } from "@/application/mappers/movie-list.mapper";
-import { MovieList } from "@/domain/entities/movie-list.entity";
 import { Movie } from "@/domain/entities/movie.entity";
+import { MovieList } from "@/domain/entities/movie-list.entity";
 import { AgeRatingEnum } from "@/domain/enums/age-rating.enum";
 import { MovieStatusEnum } from "@/domain/enums/movie-status.enum";
 import {
   AgeRating,
   Money,
   MovieStatus,
-  NonNegativeInt,
   NonNegativeDecimal,
+  NonNegativeInt,
   Url,
   Uuid
 } from "@/domain/value-objects";

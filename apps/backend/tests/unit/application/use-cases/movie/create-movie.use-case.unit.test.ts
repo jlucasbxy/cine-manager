@@ -66,7 +66,11 @@ describe("CreateMovie", () => {
     });
     mockRepos.movieRepository.create.mockResolvedValue(movie);
 
-    const user = makeUser({ id: userId, email: "john@example.com", password: "hashed" });
+    const user = makeUser({
+      id: userId,
+      email: "john@example.com",
+      password: "hashed"
+    });
     mockRepos.userRepository.findById.mockResolvedValue(user);
     mockRepos.outboxEventRepository.create.mockResolvedValue(undefined);
 

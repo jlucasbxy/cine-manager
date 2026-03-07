@@ -1,9 +1,9 @@
 import {
   type AgeRating,
-  Money,
+  type Money,
   type MovieStatus,
-  NonNegativeInt,
   NonNegativeDecimal,
+  NonNegativeInt,
   type Url,
   Uuid
 } from "@/domain/value-objects";

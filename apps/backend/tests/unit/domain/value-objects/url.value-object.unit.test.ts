@@ -1,5 +1,5 @@
-import { Url } from "@/domain/value-objects/url.value-object";
 import { InvalidUrlError } from "@/domain/errors";
+import { Url } from "@/domain/value-objects/url.value-object";
 
 describe("Url", () => {
   it("creates with valid URL", () => {

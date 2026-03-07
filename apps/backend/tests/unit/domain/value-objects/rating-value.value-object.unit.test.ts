@@ -1,5 +1,5 @@
-import { RatingValue } from "@/domain/value-objects/rating-value.value-object";
 import { InvalidRatingError } from "@/domain/errors";
+import { RatingValue } from "@/domain/value-objects/rating-value.value-object";
 
 describe("RatingValue", () => {
   it("creates with value 1 (min)", () => {

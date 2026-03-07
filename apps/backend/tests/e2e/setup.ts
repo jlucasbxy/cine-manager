@@ -1,5 +1,5 @@
 import { afterAll, beforeAll, beforeEach } from "vitest";
-import { createTestApp, closeApp } from "./helpers/app-context";
+import { closeApp, createTestApp } from "./helpers/app-context";
 import {
   closeE2eClients,
   getE2ePrismaClient,

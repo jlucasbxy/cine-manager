@@ -1,5 +1,5 @@
-import { act, renderHook, waitFor } from "@testing-library/react";
 import type { UserDTO } from "@repo/dtos";
+import { act, renderHook, waitFor } from "@testing-library/react";
 import React, { type ReactNode } from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { AuthProvider } from "@/contexts/auth-context";
@@ -126,7 +126,10 @@ describe("AuthProvider", () => {
       await result.current.login("jane@example.com", "secret123");
     });
 
-    expect(authService.login).toHaveBeenCalledWith("jane@example.com", "secret123");
+    expect(authService.login).toHaveBeenCalledWith(
+      "jane@example.com",
+      "secret123"
+    );
     expect(setAccessToken).toHaveBeenLastCalledWith("login-token", 900);
     expect(result.current.user).toEqual(loggedInUser);
     expect(result.current.isAuthenticated).toBe(true);
@@ -154,7 +157,11 @@ describe("AuthProvider", () => {
     });
 
     await act(async () => {
-      await result.current.register("Registered User", "new@example.com", "safePass123");
+      await result.current.register(
+        "Registered User",
+        "new@example.com",
+        "safePass123"
+      );
     });
 
     expect(authService.register).toHaveBeenCalledWith({
@@ -162,7 +169,10 @@ describe("AuthProvider", () => {
       email: "new@example.com",
       password: "safePass123"
     });
-    expect(authService.login).toHaveBeenCalledWith("new@example.com", "safePass123");
+    expect(authService.login).toHaveBeenCalledWith(
+      "new@example.com",
+      "safePass123"
+    );
     expect(setAccessToken).toHaveBeenLastCalledWith("registered-token", 1200);
     expect(result.current.user).toEqual(registeredUser);
     expect(getStoredUser()).toEqual(registeredUser);

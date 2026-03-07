@@ -1,6 +1,6 @@
-import { ImageMimeType } from "@/domain/value-objects/image-mime-type.value-object";
 import { ImageMimeTypeEnum } from "@/domain/enums/image-mime-type.enum";
 import { InvalidImageMimeTypeError } from "@/domain/errors";
+import { ImageMimeType } from "@/domain/value-objects/image-mime-type.value-object";
 
 describe("ImageMimeType", () => {
   it("creates with valid JPEG mime type", () => {

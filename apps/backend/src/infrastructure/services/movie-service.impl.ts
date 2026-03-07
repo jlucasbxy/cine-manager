@@ -30,7 +30,11 @@ export class MovieServiceImpl implements MovieService {
     return this.createMovieUseCase.execute(userId, input);
   }
 
-  async updateMovie(id: string, userId: string, input: UpdateMovieDTO): Promise<MovieDTO> {
+  async updateMovie(
+    id: string,
+    userId: string,
+    input: UpdateMovieDTO
+  ): Promise<MovieDTO> {
     return this.updateMovieUseCase.execute(id, userId, input);
   }
 

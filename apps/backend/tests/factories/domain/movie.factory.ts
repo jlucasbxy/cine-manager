@@ -5,8 +5,8 @@ import {
   AgeRating,
   Money,
   MovieStatus,
-  NonNegativeInt,
   NonNegativeDecimal,
+  NonNegativeInt,
   Url,
   Uuid
 } from "@/domain/value-objects";
@@ -45,7 +45,9 @@ export function makeMovie(overrides: MovieOverrides = {}): Movie {
     synopsis: overrides.synopsis ?? "Test synopsis",
     releaseDate: overrides.releaseDate ?? new Date("2024-06-01T00:00:00.000Z"),
     runtime: NonNegativeInt.reconstitute(overrides.runtime ?? 120),
-    status: MovieStatus.reconstitute(overrides.status ?? MovieStatusEnum.RELEASED),
+    status: MovieStatus.reconstitute(
+      overrides.status ?? MovieStatusEnum.RELEASED
+    ),
     ageRating: AgeRating.reconstitute(overrides.ageRating ?? AgeRatingEnum.L),
     languageId: overrides.languageId ?? Uuid.generate(),
     budget: Money.reconstitute(overrides.budget ?? 1000000),

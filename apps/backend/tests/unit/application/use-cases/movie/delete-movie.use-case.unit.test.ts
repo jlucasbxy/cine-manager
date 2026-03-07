@@ -12,7 +12,9 @@ describe("DeleteMovie", () => {
   });
 
   it("deletes pending outbox events and movie successfully", async () => {
-    mockRepos.outboxEventRepository.deletePendingByResourceId.mockResolvedValue(1);
+    mockRepos.outboxEventRepository.deletePendingByResourceId.mockResolvedValue(
+      1
+    );
     mockRepos.movieRepository.deleteByIdAndUserId.mockResolvedValue(true);
     mockRepos.movieRepository.hardDeleteIfSoftDeletedAndOrphan.mockResolvedValue(
       true
@@ -25,13 +27,15 @@ describe("DeleteMovie", () => {
     expect(
       mockRepos.outboxEventRepository.deletePendingByResourceId
     ).toHaveBeenCalledTimes(1);
-    expect(
-      mockRepos.movieRepository.deleteByIdAndUserId
-    ).toHaveBeenCalledTimes(1);
+    expect(mockRepos.movieRepository.deleteByIdAndUserId).toHaveBeenCalledTimes(
+      1
+    );
   });
 
   it("throws MovieNotFoundError when movie not found", async () => {
-    mockRepos.outboxEventRepository.deletePendingByResourceId.mockResolvedValue(0);
+    mockRepos.outboxEventRepository.deletePendingByResourceId.mockResolvedValue(
+      0
+    );
     mockRepos.movieRepository.deleteByIdAndUserId.mockResolvedValue(false);
     const id = Uuid.generate().toString();
     const userId = Uuid.generate().toString();

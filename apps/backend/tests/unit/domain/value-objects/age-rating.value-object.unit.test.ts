@@ -1,6 +1,6 @@
-import { AgeRating } from "@/domain/value-objects/age-rating.value-object";
 import { AgeRatingEnum } from "@/domain/enums/age-rating.enum";
 import { InvalidAgeRatingError } from "@/domain/errors";
+import { AgeRating } from "@/domain/value-objects/age-rating.value-object";
 
 describe("AgeRating", () => {
   it("creates with valid age rating", () => {

@@ -23,7 +23,7 @@ import { Textarea } from "@/components/ui/textarea";
 
 const formSchema = movieSchema.extend({
   genres: z.array(z.string()).optional(),
-  releaseDate: z.coerce.date(),
+  releaseDate: z.coerce.date()
 });
 
 type MovieFormData = z.infer<typeof formSchema>;

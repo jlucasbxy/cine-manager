@@ -19,9 +19,7 @@ describe("useDebounce", () => {
 
   it("updates only after the configured delay", () => {
     let value = "a";
-    const { result, rerender } = renderHook(() =>
-      useDebounce(value, 300)
-    );
+    const { result, rerender } = renderHook(() => useDebounce(value, 300));
 
     expect(result.current).toBe("a");
 
@@ -41,9 +39,7 @@ describe("useDebounce", () => {
 
   it("resets the pending timer when value changes quickly", () => {
     let value = "first";
-    const { result, rerender } = renderHook(() =>
-      useDebounce(value, 300)
-    );
+    const { result, rerender } = renderHook(() => useDebounce(value, 300));
 
     value = "second";
     rerender();

@@ -1,5 +1,5 @@
-import { NonNegativeInt } from "@/domain/value-objects/non-negative-int.value-object";
 import { InvalidNonNegativeIntError } from "@/domain/errors";
+import { NonNegativeInt } from "@/domain/value-objects/non-negative-int.value-object";
 
 describe("NonNegativeInt", () => {
   it("creates with 0", () => {

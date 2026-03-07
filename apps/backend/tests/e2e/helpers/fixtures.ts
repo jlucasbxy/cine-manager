@@ -1,7 +1,7 @@
 export {
-  insertUser,
-  insertLanguage,
   insertGenre,
+  insertLanguage,
   insertMovie,
-  insertMovieList
+  insertMovieList,
+  insertUser
 } from "../../integration/helpers/fixtures";

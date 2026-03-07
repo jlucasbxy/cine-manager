@@ -8,13 +8,17 @@ export { EmailValidator } from "./email.validator";
 export { AgeRating, MovieStatus } from "./enums";
 export { GenerateUploadUrlValidator } from "./generate-upload-url.validator";
 export { IdValidator } from "./id.validator";
-export { LoginValidator } from "./login.validator";
 export { loginSchema } from "./login.schema";
+export { LoginValidator } from "./login.validator";
+export {
+  MIN_PASSWORD_SCORE,
+  PasswordStrengthValidator
+} from "./password-strength.validator";
 export { QueryMoviesValidator } from "./query-movies.validator";
 export { RateMovieValidator } from "./rate-movie.validator";
 export { RefreshTokenValidator } from "./refresh-token.validator";
-export { ResetPasswordValidator } from "./reset-password.validator";
 export { resetPasswordSchema } from "./reset-password.schema";
+export { ResetPasswordValidator } from "./reset-password.validator";
 export { ageRatingSchema } from "./schemas/age-rating.schema";
 export { idZodSchema } from "./schemas/id.schema";
 export { movieSchema } from "./schemas/movie.schema";
@@ -23,7 +27,3 @@ export { passwordZodSchema } from "./schemas/password.schema";
 export { UpdateMovieValidator } from "./update-movie.validator";
 export { UpdateMovieListValidator } from "./update-movie-list.validator";
 export { UpdateUserValidator } from "./update-user.validator";
-export {
-  PasswordStrengthValidator,
-  MIN_PASSWORD_SCORE
-} from "./password-strength.validator";

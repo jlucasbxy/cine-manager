@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
 import { PasswordStrengthValidator } from "@repo/validators";
+import { useEffect, useState } from "react";
 import { useDebounce } from "./use-debounce";
 
 interface PasswordStrengthResult {

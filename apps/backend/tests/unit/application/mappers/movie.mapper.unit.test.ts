@@ -6,8 +6,8 @@ import {
   AgeRating,
   Money,
   MovieStatus,
-  NonNegativeInt,
   NonNegativeDecimal,
+  NonNegativeInt,
   Url,
   Uuid
 } from "@/domain/value-objects";
@@ -90,7 +90,9 @@ describe("MovieMapper", () => {
       };
       const restored = MovieMapper.fromDto(dto);
 
-      expect(restored.deletedAt?.toISOString()).toBe("2024-06-02T00:00:00.000Z");
+      expect(restored.deletedAt?.toISOString()).toBe(
+        "2024-06-02T00:00:00.000Z"
+      );
     });
   });
 });

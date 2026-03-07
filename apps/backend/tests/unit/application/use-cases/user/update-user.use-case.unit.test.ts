@@ -1,7 +1,10 @@
 import { UpdateUser } from "@/application/use-cases/user/update-user.use-case";
 import { UserNotFoundError } from "@/domain/errors";
 import { Uuid } from "@/domain/value-objects";
-import { makeAuthDeps, makeUser as makeUserFactory } from "../../../../factories";
+import {
+  makeAuthDeps,
+  makeUser as makeUserFactory
+} from "../../../../factories";
 
 describe("UpdateUser", () => {
   const { mockRepos, transactionManager, hashProvider } = makeAuthDeps();
@@ -15,7 +18,7 @@ describe("UpdateUser", () => {
       name: "John",
       email: "john@example.com",
       password: "hashed",
-      avatarUrl,
+      avatarUrl
     });
   }
 
@@ -48,8 +51,12 @@ describe("UpdateUser", () => {
   });
 
   it("creates outbox event when avatar changes and old avatar exists", async () => {
-    const current = makeCurrentUser("https://cdn.example.com/uploads/old-avatar.png");
-    const updated = makeCurrentUser("https://cdn.example.com/uploads/new-avatar.png");
+    const current = makeCurrentUser(
+      "https://cdn.example.com/uploads/old-avatar.png"
+    );
+    const updated = makeCurrentUser(
+      "https://cdn.example.com/uploads/new-avatar.png"
+    );
     mockRepos.userRepository.findByIdForUpdate.mockResolvedValue(current);
     mockRepos.userRepository.update.mockResolvedValue(updated);
     mockRepos.outboxEventRepository.create.mockResolvedValue(undefined);

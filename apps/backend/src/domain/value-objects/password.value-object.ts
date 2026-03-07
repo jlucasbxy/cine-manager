@@ -1,7 +1,7 @@
 import {
-  passwordZodSchema,
+  MIN_PASSWORD_SCORE,
   PasswordStrengthValidator,
-  MIN_PASSWORD_SCORE
+  passwordZodSchema
 } from "@repo/validators";
 import { InvalidPasswordError, WeakPasswordError } from "@/domain/errors";
 

@@ -15,7 +15,11 @@ export interface MovieRepository {
   ): Promise<MovieWithUser | null>;
   findAll(query: MovieQuery): Promise<PaginatedResult<Movie>>;
   update(id: Uuid, data: UpdateMovieData): Promise<Movie | null>;
-  updateByIdAndUserId(id: Uuid, userId: Uuid, data: UpdateMovieData): Promise<Movie | null>;
+  updateByIdAndUserId(
+    id: Uuid,
+    userId: Uuid,
+    data: UpdateMovieData
+  ): Promise<Movie | null>;
   deleteByIdAndUserId(id: Uuid, userId: Uuid): Promise<boolean>;
   hardDeleteIfSoftDeletedAndOrphan(id: Uuid): Promise<boolean>;
 }
