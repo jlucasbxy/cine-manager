@@ -632,7 +632,7 @@ export async function seedDev() {
   const userIds: string[] = [];
   for (const { name, email, password } of DEV_USERS) {
     const id = uuidv7();
-    await prisma.user.upsert({
+    const user = await prisma.user.upsert({
       where: { email },
       update: {},
       create: {
@@ -644,8 +644,7 @@ export async function seedDev() {
         updatedAt: now
       }
     });
-    const user = await prisma.user.findUnique({ where: { email } });
-    userIds.push(user?.id);
+    userIds.push(user.id);
   }
 
   process.stdout.write(`Seeded ${DEV_USERS.length} dev users\n`);
