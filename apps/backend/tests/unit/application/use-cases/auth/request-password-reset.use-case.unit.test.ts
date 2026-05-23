@@ -16,19 +16,22 @@ describe("RequestPasswordReset", () => {
     vi.clearAllMocks();
   });
 
-  it("creates reset token and outbox event when user exists", async () => {
+  it("creates reset token and enqueues reset email when user exists", async () => {
     const userId = Uuid.generate();
     mockRepos.userRepository.existsByEmail.mockResolvedValue(userId);
     mockRepos.passwordResetTokenRepository.deleteByUserId.mockResolvedValue(
       undefined
     );
     mockRepos.passwordResetTokenRepository.create.mockResolvedValue(null);
-    mockRepos.outboxEventRepository.create.mockResolvedValue(undefined);
+    mockRepos.queue.send.mockResolvedValue(undefined);
 
     await useCase.execute({ email: "test@example.com" });
 
     expect(mockRepos.passwordResetTokenRepository.create).toHaveBeenCalled();
-    expect(mockRepos.outboxEventRepository.create).toHaveBeenCalled();
+    expect(mockRepos.queue.send).toHaveBeenCalledWith(
+      "password-reset-email",
+      expect.objectContaining({ to: "test@example.com" })
+    );
   });
 
   it("does nothing when user does not exist", async () => {
@@ -39,6 +42,6 @@ describe("RequestPasswordReset", () => {
     expect(
       mockRepos.passwordResetTokenRepository.create
     ).not.toHaveBeenCalled();
-    expect(mockRepos.outboxEventRepository.create).not.toHaveBeenCalled();
+    expect(mockRepos.queue.send).not.toHaveBeenCalled();
   });
 });

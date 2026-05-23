@@ -11,7 +11,6 @@ const REQUIRED_TABLES = [
   "Rating",
   "MovieList",
   "Movie",
-  "OutboxEvent",
   "PasswordResetToken",
   "RefreshToken",
   "Genre",

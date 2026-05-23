@@ -20,8 +20,9 @@ export function makeAuthDeps() {
       findByTokenForUpdate: vi.fn(),
       update: vi.fn()
     },
-    outboxEventRepository: {
-      create: vi.fn()
+    queue: {
+      send: vi.fn(),
+      cancel: vi.fn()
     }
   };
 

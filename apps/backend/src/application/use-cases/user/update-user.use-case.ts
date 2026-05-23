@@ -1,11 +1,10 @@
 import type { UpdateUserDTO, UserDTO } from "@repo/dtos";
-import type {
-  HashProvider,
-  TransactionManager
+import {
+  type HashProvider,
+  QueueName,
+  type TransactionManager
 } from "@/application/interfaces/providers";
 import { UserMapper } from "@/application/mappers";
-import { OutboxEvent } from "@/domain/entities";
-import { OutboxEventTypeEnum } from "@/domain/enums";
 import { UserNotFoundError } from "@/domain/errors";
 import { Password, Uuid } from "@/domain/value-objects";
 
@@ -45,12 +44,7 @@ export class UpdateUser {
         const key = current.avatarUrl.substring(
           current.avatarUrl.indexOf("uploads/")
         );
-        await repos.outboxEventRepository.create(
-          OutboxEvent.create({
-            type: OutboxEventTypeEnum.STORAGE_FILE_DELETE,
-            payload: { key }
-          })
-        );
+        await repos.queue.send(QueueName.STORAGE_FILE_DELETE, { key });
       }
 
       return UserMapper.toDTO(updated);

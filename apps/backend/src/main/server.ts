@@ -32,6 +32,7 @@ import {
   makeUserController
 } from "@/main/factories/controllers";
 import { makeAuthMiddleware } from "@/main/factories/middlewares";
+import { startPgBoss, stopPgBoss } from "@/main/factories/queue";
 import { makeRedisClient } from "@/main/factories/redis";
 
 declare module "fastify" {
@@ -52,6 +53,11 @@ export async function createApp() {
             }
           }
         : true
+  });
+
+  await startPgBoss();
+  app.addHook("onClose", async () => {
+    await stopPgBoss();
   });
 
   if (!env.IS_PRODUCTION && env.ENABLE_DOCS) {
@@ -158,6 +164,13 @@ export async function createApp() {
 
 export async function start() {
   const app = await createApp();
+
+  const shutdown = async () => {
+    await app.close();
+    process.exit(0);
+  };
+  process.on("SIGINT", shutdown);
+  process.on("SIGTERM", shutdown);
 
   try {
     await app.listen({ port: env.PORT, host: env.HOST });

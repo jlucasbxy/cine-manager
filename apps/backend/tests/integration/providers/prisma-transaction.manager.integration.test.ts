@@ -1,10 +1,11 @@
 import { PrismaTransactionManager } from "@/infrastructure/providers";
+import { makePgBoss } from "@/main/factories/queue";
 import { makeRefreshToken, makeUser } from "../../factories";
 import { getIntegrationPrismaClient } from "../helpers/integration-context";
 
 describe("PrismaTransactionManager integration", () => {
   const prisma = getIntegrationPrismaClient();
-  const manager = new PrismaTransactionManager(prisma);
+  const manager = new PrismaTransactionManager(prisma, makePgBoss());
 
   it("commits writes when transaction succeeds", async () => {
     const user = makeUser();

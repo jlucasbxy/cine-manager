@@ -7,9 +7,9 @@ export function makeMovieDeps() {
       findByIdForUpdate: vi.fn(),
       update: vi.fn()
     },
-    outboxEventRepository: {
-      create: vi.fn(),
-      deletePendingByResourceId: vi.fn()
+    queue: {
+      send: vi.fn(),
+      cancel: vi.fn()
     },
     userRepository: {
       findById: vi.fn()

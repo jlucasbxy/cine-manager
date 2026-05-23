@@ -3,12 +3,12 @@ import type {
   LanguageRepository,
   MovieListRepository,
   MovieRepository,
-  OutboxEventRepository,
   PasswordResetTokenRepository,
   RatingRepository,
   RefreshTokenRepository,
   UserRepository
 } from "@/application/interfaces/repositories";
+import type { QueueProvider } from "./queue-provider";
 
 export interface TransactionRepositories {
   movieListRepository: MovieListRepository;
@@ -16,7 +16,7 @@ export interface TransactionRepositories {
   userRepository: UserRepository;
   refreshTokenRepository: RefreshTokenRepository;
   passwordResetTokenRepository: PasswordResetTokenRepository;
-  outboxEventRepository: OutboxEventRepository;
+  queue: QueueProvider;
   languageRepository: LanguageRepository;
   genreRepository: GenreRepository;
   ratingRepository: RatingRepository;

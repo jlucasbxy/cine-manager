@@ -49,7 +49,7 @@ describe("CreateMovie", () => {
     expect(mockRepos.movieRepository.create).toHaveBeenCalled();
   });
 
-  it("creates outbox event when release date is in the future", async () => {
+  it("enqueues a scheduled release email when release date is in the future", async () => {
     const futureInput = { ...input, releaseDate: daysFromNow(30) };
     const movie = makeMovie({
       title: futureInput.title,
@@ -76,10 +76,20 @@ describe("CreateMovie", () => {
       password: "hashed"
     });
     mockRepos.userRepository.findById.mockResolvedValue(user);
-    mockRepos.outboxEventRepository.create.mockResolvedValue(undefined);
+    mockRepos.queue.send.mockResolvedValue(undefined);
 
     await useCase.execute(userId.toString(), futureInput);
 
-    expect(mockRepos.outboxEventRepository.create).toHaveBeenCalled();
+    expect(mockRepos.queue.send).toHaveBeenCalledWith(
+      "movie-release-date",
+      expect.objectContaining({
+        to: "john@example.com",
+        movieTitle: futureInput.title
+      }),
+      expect.objectContaining({
+        id: expect.any(String),
+        startAfter: futureInput.releaseDate
+      })
+    );
   });
 });

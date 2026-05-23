@@ -53,7 +53,7 @@ describe("UpdateUser", () => {
     expect(hashProvider.hash).toHaveBeenCalled();
   });
 
-  it("creates outbox event when avatar changes and old avatar exists", async () => {
+  it("enqueues storage delete job when avatar changes and old avatar exists", async () => {
     const current = makeCurrentUser(
       "https://cdn.example.com/uploads/old-avatar.png"
     );
@@ -62,13 +62,15 @@ describe("UpdateUser", () => {
     );
     mockRepos.userRepository.findByIdForUpdate.mockResolvedValue(current);
     mockRepos.userRepository.update.mockResolvedValue(updated);
-    mockRepos.outboxEventRepository.create.mockResolvedValue(undefined);
+    mockRepos.queue.send.mockResolvedValue(undefined);
 
     await useCase.execute(userId.toString(), {
       avatarUrl: "https://cdn.example.com/uploads/new-avatar.png"
     });
 
-    expect(mockRepos.outboxEventRepository.create).toHaveBeenCalled();
+    expect(mockRepos.queue.send).toHaveBeenCalledWith("storage-file-delete", {
+      key: "uploads/old-avatar.png"
+    });
   });
 
   it("throws UserNotFoundError when user not found for update", async () => {

@@ -1,4 +1,7 @@
-import type { TransactionManager } from "@/application/interfaces/providers";
+import {
+  QueueName,
+  type TransactionManager
+} from "@/application/interfaces/providers";
 import { MovieNotFoundError } from "@/domain/errors";
 import { Uuid } from "@/domain/value-objects";
 
@@ -10,7 +13,7 @@ export class DeleteMovie {
     const userUuid = Uuid.create(userId);
 
     await this.transactionManager.execute(async (repos) => {
-      await repos.outboxEventRepository.deletePendingByResourceId(id);
+      await repos.queue.cancel(QueueName.MOVIE_RELEASE_DATE, id.toString());
 
       const deleted = await repos.movieRepository.deleteByIdAndUserId(
         id,

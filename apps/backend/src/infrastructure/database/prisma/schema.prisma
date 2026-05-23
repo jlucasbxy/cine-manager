@@ -87,35 +87,6 @@ enum MovieStatus {
   RUMORED
 }
 
-enum OutboxEventType {
-  PASSWORD_RESET_EMAIL
-  MOVIE_RELEASE_DATE
-  WELCOME_EMAIL
-  STORAGE_FILE_DELETE
-}
-
-enum OutboxEventStatus {
-  PENDING
-  PROCESSED
-  FAILED
-}
-
-model OutboxEvent {
-  id           String            @id @db.Uuid
-  type         OutboxEventType
-  payload      Json
-  status       OutboxEventStatus
-  retryCount   Int
-  error        String?
-  createdAt    DateTime
-  scheduledFor DateTime?         @db.Timestamptz
-  processedAt  DateTime?         @db.Timestamptz
-  resourceId   String?           @db.Uuid
-
-  @@index([status, createdAt])
-  @@index([status, scheduledFor])
-}
-
 model Movie {
   id            String                @id @db.Uuid
   title         String

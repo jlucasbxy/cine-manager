@@ -1,3 +1,4 @@
+import type { PgBoss } from "pg-boss";
 import type {
   TransactionManager,
   TransactionRepositories
@@ -9,15 +10,18 @@ import {
   PrismaLanguageRepository,
   PrismaMovieListRepository,
   PrismaMovieRepository,
-  PrismaOutboxEventRepository,
   PrismaPasswordResetTokenRepository,
   PrismaRatingRepository,
   PrismaRefreshTokenRepository,
   PrismaUserRepository
 } from "@/infrastructure/database/repositories";
+import { PgBossQueueProvider } from "@/infrastructure/queue";
 
 export class PrismaTransactionManager implements TransactionManager {
-  constructor(private readonly db: PrismaClient) {}
+  constructor(
+    private readonly db: PrismaClient,
+    private readonly boss: PgBoss
+  ) {}
 
   async execute<T>(
     fn: (repos: TransactionRepositories) => Promise<T>
@@ -31,7 +35,7 @@ export class PrismaTransactionManager implements TransactionManager {
         passwordResetTokenRepository: new PrismaPasswordResetTokenRepository(
           tx
         ),
-        outboxEventRepository: new PrismaOutboxEventRepository(tx),
+        queue: new PgBossQueueProvider(this.boss, tx),
         languageRepository: new PrismaLanguageRepository(tx),
         genreRepository: new PrismaGenreRepository(tx),
         ratingRepository: new PrismaRatingRepository(tx)

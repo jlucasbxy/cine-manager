@@ -1,8 +1,10 @@
 import type { RequestPasswordResetDTO } from "@repo/dtos";
 import type { StringValue } from "ms";
-import type { TransactionManager } from "@/application/interfaces/providers";
-import { OutboxEvent, PasswordResetToken } from "@/domain/entities";
-import { OutboxEventTypeEnum } from "@/domain/enums";
+import {
+  QueueName,
+  type TransactionManager
+} from "@/application/interfaces/providers";
+import { PasswordResetToken } from "@/domain/entities";
 import { Email } from "@/domain/value-objects";
 
 export type RequestPasswordResetConfig = {
@@ -30,17 +32,12 @@ export class RequestPasswordReset {
         expiresIn: this.config.passwordResetTokenExpiresIn
       });
 
-      const outboxEntry = OutboxEvent.create({
-        type: OutboxEventTypeEnum.PASSWORD_RESET_EMAIL,
-        payload: {
-          to: email.toString(),
-          token: resetToken.token.toString()
-        }
-      });
-
       await repos.passwordResetTokenRepository.deleteByUserId(userId);
       await repos.passwordResetTokenRepository.create(resetToken);
-      await repos.outboxEventRepository.create(outboxEntry);
+      await repos.queue.send(QueueName.PASSWORD_RESET_EMAIL, {
+        to: email.toString(),
+        token: resetToken.token.toString()
+      });
     });
   }
 }

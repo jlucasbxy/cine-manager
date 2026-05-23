@@ -22,7 +22,7 @@ describe("CreateUser", () => {
       password: "hashed-password"
     });
     mockRepos.userRepository.create.mockResolvedValue(savedUser);
-    mockRepos.outboxEventRepository.create.mockResolvedValue(undefined);
+    mockRepos.queue.send.mockResolvedValue(undefined);
 
     const result = await useCase.execute({
       name: "John",
@@ -33,7 +33,9 @@ describe("CreateUser", () => {
     expect(result.name).toBe("John");
     expect(result.email).toBe("john@example.com");
     expect(hashProvider.hash).toHaveBeenCalled();
-    expect(mockRepos.outboxEventRepository.create).toHaveBeenCalled();
+    expect(mockRepos.queue.send).toHaveBeenCalledWith("welcome-email", {
+      to: "john@example.com"
+    });
   });
 
   it("throws EmailAlreadyInUseError when user save returns null", async () => {

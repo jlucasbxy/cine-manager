@@ -1,9 +1,0 @@
-export const OutboxEventTypeEnum = {
-  PASSWORD_RESET_EMAIL: "PASSWORD_RESET_EMAIL",
-  MOVIE_RELEASE_DATE: "MOVIE_RELEASE_DATE",
-  WELCOME_EMAIL: "WELCOME_EMAIL",
-  STORAGE_FILE_DELETE: "STORAGE_FILE_DELETE"
-} as const;
-
-export type OutboxEventTypeEnum =
-  (typeof OutboxEventTypeEnum)[keyof typeof OutboxEventTypeEnum];

@@ -1,11 +1,11 @@
 import type { CreateUserDTO, UserDTO } from "@repo/dtos";
-import type {
-  HashProvider,
-  TransactionManager
+import {
+  type HashProvider,
+  QueueName,
+  type TransactionManager
 } from "@/application/interfaces/providers";
 import { UserMapper } from "@/application/mappers";
-import { OutboxEvent, User } from "@/domain/entities";
-import { OutboxEventTypeEnum } from "@/domain/enums";
+import { User } from "@/domain/entities";
 import { EmailAlreadyInUseError } from "@/domain/errors";
 import { Email, Password } from "@/domain/value-objects";
 
@@ -40,12 +40,9 @@ export class CreateUser {
         throw new EmailAlreadyInUseError();
       }
 
-      await repos.outboxEventRepository.create(
-        OutboxEvent.create({
-          type: OutboxEventTypeEnum.WELCOME_EMAIL,
-          payload: { to: email.toString() }
-        })
-      );
+      await repos.queue.send(QueueName.WELCOME_EMAIL, {
+        to: email.toString()
+      });
 
       return savedUser;
     });

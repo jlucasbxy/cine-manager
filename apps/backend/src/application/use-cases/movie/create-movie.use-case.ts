@@ -1,8 +1,10 @@
 import type { CreateMovieDTO, MovieDTO } from "@repo/dtos";
-import type { TransactionManager } from "@/application/interfaces/providers";
+import {
+  QueueName,
+  type TransactionManager
+} from "@/application/interfaces/providers";
 import { MovieMapper } from "@/application/mappers";
-import { Movie, OutboxEvent } from "@/domain/entities";
-import { OutboxEventTypeEnum } from "@/domain/enums";
+import { Movie } from "@/domain/entities";
 import {
   AgeRating,
   Money,
@@ -43,17 +45,15 @@ export class CreateMovie {
       if (movie.releaseDate > new Date()) {
         const user = await repos.userRepository.findById(userUuid);
         if (user) {
-          const outboxEntry = OutboxEvent.create({
-            type: OutboxEventTypeEnum.MOVIE_RELEASE_DATE,
-            payload: {
+          await repos.queue.send(
+            QueueName.MOVIE_RELEASE_DATE,
+            {
               to: user.email.toString(),
               movieTitle: movie.title,
               releaseDate: movie.releaseDate.toISOString()
             },
-            resourceId: movie.id,
-            scheduledFor: movie.releaseDate
-          });
-          await repos.outboxEventRepository.create(outboxEntry);
+            { id: movie.id.toString(), startAfter: movie.releaseDate }
+          );
         }
       }
 

@@ -9,7 +9,6 @@ export type {
   MovieRepository,
   UpdateMovieData
 } from "./movie-repository";
-export type { OutboxEventRepository } from "./outbox-event-repository";
 export type { PasswordResetTokenRepository } from "./password-reset-token-repository";
 export type { RatingRepository } from "./rating-repository";
 export type {
