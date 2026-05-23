@@ -1,22 +1,12 @@
+import type { PgBoss } from "pg-boss";
 import { QueueName } from "@/application/interfaces/providers";
 import { queueWorkerConfig } from "@/infrastructure/queue";
-import {
-  makeLogProvider,
-  makeStorageProvider
-} from "@/main/factories/providers";
-import { startPgBoss, stopPgBoss } from "@/main/factories/queue";
+import { makeStorageProvider } from "@/main/factories/providers";
 import { makeNotificationService } from "@/main/factories/services";
 
-export async function startWorker(): Promise<void> {
-  const logProvider = makeLogProvider().child({ context: "worker" });
+export async function registerWorkers(boss: PgBoss): Promise<void> {
   const notificationService = makeNotificationService();
   const storageProvider = makeStorageProvider();
-
-  const boss = await startPgBoss();
-
-  boss.on("error", (error) => {
-    logProvider.error("pg-boss error", { error: String(error) });
-  });
 
   const options = {
     pollingIntervalSeconds: queueWorkerConfig.pollingIntervalSeconds
@@ -62,15 +52,4 @@ export async function startWorker(): Promise<void> {
       await storageProvider.deleteFile(job.data.key);
     }
   );
-
-  async function shutdown(): Promise<void> {
-    logProvider.info("Shutting down...");
-    await stopPgBoss();
-    process.exit(0);
-  }
-
-  process.on("SIGINT", shutdown);
-  process.on("SIGTERM", shutdown);
-
-  logProvider.info("Worker started, processing queues...");
 }

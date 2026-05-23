@@ -34,6 +34,7 @@ import {
 import { makeAuthMiddleware } from "@/main/factories/middlewares";
 import { startPgBoss, stopPgBoss } from "@/main/factories/queue";
 import { makeRedisClient } from "@/main/factories/redis";
+import { registerWorkers } from "@/main/worker";
 
 declare module "fastify" {
   interface FastifyRequest {
@@ -55,7 +56,11 @@ export async function createApp() {
         : true
   });
 
-  await startPgBoss();
+  const boss = await startPgBoss();
+  boss.on("error", (error) => {
+    app.log.error({ err: error }, "pg-boss error");
+  });
+  await registerWorkers(boss);
   app.addHook("onClose", async () => {
     await stopPgBoss();
   });

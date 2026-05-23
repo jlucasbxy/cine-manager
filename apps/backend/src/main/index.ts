@@ -5,10 +5,6 @@ const commands: Record<string, () => Promise<void>> = {
     const { start } = await import("@/main/server");
     await start();
   },
-  worker: async () => {
-    const { startWorker } = await import("@/main/worker");
-    await startWorker();
-  },
   seed: async () => {
     const { seedGenres } = await import(
       "@/infrastructure/database/seeds/genre.seed"
